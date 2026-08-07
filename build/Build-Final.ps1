@@ -8,14 +8,15 @@ $root = Split-Path -Parent $PSScriptRoot
 $logDir = Join-Path $root 'BUILD_LOGS'
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 
-# Rebuild only the source-compatible support chain required by buCadCamRes.
-# Other supplied DLLs remain the known-good runtime binaries; their decompiled
-# SmartAssembly/dummy_ptr pseudo-sources are audited but are not substituted for
-# working binaries unless a source change is actually required.
+# buClass contains the recovered CAM enums/data types required by buCadCamRes and
+# now compiles cleanly after the targeted decompiler repairs. buCore and buControls
+# are intentionally kept as the validated original runtime DLLs: their recovered
+# trees contain unrelated SmartAssembly/compiler-generated pseudo-source, while
+# buCadCamRes compiles against the originals once buClass is rebuilt. The single
+# newer control needed by Profile simulation is supplied by the local compatibility
+# source in buCadCamRes/Compatibility/buTrackMarker.cs.
 $projects = @(
     'buClass/buClass.csproj',
-    'buCore/buCore.csproj',
-    'buControls/buControls.csproj',
     'buCadCamRes/buCadCamRes.csproj'
 )
 
@@ -30,13 +31,23 @@ function Copy-IfExists([string]$from, [string[]]$targets) {
     }
 }
 
-# The 65 MB buEyeBase binary bundled with the Marble/MW source set corresponds
-# to the recovered source generation and exposes the CAM enums/classes used by
-# buCadCamRes. The smaller legacy copy in buCadCamRes/lib does not.
+# Use the source-generation-compatible Eyeshot support binary shipped with Marble.
 Copy-IfExists 'buMarble/lib/buEyeBase.dll' @(
     'buCadCamRes/lib/buEyeBase.dll',
     'CMDMarbleCNC/lib/buEyeBase.dll'
 )
+
+# Include the local profile-simulation compatibility control without modifying the
+# validated buControls runtime DLL.
+$cadProject = Join-Path $root 'buCadCamRes/buCadCamRes.csproj'
+$cadProjectText = [IO.File]::ReadAllText($cadProject)
+$compileEntry = '    <Compile Include="Compatibility\buTrackMarker.cs" />'
+if (-not $cadProjectText.Contains('Compatibility\buTrackMarker.cs')) {
+    $insert = "  <ItemGroup>`r`n$compileEntry`r`n  </ItemGroup>`r`n"
+    $cadProjectText = $cadProjectText.Replace('</Project>', $insert + '</Project>')
+    [IO.File]::WriteAllText($cadProject, $cadProjectText, (New-Object Text.UTF8Encoding($false)))
+    Write-Host 'Added Compatibility\buTrackMarker.cs to buCadCamRes.csproj' -ForegroundColor Green
+}
 
 $failures = @()
 foreach ($relative in $projects) {
@@ -65,29 +76,16 @@ foreach ($relative in $projects) {
 
     Write-Host "OK: $relative" -ForegroundColor Green
 
-    switch ($relative) {
-        'buClass/buClass.csproj' {
-            Copy-IfExists 'buClass/bin/Release/buClass.dll' @(
-                'buCore/lib/buClass.dll','buControls/lib/buClass.dll',
-                'buCadCamRes/lib/buClass.dll','CMDMarbleCNC/lib/buClass.dll'
-            )
-        }
-        'buCore/buCore.csproj' {
-            Copy-IfExists 'buCore/bin/Release/buCore.dll' @(
-                'buControls/lib/buCore.dll','buCadCamRes/lib/buCore.dll',
-                'CMDMarbleCNC/lib/buCore.dll'
-            )
-        }
-        'buControls/buControls.csproj' {
-            Copy-IfExists 'buControls/bin/Release/buControls.dll' @(
-                'buCadCamRes/lib/buControls.dll','CMDMarbleCNC/lib/buControls.dll'
-            )
-        }
-        'buCadCamRes/buCadCamRes.csproj' {
-            Copy-IfExists 'buCadCamRes/bin/Release/buCadCamRes.dll' @(
-                'CMDMarbleCNC/lib/buCadCamRes.dll'
-            )
-        }
+    if ($relative -eq 'buClass/buClass.csproj') {
+        Copy-IfExists 'buClass/bin/Release/buClass.dll' @(
+            'buCadCamRes/lib/buClass.dll',
+            'CMDMarbleCNC/lib/buClass.dll'
+        )
+    }
+    elseif ($relative -eq 'buCadCamRes/buCadCamRes.csproj') {
+        Copy-IfExists 'buCadCamRes/bin/Release/buCadCamRes.dll' @(
+            'CMDMarbleCNC/lib/buCadCamRes.dll'
+        )
     }
 }
 
@@ -96,4 +94,4 @@ if ($failures.Count -gt 0) {
     throw "Build failed for $($failures.Count) project(s): $($failures -join ', ')"
 }
 
-'ALL CAD SUPPORT AND CADCAM BUILDS PASSED' | Set-Content (Join-Path $logDir 'BUILD_OK.txt')
+'BUCLASS AND BUCADCAMRES BUILDS PASSED' | Set-Content (Join-Path $logDir 'BUILD_OK.txt')
