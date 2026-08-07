@@ -26,6 +26,11 @@ jobs:
           msbuild -version
           Get-ChildItem Env: | Where-Object Name -match 'VisualStudio|Framework' | Sort-Object Name
 
+      - name: Repair support-source decompiler artifacts
+        shell: pwsh
+        run: |
+          ./build/Repair-SupportSources.ps1
+
       - name: Normalize CAD CAM source line endings
         shell: pwsh
         run: |
@@ -46,7 +51,7 @@ jobs:
         run: |
           ./build/Restore-LargeDeps.ps1
 
-      - name: Build application projects
+      - name: Build repaired CAD support chain and CAD CAM
         shell: pwsh
         run: |
           ./build/Build-Final.ps1 -Configuration Release -Platform AnyCPU
