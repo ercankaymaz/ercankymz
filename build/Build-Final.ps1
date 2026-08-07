@@ -13,6 +13,7 @@ New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 $repairScriptPath = Join-Path $PSScriptRoot 'Final-Calculation-Repairs.ps1'
 $repairScriptText = [IO.File]::ReadAllText($repairScriptPath)
 $repairScriptText = $repairScriptText.Replace("'  public void MoveUpDown('", "'  public void Devide()'")
+$repairScriptText = $repairScriptText.Replace('$t=Replace-Required $t $mirrorOld $mirrorNew ''Profile mirror entity shadow repair''', '$t=Replace-Optional $t $mirrorOld $mirrorNew ''Profile mirror entity shadow repair''')
 $runtimeRepairScript = Join-Path $PSScriptRoot 'Final-Calculation-Repairs.runtime.ps1'
 [IO.File]::WriteAllText($runtimeRepairScript, $repairScriptText, (New-Object Text.UTF8Encoding($false)))
 & $runtimeRepairScript
