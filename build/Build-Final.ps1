@@ -1,6 +1,6 @@
 param(
     [string]$Configuration = 'Release',
-    [string]$Platform = 'x86'
+    [string]$Platform = 'AnyCPU'
 )
 
 $ErrorActionPreference = 'Stop'
