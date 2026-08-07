@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - cadcam-final-fix
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
@@ -31,10 +34,20 @@ jobs:
         run: |
           ./build/Restore-LargeDeps.ps1
 
+      - name: Normalize CAD CAM source line endings
+        shell: pwsh
+        run: |
+          ./build/Normalize-CadCamSources.ps1
+
+      - name: Apply CAD CAM logic fixes
+        shell: pwsh
+        run: |
+          ./build/Apply-CadCamFixes.ps1
+
       - name: Build application projects
         shell: pwsh
         run: |
-          ./build/Build-Final.ps1 -Configuration Release -Platform x86
+          ./build/Build-Final.ps1 -Configuration Release -Platform AnyCPU
 
       - name: Collect final binaries
         if: always()
@@ -47,7 +60,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: CMDMarbleCNC-Final-DLLs
-          path: FINAL_DLLS/**
+          path: |
+            FINAL_DLLS/**
+            CADCAM_PATCH_REPORT.txt
           if-no-files-found: warn
 
       - name: Upload build logs
