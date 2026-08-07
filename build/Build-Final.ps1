@@ -44,7 +44,7 @@ $compatibilitySources = @(
 $missingEntries = @()
 foreach ($source in $compatibilitySources) {
     if (-not $cadProjectText.Contains($source)) {
-        $missingEntries += "    <Compile Include=\"$source\" />"
+        $missingEntries += ('    <Compile Include="{0}" />' -f $source)
     }
 }
 if ($missingEntries.Count -gt 0) {
