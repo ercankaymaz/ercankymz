@@ -14,6 +14,7 @@ $repairScriptPath = Join-Path $PSScriptRoot 'Final-Calculation-Repairs.ps1'
 $repairScriptText = [IO.File]::ReadAllText($repairScriptPath)
 $repairScriptText = $repairScriptText.Replace("'  public void MoveUpDown('", "'  public void Devide()'")
 $repairScriptText = $repairScriptText.Replace('$t=Replace-Required $t $mirrorOld $mirrorNew ''Profile mirror entity shadow repair''', '$t=Replace-Optional $t $mirrorOld $mirrorNew ''Profile mirror entity shadow repair''')
+$repairScriptText = $repairScriptText.Replace('$t=Replace-Required $t ''buAppCalc.cVector.LineWithOrientationAngle(pnt3D3, new OrientationAngle(Orientation.A * -1.0, 0.0, Orientation.C), Distance.Safe, ref calcPoint);'' ''buAppCalc.cVector.LineWithOrientationAngle(pnt3D3, new OrientationAngle(Orientation.A * -1.0, 0.0, Orientation.C), Length1, ref calcPoint);'' ''Wireframe saw projected plunge''', '$t=Replace-Optional $t ''buAppCalc.cVector.LineWithOrientationAngle(pnt3D3, new OrientationAngle(Orientation.A * -1.0, 0.0, Orientation.C), Distance.Safe, ref calcPoint);'' ''buAppCalc.cVector.LineWithOrientationAngle(pnt3D3, new OrientationAngle(Orientation.A * -1.0, 0.0, Orientation.C), Length1, ref calcPoint);'' ''Wireframe saw projected plunge''')
 $runtimeRepairScript = Join-Path $PSScriptRoot 'Final-Calculation-Repairs.runtime.ps1'
 [IO.File]::WriteAllText($runtimeRepairScript, $repairScriptText, (New-Object Text.UTF8Encoding($false)))
 & $runtimeRepairScript
