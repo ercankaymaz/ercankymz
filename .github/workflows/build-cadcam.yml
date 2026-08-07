@@ -26,11 +26,6 @@ jobs:
           msbuild -version
           Get-ChildItem Env: | Where-Object Name -match 'VisualStudio|Framework' | Sort-Object Name
 
-      - name: Restore large ModuleWorks dependencies
-        shell: pwsh
-        run: |
-          ./build/Restore-LargeDeps.ps1
-
       - name: Normalize CAD CAM source line endings
         shell: pwsh
         run: |
@@ -39,7 +34,17 @@ jobs:
       - name: Apply CAD CAM logic fixes
         shell: pwsh
         run: |
-          ./build/Apply-CadCamFixes.ps1
+          ./build/Apply-CadCamFixes-v2.ps1
+
+      - name: Audit complete application source tree
+        shell: pwsh
+        run: |
+          ./build/Static-Audit.ps1
+
+      - name: Restore large ModuleWorks dependencies
+        shell: pwsh
+        run: |
+          ./build/Restore-LargeDeps.ps1
 
       - name: Build application projects
         shell: pwsh
