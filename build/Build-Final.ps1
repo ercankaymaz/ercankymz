@@ -39,7 +39,18 @@ foreach ($relative in $projects) {
     $log = Join-Path $logDir "$name.log"
     Write-Host "`n========== BUILD $relative ==========" -ForegroundColor Cyan
 
-    & msbuild $project /t:Rebuild /m:1 /p:Configuration=$Configuration /p:Platform=$Platform /p:Prefer32Bit=true /v:minimal /fl "/flp:logfile=$log;verbosity=diagnostic"
+    # Do not force Prefer32Bit on DLL projects: Roslyn maps that to
+    # /platform:anycpu32bitpreferred, which is invalid for /target:library.
+    # All recovered projects are built with their declared AnyCPU configuration;
+    # the Windows x64 MSBuild host is used so x64 design-time/resource dependencies
+    # (notably ImageProcessor.dll) can be loaded while processing .resx files.
+    & msbuild $project /t:Rebuild /m:1 `
+        /p:Configuration=$Configuration `
+        /p:Platform=$Platform `
+        /p:TargetFrameworkVersion=v4.8 `
+        /p:LangVersion=latest `
+        /v:minimal /fl "/flp:logfile=$log;verbosity=diagnostic"
+
     if ($LASTEXITCODE -ne 0) {
         $failures += $relative
         Write-Host "FAILED: $relative" -ForegroundColor Red
