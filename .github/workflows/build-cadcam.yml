@@ -26,6 +26,11 @@ jobs:
           msbuild -version
           Get-ChildItem Env: | Where-Object Name -match 'VisualStudio|Framework' | Sort-Object Name
 
+      - name: Restore large ModuleWorks dependencies
+        shell: pwsh
+        run: |
+          ./build/Restore-LargeDeps.ps1
+
       - name: Build application projects
         shell: pwsh
         run: |
