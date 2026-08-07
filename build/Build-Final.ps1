@@ -9,12 +9,10 @@ $logDir = Join-Path $root 'BUILD_LOGS'
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 
 # buClass contains the recovered CAM enums/data types required by buCadCamRes and
-# now compiles cleanly after the targeted decompiler repairs. buCore and buControls
-# are intentionally kept as the validated original runtime DLLs: their recovered
-# trees contain unrelated SmartAssembly/compiler-generated pseudo-source, while
-# buCadCamRes compiles against the originals once buClass is rebuilt. The single
-# newer control needed by Profile simulation is supplied by the local compatibility
-# source in buCadCamRes/Compatibility/buTrackMarker.cs.
+# compiles cleanly after targeted decompiler repairs. buCore and buControls remain
+# the validated original runtime DLLs. Newer UI surface referenced only by the
+# recovered CAD/CAM source is supplied by small source-compatible controls that are
+# compiled into buCadCamRes instead of replacing the working buControls binary.
 $projects = @(
     'buClass/buClass.csproj',
     'buCadCamRes/buCadCamRes.csproj'
@@ -31,22 +29,29 @@ function Copy-IfExists([string]$from, [string[]]$targets) {
     }
 }
 
-# Use the source-generation-compatible Eyeshot support binary shipped with Marble.
 Copy-IfExists 'buMarble/lib/buEyeBase.dll' @(
     'buCadCamRes/lib/buEyeBase.dll',
     'CMDMarbleCNC/lib/buEyeBase.dll'
 )
 
-# Include the local profile-simulation compatibility control without modifying the
-# validated buControls runtime DLL.
+# Add compatibility sources to this old-style csproj only in the CI working tree.
 $cadProject = Join-Path $root 'buCadCamRes/buCadCamRes.csproj'
 $cadProjectText = [IO.File]::ReadAllText($cadProject)
-$compileEntry = '    <Compile Include="Compatibility\buTrackMarker.cs" />'
-if (-not $cadProjectText.Contains('Compatibility\buTrackMarker.cs')) {
-    $insert = "  <ItemGroup>`r`n$compileEntry`r`n  </ItemGroup>`r`n"
+$compatibilitySources = @(
+    'Compatibility\buTrackMarker.cs',
+    'Compatibility\buDialogMessageBoxes.cs'
+)
+$missingEntries = @()
+foreach ($source in $compatibilitySources) {
+    if (-not $cadProjectText.Contains($source)) {
+        $missingEntries += "    <Compile Include=\"$source\" />"
+    }
+}
+if ($missingEntries.Count -gt 0) {
+    $insert = "  <ItemGroup>`r`n" + ($missingEntries -join "`r`n") + "`r`n  </ItemGroup>`r`n"
     $cadProjectText = $cadProjectText.Replace('</Project>', $insert + '</Project>')
     [IO.File]::WriteAllText($cadProject, $cadProjectText, (New-Object Text.UTF8Encoding($false)))
-    Write-Host 'Added Compatibility\buTrackMarker.cs to buCadCamRes.csproj' -ForegroundColor Green
+    Write-Host "Added compatibility sources: $($compatibilitySources -join ', ')" -ForegroundColor Green
 }
 
 $failures = @()
