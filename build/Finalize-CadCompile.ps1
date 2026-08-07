@@ -3,22 +3,23 @@ $root=Split-Path -Parent $PSScriptRoot
 $utf8=New-Object Text.UTF8Encoding($false)
 function ReadT([string]$r){[IO.File]::ReadAllText((Join-Path $root $r))}
 function WriteT([string]$r,[string]$t){[IO.File]::WriteAllText((Join-Path $root $r),$t,$utf8)}
-function ReplaceReq([string]$t,[string]$o,[string]$n,[string]$name){
-  $c=([regex]::Matches($t,[regex]::Escape($o))).Count
-  if($c -ne 1){throw "$name expected 1, found $c"}
-  Write-Host "$name" -ForegroundColor Green
-  $t.Replace($o,$n)
-}
-function SwapCaseOrder([string]$t,[string]$methodStart,[string]$methodEnd,[string]$baseLabel,[string]$derivedLabel,[string]$name){
+function SwapCaseOrder([string]$t,[string]$methodStart,[string]$methodEnd,[string]$baseToken,[string]$derivedToken,[string]$name){
   $s=$t.IndexOf($methodStart,[StringComparison]::Ordinal); if($s -lt 0){throw "$name method start missing"}
   $e=$t.IndexOf($methodEnd,$s+$methodStart.Length,[StringComparison]::Ordinal); if($e -lt 0){throw "$name method end missing"}
   $sec=$t.Substring($s,$e-$s)
-  $b=$sec.IndexOf($baseLabel,[StringComparison]::Ordinal)
-  $d=$sec.IndexOf($derivedLabel,[StringComparison]::Ordinal)
-  if($b -lt 0 -or $d -lt 0){throw "$name labels missing base=$b derived=$d"}
+  $b0=$sec.IndexOf($baseToken,[StringComparison]::Ordinal)
+  $d0=$sec.IndexOf($derivedToken,[StringComparison]::Ordinal)
+  if($b0 -lt 0 -or $d0 -lt 0){throw "$name tokens missing base=$b0 derived=$d0"}
+  $b=$sec.LastIndexOf("`n",$b0); if($b -lt 0){$b=0}else{$b++}
+  $d=$sec.LastIndexOf("`n",$d0); if($d -lt 0){$d=0}else{$d++}
   if($d -lt $b){Write-Host "$name already ordered" -ForegroundColor DarkGreen; return $t}
-  $next=$sec.IndexOf("        case ",$d+$derivedLabel.Length,[StringComparison]::Ordinal)
-  if($next -lt 0){$next=$sec.IndexOf("        default:",$d+$derivedLabel.Length,[StringComparison]::Ordinal)}
+  $line=$sec.Substring($d,$sec.IndexOf("`n",$d)-$d)
+  $indent=$line.Substring(0,$line.IndexOf('case ',[StringComparison]::Ordinal))
+  $next=$sec.IndexOf("`n"+$indent+'case ',$d+$line.Length,[StringComparison]::Ordinal)
+  if($next -ge 0){$next++}else{
+    $next=$sec.IndexOf("`n"+$indent+'default:',$d+$line.Length,[StringComparison]::Ordinal)
+    if($next -ge 0){$next++}
+  }
   if($next -lt 0){throw "$name next case missing"}
   $baseBlock=$sec.Substring($b,$d-$b)
   $derivedBlock=$sec.Substring($d,$next-$d)
@@ -54,10 +55,8 @@ WriteT $rel $t
 
 $rel='buCadCamRes/buCadCamResVer5/clsCommand.cs'
 $t=ReadT $rel
-$t=SwapCaseOrder $t '  public void CreateEntity(Entity refEntity, ref Entity Ent)' '  public void AddTempEntity(Entity Ent)' '        case Ellipse' '      case EllipticalArc' 'CreateEntity EllipticalArc before Ellipse'
-# Normalize indentation marker in case the base case was rewritten with a guard by an earlier pass.
-# The switch scanner searches the first occurrence of each label substring, so guards are preserved.
-$t=SwapCaseOrder $t '  public void GetEntityInfo(Entity Ent, ref string sInfo)' '  public void' '        case RevolvedSurface' '        case ToroidalSurface' 'EntityInfo Toroidal before Revolved'
+$t=SwapCaseOrder $t '  public void CreateEntity(Entity refEntity, ref Entity Ent)' '  public void AddTempEntity(Entity Ent)' 'case Ellipse ' 'case EllipticalArc ' 'CreateEntity EllipticalArc before Ellipse'
+$t=SwapCaseOrder $t '  public void GetEntityInfo(Entity Ent, ref string sInfo)' '  public void' 'case RevolvedSurface ' 'case ToroidalSurface ' 'EntityInfo Toroidal before Revolved'
 WriteT $rel $t
 
 'FINAL CAD COMPILE ARTIFACT REPAIRS APPLIED' | Set-Content (Join-Path $root 'CAD_COMPILE_FINAL_REPORT.txt') -Encoding UTF8
