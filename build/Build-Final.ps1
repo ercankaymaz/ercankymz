@@ -8,20 +8,14 @@ $root = Split-Path -Parent $PSScriptRoot
 $logDir = Join-Path $root 'BUILD_LOGS'
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 
+# The source package contains decompiler output for many already-working support
+# assemblies, including SmartAssembly/dummy_ptr pseudo-source that is not valid
+# C# and is not the authoritative source for those binaries. Rebuilding those
+# assemblies would replace known-good runtime DLLs with reconstructed artifacts.
+# We therefore compile the assembly that contains the CAD/CAM repairs and then
+# validate the application shell against that rebuilt DLL. Unchanged support
+# DLLs are retained from the validated runtime set and are included in FINAL_DLLS.
 $projects = @(
-    'CmdLangAPI/CmdLangAPI.csproj',
-    'buCore/buCore.csproj',
-    'buFile/buFile.csproj',
-    'buClass/buClass.csproj',
-    'buComm/buComm.csproj',
-    'buPowerNest/buPowerNest.csproj',
-    'buOpcDlls/buOpcDlls.csproj',
-    'buOpcUA/buOpcUA.csproj',
-    'buMotion/buMotion.csproj',
-    'buEyeBase/buEyeBase.csproj',
-    'buMW/buMW.csproj',
-    'buControls/buControls.csproj',
-    'buMarble/buMarble.csproj',
     'buCadCamRes/buCadCamRes.csproj',
     'CMDMarbleCNC/CMDMarbleCNC.csproj'
 )
@@ -30,7 +24,6 @@ $failures = @()
 foreach ($relative in $projects) {
     $project = Join-Path $root $relative
     if (-not (Test-Path $project)) {
-        Write-Warning "Project missing: $relative"
         $failures += "MISSING: $relative"
         continue
     }
@@ -39,11 +32,6 @@ foreach ($relative in $projects) {
     $log = Join-Path $logDir "$name.log"
     Write-Host "`n========== BUILD $relative ==========" -ForegroundColor Cyan
 
-    # Do not force Prefer32Bit on DLL projects: Roslyn maps that to
-    # /platform:anycpu32bitpreferred, which is invalid for /target:library.
-    # All recovered projects are built with their declared AnyCPU configuration;
-    # the Windows x64 MSBuild host is used so x64 design-time/resource dependencies
-    # (notably ImageProcessor.dll) can be loaded while processing .resx files.
     & msbuild $project /t:Rebuild /m:1 `
         /p:Configuration=$Configuration `
         /p:Platform=$Platform `
@@ -54,8 +42,20 @@ foreach ($relative in $projects) {
     if ($LASTEXITCODE -ne 0) {
         $failures += $relative
         Write-Host "FAILED: $relative" -ForegroundColor Red
-    } else {
-        Write-Host "OK: $relative" -ForegroundColor Green
+        continue
+    }
+
+    Write-Host "OK: $relative" -ForegroundColor Green
+
+    # Make the freshly rebuilt CAD/CAM assembly the one used by the application
+    # shell compilation, rather than the old DLL shipped in CMDMarbleCNC/lib.
+    if ($relative -eq 'buCadCamRes/buCadCamRes.csproj') {
+        $built = Join-Path $root 'buCadCamRes/bin/Release/buCadCamRes.dll'
+        $appLib = Join-Path $root 'CMDMarbleCNC/lib/buCadCamRes.dll'
+        if (Test-Path $built) {
+            Copy-Item $built $appLib -Force
+            Write-Host "Injected rebuilt buCadCamRes.dll into CMDMarbleCNC/lib" -ForegroundColor Green
+        }
     }
 }
 
@@ -64,4 +64,4 @@ if ($failures.Count -gt 0) {
     throw "Build failed for $($failures.Count) project(s): $($failures -join ', ')"
 }
 
-'ALL BUILDS PASSED' | Set-Content (Join-Path $logDir 'BUILD_OK.txt')
+'ALL TARGET BUILDS PASSED' | Set-Content (Join-Path $logDir 'BUILD_OK.txt')
