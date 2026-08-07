@@ -23,31 +23,32 @@ function Copy-WithManifest([string]$source, [string]$kind, [bool]$overwrite = $t
     })
 }
 
-# Known-good application runtime set from the supplied source package.
+# Known-good runtime dependency set from the supplied package.
 $appLib = Join-Path $root 'CMDMarbleCNC/lib'
 if (Test-Path $appLib) {
     Get-ChildItem $appLib -File -Filter *.dll | Sort-Object Name | ForEach-Object {
-        Copy-WithManifest $_.FullName 'validated-original-runtime' $false
+        Copy-WithManifest $_.FullName 'runtime-dependency' $false
     }
 }
 
-# CAD/CAM has additional indirect dependencies (buFile, buPowerNest,
-# ModuleWorks, etc.) not all duplicated in the application lib folder.
 $cadLib = Join-Path $root 'buCadCamRes/lib'
 if (Test-Path $cadLib) {
     Get-ChildItem $cadLib -File -Filter *.dll | Sort-Object Name | ForEach-Object {
-        Copy-WithManifest $_.FullName 'validated-original-cad-dependency' $false
+        Copy-WithManifest $_.FullName 'cad-runtime-dependency' $false
     }
 }
 
-# Rebuilt files override their original counterparts.
-Copy-WithManifest (Join-Path $root 'buCadCamRes/bin/Release/buCadCamRes.dll') 'rebuilt-cadcam' $true
+# Rebuilt files explicitly override originals.
+Copy-WithManifest (Join-Path $root 'buClass/bin/Release/buClass.dll') 'rebuilt-buClass' $true
+Copy-WithManifest (Join-Path $root 'buCore/bin/Release/buCore.dll') 'rebuilt-buCore-calculation-core' $true
+Copy-WithManifest (Join-Path $root 'buCadCamRes/bin/Release/buCadCamRes.dll') 'rebuilt-buCadCamRes' $true
 Copy-WithManifest (Join-Path $root 'CMDMarbleCNC/bin/Release/CMDMarbleCNC.exe') 'rebuilt-application' $true
 
 $manifest | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $out 'manifest.json') -Encoding UTF8
 $manifest | Format-Table -AutoSize | Out-String -Width 240 | Set-Content (Join-Path $out 'manifest.txt') -Encoding UTF8
 
 "Final runtime files: $($manifest.Count)" | Set-Content (Join-Path $out 'README.txt') -Encoding UTF8
-if (Test-Path (Join-Path $root 'CADCAM_PATCH_REPORT.txt')) {
-    Copy-Item (Join-Path $root 'CADCAM_PATCH_REPORT.txt') (Join-Path $out 'CADCAM_PATCH_REPORT.txt') -Force
+foreach ($report in @('CADCAM_PATCH_REPORT.txt','CALCULATION_REPAIR_REPORT.txt')) {
+    $src = Join-Path $root $report
+    if (Test-Path $src) { Copy-Item $src (Join-Path $out $report) -Force }
 }
