@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\ERCAN\Desktop\CMDMarbleCNC\CMDMarbleCNC.exe-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2B33DF17-C5C2-4C16-A019-50F350FBAEA6}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>CMDMarbleCNC</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <ApplicationVersion>3.1.1.1</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>MarbleCNC</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Basler.Pylon">
+      <HintPath>lib\Basler.Pylon.dll</HintPath>
+    </Reference>
+    <Reference Include="CmdLangAPI">
+      <HintPath>lib\CmdLangAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="buCadCamRes">
+      <HintPath>lib\buCadCamRes.dll</HintPath>
+    </Reference>
+    <Reference Include="buClass">
+      <HintPath>lib\buClass.dll</HintPath>
+    </Reference>
+    <Reference Include="buComm">
+      <HintPath>lib\buComm.dll</HintPath>
+    </Reference>
+    <Reference Include="buControls">
+      <HintPath>lib\buControls.dll</HintPath>
+    </Reference>
+    <Reference Include="buCore">
+      <HintPath>lib\buCore.dll</HintPath>
+    </Reference>
+    <Reference Include="buEyeBase">
+      <HintPath>lib\buEyeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="buMW">
+      <HintPath>lib\buMW.dll</HintPath>
+    </Reference>
+    <Reference Include="buMarble">
+      <HintPath>lib\buMarble.dll</HintPath>
+    </Reference>
+    <Reference Include="buMotion">
+      <HintPath>lib\buMotion.dll</HintPath>
+    </Reference>
+    <Reference Include="buOpcDlls">
+      <HintPath>lib\buOpcDlls.dll</HintPath>
+    </Reference>
+    <Reference Include="buOpcUA">
+      <HintPath>lib\buOpcUA.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.Control.Win.v2026">
+      <HintPath>lib\devDept.Eyeshot.Control.Win.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>lib\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="baslerCamcs.cs" />
+    <Compile Include="clsItem.cs" />
+    <Compile Include="clsLocalCommand.cs" />
+    <Compile Include="F_AdminSettings.cs" />
+    <Compile Include="F_Machine3_Milling.cs" />
+    <Compile Include="F_Temp.cs" />
+    <Compile Include="F_Intro.cs" />
+    <Compile Include="F_Machine2.cs" />
+    <Compile Include="F_Machine1.cs" />
+    <Compile Include="F_MenuSettings.cs" />
+    <Compile Include="F_Menu.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\Resources.cs" />
+    <Compile Include="Properties\Settings.cs" />
+    <Compile Include="Machines\clsMachine3_Milling.cs" />
+    <Compile Include="Machines\XinjeFTP.cs" />
+    <Compile Include="Machines\clsMachine3_10AxisDoubleHead.cs" />
+    <Compile Include="Machines\clsMachine2_Ozteknik.cs" />
+    <Compile Include="Machines\clsMachine1_5Axis.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="F_AdminSettings.resx" />
+    <EmbeddedResource Include="F_Intro.resx" />
+    <EmbeddedResource Include="F_Machine1.resx" />
+    <EmbeddedResource Include="F_Machine2.resx" />
+    <EmbeddedResource Include="F_Machine3_Milling.resx" />
+    <EmbeddedResource Include="F_Menu.resx" />
+    <EmbeddedResource Include="F_MenuSettings.resx" />
+    <EmbeddedResource Include="F_Temp.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

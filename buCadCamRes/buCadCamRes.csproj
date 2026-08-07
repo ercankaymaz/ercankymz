@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\ERCAN\Desktop\CMDMarbleCNC\buCadCamRes.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5A11488E-0563-48F8-BAA6-34DC2F50228F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>buCadCamRes</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <ApplicationVersion>5.1.1.1</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CmdLangAPI">
+      <HintPath>lib\CmdLangAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Ribbon">
+      <HintPath>lib\ComponentFactory.Krypton.Ribbon.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Toolkit">
+      <HintPath>lib\ComponentFactory.Krypton.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.Ribbon">
+      <HintPath>lib\System.Windows.Forms.Ribbon.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="buClass">
+      <HintPath>lib\buClass.dll</HintPath>
+    </Reference>
+    <Reference Include="buComm">
+      <HintPath>lib\buComm.dll</HintPath>
+    </Reference>
+    <Reference Include="buControls">
+      <HintPath>lib\buControls.dll</HintPath>
+    </Reference>
+    <Reference Include="buCore">
+      <HintPath>lib\buCore.dll</HintPath>
+    </Reference>
+    <Reference Include="buEyeBase">
+      <HintPath>lib\buEyeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="buFile">
+      <HintPath>lib\buFile.dll</HintPath>
+    </Reference>
+    <Reference Include="buMW">
+      <HintPath>lib\buMW.dll</HintPath>
+    </Reference>
+    <Reference Include="buPowerNest">
+      <HintPath>lib\buPowerNest.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.Control.Win.v2026">
+      <HintPath>lib\devDept.Eyeshot.Control.Win.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>lib\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.x86.v2026">
+      <HintPath>lib\devDept.Eyeshot.x86.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="hasp_net_windows">
+      <HintPath>lib\hasp_net_windows.dll</HintPath>
+    </Reference>
+    <Reference Include="mwEntities">
+      <HintPath>lib\mwEntities.dll</HintPath>
+    </Reference>
+    <Reference Include="mwInterop">
+      <HintPath>lib\mwInterop.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SmartAssembly\HouseOfCards\MemberRefsProxy.cs" />
+    <Compile Include="SmartAssembly\HouseOfCards\Strings.cs" />
+    <Compile Include="SmartAssembly\Delegates\GetString.cs" />
+    <Compile Include="buDialogExtenders\Extensions.cs" />
+    <Compile Include="buDialogExtenders\FileDialogPlaces.cs" />
+    <Compile Include="buDialogExtenders\Places.cs" />
+    <Compile Include="buDialogExtenders\FileDialogControlBase.cs" />
+    <Compile Include="buDialogExtenders\AddonWindowLocation.cs" />
+    <Compile Include="Win32Types\SWP_Flags.cs" />
+    <Compile Include="Win32Types\FileDialogType.cs" />
+    <Compile Include="Win32Types\FolderViewMode.cs" />
+    <Compile Include="buCadCamResVer5\clsCommand.cs" />
+    <Compile Include="buCadCamResVer5\clsFiles.cs" />
+    <Compile Include="buCadCamResVer5\clsMW.cs" />
+    <Compile Include="buCadCamResVer5\clsSystem.cs" />
+    <Compile Include="buCadCamResVer5\clsInit.cs" />
+    <Compile Include="buCadCamResVer5\clsVar.cs" />
+    <Compile Include="buCadCamResVer5\ccVars.cs" />
+    <Compile Include="buCadCamResVer5\clsItem.cs" />
+    <Compile Include="buCadCamResVer5\Pages.cs" />
+    <Compile Include="buCadCamResVer5\TreeNodeSettings.cs" />
+    <Compile Include="buCadCamResVer5\TreeViewExtensions.cs" />
+    <Compile Include="buCadCamResVer5\ScreenExtensions.cs" />
+    <Compile Include="buCadCamResVer5\DpiType.cs" />
+    <Compile Include="buCadCamResVer5\UndoV5.cs" />
+    <Compile Include="buCadCamResVer5\ThreadCommands.cs" />
+    <Compile Include="buCadCamResVer5\MenuViews.cs" />
+    <Compile Include="buCadCamResVer5\systemFileArg.cs" />
+    <Compile Include="buCadCamResVer5\appModes.cs" />
+    <Compile Include="buCadCamResVer5\userModes.cs" />
+    <Compile Include="buCadCamResVer5\ModuleWorksModes.cs" />
+    <Compile Include="buCadCamResVer5\SpinningModes.cs" />
+    <Compile Include="buCadCamResVer5\PipeBendModes.cs" />
+    <Compile Include="buCadCamResVer5\WireBendModes.cs" />
+    <Compile Include="buCadCamResVer5\PunchModes.cs" />
+    <Compile Include="buCadCamResVer5\LaserRouterDiamekerModes.cs" />
+    <Compile Include="buCadCamResVer5\RoboticModes.cs" />
+    <Compile Include="buCadCamResVer5\JewelModes.cs" />
+    <Compile Include="buCadCamResVer5\CutterModes.cs" />
+    <Compile Include="buCadCamResVer5\TuftingModes.cs" />
+    <Compile Include="buCadCamResVer5\QuiltingModes.cs" />
+    <Compile Include="buCadCamResVer5\MarbleModes.cs" />
+    <Compile Include="buCadCamResVer5\SewingModes.cs" />
+    <Compile Include="buCadCamResVer5\FoamCuttingModes.cs" />
+    <Compile Include="buCadCamResVer5\GrindingModes.cs" />
+    <Compile Include="buCadCamResVer5\ProfileModes.cs" />
+    <Compile Include="buCadCamResVer5\FlexoModes.cs" />
+    <Compile Include="buCadCamResVer5\DrillModes.cs" />
+    <Compile Include="buCadCamResVer5\Printer3DModes.cs" />
+    <Compile Include="buCadCamResVer5\DoorModes.cs" />
+    <Compile Include="buCadCamResVer5\RollerBendModes.cs" />
+    <Compile Include="buCadCamResVer5\ToolGrindingModes.cs" />
+    <Compile Include="buCadCamResVer5\WoodModes.cs" />
+    <Compile Include="buCadCamResVer5\CompositeModes.cs" />
+    <Compile Include="buCadCamResVer5\NestingModes.cs" />
+    <Compile Include="buCadCamResVer5\GlassCutModes.cs" />
+    <Compile Include="buCadCamResVer5\LeatherModes.cs" />
+    <Compile Include="buCadCamResVer5\DiemakerModes.cs" />
+    <Compile Include="buCadCamResVer5\SurfaceModes.cs" />
+    <Compile Include="buCadCamResVer5\FileOpenModesOptions.cs" />
+    <Compile Include="buCadCamResVer5\FileSaveModesOptions.cs" />
+    <Compile Include="buCadCamResVer5\ViewerModes.cs" />
+    <Compile Include="buCadCamResVer5\DrawModes.cs" />
+    <Compile Include="buCadCamResVer5\Temp2Modes.cs" />
+    <Compile Include="buCadCamResVer5\Form1.cs" />
+    <Compile Include="buCadCamResVer5\ViewportCC.cs" />
+    <Compile Include="buCadCamResVer5\Misc\clsHasp.cs" />
+    <Compile Include="buCadCamResVer5\Misc\HaspDemo.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_DataClass.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_Drawing.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_SettingsMenu.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_Tool.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_ToolListDetail.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_CamPanel.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_CutterJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_LayerPanel1.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_MarbleJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_ToolGrinding.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_RollerBendJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_Router3AXJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_PipeBendJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_PanelCutJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_FoamJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_DoorJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_WoodJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_Printer3DJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_ProfileJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_LayerPanel.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_MiscPanel.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_MaterialPanel.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_DrillJob.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_PagesPanel.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_ToolPanel.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_ProfileDepths.cs" />
+    <Compile Include="buCadCamResVer5\Forms\F_ProfilePlanes.cs" />
+    <Compile Include="buCadCamResVer5\DialogBoxx\OpenFileDialogBoxPreview.cs" />
+    <Compile Include="buCadCamResVer5\DialogBoxx\SaveFileDialogBoxOptions.cs" />
+    <Compile Include="buCadCamResVer5\Wood\clsWood.cs" />
+    <Compile Include="buCadCamResVer5\Tufting\clsTufting.cs" />
+    <Compile Include="buCadCamResVer5\ToolGrinding\clsToolGrinding.cs" />
+    <Compile Include="buCadCamResVer5\Spinning\clsSpinning.cs" />
+    <Compile Include="buCadCamResVer5\Spinning\SpinPatternRuntime.cs" />
+    <Compile Include="buCadCamResVer5\Spinning\SpinCalculatedData.cs" />
+    <Compile Include="buCadCamResVer5\Sewing\clsSewing.cs" />
+    <Compile Include="buCadCamResVer5\Router3AX\clsRouter3AX.cs" />
+    <Compile Include="buCadCamResVer5\Router3AX\clsCMD.cs" />
+    <Compile Include="buCadCamResVer5\Router3AX\clsInfinite.cs" />
+    <Compile Include="buCadCamResVer5\Router3AX\clsYilmazCPM.cs" />
+    <Compile Include="buCadCamResVer5\RollerBend\clsRollerBend.cs" />
+    <Compile Include="buCadCamResVer5\RollerBend\F_RollerMachSim.cs" />
+    <Compile Include="buCadCamResVer5\Robotic\clsRobotic.cs" />
+    <Compile Include="buCadCamResVer5\Robotic\Vector3DD.cs" />
+    <Compile Include="buCadCamResVer5\Robotic\RobotKinematicsCalculator.cs" />
+    <Compile Include="buCadCamResVer5\Robotic\ComauRacer7Kinematics.cs" />
+    <Compile Include="buCadCamResVer5\Robotic\ComauFormats.cs" />
+    <Compile Include="buCadCamResVer5\Robotic\RobotUtilities.cs" />
+    <Compile Include="buCadCamResVer5\Robotic\ComauRacer7FullKinematics.cs" />
+    <Compile Include="buCadCamResVer5\Quilting\clsQuilting.cs" />
+    <Compile Include="buCadCamResVer5\Profile\clsProfile.cs" />
+    <Compile Include="buCadCamResVer5\Profile\F_ProfileERPList.cs" />
+    <Compile Include="buCadCamResVer5\Profile\F_ProfileMacro.cs" />
+    <Compile Include="buCadCamResVer5\Profile\F_ProfileSim.cs" />
+    <Compile Include="buCadCamResVer5\Printer3D\clsPrinter3D.cs" />
+    <Compile Include="buCadCamResVer5\Printer3D\Slicing.cs" />
+    <Compile Include="buCadCamResVer5\Printer3D\Simulation.cs" />
+    <Compile Include="buCadCamResVer5\Printer3D\SimulationRender.cs" />
+    <Compile Include="buCadCamResVer5\PipeBending\clsPipeBending.cs" />
+    <Compile Include="buCadCamResVer5\PipeBending\F_PipeBendMachSim.cs" />
+    <Compile Include="buCadCamResVer5\PanelCut\clsPanelCut.cs" />
+    <Compile Include="buCadCamResVer5\PanelCut\clsNestOpaline.cs" />
+    <Compile Include="buCadCamResVer5\PanelCut\F_PanelCutMachSim.cs" />
+    <Compile Include="buCadCamResVer5\Nesting\clsPowerNest.cs" />
+    <Compile Include="buCadCamResVer5\Nesting\MyUserData.cs" />
+    <Compile Include="buCadCamResVer5\Nesting\clsNesting.cs" />
+    <Compile Include="buCadCamResVer5\Marble\clsMarble.cs" />
+    <Compile Include="buCadCamResVer5\Marble\F_MarbleTempWaterjet.cs" />
+    <Compile Include="buCadCamResVer5\Marble\F_MarbleTempMovements.cs" />
+    <Compile Include="buCadCamResVer5\Marble\F_MarbleTempCodes.cs" />
+    <Compile Include="buCadCamResVer5\Library\clsLibrary.cs" />
+    <Compile Include="buCadCamResVer5\Library\LibraryManager.cs" />
+    <Compile Include="buCadCamResVer5\Library\LibraryConstraints.cs" />
+    <Compile Include="buCadCamResVer5\Library\ConstraintsType.cs" />
+    <Compile Include="buCadCamResVer5\Library\Forms\F_ParametricLibrary.cs" />
+    <Compile Include="buCadCamResVer5\LaserRouter\clsLaserRouter.cs" />
+    <Compile Include="buCadCamResVer5\Jewel\clsJewel.cs" />
+    <Compile Include="buCadCamResVer5\Jewel\JewelMode.cs" />
+    <Compile Include="buCadCamResVer5\Jewel\F_JewelModes.cs" />
+    <Compile Include="buCadCamResVer5\Jewel\F_JewelModeSelection.cs" />
+    <Compile Include="buCadCamResVer5\FoamCutting\clsFoamCutting.cs" />
+    <Compile Include="buCadCamResVer5\Flexo\clsFlexo.cs" />
+    <Compile Include="buCadCamResVer5\Editor\clsEditorV2.cs" />
+    <Compile Include="buCadCamResVer5\Editor\clsEditor.cs" />
+    <Compile Include="buCadCamResVer5\Editor\ProjectionInfo.cs" />
+    <Compile Include="buCadCamResVer5\Editor\Drafting2D.cs" />
+    <Compile Include="buCadCamResVer5\Editor\objectSnapType.cs" />
+    <Compile Include="buCadCamResVer5\Editor\Sketcher2D.cs" />
+    <Compile Include="buCadCamResVer5\Editor\UClick.cs" />
+    <Compile Include="buCadCamResVer5\Editor\SketcherDesignDocument.cs" />
+    <Compile Include="buCadCamResVer5\Editor\F_Editor.cs" />
+    <Compile Include="buCadCamResVer5\Editor\F_EditorV2.cs" />
+    <Compile Include="buCadCamResVer5\Drill\clsDrill.cs" />
+    <Compile Include="buCadCamResVer5\Drill\clsDrillSirius.cs" />
+    <Compile Include="buCadCamResVer5\Drill\clsDrillGoAtc.cs" />
+    <Compile Include="buCadCamResVer5\Drill\clsDrillGoUltra2Up1Down.cs" />
+    <Compile Include="buCadCamResVer5\Drill\F_DrillEdit.cs" />
+    <Compile Include="buCadCamResVer5\Drill\F_DrillMachSim.cs" />
+    <Compile Include="buCadCamResVer5\Drill\F_Holes3D.cs" />
+    <Compile Include="buCadCamResVer5\Drill\F_Tools.cs" />
+    <Compile Include="buCadCamResVer5\Door\clsDoor.cs" />
+    <Compile Include="buCadCamResVer5\Diemaker\clsDiemaker.cs" />
+    <Compile Include="buCadCamResVer5\Cutter\clsCutter.cs" />
+    <Compile Include="buCadCamResVer5\Cutter\CutterPart.cs" />
+    <Compile Include="ns0\Enum0.cs" />
+    <Compile Include="ns0\Attribute0.cs" />
+    <Compile Include="ns0\Class9.cs" />
+    <Compile Include="ns0\Attribute5.cs" />
+    <Compile Include="ns1\Enum1.cs" />
+    <Compile Include="ns1\Struct3.cs" />
+    <Compile Include="ns1\Class14.cs" />
+    <Compile Include="ns2\Enum2.cs" />
+    <Compile Include="ns2\Class10.cs" />
+    <Compile Include="ns2\Attribute2.cs" />
+    <Compile Include="ns3\Struct0.cs" />
+    <Compile Include="ns3\Attribute4.cs" />
+    <Compile Include="ns3\Attribute6.cs" />
+    <Compile Include="ns4\Struct1.cs" />
+    <Compile Include="ns5\Struct2.cs" />
+    <Compile Include="ns6\Struct4.cs" />
+    <Compile Include="ns6\Struct5.cs" />
+    <Compile Include="ns6\Attribute3.cs" />
+    <Compile Include="ns7\Delegate0.cs" />
+    <Compile Include="ns7\Class23.cs" />
+    <Compile Include="ns8\Struct6.cs" />
+    <Compile Include="ns8\Class5.cs" />
+    <Compile Include="ns9\Class3.cs" />
+    <Compile Include="ns9\Attribute1.cs" />
+    <Compile Include="ns10\Class7.cs" />
+    <Compile Include="ns10\Enum3.cs" />
+    <Compile Include="ns11\Class8.cs" />
+    <Compile Include="ns11\Class16.cs" />
+    <Compile Include="ns12\Class11.cs" />
+    <Compile Include="ns12\Class12.cs" />
+    <Compile Include="ns12\Attribute8.cs" />
+    <Compile Include="ns13\Class13.cs" />
+    <Compile Include="ns14\Attribute7.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="buCadCamResVer5\DialogBoxx\OpenFileDialogBoxPreview.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\DialogBoxx\SaveFileDialogBoxOptions.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Drill\F_DrillEdit.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Drill\F_DrillMachSim.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Drill\F_Holes3D.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Drill\F_Tools.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Editor\F_Editor.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Editor\F_EditorV2.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Form1.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_CamPanel.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_CutterJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_DataClass.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_DoorJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_Drawing.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_DrillJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_FoamJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_LayerPanel.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_LayerPanel1.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_MarbleJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_MaterialPanel.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_MiscPanel.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_PagesPanel.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_PanelCutJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_PipeBendJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_Printer3DJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_ProfileDepths.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_ProfileJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_ProfilePlanes.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_RollerBendJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_Router3AXJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_SettingsMenu.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_Tool.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_ToolGrinding.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_ToolListDetail.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_ToolPanel.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Forms\F_WoodJob.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Jewel\F_JewelModes.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Jewel\F_JewelModeSelection.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Library\Forms\F_ParametricLibrary.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Marble\F_MarbleTempCodes.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Marble\F_MarbleTempMovements.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Marble\F_MarbleTempWaterjet.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\PanelCut\F_PanelCutMachSim.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\PipeBending\F_PipeBendMachSim.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Profile\F_ProfileERPList.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Profile\F_ProfileMacro.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Profile\F_ProfileSim.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\Properties\Resources.resx" />
+    <EmbeddedResource Include="buCadCamResVer5\RollerBend\F_RollerMachSim.resx" />
+    <EmbeddedResource Include="buDialogExtenders\FileDialogControlBase.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

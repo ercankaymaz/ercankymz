@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buMarble.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EFFE79C8-4980-4E08-B67C-96B5628FF6F8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>buMarble</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <ApplicationVersion>5.1.1.2</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Basler.Pylon">
+      <HintPath>lib\Basler.Pylon.dll</HintPath>
+    </Reference>
+    <Reference Include="CmdLangAPI">
+      <HintPath>lib\CmdLangAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="buCadCamRes" />
+    <Reference Include="buClass" />
+    <Reference Include="buComm">
+      <HintPath>lib\buComm.dll</HintPath>
+    </Reference>
+    <Reference Include="buControls" />
+    <Reference Include="buCore" />
+    <Reference Include="buEyeBase">
+      <HintPath>lib\buEyeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="buMotion">
+      <HintPath>lib\buMotion.dll</HintPath>
+    </Reference>
+    <Reference Include="buOpcDlls">
+      <HintPath>lib\buOpcDlls.dll</HintPath>
+    </Reference>
+    <Reference Include="buOpcUA">
+      <HintPath>lib\buOpcUA.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.Control.Win.v2026">
+      <HintPath>lib\devDept.Eyeshot.Control.Win.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>lib\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SmartAssembly\HouseOfCards\MemberRefsProxy.cs" />
+    <Compile Include="SmartAssembly\HouseOfCards\Strings.cs" />
+    <Compile Include="SmartAssembly\Delegates\GetString.cs" />
+    <Compile Include="buMarble\clsAppMarbleVars.cs" />
+    <Compile Include="buMarble\clsAppMarbleItems.cs" />
+    <Compile Include="buMarble\clsAppMarbleControls.cs" />
+    <Compile Include="buMarble\clsAppMarbleRuntimeVar.cs" />
+    <Compile Include="buMarble\clsAppMarbleOPVar.cs" />
+    <Compile Include="buMarble\clsAppMarbleIODef.cs" />
+    <Compile Include="buMarble\clsAppMarbleIOVar.cs" />
+    <Compile Include="buMarble\clsAppMarbleFormVar.cs" />
+    <Compile Include="buMarble\clsAppMarbleProgramSetVar.cs" />
+    <Compile Include="buMarble\clsAppMarbleInterfaceVar.cs" />
+    <Compile Include="buMarble\clsAppMarbleMachineReportItem.cs" />
+    <Compile Include="buMarble\clsAppMarbleMachineReport.cs" />
+    <Compile Include="buMarble\MarblePartZeroType.cs" />
+    <Compile Include="buMarble\MarbleParkModeAfterJob.cs" />
+    <Compile Include="buMarble\MarbleToolChangeType.cs" />
+    <Compile Include="buMarble\MarbleATCType.cs" />
+    <Compile Include="buMarble\MarbleMaterialMeasureType.cs" />
+    <Compile Include="buMarble\clsAppMarble.cs" />
+    <Compile Include="buMarble\baslerCamcs.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleVideoPlayer.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleCalculators.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleGantryMove.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleKinematic.cs" />
+    <Compile Include="buMarble\Forms\F_MarblePartZero.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleMDIV2.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleTechnicianList.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleToolCurrentAllV2.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleIOConfig.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleToolSawTypes.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleUserList.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleMDIV1.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleJogs.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleInfoList.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleMotorWarmUp.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleMaterialMeasurement.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleParkList.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleMachineInstall.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleG54List.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleToolListTab.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleToolList.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleToolCurrentAll.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleMachineSettingsV2.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleMachineSettingsV1.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleCameraSettings.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleStartOptions.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleToolTypes.cs" />
+    <Compile Include="buMarble\Forms\F_MarbleWagonSettings.cs" />
+    <Compile Include="_000E\_0001.cs" />
+    <Compile Include="_000E\_0002.cs" />
+    <Compile Include="_000E\_0003.cs" />
+    <Compile Include="_0008\_0001.cs" />
+    <Compile Include="_0007\_0001.cs" />
+    <Compile Include="_0003\_0001.cs" />
+    <Compile Include="_0001\_0002.cs" />
+    <Compile Include="_0001\_0001.cs" />
+    <Compile Include="_0001\_0003.cs" />
+    <Compile Include="_0001\_0004.cs" />
+    <Compile Include="_0005\_0003.cs" />
+    <Compile Include="_0005\_0001.cs" />
+    <Compile Include="_0005\_0002.cs" />
+    <Compile Include="dummy_ptr\{57420d5b-5352-4cdc-a7c9-c2f32411cb5f}.cs" />
+    <Compile Include="_0006\_0001.cs" />
+    <Compile Include="_0006\_0002.cs" />
+    <Compile Include="_0006\_0003.cs" />
+    <Compile Include="_0006\_0004.cs" />
+    <Compile Include="_0006\_0005.cs" />
+    <Compile Include="_0002\_0001.cs" />
+    <Compile Include="_0002\_0002.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleCalculators.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleCameraSettings.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleG54List.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleGantryMove.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleInfoList.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleIOConfig.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleJogs.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleKinematic.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleMachineInstall.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleMachineSettingsV1.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleMachineSettingsV2.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleMaterialMeasurement.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleMDIV1.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleMDIV2.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleMotorWarmUp.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleParkList.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarblePartZero.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleStartOptions.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleTechnicianList.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleToolCurrentAll.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleToolCurrentAllV2.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleToolList.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleToolListTab.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleToolSawTypes.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleToolTypes.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleUserList.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleVideoPlayer.resx" />
+    <EmbeddedResource Include="buMarble\Forms\F_MarbleWagonSettings.resx" />
+    <EmbeddedResource Include="buMarble\Properties\Resources.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

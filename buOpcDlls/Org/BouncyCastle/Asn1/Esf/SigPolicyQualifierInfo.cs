@@ -1,0 +1,56 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Org.BouncyCastle.Asn1.Esf.SigPolicyQualifierInfo
+// Assembly: buOpcDlls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 560E3953-6FA5-4F4F-B03A-B91ECF3CFE07
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buOpcDlls.dll
+
+using Org.BouncyCastle.Utilities;
+using System;
+
+#nullable disable
+namespace Org.BouncyCastle.Asn1.Esf;
+
+public class SigPolicyQualifierInfo : Asn1Encodable
+{
+  private readonly DerObjectIdentifier sigPolicyQualifierId;
+  private readonly Asn1Object sigQualifier;
+
+  public static SigPolicyQualifierInfo GetInstance(object obj)
+  {
+    switch (obj)
+    {
+      case null:
+      case SigPolicyQualifierInfo _:
+        return (SigPolicyQualifierInfo) obj;
+      case Asn1Sequence _:
+        return new SigPolicyQualifierInfo((Asn1Sequence) obj);
+      default:
+        throw new ArgumentException("Unknown object in 'SigPolicyQualifierInfo' factory: " + Platform.GetTypeName(obj), nameof (obj));
+    }
+  }
+
+  private SigPolicyQualifierInfo(Asn1Sequence seq)
+  {
+    if (seq == null)
+      throw new ArgumentNullException(nameof (seq));
+    this.sigPolicyQualifierId = seq.Count == 2 ? (DerObjectIdentifier) seq[0].ToAsn1Object() : throw new ArgumentException("Bad sequence size: " + seq.Count.ToString(), nameof (seq));
+    this.sigQualifier = seq[1].ToAsn1Object();
+  }
+
+  public SigPolicyQualifierInfo(
+    DerObjectIdentifier sigPolicyQualifierId,
+    Asn1Encodable sigQualifier)
+  {
+    this.sigPolicyQualifierId = sigPolicyQualifierId;
+    this.sigQualifier = sigQualifier.ToAsn1Object();
+  }
+
+  public DerObjectIdentifier SigPolicyQualifierId => this.sigPolicyQualifierId;
+
+  public Asn1Object SigQualifier => this.sigQualifier;
+
+  public override Asn1Object ToAsn1Object()
+  {
+    return (Asn1Object) new DerSequence((Asn1Encodable) this.sigPolicyQualifierId, (Asn1Encodable) this.sigQualifier);
+  }
+}

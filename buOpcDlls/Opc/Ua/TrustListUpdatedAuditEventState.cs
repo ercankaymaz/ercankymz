@@ -1,0 +1,41 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Opc.Ua.TrustListUpdatedAuditEventState
+// Assembly: buOpcDlls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 560E3953-6FA5-4F4F-B03A-B91ECF3CFE07
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buOpcDlls.dll
+
+using System.CodeDom.Compiler;
+using System.Runtime.InteropServices;
+
+#nullable disable
+namespace Opc.Ua;
+
+[GeneratedCode("Opc.Ua.ModelCompiler", "1.0.0.0")]
+[ComVisible(true)]
+public class TrustListUpdatedAuditEventState(NodeState parent) : AuditUpdateMethodEventState(parent)
+{
+  private const string InitializationString = "//////////8EYIACAQAAAAAAJgAAAFRydXN0TGlzdFVwZGF0ZWRBdWRpdEV2ZW50VHlwZUluc3RhbmNlAQARMQEAETERMQAA/////w8AAAAVYIkKAgAAAAAABwAAAEV2ZW50SWQBABIxAC4ARBIxAAAAD/////8BAf////8AAAAAFWCJCgIAAAAAAAkAAABFdmVudFR5cGUBABMxAC4ARBMxAAAAEf////8BAf////8AAAAAFWCJCgIAAAAAAAoAAABTb3VyY2VOb2RlAQAUMQAuAEQUMQAAABH/////AQH/////AAAAABVgiQoCAAAAAAAKAAAAU291cmNlTmFtZQEAFTEALgBEFTEAAAAM/////wEB/////wAAAAAVYIkKAgAAAAAABAAAAFRpbWUBABYxAC4ARBYxAAABACYB/////wEB/////wAAAAAVYIkKAgAAAAAACwAAAFJlY2VpdmVUaW1lAQAXMQAuAEQXMQAAAQAmAf////8BAf////8AAAAAFWCJCgIAAAAAAAcAAABNZXNzYWdlAQAZMQAuAEQZMQAAABX/////AQH/////AAAAABVgiQoCAAAAAAAIAAAAU2V2ZXJpdHkBABoxAC4ARBoxAAAABf////8BAf////8AAAAAFWCJCgIAAAAAAA8AAABBY3Rpb25UaW1lU3RhbXABABsxAC4ARBsxAAABACYB/////wEB/////wAAAAAVYIkKAgAAAAAABgAAAFN0YXR1cwEAHDEALgBEHDEAAAAB/////wEB/////wAAAAAVYIkKAgAAAAAACAAAAFNlcnZlcklkAQAdMQAuAEQdMQAAAAz/////AQH/////AAAAABVgiQoCAAAAAAASAAAAQ2xpZW50QXVkaXRFbnRyeUlkAQAeMQAuAEQeMQAAAAz/////AQH/////AAAAABVgiQoCAAAAAAAMAAAAQ2xpZW50VXNlcklkAQAfMQAuAEQfMQAAAAz/////AQH/////AAAAABVgiQoCAAAAAAAIAAAATWV0aG9kSWQBACAxAC4ARCAxAAAAEf////8BAf////8AAAAAF2CJCgIAAAAAAA4AAABJbnB1dEFyZ3VtZW50cwEAITEALgBEITEAAAAYAQAAAAEAAAAAAAAAAQH/////AAAAAA==";
+
+  protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris)
+  {
+    return NodeId.Create((object) 12561U, "http://opcfoundation.org/UA/", namespaceUris);
+  }
+
+  protected override void Initialize(ISystemContext context)
+  {
+    base.Initialize(context);
+    this.Initialize(context, "//////////8EYIACAQAAAAAAJgAAAFRydXN0TGlzdFVwZGF0ZWRBdWRpdEV2ZW50VHlwZUluc3RhbmNlAQARMQEAETERMQAA/////w8AAAAVYIkKAgAAAAAABwAAAEV2ZW50SWQBABIxAC4ARBIxAAAAD/////8BAf////8AAAAAFWCJCgIAAAAAAAkAAABFdmVudFR5cGUBABMxAC4ARBMxAAAAEf////8BAf////8AAAAAFWCJCgIAAAAAAAoAAABTb3VyY2VOb2RlAQAUMQAuAEQUMQAAABH/////AQH/////AAAAABVgiQoCAAAAAAAKAAAAU291cmNlTmFtZQEAFTEALgBEFTEAAAAM/////wEB/////wAAAAAVYIkKAgAAAAAABAAAAFRpbWUBABYxAC4ARBYxAAABACYB/////wEB/////wAAAAAVYIkKAgAAAAAACwAAAFJlY2VpdmVUaW1lAQAXMQAuAEQXMQAAAQAmAf////8BAf////8AAAAAFWCJCgIAAAAAAAcAAABNZXNzYWdlAQAZMQAuAEQZMQAAABX/////AQH/////AAAAABVgiQoCAAAAAAAIAAAAU2V2ZXJpdHkBABoxAC4ARBoxAAAABf////8BAf////8AAAAAFWCJCgIAAAAAAA8AAABBY3Rpb25UaW1lU3RhbXABABsxAC4ARBsxAAABACYB/////wEB/////wAAAAAVYIkKAgAAAAAABgAAAFN0YXR1cwEAHDEALgBEHDEAAAAB/////wEB/////wAAAAAVYIkKAgAAAAAACAAAAFNlcnZlcklkAQAdMQAuAEQdMQAAAAz/////AQH/////AAAAABVgiQoCAAAAAAASAAAAQ2xpZW50QXVkaXRFbnRyeUlkAQAeMQAuAEQeMQAAAAz/////AQH/////AAAAABVgiQoCAAAAAAAMAAAAQ2xpZW50VXNlcklkAQAfMQAuAEQfMQAAAAz/////AQH/////AAAAABVgiQoCAAAAAAAIAAAATWV0aG9kSWQBACAxAC4ARCAxAAAAEf////8BAf////8AAAAAF2CJCgIAAAAAAA4AAABJbnB1dEFyZ3VtZW50cwEAITEALgBEITEAAAAYAQAAAAEAAAAAAAAAAQH/////AAAAAA==");
+    this.InitializeOptionalChildren(context);
+  }
+
+  protected override void Initialize(ISystemContext context, NodeState source)
+  {
+    this.InitializeOptionalChildren(context);
+    base.Initialize(context, source);
+  }
+
+  protected override void InitializeOptionalChildren(ISystemContext context)
+  {
+    base.InitializeOptionalChildren(context);
+  }
+}

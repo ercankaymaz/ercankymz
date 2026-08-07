@@ -1,0 +1,124 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: CmdLanguage.API.preSentences_Class
+// Assembly: CmdLangAPI, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: DDC57675-BB9D-4653-8FAD-2A25490EEE99
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\CmdLangAPI.dll
+
+#nullable disable
+namespace CmdLanguage.API;
+
+public class preSentences_Class
+{
+  public string AreYouSureToLoadOperationFileWithSettings = nameof (AreYouSureToLoadOperationFileWithSettings);
+  public string CheckYourParameter = nameof (CheckYourParameter);
+  public string CollisionAvailable = nameof (CollisionAvailable);
+  public string CreateCode = nameof (CreateCode);
+  public string CustomerClassNotReady = nameof (CustomerClassNotReady);
+  public string CutTolerance = nameof (CutTolerance);
+  public string DefineBreakPoint = nameof (DefineBreakPoint);
+  public string DefineCenterPoint = nameof (DefineCenterPoint);
+  public string DefineCopyPoint = nameof (DefineCopyPoint);
+  public string DefineExtendPoint = nameof (DefineExtendPoint);
+  public string DefineFirstPoint = nameof (DefineFirstPoint);
+  public string DefineLastPoint = nameof (DefineLastPoint);
+  public string DefineMirrorPoint = nameof (DefineMirrorPoint);
+  public string DefineMovePoint = nameof (DefineMovePoint);
+  public string DefineNextPoint = nameof (DefineNextPoint);
+  public string DefineOffsetPoint = nameof (DefineOffsetPoint);
+  public string DefineOutsidePoint = nameof (DefineOutsidePoint);
+  public string DefinePoint = nameof (DefinePoint);
+  public string DefineReferancePoint = nameof (DefineReferancePoint);
+  public string DefineRotatePoint = nameof (DefineRotatePoint);
+  public string DefineScalePoint = nameof (DefineScalePoint);
+  public string DefineSecondPoint = nameof (DefineSecondPoint);
+  public string DefineThirdPoint = nameof (DefineThirdPoint);
+  public string DefineTrimPoint = nameof (DefineTrimPoint);
+  public string DoYouWantToActivateTool = nameof (DoYouWantToActivateTool);
+  public string DoYouWanttoCallDefaultValues = nameof (DoYouWanttoCallDefaultValues);
+  public string DoYouWantToChange = nameof (DoYouWantToChange);
+  public string DoYouWanttoClosePC = nameof (DoYouWanttoClosePC);
+  public string DoYouWantToContinue = nameof (DoYouWantToContinue);
+  public string DoYouWantToCreateCode = nameof (DoYouWantToCreateCode);
+  public string DoYouWantToDelete = nameof (DoYouWantToDelete);
+  public string DoYouWanttoDeleteAllDimension = nameof (DoYouWanttoDeleteAllDimension);
+  public string DoYouWanttoDeleteDepth = nameof (DoYouWanttoDeleteDepth);
+  public string DoYouWanttoDeleteDimension = nameof (DoYouWanttoDeleteDimension);
+  public string DoYouWantToDeleteTool = nameof (DoYouWantToDeleteTool);
+  public string DoYouWantToDisableLimit = nameof (DoYouWantToDisableLimit);
+  public string DoYouWantToGoPosition = nameof (DoYouWantToGoPosition);
+  public string DoYouWantToGoToolZeroPosition = nameof (DoYouWantToGoToolZeroPosition);
+  public string DoYouWantToMakeToolZero = nameof (DoYouWantToMakeToolZero);
+  public string DoYouWantToMeasureTool = nameof (DoYouWantToMeasureTool);
+  public string DoYouWantToReadIOParameter = nameof (DoYouWantToReadIOParameter);
+  public string DoYouWantToResetPosition = nameof (DoYouWantToResetPosition);
+  public string DoYouWantToRestoreFromBackup = nameof (DoYouWantToRestoreFromBackup);
+  public string DoYouWantToSaveIOConfigration = nameof (DoYouWantToSaveIOConfigration);
+  public string DoYouWantToSetG54Position = nameof (DoYouWantToSetG54Position);
+  public string DoYouWantToSetPosition = nameof (DoYouWantToSetPosition);
+  public string DoYouWantToStart = nameof (DoYouWantToStart);
+  public string DoyouWantToTurnDefaultValues = nameof (DoyouWantToTurnDefaultValues);
+  public string FileCreated = nameof (FileCreated);
+  public string FileDecoderError = nameof (FileDecoderError);
+  public string FileOpenError = nameof (FileOpenError);
+  public string FileSaveError = nameof (FileSaveError);
+  public string GettingImageFromCamera = nameof (GettingImageFromCamera);
+  public string HelpMe = "Help Me";
+  public string ImageCapturedFromCamera = nameof (ImageCapturedFromCamera);
+  public string ImageIsNull = nameof (ImageIsNull);
+  public string JobIsNotAvailable = nameof (JobIsNotAvailable);
+  public string LanguageFileMissing = nameof (LanguageFileMissing);
+  public string LevelIsNotEnough = nameof (LevelIsNotEnough);
+  public string MachineAxesCalibrationNotFinished = nameof (MachineAxesCalibrationNotFinished);
+  public string MachineKinamaticCalibrationNotFinished = nameof (MachineKinamaticCalibrationNotFinished);
+  public string MachineLimitCalibrationNotFinished = nameof (MachineLimitCalibrationNotFinished);
+  public string MachinePositionCalibrationNotFinished = nameof (MachinePositionCalibrationNotFinished);
+  public string MachineSpeedCalibrationNotFinished = nameof (MachineSpeedCalibrationNotFinished);
+  public string MAchineSpindleCalibrationNotFinished = nameof (MAchineSpindleCalibrationNotFinished);
+  public string MaterialThicknessIsZero = nameof (MaterialThicknessIsZero);
+  public string MaterialThicknessTooHigh = nameof (MaterialThicknessTooHigh);
+  public string MaterialThicknessTooLow = nameof (MaterialThicknessTooLow);
+  public string MaxMaterialMeasurementDifferenceisHigherthenLimit = nameof (MaxMaterialMeasurementDifferenceisHigherthenLimit);
+  public string NoDefaultParameterAvailable = nameof (NoDefaultParameterAvailable);
+  public string NoInformatonAvailable = nameof (NoInformatonAvailable);
+  public string NoOperationAvailableInJob = nameof (NoOperationAvailableInJob);
+  public string NoPageOpened = nameof (NoPageOpened);
+  public string NotAvailableDemoMode = nameof (NotAvailableDemoMode);
+  public string NoToolpathAvailable = nameof (NoToolpathAvailable);
+  public string NoWireframeLibraryCharsAvailable = nameof (NoWireframeLibraryCharsAvailable);
+  public string OperationCatchPart = nameof (OperationCatchPart);
+  public string OperationHasSomeErrorYouCantStartThisJob = nameof (OperationHasSomeErrorYouCantStartThisJob);
+  public string OperationHasSomeWarnigsDoYouWanttoContinue = nameof (OperationHasSomeWarnigsDoYouWanttoContinue);
+  public string OperationOnthePart = nameof (OperationOnthePart);
+  public string OperationOutofMachineLimit = nameof (OperationOutofMachineLimit);
+  public string OperationOutofMaterial = nameof (OperationOutofMaterial);
+  public string OperationToolIsNotInToolList = nameof (OperationToolIsNotInToolList);
+  public string ParameterFileMissing = nameof (ParameterFileMissing);
+  public string ParameterReadDone = nameof (ParameterReadDone);
+  public string PasswordFileMissing = nameof (PasswordFileMissing);
+  public string PasswordLevelNotEnough = nameof (PasswordLevelNotEnough);
+  public string ProgramInputOutputAddressLoadFailure = nameof (ProgramInputOutputAddressLoadFailure);
+  public string ProgramParameterLoadFailure = nameof (ProgramParameterLoadFailure);
+  public string RegenDeviation = nameof (RegenDeviation);
+  public string SavedOperationToolNotAvailableInRecentToolList = nameof (SavedOperationToolNotAvailableInRecentToolList);
+  public string SelectEntities = nameof (SelectEntities);
+  public string SelectEntity = nameof (SelectEntity);
+  public string SelectFirstEntity = nameof (SelectFirstEntity);
+  public string SelectSecondEntity = nameof (SelectSecondEntity);
+  public string SimuationStepisZero = nameof (SimuationStepisZero);
+  public string SpindleSpeedIsZero = nameof (SpindleSpeedIsZero);
+  public string SpindleSpeedLowerThenMinLimit = nameof (SpindleSpeedLowerThenMinLimit);
+  public string StopAtWaitCommand = nameof (StopAtWaitCommand);
+  public string TappingPitchNotSuitable = nameof (TappingPitchNotSuitable);
+  public string ThisFunctionIsNotAvailable = nameof (ThisFunctionIsNotAvailable);
+  public string ThisMouseConfigrationIsNotPossible = nameof (ThisMouseConfigrationIsNotPossible);
+  public string ThisOperationAlreadyAvailable = nameof (ThisOperationAlreadyAvailable);
+  public string ThisToolIsNotSuitableForThisOperation = nameof (ThisToolIsNotSuitableForThisOperation);
+  public string ToolDiameterGreaterForThisOperation = nameof (ToolDiameterGreaterForThisOperation);
+  public string ToolDiameterLowerForThisOperation = nameof (ToolDiameterLowerForThisOperation);
+  public string ToolDiameterNotSuitableForThisOperation = nameof (ToolDiameterNotSuitableForThisOperation);
+  public string ToolMustBeDrill = nameof (ToolMustBeDrill);
+  public string ToolMustBeMilling = nameof (ToolMustBeMilling);
+  public string ToolMustBeTapping = nameof (ToolMustBeTapping);
+  public string ToolsAreMissing = nameof (ToolsAreMissing);
+  public string YourLicensiIsNotCoverThisFunction = nameof (YourLicensiIsNotCoverThisFunction);
+}

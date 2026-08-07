@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buMW.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4BBE8D13-8CF4-4ACE-A07C-04533A6EF2DF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>buMW</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <ApplicationVersion>5.1.1.1</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="buClass" />
+    <Reference Include="buControls" />
+    <Reference Include="buCore" />
+    <Reference Include="buEyeBase">
+      <HintPath>lib\buEyeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="buImages">
+      <HintPath>lib\buImages.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>lib\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="mwEntities">
+      <HintPath>lib\mwEntities.dll</HintPath>
+    </Reference>
+    <Reference Include="mwInterop">
+      <HintPath>lib\mwInterop.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SmartAssembly\HouseOfCards\MemberRefsProxy.cs" />
+    <Compile Include="SmartAssembly\HouseOfCards\Strings.cs" />
+    <Compile Include="SmartAssembly\Delegates\GetString.cs" />
+    <Compile Include="_000E\_0001.cs" />
+    <Compile Include="_0004\_0001.cs" />
+    <Compile Include="_0004\_0002.cs" />
+    <Compile Include="_0008\_0001.cs" />
+    <Compile Include="_0008\_0002.cs" />
+    <Compile Include="_0008\_0003.cs" />
+    <Compile Include="_0008\_0004.cs" />
+    <Compile Include="_0008\_0005.cs" />
+    <Compile Include="_0007\_0001.cs" />
+    <Compile Include="_0003\_0002.cs" />
+    <Compile Include="_0003\_0003.cs" />
+    <Compile Include="_0003\_0001.cs" />
+    <Compile Include="_0003\_0004.cs" />
+    <Compile Include="_0001\_0001.cs" />
+    <Compile Include="_0005\_0002.cs" />
+    <Compile Include="_0005\_0001.cs" />
+    <Compile Include="dummy_ptr\{01c5025a-fde4-4e00-b769-b9fa1b8169f4}.cs" />
+    <Compile Include="_0006\_0001.cs" />
+    <Compile Include="_0006\_0002.cs" />
+    <Compile Include="_0002\_0001.cs" />
+    <Compile Include="_0002\_0002.cs" />
+    <Compile Include="_0002\_0003.cs" />
+    <Compile Include="buMW\buMWCalcs.cs" />
+    <Compile Include="buMW\MWParameters.cs" />
+    <Compile Include="buMW\buCamCalcSettings.cs" />
+    <Compile Include="buMW\buCamCalcRuntimeSettings.cs" />
+    <Compile Include="buMW\buMWCaptions.cs" />
+    <Compile Include="buMW\buMWCurveEntities.cs" />
+    <Compile Include="buMW\buMWUpdateHandler.cs" />
+    <Compile Include="buMW\MWCalculationResult.cs" />
+    <Compile Include="buMW\MWIterationOption.cs" />
+    <Compile Include="buMW\MWDataOrjOkHandler.cs" />
+    <Compile Include="buMW\MWCalculationResultHandler.cs" />
+    <Compile Include="buMW\MWCalculationUpdateHandler.cs" />
+    <Compile Include="buMW\MWCalculationResultEventArg.cs" />
+    <Compile Include="buMW\ModuleWorksMeshData.cs" />
+    <Compile Include="buMW\mwTriangleMeshBasedTpCalcParamsPattern.cs" />
+    <Compile Include="buMW\AbsRenderr.cs" />
+    <Compile Include="buMW\buMwCutSim.cs" />
+    <Compile Include="buMW\Variables\buMWDiamalerVars.cs" />
+    <Compile Include="buMW\Variables\buMWJewelVars.cs" />
+    <Compile Include="buMW\Variables\buMWLaserRouterVars.cs" />
+    <Compile Include="buMW\Variables\buMWQuiltingVars.cs" />
+    <Compile Include="buMW\Variables\buMWRoboticVars.cs" />
+    <Compile Include="buMW\Variables\buMWTuftingVars.cs" />
+    <Compile Include="buMW\Variables\buMWProfileVars.cs" />
+    <Compile Include="buMW\Variables\buMWDrillVars.cs" />
+    <Compile Include="buMW\Variables\buMWFoamVars.cs" />
+    <Compile Include="buMW\Variables\buMWCutterVars.cs" />
+    <Compile Include="buMW\Variables\buMWMarbleVars.cs" />
+    <Compile Include="buMW\Variables\buMWPrinter3DVars.cs" />
+    <Compile Include="buMW\Variables\buMWWoodVars.cs" />
+    <Compile Include="buMW\Variables\buMWDoorVars.cs" />
+    <Compile Include="buMW\Variables\buMWRouter3XVars.cs" />
+    <Compile Include="buMW\Forms\Form1.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMHeights.cs" />
+    <Compile Include="buMW\Forms\F_MwGaugeAdvancedSettings.cs" />
+    <Compile Include="buMW\Forms\F_MwGaugeClearanceForTool.cs" />
+    <Compile Include="buMW\Forms\F_MwGaugeItemAdvanced.cs" />
+    <Compile Include="buMW\Forms\F_MwGaugeCheck.cs" />
+    <Compile Include="buMW\Forms\F_MwGaugeRemainCollsion.cs" />
+    <Compile Include="buMW\Forms\F_MwTriM2dContainment.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMAngleRange.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMDepthAdvanced.cs" />
+    <Compile Include="buMW\Forms\F_MWTriMDynamicalHolderColl.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMFixtureCurves.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMFlatland.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMMirror.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMOffset.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMConstantZ.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMProjectCurves.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMProjectCurStd.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMRestFinish.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMRetract.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMRotate.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMRoughLink.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMParalelCutLink.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMRestRough.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMParallelCut.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMRough.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMRoundCorner.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMSilhouette.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMSpiralAdvanced.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMSurfaceQuality.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMUpDownAdvanced.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMUtility.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMPencil.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMConstantCusp.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMRoughing.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMRoughingAdvanced.cs" />
+    <Compile Include="buMW\Forms\F_MwTriMStockDef.cs" />
+    <Compile Include="buMW\CamForms\F_FeedAdvanced.cs" />
+    <Compile Include="buMW\CamForms\F_ExtendTrim.cs" />
+    <Compile Include="buMW\CamForms\F_SharpCorner.cs" />
+    <Compile Include="buMW\CamForms\F_Tabs.cs" />
+    <Compile Include="buMW\CamForms\F_FeedZone.cs" />
+    <Compile Include="buMW\CamForms\F_Fixtures.cs" />
+    <Compile Include="buMW\CamForms\F_Filtering.cs" />
+    <Compile Include="buMW\CamForms\F_ProfilePass.cs" />
+    <Compile Include="buMW\CamForms\F_RestRough.cs" />
+    <Compile Include="buMW\CamForms\F_Silhouette.cs" />
+    <Compile Include="buMW\CamForms\F_RoundCorner.cs" />
+    <Compile Include="buMW\CamForms\F_CuttingMethodAdvanced.cs" />
+    <Compile Include="buMW\CamForms\F_MultiPass.cs" />
+    <Compile Include="buMW\CamForms\F_HeightAdvanced.cs" />
+    <Compile Include="buMW\CamForms\F_AngleRange.cs" />
+    <Compile Include="buMW\CamForms\F_2DContainment.cs" />
+    <Compile Include="buMW\CamForms\F_RestFinish.cs" />
+    <Compile Include="buMW\CamForms\F_DrillLine.cs" />
+    <Compile Include="buMW\CamForms\F_TriMeshConstantZ.cs" />
+    <Compile Include="buMW\CamForms\F_TriMeshParallelCut.cs" />
+    <Compile Include="buMW\CamForms\F_TriMeshRough.cs" />
+    <Compile Include="buMW\CamForms\F_RoughLink.cs" />
+    <Compile Include="buMW\CamForms\F_WFScan.cs" />
+    <Compile Include="buMW\CamForms\F_WFSpin.cs" />
+    <Compile Include="buMW\CamForms\F_WFContour4AX.cs" />
+    <Compile Include="buMW\CamForms\F_WFRough.cs" />
+    <Compile Include="buMW\CamForms\F_WFContour.cs" />
+    <Compile Include="buMW\CamForms\F_DepthStepAdvanced.cs" />
+    <Compile Include="buMW\CamForms\F_LeadControl.cs" />
+    <Compile Include="buMW\CamForms\F_SurfaceQuality.cs" />
+    <Compile Include="buMW\CamForms\F_Height.cs" />
+    <Compile Include="buMW\CamForms\F_ContourLink.cs" />
+    <Compile Include="buMW\CamForms\F_RoughingAdvanced.cs" />
+    <Compile Include="buMW\CamForms\F_Roughing.cs" />
+    <Compile Include="buMW\CamForms\F_StockDef.cs" />
+    <Compile Include="_0011\_0001.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="buMW\CamForms\F_2DContainment.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_AngleRange.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_ContourLink.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_CuttingMethodAdvanced.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_DepthStepAdvanced.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_DrillLine.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_ExtendTrim.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_FeedAdvanced.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_FeedZone.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_Filtering.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_Fixtures.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_Height.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_HeightAdvanced.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_LeadControl.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_MultiPass.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_ProfilePass.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_RestFinish.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_RestRough.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_Roughing.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_RoughingAdvanced.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_RoughLink.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_RoundCorner.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_SharpCorner.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_Silhouette.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_StockDef.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_SurfaceQuality.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_Tabs.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_TriMeshConstantZ.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_TriMeshParallelCut.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_TriMeshRough.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_WFContour.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_WFContour4AX.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_WFRough.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_WFScan.resx" />
+    <EmbeddedResource Include="buMW\CamForms\F_WFSpin.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwGaugeAdvancedSettings.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwGaugeCheck.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwGaugeClearanceForTool.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwGaugeItemAdvanced.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwGaugeRemainCollsion.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriM2dContainment.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMAngleRange.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMConstantCusp.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMConstantZ.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMDepthAdvanced.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MWTriMDynamicalHolderColl.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMFixtureCurves.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMFlatland.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMHeights.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMMirror.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMOffset.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMParalelCutLink.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMParallelCut.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMPencil.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMProjectCurStd.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMProjectCurves.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMRestFinish.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMRestRough.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMRetract.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMRotate.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMRough.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMRoughing.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMRoughingAdvanced.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMRoughLink.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMRoundCorner.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMSilhouette.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMSpiralAdvanced.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMStockDef.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMSurfaceQuality.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMUpDownAdvanced.resx" />
+    <EmbeddedResource Include="buMW\Forms\F_MwTriMUtility.resx" />
+    <EmbeddedResource Include="buMW\Forms\Form1.resx" />
+    <EmbeddedResource Include="buMW\Properties\Resources.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

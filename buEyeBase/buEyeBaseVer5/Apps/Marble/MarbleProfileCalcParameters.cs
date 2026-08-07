@@ -1,0 +1,33 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: buEyeBaseVer5.Apps.Marble.MarbleProfileCalcParameters
+// Assembly: buEyeBase, Version=5.1.1.1, Culture=neutral, PublicKeyToken=null
+// MVID: B5B7A040-6595-420F-97D2-D0DA226BD1F1
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buEyeBase.dll
+
+using System;
+
+#nullable disable
+namespace buEyeBaseVer5.Apps.Marble;
+
+[Serializable]
+public class MarbleProfileCalcParameters
+{
+  public bool OffsetCutEdges;
+  public double CurveToSurfaceResolution;
+  public bool MaxToMinDirection;
+  public bool MoveSafeDistanceForFinishZigzagMode;
+  public bool MoveSafeDistanceForRoughZigzagMode;
+  public bool CutProfileStart;
+  public bool CutProfileEnd;
+  public bool ChamferCutStart;
+  public bool ChamferCutEnd;
+  public double CutProfileDepthStep;
+  public bool VerticalCut;
+
+  public abstract void m001FDA();
+
+  static MarbleProfileCalcParameters()
+  {
+    // ISSUE: unable to decompile the method.
+  }
+}

@@ -1,0 +1,20 @@
+
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMDMarbleCNC", "CMDMarbleCNC.csproj", "{2B33DF17-C5C2-4C16-A019-50F350FBAEA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B33DF17-C5C2-4C16-A019-50F350FBAEA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B33DF17-C5C2-4C16-A019-50F350FBAEA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B33DF17-C5C2-4C16-A019-50F350FBAEA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B33DF17-C5C2-4C16-A019-50F350FBAEA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

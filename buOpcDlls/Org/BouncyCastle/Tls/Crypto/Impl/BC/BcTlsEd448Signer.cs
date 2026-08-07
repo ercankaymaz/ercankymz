@@ -1,0 +1,25 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Org.BouncyCastle.Tls.Crypto.Impl.BC.BcTlsEd448Signer
+// Assembly: buOpcDlls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 560E3953-6FA5-4F4F-B03A-B91ECF3CFE07
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buOpcDlls.dll
+
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Crypto.Signers;
+using System;
+
+#nullable disable
+namespace Org.BouncyCastle.Tls.Crypto.Impl.BC;
+
+public class BcTlsEd448Signer(BcTlsCrypto crypto, Ed448PrivateKeyParameters privateKey) : BcTlsSigner(crypto, (AsymmetricKeyParameter) privateKey)
+{
+  public override TlsStreamSigner GetStreamSigner(SignatureAndHashAlgorithm algorithm)
+  {
+    if (algorithm == null || SignatureScheme.From(algorithm) != 2056)
+      throw new InvalidOperationException("Invalid algorithm: " + algorithm?.ToString());
+    Ed448Signer ed448Signer = new Ed448Signer(TlsUtilities.EmptyBytes);
+    ed448Signer.Init(true, (ICipherParameters) this.m_privateKey);
+    return (TlsStreamSigner) new BcTlsStreamSigner((ISigner) ed448Signer);
+  }
+}

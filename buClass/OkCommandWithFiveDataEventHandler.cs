@@ -1,0 +1,15 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: buClass.OkCommandWithFiveDataEventHandler
+// Assembly: buClass, Version=5.1.1.6, Culture=neutral, PublicKeyToken=null
+// MVID: BF06766D-B74F-405A-BD20-8E95A229023C
+// Assembly location: C:\Users\ERCAN\Desktop\CMDMarbleCNC\buClass.dll
+
+#nullable disable
+namespace buClass;
+
+public delegate void OkCommandWithFiveDataEventHandler(
+  object Data1,
+  object Data2,
+  object Data3,
+  object Data4,
+  object Data5);

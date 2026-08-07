@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buMotion.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A81E40AC-D190-4404-BE55-1DD65FEA092E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>buMotion</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <ApplicationVersion>5.1.1.1</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CmdLangAPI">
+      <HintPath>lib\CmdLangAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="buClass" />
+    <Reference Include="buComm">
+      <HintPath>lib\buComm.dll</HintPath>
+    </Reference>
+    <Reference Include="buControls" />
+    <Reference Include="buCore" />
+    <Reference Include="buOpcDlls">
+      <HintPath>lib\buOpcDlls.dll</HintPath>
+    </Reference>
+    <Reference Include="buOpcUA">
+      <HintPath>lib\buOpcUA.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="_0004\_0001.cs" />
+    <Compile Include="_0007\_0003.cs" />
+    <Compile Include="_0007\_0001.cs" />
+    <Compile Include="_0007\_0002.cs" />
+    <Compile Include="_0003\_0001.cs" />
+    <Compile Include="_0003\_0002.cs" />
+    <Compile Include="_0003\_0003.cs" />
+    <Compile Include="_0001\_0001.cs" />
+    <Compile Include="_0001\_0002.cs" />
+    <Compile Include="_0005\_0001.cs" />
+    <Compile Include="dummy_ptr\{5b810e90-7eb5-4669-ba2d-9395d6969d67}.cs" />
+    <Compile Include="_0006\_0001.cs" />
+    <Compile Include="_0002\_0001.cs" />
+    <Compile Include="_0002\_0002.cs" />
+    <Compile Include="buMotion\CodesysMachine.cs" />
+    <Compile Include="buMotion\buMotionCommands.cs" />
+    <Compile Include="buMotion\DefaultParameter.cs" />
+    <Compile Include="buMotion\ReadAxisDataBits.cs" />
+    <Compile Include="buMotion\typeMinMaxXYZ.cs" />
+    <Compile Include="buMotion\preBoolVars.cs" />
+    <Compile Include="buMotion\miscVars.cs" />
+    <Compile Include="buMotion\AlarmActionSettings.cs" />
+    <Compile Include="buMotion\AxesGroupIndex.cs" />
+    <Compile Include="buMotion\AxesGroupChar.cs" />
+    <Compile Include="buMotion\buMotionLangDefination.cs" />
+    <Compile Include="buMotion\buMotionStatusLang.cs" />
+    <Compile Include="buMotion\buMotionWarningLang.cs" />
+    <Compile Include="buMotion\buMotionErrorLang.cs" />
+    <Compile Include="buMotion\buMotionAxisErrorLang.cs" />
+    <Compile Include="buMotion\buMotionAxisWarningLang.cs" />
+    <Compile Include="buMotion\buMotionMessageLang.cs" />
+    <Compile Include="buMotion\buMotionItems.cs" />
+    <Compile Include="buMotion\buMotionMisc.cs" />
+    <Compile Include="buMotion\buMotionLogVer5.cs" />
+    <Compile Include="buMotion\buMotionColors.cs" />
+    <Compile Include="buMotion\TechnicianLoginInfo.cs" />
+    <Compile Include="buMotion\TechnicianType.cs" />
+    <Compile Include="buMotion\AlarmWarningActionType.cs" />
+    <Compile Include="dummy\{56fc5920-42aa-4763-aea8-0b90299a10fe}.cs" />
+    <Compile Include="dummy\{f14a130e-1c2d-46eb-b38e-07132e27e5c1}.cs" />
+    <Compile Include="dummy\{aa881e59-3060-4386-93b1-b9c68909f386}.cs" />
+    <Compile Include="dummy\{311f060b-8bd8-406a-b022-4c6f4f9e3e4b}.cs" />
+    <Compile Include="dummy\{9bb92da2-7e94-46df-bd07-83d8a2c95b14}.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

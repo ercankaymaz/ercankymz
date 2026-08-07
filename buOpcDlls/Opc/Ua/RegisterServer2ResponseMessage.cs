@@ -1,0 +1,35 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Opc.Ua.RegisterServer2ResponseMessage
+// Assembly: buOpcDlls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 560E3953-6FA5-4F4F-B03A-B91ECF3CFE07
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buOpcDlls.dll
+
+using System.CodeDom.Compiler;
+using System.Runtime.InteropServices;
+
+#nullable disable
+namespace Opc.Ua;
+
+[GeneratedCode("Opc.Ua.ModelCompiler", "1.0.0.0")]
+[ComVisible(true)]
+public class RegisterServer2ResponseMessage
+{
+  public RegisterServer2Response RegisterServer2Response;
+
+  public RegisterServer2ResponseMessage()
+  {
+  }
+
+  public RegisterServer2ResponseMessage(RegisterServer2Response RegisterServer2Response)
+  {
+    this.RegisterServer2Response = RegisterServer2Response;
+  }
+
+  public RegisterServer2ResponseMessage(ServiceFault ServiceFault)
+  {
+    this.RegisterServer2Response = new RegisterServer2Response();
+    if (ServiceFault == null)
+      return;
+    this.RegisterServer2Response.ResponseHeader = ServiceFault.ResponseHeader;
+  }
+}

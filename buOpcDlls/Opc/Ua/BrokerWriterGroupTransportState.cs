@@ -1,0 +1,138 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Opc.Ua.BrokerWriterGroupTransportState
+// Assembly: buOpcDlls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 560E3953-6FA5-4F4F-B03A-B91ECF3CFE07
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buOpcDlls.dll
+
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+#nullable disable
+namespace Opc.Ua;
+
+[GeneratedCode("Opc.Ua.ModelCompiler", "1.0.0.0")]
+[ComVisible(true)]
+public class BrokerWriterGroupTransportState(NodeState parent) : WriterGroupTransportState(parent)
+{
+  private const string InitializationString = "//////////8EYIACAQAAAAAAJgAAAEJyb2tlcldyaXRlckdyb3VwVHJhbnNwb3J0VHlwZUluc3RhbmNlAQCQUgEAkFKQUgAA/////wQAAAAVYIkKAgAAAAAACQAAAFF1ZXVlTmFtZQEAkVIALgBEkVIAAAAM/////wEB/////wAAAAAVYIkKAgAAAAAACwAAAFJlc291cmNlVXJpAQCOOwAuAESOOwAAAAz/////AQH/////AAAAABVgiQoCAAAAAAAYAAAAQXV0aGVudGljYXRpb25Qcm9maWxlVXJpAQCPOwAuAESPOwAAAAz/////AQH/////AAAAABVgiQoCAAAAAAAaAAAAUmVxdWVzdGVkRGVsaXZlcnlHdWFyYW50ZWUBAJE7AC4ARJE7AAABAKA6/////wEB/////wAAAAA=";
+  private PropertyState<string> m_queueName;
+  private PropertyState<string> m_resourceUri;
+  private PropertyState<string> m_authenticationProfileUri;
+  private PropertyState<BrokerTransportQualityOfService> m_requestedDeliveryGuarantee;
+
+  protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris)
+  {
+    return NodeId.Create((object) 21136U, "http://opcfoundation.org/UA/", namespaceUris);
+  }
+
+  protected override void Initialize(ISystemContext context)
+  {
+    base.Initialize(context);
+    this.Initialize(context, "//////////8EYIACAQAAAAAAJgAAAEJyb2tlcldyaXRlckdyb3VwVHJhbnNwb3J0VHlwZUluc3RhbmNlAQCQUgEAkFKQUgAA/////wQAAAAVYIkKAgAAAAAACQAAAFF1ZXVlTmFtZQEAkVIALgBEkVIAAAAM/////wEB/////wAAAAAVYIkKAgAAAAAACwAAAFJlc291cmNlVXJpAQCOOwAuAESOOwAAAAz/////AQH/////AAAAABVgiQoCAAAAAAAYAAAAQXV0aGVudGljYXRpb25Qcm9maWxlVXJpAQCPOwAuAESPOwAAAAz/////AQH/////AAAAABVgiQoCAAAAAAAaAAAAUmVxdWVzdGVkRGVsaXZlcnlHdWFyYW50ZWUBAJE7AC4ARJE7AAABAKA6/////wEB/////wAAAAA=");
+    this.InitializeOptionalChildren(context);
+  }
+
+  protected override void Initialize(ISystemContext context, NodeState source)
+  {
+    this.InitializeOptionalChildren(context);
+    base.Initialize(context, source);
+  }
+
+  protected override void InitializeOptionalChildren(ISystemContext context)
+  {
+    base.InitializeOptionalChildren(context);
+  }
+
+  public PropertyState<string> QueueName
+  {
+    get => this.m_queueName;
+    set
+    {
+      if (this.m_queueName != value)
+        this.ChangeMasks |= NodeStateChangeMasks.Children;
+      this.m_queueName = value;
+    }
+  }
+
+  public PropertyState<string> ResourceUri
+  {
+    get => this.m_resourceUri;
+    set
+    {
+      if (this.m_resourceUri != value)
+        this.ChangeMasks |= NodeStateChangeMasks.Children;
+      this.m_resourceUri = value;
+    }
+  }
+
+  public PropertyState<string> AuthenticationProfileUri
+  {
+    get => this.m_authenticationProfileUri;
+    set
+    {
+      if (this.m_authenticationProfileUri != value)
+        this.ChangeMasks |= NodeStateChangeMasks.Children;
+      this.m_authenticationProfileUri = value;
+    }
+  }
+
+  public PropertyState<BrokerTransportQualityOfService> RequestedDeliveryGuarantee
+  {
+    get => this.m_requestedDeliveryGuarantee;
+    set
+    {
+      if (this.m_requestedDeliveryGuarantee != value)
+        this.ChangeMasks |= NodeStateChangeMasks.Children;
+      this.m_requestedDeliveryGuarantee = value;
+    }
+  }
+
+  public override void GetChildren(ISystemContext context, IList<BaseInstanceState> children)
+  {
+    if (this.m_queueName != null)
+      children.Add((BaseInstanceState) this.m_queueName);
+    if (this.m_resourceUri != null)
+      children.Add((BaseInstanceState) this.m_resourceUri);
+    if (this.m_authenticationProfileUri != null)
+      children.Add((BaseInstanceState) this.m_authenticationProfileUri);
+    if (this.m_requestedDeliveryGuarantee != null)
+      children.Add((BaseInstanceState) this.m_requestedDeliveryGuarantee);
+    base.GetChildren(context, children);
+  }
+
+  protected override BaseInstanceState FindChild(
+    ISystemContext context,
+    QualifiedName browseName,
+    bool createOrReplace,
+    BaseInstanceState replacement)
+  {
+    if (QualifiedName.IsNull(browseName))
+      return (BaseInstanceState) null;
+    BaseInstanceState baseInstanceState = (BaseInstanceState) null;
+    switch (browseName.Name)
+    {
+      case "QueueName":
+        if (createOrReplace && this.QueueName == null)
+          this.QueueName = replacement != null ? (PropertyState<string>) replacement : new PropertyState<string>((NodeState) this);
+        baseInstanceState = (BaseInstanceState) this.QueueName;
+        break;
+      case "ResourceUri":
+        if (createOrReplace && this.ResourceUri == null)
+          this.ResourceUri = replacement != null ? (PropertyState<string>) replacement : new PropertyState<string>((NodeState) this);
+        baseInstanceState = (BaseInstanceState) this.ResourceUri;
+        break;
+      case "AuthenticationProfileUri":
+        if (createOrReplace && this.AuthenticationProfileUri == null)
+          this.AuthenticationProfileUri = replacement != null ? (PropertyState<string>) replacement : new PropertyState<string>((NodeState) this);
+        baseInstanceState = (BaseInstanceState) this.AuthenticationProfileUri;
+        break;
+      case "RequestedDeliveryGuarantee":
+        if (createOrReplace && this.RequestedDeliveryGuarantee == null)
+          this.RequestedDeliveryGuarantee = replacement != null ? (PropertyState<BrokerTransportQualityOfService>) replacement : new PropertyState<BrokerTransportQualityOfService>((NodeState) this);
+        baseInstanceState = (BaseInstanceState) this.RequestedDeliveryGuarantee;
+        break;
+    }
+    return baseInstanceState ?? base.FindChild(context, browseName, createOrReplace, replacement);
+  }
+}

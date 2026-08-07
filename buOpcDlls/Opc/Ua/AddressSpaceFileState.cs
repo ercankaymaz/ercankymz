@@ -1,0 +1,83 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Opc.Ua.AddressSpaceFileState
+// Assembly: buOpcDlls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 560E3953-6FA5-4F4F-B03A-B91ECF3CFE07
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buOpcDlls.dll
+
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+#nullable disable
+namespace Opc.Ua;
+
+[GeneratedCode("Opc.Ua.ModelCompiler", "1.0.0.0")]
+[ComVisible(true)]
+public class AddressSpaceFileState(NodeState parent) : FileState(parent)
+{
+  private const string ExportNamespace_InitializationString = "//////////8EYYIKBAAAAAAADwAAAEV4cG9ydE5hbWVzcGFjZQEAXy0ALwEAXy1fLQAAAQH/////AAAAAA==";
+  private const string InitializationString = "//////////8EYIACAQAAAAAAHAAAAEFkZHJlc3NTcGFjZUZpbGVUeXBlSW5zdGFuY2UBAEstAQBLLUstAAD/////CwAAABVgiQoCAAAAAAAEAAAAU2l6ZQEATC0ALgBETC0AAAAJ/////wEB/////wAAAAAVYIkKAgAAAAAACAAAAFdyaXRhYmxlAQCQMQAuAESQMQAAAAH/////AQH/////AAAAABVgiQoCAAAAAAAMAAAAVXNlcldyaXRhYmxlAQCRMQAuAESRMQAAAAH/////AQH/////AAAAABVgiQoCAAAAAAAJAAAAT3BlbkNvdW50AQBPLQAuAERPLQAAAAX/////AQH/////AAAAAARhggoEAAAAAAAEAAAAT3BlbgEAUC0ALwEAPC1QLQAAAQH/////AgAAABdgqQoCAAAAAAAOAAAASW5wdXRBcmd1bWVudHMBAFEtAC4ARFEtAACWAQAAAAEAKgEBEwAAAAQAAABNb2RlAAP/////AAAAAAABACgBAQAAAAEAAAAAAAAAAQH/////AAAAABdgqQoCAAAAAAAPAAAAT3V0cHV0QXJndW1lbnRzAQBSLQAuAERSLQAAlgEAAAABACoBARkAAAAKAAAARmlsZUhhbmRsZQAH/////wAAAAAAAQAoAQEAAAABAAAAAAAAAAEB/////wAAAAAEYYIKBAAAAAAABQAAAENsb3NlAQBTLQAvAQA/LVMtAAABAf////8BAAAAF2CpCgIAAAAAAA4AAABJbnB1dEFyZ3VtZW50cwEAVC0ALgBEVC0AAJYBAAAAAQAqAQEZAAAACgAAAEZpbGVIYW5kbGUAB/////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAABGGCCgQAAAAAAAQAAABSZWFkAQBVLQAvAQBBLVUtAAABAf////8CAAAAF2CpCgIAAAAAAA4AAABJbnB1dEFyZ3VtZW50cwEAVi0ALgBEVi0AAJYCAAAAAQAqAQEZAAAACgAAAEZpbGVIYW5kbGUAB/////8AAAAAAAEAKgEBFQAAAAYAAABMZW5ndGgABv////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAAF2CpCgIAAAAAAA8AAABPdXRwdXRBcmd1bWVudHMBAFctAC4ARFctAACWAQAAAAEAKgEBEwAAAAQAAABEYXRhAA//////AAAAAAABACgBAQAAAAEAAAAAAAAAAQH/////AAAAAARhggoEAAAAAAAFAAAAV3JpdGUBAFgtAC8BAEQtWC0AAAEB/////wEAAAAXYKkKAgAAAAAADgAAAElucHV0QXJndW1lbnRzAQBZLQAuAERZLQAAlgIAAAABACoBARkAAAAKAAAARmlsZUhhbmRsZQAH/////wAAAAAAAQAqAQETAAAABAAAAERhdGEAD/////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAABGGCCgQAAAAAAAsAAABHZXRQb3NpdGlvbgEAWi0ALwEARi1aLQAAAQH/////AgAAABdgqQoCAAAAAAAOAAAASW5wdXRBcmd1bWVudHMBAFstAC4ARFstAACWAQAAAAEAKgEBGQAAAAoAAABGaWxlSGFuZGxlAAf/////AAAAAAABACgBAQAAAAEAAAAAAAAAAQH/////AAAAABdgqQoCAAAAAAAPAAAAT3V0cHV0QXJndW1lbnRzAQBcLQAuAERcLQAAlgEAAAABACoBARcAAAAIAAAAUG9zaXRpb24ACf////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAABGGCCgQAAAAAAAsAAABTZXRQb3NpdGlvbgEAXS0ALwEASS1dLQAAAQH/////AQAAABdgqQoCAAAAAAAOAAAASW5wdXRBcmd1bWVudHMBAF4tAC4ARF4tAACWAgAAAAEAKgEBGQAAAAoAAABGaWxlSGFuZGxlAAf/////AAAAAAABACoBARcAAAAIAAAAUG9zaXRpb24ACf////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAABGGCCgQAAAAAAA8AAABFeHBvcnROYW1lc3BhY2UBAF8tAC8BAF8tXy0AAAEB/////wAAAAA=";
+  private MethodState m_exportNamespaceMethod;
+
+  protected override NodeId GetDefaultTypeDefinitionId(NamespaceTable namespaceUris)
+  {
+    return NodeId.Create((object) 11595U, "http://opcfoundation.org/UA/", namespaceUris);
+  }
+
+  protected override void Initialize(ISystemContext context)
+  {
+    base.Initialize(context);
+    this.Initialize(context, "//////////8EYIACAQAAAAAAHAAAAEFkZHJlc3NTcGFjZUZpbGVUeXBlSW5zdGFuY2UBAEstAQBLLUstAAD/////CwAAABVgiQoCAAAAAAAEAAAAU2l6ZQEATC0ALgBETC0AAAAJ/////wEB/////wAAAAAVYIkKAgAAAAAACAAAAFdyaXRhYmxlAQCQMQAuAESQMQAAAAH/////AQH/////AAAAABVgiQoCAAAAAAAMAAAAVXNlcldyaXRhYmxlAQCRMQAuAESRMQAAAAH/////AQH/////AAAAABVgiQoCAAAAAAAJAAAAT3BlbkNvdW50AQBPLQAuAERPLQAAAAX/////AQH/////AAAAAARhggoEAAAAAAAEAAAAT3BlbgEAUC0ALwEAPC1QLQAAAQH/////AgAAABdgqQoCAAAAAAAOAAAASW5wdXRBcmd1bWVudHMBAFEtAC4ARFEtAACWAQAAAAEAKgEBEwAAAAQAAABNb2RlAAP/////AAAAAAABACgBAQAAAAEAAAAAAAAAAQH/////AAAAABdgqQoCAAAAAAAPAAAAT3V0cHV0QXJndW1lbnRzAQBSLQAuAERSLQAAlgEAAAABACoBARkAAAAKAAAARmlsZUhhbmRsZQAH/////wAAAAAAAQAoAQEAAAABAAAAAAAAAAEB/////wAAAAAEYYIKBAAAAAAABQAAAENsb3NlAQBTLQAvAQA/LVMtAAABAf////8BAAAAF2CpCgIAAAAAAA4AAABJbnB1dEFyZ3VtZW50cwEAVC0ALgBEVC0AAJYBAAAAAQAqAQEZAAAACgAAAEZpbGVIYW5kbGUAB/////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAABGGCCgQAAAAAAAQAAABSZWFkAQBVLQAvAQBBLVUtAAABAf////8CAAAAF2CpCgIAAAAAAA4AAABJbnB1dEFyZ3VtZW50cwEAVi0ALgBEVi0AAJYCAAAAAQAqAQEZAAAACgAAAEZpbGVIYW5kbGUAB/////8AAAAAAAEAKgEBFQAAAAYAAABMZW5ndGgABv////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAAF2CpCgIAAAAAAA8AAABPdXRwdXRBcmd1bWVudHMBAFctAC4ARFctAACWAQAAAAEAKgEBEwAAAAQAAABEYXRhAA//////AAAAAAABACgBAQAAAAEAAAAAAAAAAQH/////AAAAAARhggoEAAAAAAAFAAAAV3JpdGUBAFgtAC8BAEQtWC0AAAEB/////wEAAAAXYKkKAgAAAAAADgAAAElucHV0QXJndW1lbnRzAQBZLQAuAERZLQAAlgIAAAABACoBARkAAAAKAAAARmlsZUhhbmRsZQAH/////wAAAAAAAQAqAQETAAAABAAAAERhdGEAD/////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAABGGCCgQAAAAAAAsAAABHZXRQb3NpdGlvbgEAWi0ALwEARi1aLQAAAQH/////AgAAABdgqQoCAAAAAAAOAAAASW5wdXRBcmd1bWVudHMBAFstAC4ARFstAACWAQAAAAEAKgEBGQAAAAoAAABGaWxlSGFuZGxlAAf/////AAAAAAABACgBAQAAAAEAAAAAAAAAAQH/////AAAAABdgqQoCAAAAAAAPAAAAT3V0cHV0QXJndW1lbnRzAQBcLQAuAERcLQAAlgEAAAABACoBARcAAAAIAAAAUG9zaXRpb24ACf////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAABGGCCgQAAAAAAAsAAABTZXRQb3NpdGlvbgEAXS0ALwEASS1dLQAAAQH/////AQAAABdgqQoCAAAAAAAOAAAASW5wdXRBcmd1bWVudHMBAF4tAC4ARF4tAACWAgAAAAEAKgEBGQAAAAoAAABGaWxlSGFuZGxlAAf/////AAAAAAABACoBARcAAAAIAAAAUG9zaXRpb24ACf////8AAAAAAAEAKAEBAAAAAQAAAAAAAAABAf////8AAAAABGGCCgQAAAAAAA8AAABFeHBvcnROYW1lc3BhY2UBAF8tAC8BAF8tXy0AAAEB/////wAAAAA=");
+    this.InitializeOptionalChildren(context);
+  }
+
+  protected override void Initialize(ISystemContext context, NodeState source)
+  {
+    this.InitializeOptionalChildren(context);
+    base.Initialize(context, source);
+  }
+
+  protected override void InitializeOptionalChildren(ISystemContext context)
+  {
+    base.InitializeOptionalChildren(context);
+    if (this.ExportNamespace == null)
+      return;
+    this.ExportNamespace.Initialize(context, "//////////8EYYIKBAAAAAAADwAAAEV4cG9ydE5hbWVzcGFjZQEAXy0ALwEAXy1fLQAAAQH/////AAAAAA==");
+  }
+
+  public MethodState ExportNamespace
+  {
+    get => this.m_exportNamespaceMethod;
+    set
+    {
+      if (this.m_exportNamespaceMethod != value)
+        this.ChangeMasks |= NodeStateChangeMasks.Children;
+      this.m_exportNamespaceMethod = value;
+    }
+  }
+
+  public override void GetChildren(ISystemContext context, IList<BaseInstanceState> children)
+  {
+    if (this.m_exportNamespaceMethod != null)
+      children.Add((BaseInstanceState) this.m_exportNamespaceMethod);
+    base.GetChildren(context, children);
+  }
+
+  protected override BaseInstanceState FindChild(
+    ISystemContext context,
+    QualifiedName browseName,
+    bool createOrReplace,
+    BaseInstanceState replacement)
+  {
+    if (QualifiedName.IsNull(browseName))
+      return (BaseInstanceState) null;
+    BaseInstanceState baseInstanceState = (BaseInstanceState) null;
+    if (browseName.Name == "ExportNamespace")
+    {
+      if (createOrReplace && this.ExportNamespace == null)
+        this.ExportNamespace = replacement != null ? (MethodState) replacement : new MethodState((NodeState) this);
+      baseInstanceState = (BaseInstanceState) this.ExportNamespace;
+    }
+    return baseInstanceState ?? base.FindChild(context, browseName, createOrReplace, replacement);
+  }
+}

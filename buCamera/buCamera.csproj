@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\ERCAN\Desktop\CMDMarbleCNC\Camera\Canon\buCamera.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F75047B7-0462-4134-9CE5-A334B5C89479}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>buCamera</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>buCamera</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accord.Video">
+      <HintPath>lib\Accord.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Video.DirectShow">
+      <HintPath>lib\Accord.Video.DirectShow.dll</HintPath>
+    </Reference>
+    <Reference Include="Basler.Pylon">
+      <HintPath>lib\Basler.Pylon.dll</HintPath>
+    </Reference>
+    <Reference Include="CameraControl">
+      <HintPath>lib\CameraControl.dll</HintPath>
+    </Reference>
+    <Reference Include="GenApiDotNet40_v3_4">
+      <HintPath>lib\GenApiDotNet40_v3_4.dll</HintPath>
+    </Reference>
+    <Reference Include="GxIAPINET">
+      <HintPath>lib\GxIAPINET.dll</HintPath>
+    </Reference>
+    <Reference Include="MvCameraControl.Net">
+      <HintPath>lib\MvCameraControl.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="StApiDotNet40_v1_2">
+      <HintPath>lib\StApiDotNet40_v1_2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Text.Json" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="StPictureBox.cs" />
+    <Compile Include="CImageData.cs" />
+    <Compile Include="Webcam.cs" />
+    <Compile Include="OmronCamera.cs" />
+    <Compile Include="GenCam.cs" />
+    <Compile Include="DahengCamera.cs" />
+    <Compile Include="CanonCCAPI.cs" />
+    <Compile Include="CanonCamera.cs" />
+    <Compile Include="CanonSDK.cs" />
+    <Compile Include="BaslerCamera.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="StPictureBox\StPictureBox.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

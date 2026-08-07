@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\CmdLangAPI.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6BADFB47-E1E5-4B27-B543-93D96114AE5C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>CmdLangAPI</AssemblyName>
+    <ApplicationVersion>0.0.0.0</ApplicationVersion>
+    <RootNamespace>CmdLanguage.API</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LanguageDatabase.cs" />
+    <Compile Include="LanguageItem.cs" />
+    <Compile Include="CryptoManager.cs" />
+    <Compile Include="preCaption_Class.cs" />
+    <Compile Include="preCaptionFoam_Class.cs" />
+    <Compile Include="preCaptionMarble_Class.cs" />
+    <Compile Include="preCaptionProfile_Class.cs" />
+    <Compile Include="preChar_Class.cs" />
+    <Compile Include="preDef_Class.cs" />
+    <Compile Include="preHelp_Class.cs" />
+    <Compile Include="preHelpFoam_Class.cs" />
+    <Compile Include="preHelpMarble_Class.cs" />
+    <Compile Include="preHelpProfile_Class.cs" />
+    <Compile Include="preMotionAxisError_Class.cs" />
+    <Compile Include="preMotionAxisWarning_Class.cs" />
+    <Compile Include="preMotionError_Class.cs" />
+    <Compile Include="preMotionMessage_Class.cs" />
+    <Compile Include="preMotionStatus_Class.cs" />
+    <Compile Include="preMotionWarning_Class.cs" />
+    <Compile Include="preSentenceFoam_Class.cs" />
+    <Compile Include="preSentences_Class.cs" />
+    <Compile Include="preSentencesMarble_Class.cs" />
+    <Compile Include="preSentencesNesting_Class.cs" />
+    <Compile Include="preSentencesProfile_Class.cs" />
+    <Compile Include="buLangTranslate.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

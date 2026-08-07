@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buPowerNest.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{940284B6-671C-4194-BE18-E0D8F96A7FC9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>buPowerNest</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <ApplicationVersion>5.1.1.1</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SmartAssembly\HouseOfCards\MemberRefsProxy.cs" />
+    <Compile Include="SmartAssembly\HouseOfCards\Strings.cs" />
+    <Compile Include="SmartAssembly\Delegates\GetString.cs" />
+    <Compile Include="_0004\_0001.cs" />
+    <Compile Include="_0004\_0002.cs" />
+    <Compile Include="_0008\_0001.cs" />
+    <Compile Include="_0007\_0001.cs" />
+    <Compile Include="_0007\_0002.cs" />
+    <Compile Include="_0007\_0003.cs" />
+    <Compile Include="_0007\_0004.cs" />
+    <Compile Include="_0003\_0001.cs" />
+    <Compile Include="_0001\_0002.cs" />
+    <Compile Include="_0001\_0003.cs" />
+    <Compile Include="_0001\_0001.cs" />
+    <Compile Include="_0001\_0004.cs" />
+    <Compile Include="_0001\_0005.cs" />
+    <Compile Include="_0005\_0003.cs" />
+    <Compile Include="_0005\_0001.cs" />
+    <Compile Include="_0005\_0002.cs" />
+    <Compile Include="dummy_ptr\{0fff6f10-6f09-4330-aa4f-33130487e5b3}.cs" />
+    <Compile Include="PowerNest2Cs\CommonCutType.cs" />
+    <Compile Include="PowerNest2Cs\CommonCutClusterConstraint.cs" />
+    <Compile Include="PowerNest2Cs\PreNestedGlueMode.cs" />
+    <Compile Include="PowerNest2Cs\ErrorCode.cs" />
+    <Compile Include="PowerNest2Cs\DirectionType.cs" />
+    <Compile Include="PowerNest2Cs\Point.cs" />
+    <Compile Include="PowerNest2Cs\Wrappable.cs" />
+    <Compile Include="PowerNest2Cs\Shape.cs" />
+    <Compile Include="PowerNest2Cs\Orientation.cs" />
+    <Compile Include="PowerNest2Cs\Session.cs" />
+    <Compile Include="PowerNest2Cs\Part.cs" />
+    <Compile Include="PowerNest2Cs\Sheet.cs" />
+    <Compile Include="PowerNest2Cs\Result.cs" />
+    <Compile Include="PowerNest2Cs\MultiResult.cs" />
+    <Compile Include="PowerNest2Cs\Contour.cs" />
+    <Compile Include="PowerNest2Cs\IUserData.cs" />
+    <Compile Include="PowerNest2Cs\MultiUpdateBest.cs" />
+    <Compile Include="PowerNest2Cs\UpdateBest.cs" />
+    <Compile Include="PowerNest2Cs\StopNesting.cs" />
+    <Compile Include="PowerNest2Cs\PowerNest2.cs" />
+    <Compile Include="PowerNest2Cs\Side.cs" />
+    <Compile Include="Opaline2Cs\LicenseType.cs" />
+    <Compile Include="Opaline2Cs\OptimizationStatus.cs" />
+    <Compile Include="Opaline2Cs\Direction.cs" />
+    <Compile Include="Opaline2Cs\NodeType.cs" />
+    <Compile Include="Opaline2Cs\Wrappable.cs" />
+    <Compile Include="Opaline2Cs\Session.cs" />
+    <Compile Include="Opaline2Cs\Block.cs" />
+    <Compile Include="Opaline2Cs\Part.cs" />
+    <Compile Include="Opaline2Cs\OpalineModule.cs" />
+    <Compile Include="Opaline2Cs\Node.cs" />
+    <Compile Include="Opaline2Cs\Rectangles.cs" />
+    <Compile Include="Opaline2Cs\UpdateFunction.cs" />
+    <Compile Include="Opaline2Cs\Opaline.cs" />
+    <Compile Include="_0006\_0001.cs" />
+    <Compile Include="_0002\_0001.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

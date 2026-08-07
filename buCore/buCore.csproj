@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\Users\ERCAN\Desktop\CMDMarbleCNC\buCore.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F8EA4D0C-53F8-417E-94C7-42C2E40672B0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>buCore</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <ApplicationVersion>5.1.1.3</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ImageProcessor">
+      <HintPath>lib\ImageProcessor.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="buClass">
+      <HintPath>lib\buClass.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Poly2Tri\P2T.cs" />
+    <Compile Include="Poly2Tri\Utility\FixedArray3`1.cs" />
+    <Compile Include="Poly2Tri\Utility\MathUtil.cs" />
+    <Compile Include="Poly2Tri\Utility\Point2D.cs" />
+    <Compile Include="Poly2Tri\Utility\Point2DList.cs" />
+    <Compile Include="Poly2Tri\Utility\Rect2D.cs" />
+    <Compile Include="Poly2Tri\Triangulation\ITriangulatable.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Orientation.cs" />
+    <Compile Include="Poly2Tri\Triangulation\TriangulationAlgorithm.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Edge.cs" />
+    <Compile Include="Poly2Tri\Triangulation\TriangulationConstraint.cs" />
+    <Compile Include="Poly2Tri\Triangulation\TriangulationContext.cs" />
+    <Compile Include="Poly2Tri\Triangulation\TriangulationDebugContext.cs" />
+    <Compile Include="Poly2Tri\Triangulation\TriangulationMode.cs" />
+    <Compile Include="Poly2Tri\Triangulation\TriangulationPoint.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Util\PointGenerator.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Util\PolygonGenerator.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Util\TriangulationUtil.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Sets\ConstrainedPointSet.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Sets\PointSet.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Polygon\Contour.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Polygon\Polygon.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Polygon\PolygonPoint.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Polygon\PolygonUtil.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Polygon\EdgeIntersectInfo.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Polygon\SplitComplexPolygonNode.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Polygon\PolygonOperationContext.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\DelaunayTriangle.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\AdvancingFront.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\AdvancingFrontNode.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\DTSweep.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\DTSweepBasin.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\DTSweepConstraint.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\DTSweepContext.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\DTSweepDebugContext.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\DTSweepEdgeEvent.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\DTSweepPointComparator.cs" />
+    <Compile Include="Poly2Tri\Triangulation\Delaunay\Sweep\PointOnEdgeException.cs" />
+    <Compile Include="buPop3\Pop3\AuthenticationMethod.cs" />
+    <Compile Include="buPop3\Pop3\Disposable.cs" />
+    <Compile Include="buPop3\Pop3\Pop3Client.cs" />
+    <Compile Include="buPop3\Pop3\Exceptions\InvalidLoginException.cs" />
+    <Compile Include="buPop3\Pop3\Exceptions\PopClientException.cs" />
+    <Compile Include="buPop3\Pop3\Exceptions\InvalidUseException.cs" />
+    <Compile Include="buPop3\Pop3\Exceptions\LoginDelayException.cs" />
+    <Compile Include="buPop3\Pop3\Exceptions\PopServerException.cs" />
+    <Compile Include="buPop3\Pop3\Exceptions\PopServerLockedException.cs" />
+    <Compile Include="buPop3\Pop3\Exceptions\PopServerNotAvailableException.cs" />
+    <Compile Include="buPop3\Pop3\Exceptions\PopServerNotFoundException.cs" />
+    <Compile Include="buPop3\Mime\Message.cs" />
+    <Compile Include="buPop3\Mime\MessagePart.cs" />
+    <Compile Include="buPop3\Mime\Traverse\AnswerMessageTraverser`1.cs" />
+    <Compile Include="buPop3\Mime\Traverse\IAnswerMessageTraverser`1.cs" />
+    <Compile Include="buPop3\Mime\Traverse\MultipleMessagePartFinder.cs" />
+    <Compile Include="buPop3\Mime\Traverse\IQuestionAnswerMessageTraverser`2.cs" />
+    <Compile Include="buPop3\Mime\Header\ContentTransferEncoding.cs" />
+    <Compile Include="buPop3\Mime\Header\MessageHeader.cs" />
+    <Compile Include="buPop3\Mime\Header\Received.cs" />
+    <Compile Include="buPop3\Mime\Header\RfcMailAddress.cs" />
+    <Compile Include="buPop3\Mime\Decode\EncodingFinder.cs" />
+    <Compile Include="buPop3\Common\Logging\DefaultLogger.cs" />
+    <Compile Include="buPop3\Common\Logging\DiagnosticsLogger.cs" />
+    <Compile Include="buPop3\Common\Logging\ILog.cs" />
+    <Compile Include="buPop3\Common\Logging\FileLogger.cs" />
+    <Compile Include="buCore\buAppCalc.cs" />
+    <Compile Include="buCore\buCamCalc.cs" />
+    <Compile Include="buCore\LanguagesCams.cs" />
+    <Compile Include="buCore\buCommon.cs" />
+    <Compile Include="buCore\buCompare.cs" />
+    <Compile Include="buCore\buConversion.cs" />
+    <Compile Include="buCore\buFile.cs" />
+    <Compile Include="buCore\buGCode.cs" />
+    <Compile Include="buCore\buGeneral.cs" />
+    <Compile Include="buCore\buImage.cs" />
+    <Compile Include="buCore\LockBitmap.cs" />
+    <Compile Include="buCore\CMYK.cs" />
+    <Compile Include="buCore\FIP.cs" />
+    <Compile Include="buCore\buImageProcessor.cs" />
+    <Compile Include="buCore\buKinematic.cs" />
+    <Compile Include="buCore\buMatrix.cs" />
+    <Compile Include="buCore\buNet.cs" />
+    <Compile Include="buCore\buNumeric.cs" />
+    <Compile Include="buCore\buSort.cs" />
+    <Compile Include="buCore\buString.cs" />
+    <Compile Include="buCore\buVector.cs" />
+    <Compile Include="buCore\buClipperLib\DoublePoint.cs" />
+    <Compile Include="buCore\buClipperLib\PolyTree.cs" />
+    <Compile Include="buCore\buClipperLib\PolyNode.cs" />
+    <Compile Include="buCore\buClipperLib\IntPoint.cs" />
+    <Compile Include="buCore\buClipperLib\IntRect.cs" />
+    <Compile Include="buCore\buClipperLib\ClipType.cs" />
+    <Compile Include="buCore\buClipperLib\PolyType.cs" />
+    <Compile Include="buCore\buClipperLib\PolyFillType.cs" />
+    <Compile Include="buCore\buClipperLib\JoinType.cs" />
+    <Compile Include="buCore\buClipperLib\EndType.cs" />
+    <Compile Include="buCore\buClipperLib\IntersectNode.cs" />
+    <Compile Include="buCore\buClipperLib\MyIntersectNodeSort.cs" />
+    <Compile Include="buCore\buClipperLib\buClipperBase.cs" />
+    <Compile Include="buCore\buClipperLib\buClipper.cs" />
+    <Compile Include="buCore\buClipperLib\ClipperOffset.cs" />
+    <Compile Include="buCore\AppCalc\buJewelCalc.cs" />
+    <Compile Include="buCore\AppCalc\buMarbleCalc.cs" />
+    <Compile Include="SmartAssembly\HouseOfCards\MemberRefsProxy.cs" />
+    <Compile Include="SmartAssembly\HouseOfCards\Strings.cs" />
+    <Compile Include="SmartAssembly\Delegates\GetString.cs" />
+    <Compile Include="ns0\Class4.cs" />
+    <Compile Include="ns0\Class11.cs" />
+    <Compile Include="ns0\Class13.cs" />
+    <Compile Include="ns0\Class16.cs" />
+    <Compile Include="ns0\Struct0.cs" />
+    <Compile Include="ns0\Attribute0.cs" />
+    <Compile Include="ns0\Attribute3.cs" />
+    <Compile Include="ns0\Attribute4.cs" />
+    <Compile Include="ns1\Enum0.cs" />
+    <Compile Include="ns1\Class9.cs" />
+    <Compile Include="ns1\Class28.cs" />
+    <Compile Include="ns1\Class31.cs" />
+    <Compile Include="ns2\Class5.cs" />
+    <Compile Include="ns2\Class25.cs" />
+    <Compile Include="ns3\Class6.cs" />
+    <Compile Include="ns3\Enum3.cs" />
+    <Compile Include="ns3\Class27.cs" />
+    <Compile Include="ns4\Class8.cs" />
+    <Compile Include="ns4\Class7.cs" />
+    <Compile Include="ns5\Class10.cs" />
+    <Compile Include="ns5\Class14.cs" />
+    <Compile Include="ns5\Class19.cs" />
+    <Compile Include="ns5\Attribute2.cs" />
+    <Compile Include="ns6\Class12.cs" />
+    <Compile Include="ns6\Exception0.cs" />
+    <Compile Include="ns6\Class29.cs" />
+    <Compile Include="ns6\Enum5.cs" />
+    <Compile Include="ns7\Class15.cs" />
+    <Compile Include="ns7\Class24.cs" />
+    <Compile Include="ns7\Class30.cs" />
+    <Compile Include="ns7\Attribute1.cs" />
+    <Compile Include="ns7\Class32.cs" />
+    <Compile Include="ns8\Class17.cs" />
+    <Compile Include="ns9\Class18.cs" />
+    <Compile Include="ns9\Class23.cs" />
+    <Compile Include="ns9\Class26.cs" />
+    <Compile Include="ns9\Attribute5.cs" />
+    <Compile Include="ns10\Enum2.cs" />
+    <Compile Include="ns10\Class22.cs" />
+    <Compile Include="ns10\Class34.cs" />
+    <Compile Include="ns11\Attribute6.cs" />
+    <Compile Include="ns11\Class41.cs" />
+    <Compile Include="ns12\Attribute7.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

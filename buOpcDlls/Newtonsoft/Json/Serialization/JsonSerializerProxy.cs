@@ -1,0 +1,257 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Newtonsoft.Json.Serialization.JsonSerializerProxy
+// Assembly: buOpcDlls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 560E3953-6FA5-4F4F-B03A-B91ECF3CFE07
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buOpcDlls.dll
+
+using Newtonsoft.Json.Utilities;
+using System;
+using System.Collections;
+using System.Globalization;
+using System.Runtime.CompilerServices.Newtonsoft.Json;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
+
+#nullable disable
+namespace Newtonsoft.Json.Serialization;
+
+[NullableContext(1)]
+[Nullable(0)]
+internal class JsonSerializerProxy : JsonSerializer
+{
+  [Nullable(2)]
+  private readonly JsonSerializerInternalReader _serializerReader;
+  [Nullable(2)]
+  private readonly JsonSerializerInternalWriter _serializerWriter;
+  internal readonly JsonSerializer _serializer;
+
+  [Nullable(new byte[] {2, 1})]
+  public override event EventHandler<ErrorEventArgs> Error
+  {
+    add => this._serializer.Error += value;
+    remove => this._serializer.Error -= value;
+  }
+
+  [Nullable(2)]
+  public override IReferenceResolver ReferenceResolver
+  {
+    [NullableContext(2)] get => this._serializer.ReferenceResolver;
+    [NullableContext(2)] set => this._serializer.ReferenceResolver = value;
+  }
+
+  [Nullable(2)]
+  public override ITraceWriter TraceWriter
+  {
+    [NullableContext(2)] get => this._serializer.TraceWriter;
+    [NullableContext(2)] set => this._serializer.TraceWriter = value;
+  }
+
+  [Nullable(2)]
+  public override IEqualityComparer EqualityComparer
+  {
+    [NullableContext(2)] get => this._serializer.EqualityComparer;
+    [NullableContext(2)] set => this._serializer.EqualityComparer = value;
+  }
+
+  public override JsonConverterCollection Converters => this._serializer.Converters;
+
+  public override DefaultValueHandling DefaultValueHandling
+  {
+    get => this._serializer.DefaultValueHandling;
+    set => this._serializer.DefaultValueHandling = value;
+  }
+
+  public override IContractResolver ContractResolver
+  {
+    get => this._serializer.ContractResolver;
+    set => this._serializer.ContractResolver = value;
+  }
+
+  public override MissingMemberHandling MissingMemberHandling
+  {
+    get => this._serializer.MissingMemberHandling;
+    set => this._serializer.MissingMemberHandling = value;
+  }
+
+  public override NullValueHandling NullValueHandling
+  {
+    get => this._serializer.NullValueHandling;
+    set => this._serializer.NullValueHandling = value;
+  }
+
+  public override ObjectCreationHandling ObjectCreationHandling
+  {
+    get => this._serializer.ObjectCreationHandling;
+    set => this._serializer.ObjectCreationHandling = value;
+  }
+
+  public override ReferenceLoopHandling ReferenceLoopHandling
+  {
+    get => this._serializer.ReferenceLoopHandling;
+    set => this._serializer.ReferenceLoopHandling = value;
+  }
+
+  public override PreserveReferencesHandling PreserveReferencesHandling
+  {
+    get => this._serializer.PreserveReferencesHandling;
+    set => this._serializer.PreserveReferencesHandling = value;
+  }
+
+  public override TypeNameHandling TypeNameHandling
+  {
+    get => this._serializer.TypeNameHandling;
+    set => this._serializer.TypeNameHandling = value;
+  }
+
+  public override MetadataPropertyHandling MetadataPropertyHandling
+  {
+    get => this._serializer.MetadataPropertyHandling;
+    set => this._serializer.MetadataPropertyHandling = value;
+  }
+
+  [Obsolete("TypeNameAssemblyFormat is obsolete. Use TypeNameAssemblyFormatHandling instead.")]
+  public override FormatterAssemblyStyle TypeNameAssemblyFormat
+  {
+    get => this._serializer.TypeNameAssemblyFormat;
+    set => this._serializer.TypeNameAssemblyFormat = value;
+  }
+
+  public override TypeNameAssemblyFormatHandling TypeNameAssemblyFormatHandling
+  {
+    get => this._serializer.TypeNameAssemblyFormatHandling;
+    set => this._serializer.TypeNameAssemblyFormatHandling = value;
+  }
+
+  public override ConstructorHandling ConstructorHandling
+  {
+    get => this._serializer.ConstructorHandling;
+    set => this._serializer.ConstructorHandling = value;
+  }
+
+  [Obsolete("Binder is obsolete. Use SerializationBinder instead.")]
+  public override System.Runtime.Serialization.SerializationBinder Binder
+  {
+    get => this._serializer.Binder;
+    set => this._serializer.Binder = value;
+  }
+
+  public override ISerializationBinder SerializationBinder
+  {
+    get => this._serializer.SerializationBinder;
+    set => this._serializer.SerializationBinder = value;
+  }
+
+  public override StreamingContext Context
+  {
+    get => this._serializer.Context;
+    set => this._serializer.Context = value;
+  }
+
+  public override Formatting Formatting
+  {
+    get => this._serializer.Formatting;
+    set => this._serializer.Formatting = value;
+  }
+
+  public override DateFormatHandling DateFormatHandling
+  {
+    get => this._serializer.DateFormatHandling;
+    set => this._serializer.DateFormatHandling = value;
+  }
+
+  public override DateTimeZoneHandling DateTimeZoneHandling
+  {
+    get => this._serializer.DateTimeZoneHandling;
+    set => this._serializer.DateTimeZoneHandling = value;
+  }
+
+  public override DateParseHandling DateParseHandling
+  {
+    get => this._serializer.DateParseHandling;
+    set => this._serializer.DateParseHandling = value;
+  }
+
+  public override FloatFormatHandling FloatFormatHandling
+  {
+    get => this._serializer.FloatFormatHandling;
+    set => this._serializer.FloatFormatHandling = value;
+  }
+
+  public override FloatParseHandling FloatParseHandling
+  {
+    get => this._serializer.FloatParseHandling;
+    set => this._serializer.FloatParseHandling = value;
+  }
+
+  public override StringEscapeHandling StringEscapeHandling
+  {
+    get => this._serializer.StringEscapeHandling;
+    set => this._serializer.StringEscapeHandling = value;
+  }
+
+  public override string DateFormatString
+  {
+    get => this._serializer.DateFormatString;
+    set => this._serializer.DateFormatString = value;
+  }
+
+  public override CultureInfo Culture
+  {
+    get => this._serializer.Culture;
+    set => this._serializer.Culture = value;
+  }
+
+  public override int? MaxDepth
+  {
+    get => this._serializer.MaxDepth;
+    set => this._serializer.MaxDepth = value;
+  }
+
+  public override bool CheckAdditionalContent
+  {
+    get => this._serializer.CheckAdditionalContent;
+    set => this._serializer.CheckAdditionalContent = value;
+  }
+
+  internal JsonSerializerInternalBase GetInternalSerializer()
+  {
+    return this._serializerReader != null ? (JsonSerializerInternalBase) this._serializerReader : (JsonSerializerInternalBase) this._serializerWriter;
+  }
+
+  public JsonSerializerProxy(JsonSerializerInternalReader serializerReader)
+  {
+    ValidationUtils.ArgumentNotNull((object) serializerReader, nameof (serializerReader));
+    this._serializerReader = serializerReader;
+    this._serializer = serializerReader.Serializer;
+  }
+
+  public JsonSerializerProxy(JsonSerializerInternalWriter serializerWriter)
+  {
+    ValidationUtils.ArgumentNotNull((object) serializerWriter, nameof (serializerWriter));
+    this._serializerWriter = serializerWriter;
+    this._serializer = serializerWriter.Serializer;
+  }
+
+  [NullableContext(2)]
+  internal override object DeserializeInternal([Nullable(1)] JsonReader reader, Type objectType)
+  {
+    return this._serializerReader != null ? this._serializerReader.Deserialize(reader, objectType, false) : this._serializer.Deserialize(reader, objectType);
+  }
+
+  internal override void PopulateInternal(JsonReader reader, object target)
+  {
+    if (this._serializerReader != null)
+      this._serializerReader.Populate(reader, target);
+    else
+      this._serializer.Populate(reader, target);
+  }
+
+  [NullableContext(2)]
+  internal override void SerializeInternal([Nullable(1)] JsonWriter jsonWriter, object value, Type rootType)
+  {
+    if (this._serializerWriter != null)
+      this._serializerWriter.Serialize(jsonWriter, value, rootType);
+    else
+      this._serializer.Serialize(jsonWriter, value);
+  }
+}

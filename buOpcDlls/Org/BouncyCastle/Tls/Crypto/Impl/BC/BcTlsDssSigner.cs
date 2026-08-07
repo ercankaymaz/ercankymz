@@ -1,0 +1,42 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Org.BouncyCastle.Tls.Crypto.Impl.BC.BcTlsDssSigner
+// Assembly: buOpcDlls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 560E3953-6FA5-4F4F-B03A-B91ECF3CFE07
+// Assembly location: C:\Users\ERCAN\Downloads\de4dot-net48\testTemiz\buOpcDlls.dll
+
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Digests;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Crypto.Signers;
+using System;
+
+#nullable disable
+namespace Org.BouncyCastle.Tls.Crypto.Impl.BC;
+
+public abstract class BcTlsDssSigner(BcTlsCrypto crypto, AsymmetricKeyParameter privateKey) : 
+  BcTlsSigner(crypto, privateKey)
+{
+  protected abstract IDsa CreateDsaImpl(int cryptoHashAlgorithm);
+
+  protected abstract short SignatureAlgorithm { get; }
+
+  public override byte[] GenerateRawSignature(SignatureAndHashAlgorithm algorithm, byte[] hash)
+  {
+    if (algorithm != null && (int) algorithm.Signature != (int) this.SignatureAlgorithm)
+      throw new InvalidOperationException("Invalid algorithm: " + algorithm?.ToString());
+    ISigner signer = (ISigner) new DsaDigestSigner(this.CreateDsaImpl(algorithm == null ? 2 : TlsCryptoUtilities.GetHash(algorithm.Hash)), (IDigest) new NullDigest());
+    signer.Init(true, (ICipherParameters) new ParametersWithRandom((ICipherParameters) this.m_privateKey, this.m_crypto.SecureRandom));
+    if (algorithm == null)
+      signer.BlockUpdate(hash, 16 /*0x10*/, 20);
+    else
+      signer.BlockUpdate(hash, 0, hash.Length);
+    try
+    {
+      return signer.GenerateSignature();
+    }
+    catch (CryptoException ex)
+    {
+      throw new TlsFatalAlert((short) 80 /*0x50*/, (Exception) ex);
+    }
+  }
+}

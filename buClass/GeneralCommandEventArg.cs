@@ -1,0 +1,24 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: buClass.GeneralCommandEventArg
+// Assembly: buClass, Version=5.1.1.6, Culture=neutral, PublicKeyToken=null
+// MVID: BF06766D-B74F-405A-BD20-8E95A229023C
+// Assembly location: C:\Users\ERCAN\Desktop\CMDMarbleCNC\buClass.dll
+
+#nullable disable
+namespace buClass;
+
+public class GeneralCommandEventArg
+{
+  public string strCommand = "";
+  public double valueCommandDouble = 0.0;
+  public int valueCommandInt = 0;
+  public object valueObject = (object) null;
+
+  public GeneralCommandEventArg()
+  {
+  }
+
+  public GeneralCommandEventArg(string strCmd) => this.strCommand = strCmd;
+
+  public override string ToString() => "Cmd : " + this.strCommand.ToString();
+}
