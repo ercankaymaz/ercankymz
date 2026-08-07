@@ -34,7 +34,7 @@ jobs:
       - name: Apply CAD CAM logic fixes
         shell: pwsh
         run: |
-          ./build/Apply-CadCamFixes-v2.ps1
+          ./build/Run-CadCamFixes.ps1
 
       - name: Audit complete application source tree
         shell: pwsh
