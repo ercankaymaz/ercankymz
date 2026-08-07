@@ -8,13 +8,16 @@ $root = Split-Path -Parent $PSScriptRoot
 $logDir = Join-Path $root 'BUILD_LOGS'
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 
-# buClass contains the recovered CAM enums/data types required by buCadCamRes and
-# compiles cleanly after targeted decompiler repairs. buCore and buControls remain
-# the validated original runtime DLLs. Newer UI surface referenced only by the
-# recovered CAD/CAM source is supplied by small source-compatible controls that are
-# compiled into buCadCamRes instead of replacing the working buControls binary.
+# Apply the final calculation/geometric repairs after the earlier decompiler
+# compatibility passes and immediately before compiling the binaries.
+& (Join-Path $PSScriptRoot 'Final-Calculation-Repairs.ps1')
+
+# buControls remains the validated original runtime assembly. buClass, buCore and
+# buCadCamRes are rebuilt because the calculation fixes touch both the core
+# geometry/kinematics and the CAD/CAM application layer.
 $projects = @(
     'buClass/buClass.csproj',
+    'buCore/buCore.csproj',
     'buCadCamRes/buCadCamRes.csproj'
 )
 
@@ -83,8 +86,15 @@ foreach ($relative in $projects) {
 
     if ($relative -eq 'buClass/buClass.csproj') {
         Copy-IfExists 'buClass/bin/Release/buClass.dll' @(
+            'buCore/lib/buClass.dll',
             'buCadCamRes/lib/buClass.dll',
             'CMDMarbleCNC/lib/buClass.dll'
+        )
+    }
+    elseif ($relative -eq 'buCore/buCore.csproj') {
+        Copy-IfExists 'buCore/bin/Release/buCore.dll' @(
+            'buCadCamRes/lib/buCore.dll',
+            'CMDMarbleCNC/lib/buCore.dll'
         )
     }
     elseif ($relative -eq 'buCadCamRes/buCadCamRes.csproj') {
@@ -99,4 +109,4 @@ if ($failures.Count -gt 0) {
     throw "Build failed for $($failures.Count) project(s): $($failures -join ', ')"
 }
 
-'BUCLASS AND BUCADCAMRES BUILDS PASSED' | Set-Content (Join-Path $logDir 'BUILD_OK.txt')
+'BUCLASS, BUCORE AND BUCADCAMRES BUILDS PASSED' | Set-Content (Join-Path $logDir 'BUILD_OK.txt')
