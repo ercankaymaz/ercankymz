@@ -2,9 +2,6 @@ name: Build CMDMarbleCNC Final DLLs
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - cadcam-final-fix
   pull_request:
     branches:
       - master
