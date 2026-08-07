@@ -41,6 +41,11 @@ jobs:
         run: |
           ./build/Run-CadCamFixes.ps1
 
+      - name: Repair remaining CAD CAM compile artifacts
+        shell: pwsh
+        run: |
+          ./build/Repair-CadCamCompileErrors.ps1
+
       - name: Audit complete application source tree
         shell: pwsh
         run: |
