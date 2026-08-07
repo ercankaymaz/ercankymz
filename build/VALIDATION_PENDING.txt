@@ -1,0 +1,1 @@
+CAD/CAM source repair branch prepared. Windows build/validation is expected to update this status through workflow artifacts and logs.
