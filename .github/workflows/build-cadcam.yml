@@ -1,0 +1,54 @@
+name: Build CMDMarbleCNC Final DLLs
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - cadcam-final-fix
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x86
+
+      - name: Show toolchain
+        shell: pwsh
+        run: |
+          msbuild -version
+          Get-ChildItem Env: | Where-Object Name -match 'VisualStudio|Framework' | Sort-Object Name
+
+      - name: Build application projects
+        shell: pwsh
+        run: |
+          ./build/Build-Final.ps1 -Configuration Release -Platform x86
+
+      - name: Collect final binaries
+        if: always()
+        shell: pwsh
+        run: |
+          ./build/Collect-Final.ps1
+
+      - name: Upload final DLL set
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CMDMarbleCNC-Final-DLLs
+          path: FINAL_DLLS/**
+          if-no-files-found: warn
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CMDMarbleCNC-Build-Logs
+          path: BUILD_LOGS/**
+          if-no-files-found: warn
