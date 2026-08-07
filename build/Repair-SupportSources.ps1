@@ -18,11 +18,32 @@ function ReplaceRequired([string]$text,[string]$old,[string]$new,[string]$name,[
 }
 
 # buClass: the decompiler emitted the compiler-generated assembly ExtensionAttribute.
-# C# emits ExtensionAttribute automatically for extension methods and rejects an explicit
-# assembly-level use (CS1112), so remove only that synthetic declaration.
 $rel='buClass/AssemblyInfo.cs'
 $t=ReadText $rel
 $t=ReplaceRequired $t '[assembly: Extension]' '' 'buClass ExtensionAttribute repair'
+WriteText $rel $t
+
+# buClass ValuesItem.ToString(): decompiler dropped assignment/return and also repeated Value2
+# for V3/V4. Restore the intended textual value representation.
+$rel='buClass/ValuesItem.cs'
+$t=ReadText $rel
+$old=@'
+  public override string ToString()
+  {
+    string str = "";
+    if (this.Name.Length > 0)
+      $"{$"{str}{this.Name}: "}V1: {this.Value1.ToString()} - V2: {this.Value2.ToString()} - V3: {this.Value2.ToString()} - V4: {this.Value2.ToString()} - B1: {this.Bool1.ToString()} - B2: {this.Bool2.ToString()}";
+    return base.ToString();
+  }
+'@
+$new=@'
+  public override string ToString()
+  {
+    string prefix = string.IsNullOrEmpty(this.Name) ? "" : this.Name + ": ";
+    return $"{prefix}V1: {this.Value1} - V2: {this.Value2} - V3: {this.Value3} - V4: {this.Value4} - B1: {this.Bool1} - B2: {this.Bool2}";
+  }
+'@
+$t=ReplaceRequired $t $old $new 'buClass ValuesItem ToString repair'
 WriteText $rel $t
 
 # buCore: restore normal value-type overrides from decompiler pseudo explicit ValueType calls.
@@ -47,6 +68,12 @@ $t=ReplaceRequired $t '  virtual bool ValueType.Equals(object obj)' '  public ov
 $t=ReplaceRequired $t '  virtual int ValueType.GetHashCode()' '  public override int GetHashCode()' 'buCore Struct0 GetHashCode override'
 WriteText $rel $t
 
+# buControls assembly metadata has the same synthetic ExtensionAttribute problem.
+$rel='buControls/AssemblyInfo.cs'
+$t=ReadText $rel
+$t=ReplaceRequired $t '[assembly: Extension]' '' 'buControls ExtensionAttribute repair'
+WriteText $rel $t
+
 # buControls FileDialogControlBase: escaped explicit-interface and __nonvirtual pseudo syntax.
 $rel='buControls/buDialogExtenders/FileDialogControlBase.cs'
 $t=ReadText $rel
@@ -57,8 +84,6 @@ $t=ReplaceRequired $t '__nonvirtual (((NativeWindow) this).WndProc(ref m));' 'ba
 WriteText $rel $t
 
 # SourceGrid row coordinator: reconstruct the compiler-generated closure as ordinary C#.
-# When rows are removed, hidden row indices at/after the removed range must be discarded
-# or shifted so scrollbar conversion remains consistent.
 $rel='buControls/SourceGrid/RowInfoCollectoinHiddenRowCoordinator.cs'
 $row=@'
 using System.Collections.Generic;
