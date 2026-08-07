@@ -9,12 +9,13 @@ $logDir = Join-Path $root 'BUILD_LOGS'
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 
 # Apply final calculation/geometric repairs after the earlier decompiler passes.
-# The recovered clsCommand has Devide() immediately after Explode(); normalize the
-# section marker in-memory so the repair script remains compatible with this tree.
+# Write the normalized script beside the original so $PSScriptRoot is preserved.
 $repairScriptPath = Join-Path $PSScriptRoot 'Final-Calculation-Repairs.ps1'
 $repairScriptText = [IO.File]::ReadAllText($repairScriptPath)
 $repairScriptText = $repairScriptText.Replace("'  public void MoveUpDown('", "'  public void Devide()'")
-Invoke-Expression $repairScriptText
+$runtimeRepairScript = Join-Path $PSScriptRoot 'Final-Calculation-Repairs.runtime.ps1'
+[IO.File]::WriteAllText($runtimeRepairScript, $repairScriptText, (New-Object Text.UTF8Encoding($false)))
+& $runtimeRepairScript
 
 # buControls remains the validated original runtime assembly. buClass, buCore and
 # buCadCamRes are rebuilt because calculation fixes touch core geometry/kinematics
