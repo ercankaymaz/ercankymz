@@ -39,6 +39,73 @@ jobs:
           "Solutions/projects:" | Tee-Object -Append build-logs/inventory.txt
           Get-ChildItem -Recurse -File -Include *.sln,*.csproj | ForEach-Object FullName | Tee-Object -Append build-logs/inventory.txt
 
+      - name: Normalize decompiler project metadata
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $log = 'build-logs/normalization.txt'
+          Remove-Item $log -ErrorAction Ignore
+
+          # ILSpy-generated projects may request a language version newer than the
+          # compiler installed with Visual Studio. 'latest' selects the newest
+          # version actually supported by the runner's compiler.
+          Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
+            $path = $_.FullName
+            $text = [IO.File]::ReadAllText($path)
+            $original = $text
+            $text = [regex]::Replace($text, '<LangVersion>\s*15\.0\s*</LangVersion>', '<LangVersion>latest</LangVersion>')
+
+            # SDK-style WPF/WinForms projects targeting net5+ must explicitly use
+            # a Windows target framework. Only touch projects that opt into a
+            # Windows desktop UI and are not already windows-qualified.
+            if ($text -match '<UseWPF>\s*true\s*</UseWPF>|<UseWindowsForms>\s*true\s*</UseWindowsForms>') {
+              $text = [regex]::Replace($text, '<TargetFramework>(net(?:5|6|7|8|9|10)\.0)</TargetFramework>', '<TargetFramework>$1-windows</TargetFramework>')
+            }
+
+            # Decompiled SDK projects often explicitly include .resx/xml files
+            # that the SDK also includes implicitly.
+            if ($text -match '<EmbeddedResource\s+Include=') {
+              if ($text -notmatch '<EnableDefaultEmbeddedResourceItems>') {
+                $text = [regex]::Replace($text, '<PropertyGroup>', "<PropertyGroup>`r`n    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>", 1)
+              }
+            }
+
+            if ($text -ne $original) {
+              [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
+              "PATCHED CSPROJ: $path" | Tee-Object -Append $log
+            }
+          }
+
+          # resgen cannot deserialize custom buControls design-time objects when
+          # rebuilding decompiled resources before buControls itself is available.
+          # Remove only those custom design-time serialized values; normal strings,
+          # images and standard resources are preserved.
+          Get-ChildItem -Recurse -Filter *.resx -File | ForEach-Object {
+            $path = $_.FullName
+            $raw = [IO.File]::ReadAllText($path)
+            if ($raw -notmatch 'buMutliTextbox\.ServiceColors') { return }
+            try {
+              [xml]$xml = $raw
+              $nodes = @($xml.root.data | Where-Object {
+                $_.type -match '^buMutliTextbox\.ServiceColors,' -or
+                (($_.mimetype -eq 'application/x-microsoft.net.object.binary.base64') -and ($_.value -match 'YnVNdXRsaVRleHRib3guU2VydmljZUNvbG9ycw'))
+              })
+              foreach ($node in $nodes) { [void]$xml.root.RemoveChild($node) }
+              if ($nodes.Count -gt 0) {
+                $settings = [Xml.XmlWriterSettings]::new()
+                $settings.Indent = $true
+                $settings.Encoding = [Text.UTF8Encoding]::new($false)
+                $writer = [Xml.XmlWriter]::Create($path, $settings)
+                $xml.Save($writer)
+                $writer.Close()
+                "PATCHED RESX ($($nodes.Count)): $path" | Tee-Object -Append $log
+              }
+            } catch {
+              "RESX PATCH FAILED: $path :: $($_.Exception.Message)" | Tee-Object -Append $log
+              throw
+            }
+          }
+
       - name: Scan common decompiler artifacts
         shell: pwsh
         run: |
@@ -82,13 +149,20 @@ jobs:
           if ($failed) { exit 1 }
 
       - name: Collect DLL outputs
-        if: success()
+        if: always()
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force final-dll | Out-Null
+          $seen = @{}
           Get-ChildItem -Recurse -Filter *.dll -File | Where-Object { $_.FullName -match '\\(bin|Release)\\' } | ForEach-Object {
-            Copy-Item $_.FullName (Join-Path 'final-dll' $_.Name) -Force
+            $name = $_.Name
+            if (-not $seen.ContainsKey($name)) {
+              Copy-Item $_.FullName (Join-Path 'final-dll' $name) -Force
+              $seen[$name] = $_.FullName
+            }
           }
+          "DLL count: $($seen.Count)" | Tee-Object build-logs/dll-count.txt
+          $seen.GetEnumerator() | Sort-Object Name | ForEach-Object { "$($_.Name) <= $($_.Value)" } | Add-Content build-logs/dll-count.txt
 
       - name: Upload logs
         if: always()
@@ -99,7 +173,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Upload DLLs
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: final-dll
