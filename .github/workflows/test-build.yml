@@ -2,7 +2,7 @@ name: Test source inventory and build
 
 on:
   push:
-    branches: [ Test ]
+    branches: [ Test, repair-all-errors ]
   pull_request:
     branches: [ Test ]
   workflow_dispatch:
@@ -11,6 +11,10 @@ jobs:
   inventory-build:
     runs-on: windows-latest
     steps:
+      - name: Enable Git long paths
+        shell: pwsh
+        run: git config --global core.longpaths true
+
       - name: Checkout source
         uses: actions/checkout@v4
         with:
@@ -38,7 +42,7 @@ jobs:
       - name: Scan common decompiler artifacts
         shell: pwsh
         run: |
-          $patterns = @('<>c','Class5.smethod_','goto IL_','\\\*','\\_')
+          $patterns = @('<>c','Class5.smethod_','goto IL_','\\*','\\_')
           $out = 'build-logs/decompiler-artifacts.txt'
           Remove-Item $out -ErrorAction Ignore
           foreach ($p in $patterns) {
