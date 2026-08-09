@@ -1,0 +1,101 @@
+name: Test source inventory and build
+
+on:
+  push:
+    branches: [ Test ]
+  workflow_dispatch:
+
+jobs:
+  inventory-build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Test
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Inventory source tree
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          New-Item -ItemType Directory -Force build-logs | Out-Null
+          "CS files: $((Get-ChildItem -Recurse -Filter *.cs -File).Count)" | Tee-Object build-logs/inventory.txt
+          "CSPROJ files: $((Get-ChildItem -Recurse -Filter *.csproj -File).Count)" | Tee-Object -Append build-logs/inventory.txt
+          "SLN files: $((Get-ChildItem -Recurse -Filter *.sln -File).Count)" | Tee-Object -Append build-logs/inventory.txt
+          "Top-level directories:" | Tee-Object -Append build-logs/inventory.txt
+          Get-ChildItem -Directory | Select-Object -ExpandProperty Name | Sort-Object | Tee-Object -Append build-logs/inventory.txt
+          "Solutions/projects:" | Tee-Object -Append build-logs/inventory.txt
+          Get-ChildItem -Recurse -File -Include *.sln,*.csproj | ForEach-Object FullName | Tee-Object -Append build-logs/inventory.txt
+
+      - name: Scan common decompiler artifacts
+        shell: pwsh
+        run: |
+          $patterns = @('<>c','Class5.smethod_','goto IL_','\\\*','\\_')
+          $out = 'build-logs/decompiler-artifacts.txt'
+          Remove-Item $out -ErrorAction Ignore
+          foreach ($p in $patterns) {
+            "===== $p =====" | Add-Content $out
+            Get-ChildItem -Recurse -Filter *.cs -File | Select-String -SimpleMatch $p | Select-Object -First 300 | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } | Add-Content $out
+          }
+
+      - name: Restore and build discovered solutions/projects
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $log = 'build-logs/build.txt'
+          Remove-Item $log -ErrorAction Ignore
+          $solutions = @(Get-ChildItem -Recurse -Filter *.sln -File)
+          $projects = @(Get-ChildItem -Recurse -Filter *.csproj -File)
+          $failed = $false
+
+          if ($solutions.Count -gt 0) {
+            foreach ($s in $solutions) {
+              "===== SOLUTION $($s.FullName) =====" | Tee-Object -Append $log
+              nuget restore $s.FullName 2>&1 | Tee-Object -Append $log
+              msbuild $s.FullName /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
+              if ($LASTEXITCODE -ne 0) { $failed = $true }
+            }
+          } elseif ($projects.Count -gt 0) {
+            foreach ($p in $projects) {
+              "===== PROJECT $($p.FullName) =====" | Tee-Object -Append $log
+              nuget restore $p.FullName 2>&1 | Tee-Object -Append $log
+              msbuild $p.FullName /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
+              if ($LASTEXITCODE -ne 0) { $failed = $true }
+            }
+          } else {
+            "NO_BUILD_PROJECTS_FOUND" | Tee-Object -Append $log
+            $failed = $true
+          }
+
+          if ($failed) { exit 1 }
+
+      - name: Collect DLL outputs
+        if: success()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force final-dll | Out-Null
+          Get-ChildItem -Recurse -Filter *.dll -File | Where-Object { $_.FullName -match '\\(bin|Release)\\' } | ForEach-Object {
+            Copy-Item $_.FullName (Join-Path 'final-dll' $_.Name) -Force
+          }
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-build-logs
+          path: build-logs
+          if-no-files-found: warn
+
+      - name: Upload DLLs
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-dll
+          path: final-dll
+          if-no-files-found: warn
