@@ -1,0 +1,25 @@
+using System.Runtime.InteropServices;
+
+namespace Opc.Ua.Configuration;
+
+[ComVisible(true)]
+public interface IApplicationConfigurationBuilderSecurityOptions : IApplicationConfigurationBuilderTraceConfiguration, IApplicationConfigurationBuilderCreate, IApplicationConfigurationBuilderExtension
+{
+	IApplicationConfigurationBuilderSecurityOptions SetAutoAcceptUntrustedCertificates(bool autoAccept);
+
+	IApplicationConfigurationBuilderSecurityOptions SetAddAppCertToTrustedStore(bool addToTrustedStore);
+
+	IApplicationConfigurationBuilderSecurityOptions SetRejectSHA1SignedCertificates(bool rejectSHA1Signed);
+
+	IApplicationConfigurationBuilderSecurityOptions SetRejectUnknownRevocationStatus(bool rejectUnknownRevocationStatus);
+
+	IApplicationConfigurationBuilderSecurityOptions SetUseValidatedCertificates(bool useValidatedCertificates);
+
+	IApplicationConfigurationBuilderSecurityOptions SetSuppressNonceValidationErrors(bool suppressNonceValidationErrors);
+
+	IApplicationConfigurationBuilderSecurityOptions SetSendCertificateChain(bool sendCertificateChain);
+
+	IApplicationConfigurationBuilderSecurityOptions SetMinimumCertificateKeySize(ushort keySize);
+
+	IApplicationConfigurationBuilderSecurityOptions AddCertificatePasswordProvider(ICertificatePasswordProvider certificatePasswordProvider);
+}

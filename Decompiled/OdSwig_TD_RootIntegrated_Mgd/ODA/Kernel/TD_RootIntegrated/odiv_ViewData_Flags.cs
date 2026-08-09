@@ -1,0 +1,52 @@
+using System;
+
+namespace ODA.Kernel.TD_RootIntegrated;
+
+[Flags]
+public enum odiv_ViewData_Flags : ulong
+{
+	kShaded = 1uL,
+	kShowTangentEdges = 2uL,
+	kForeshortened = 4uL,
+	kShowInterferenceEdges = 8uL,
+	kCustomView = 0x10uL,
+	kCustomViewDirty = 0x20uL,
+	kLabelVisibility = 0x40uL,
+	kGetWeldSymbols = 0x80uL,
+	kShowTrails = 0x100uL,
+	kDisplayThreadFeatures = 0x200uL,
+	kDisplayWeldCosmetics = 0x400uL,
+	kDisplayWorkFeatures = 0x800uL,
+	kBendEdges = 0x1000uL,
+	kDeferUpdate = 0x2000uL,
+	kUnk0x4000 = 0x4000uL,
+	kCustomScaleString = 0x8000uL,
+	kUnk0x10000 = 0x10000uL,
+	kDisplayPunchCenter = 0x20000uL,
+	kPreviewAllComponents = 0x40000uL,
+	kWantFlatPattern = 0x80000uL,
+	kAssociativeView = 0x100000uL,
+	kUnk0x200000 = 0x200000uL,
+	kGetDimensions = 0x400000uL,
+	kIsEditing = 0x800000uL,
+	kInheritStyle = 0x1000000uL,
+	kInheritScale = 0x2000000uL,
+	kShowHatch = 0x4000000uL,
+	kAlignToBase = 0x8000000uL,
+	kShowDefinitionInBaseView = 0x10000000uL,
+	kSwizzlePartslists = 0x20000000uL,
+	kInheritBreaksFromParent = 0x40000000uL,
+	kInheritBreakoutsFromParent = 0x80000000uL,
+	kInheritSectionsFromParent = 0x100000000uL,
+	kInheritSliceFromParent = 0x200000000uL,
+	kOrientToParent = 0x400000000uL,
+	kUnk0x800000000 = 0x800000000uL,
+	kIsRasterViewOnly = 0x1000000000uL,
+	kSectionMethodAligned = 0x2000000000uL,
+	kSectionFullDepth = 0x4000000000uL,
+	kJagged = 0x8000000000uL,
+	kIncludeSurfaces = 0x10000000000uL,
+	kIncludeMeshes = 0x20000000000uL,
+	kCopiedView = 0x40000000000uL,
+	kDefault = 0x3D6200300uL
+}

@@ -1,0 +1,38 @@
+using System;
+
+internal static class _0023_003DzDhNb8xpc8jlNZR_0024UF1rpF4_u_gEoAhd1Er_0024EJpDi7QrDI8IrMXkygfkmUCHu
+{
+	public static double _0023_003DzjGxOS9j_7LyL(_0023_003DzN3jMdHq6L7CCpD_PKdtVivJXLHOclz_0024KBQ_003D_003D _0023_003DzE8QrneA_003D)
+	{
+		double num = _0023_003DzE8QrneA_003D._0023_003Dz7_0024mrUE1_JLUdoHA1gg_003D_003D(1u, 1u);
+		double num2 = _0023_003DzE8QrneA_003D._0023_003Dz7_0024mrUE1_JLUdoHA1gg_003D_003D(0u, 1u);
+		double num3 = _0023_003DzE8QrneA_003D._0023_003Dz7_0024mrUE1_JLUdoHA1gg_003D_003D(2u, 1u);
+		double num4 = _0023_003DzE8QrneA_003D._0023_003Dz7_0024mrUE1_JLUdoHA1gg_003D_003D(2u, 2u);
+		double num5 = _0023_003DzE8QrneA_003D._0023_003Dz7_0024mrUE1_JLUdoHA1gg_003D_003D(1u, 2u);
+		double num6 = _0023_003DzE8QrneA_003D._0023_003Dz7_0024mrUE1_JLUdoHA1gg_003D_003D(0u, 2u);
+		return _0023_003DzE8QrneA_003D._0023_003Dz7_0024mrUE1_JLUdoHA1gg_003D_003D(0u, 0u) * (num * num4 - num3 * num5) - _0023_003DzE8QrneA_003D._0023_003Dz7_0024mrUE1_JLUdoHA1gg_003D_003D(1u, 0u) * (num2 * num4 - num3 * num6) + _0023_003DzE8QrneA_003D._0023_003Dz7_0024mrUE1_JLUdoHA1gg_003D_003D(2u, 0u) * (num2 * num5 - num * num6);
+	}
+
+	public static uint _0023_003DzrXB9c9B0CxqT(_0023_003DzflOFEhjyfgUAHLUM9yF1zxIDb5aaQRJ4MLHrF64_003D _0023_003DzE8QrneA_003D)
+	{
+		uint _0023_003DzuwH5j5s_003D = 0u;
+		if (_0023_003DzE8QrneA_003D._0023_003DzcEGLlyc2JyoXzC3iDb2V6EUN3zlM())
+		{
+			_0023_003DzuwH5j5s_003D = _0023_003Dz2r0HNeQGzT4RUytme3ESyC2QrG3puCjuXZyTNu3nY4_0024boKdwBASbP9Q_003D._0023_003DzrXB9c9B0CxqT(_0023_003DzE8QrneA_003D);
+		}
+		else
+		{
+			_0023_003DzDOZqTHGFZrOgEO21vANm0m_ct1kX_ExJNg_003D_003D(_0023_003DzE8QrneA_003D, ref _0023_003DzuwH5j5s_003D);
+		}
+		return _0023_003DzuwH5j5s_003D;
+	}
+
+	public static void _0023_003DzDOZqTHGFZrOgEO21vANm0m_ct1kX_ExJNg_003D_003D(_0023_003DzflOFEhjyfgUAHLUM9yF1zxIDb5aaQRJ4MLHrF64_003D _0023_003DzE8QrneA_003D, ref uint _0023_003DzuwH5j5s_003D)
+	{
+		for (uint num = _0023_003DzE8QrneA_003D._0023_003DzIBRMQdw_003D(); num < _0023_003DzE8QrneA_003D._0023_003Dzk64JNOo_003D(); num++)
+		{
+			uint val = _0023_003DzrXB9c9B0CxqT(_0023_003DzE8QrneA_003D);
+			_0023_003DzuwH5j5s_003D = Math.Max(_0023_003DzuwH5j5s_003D, val);
+		}
+	}
+}

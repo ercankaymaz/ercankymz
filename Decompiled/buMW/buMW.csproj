@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>buMW</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="-032cb220-8e92-4377-8c84-a02c5d2a3c20-" />
+    <None Remove="-bd62bd94-ad15-488a-88ae-1a81b038a2c2-" />
+    <EmbeddedResource Include="-032cb220-8e92-4377-8c84-a02c5d2a3c20-" LogicalName="{032cb220-8e92-4377-8c84-a02c5d2a3c20}" />
+    <EmbeddedResource Include="-bd62bd94-ad15-488a-88ae-1a81b038a2c2-" LogicalName="{bd62bd94-ad15-488a-88ae-1a81b038a2c2}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="buEyeBase">
+      <HintPath>..\..\buEyeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="mwInterop" />
+    <Reference Include="buClass">
+      <HintPath>..\..\buClass.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>..\..\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="mwEntities">
+      <HintPath>..\..\mwEntities.dll</HintPath>
+    </Reference>
+    <Reference Include="buControls">
+      <HintPath>..\..\buControls.dll</HintPath>
+    </Reference>
+    <Reference Include="buCore">
+      <HintPath>..\..\buCore.dll</HintPath>
+    </Reference>
+    <Reference Include="buImages">
+      <HintPath>..\..\buImages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+</Project>

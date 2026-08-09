@@ -1,0 +1,16 @@
+namespace Xbim.Ifc2x3.ProductExtension;
+
+public enum IfcElementAssemblyTypeEnum : byte
+{
+	ACCESSORY_ASSEMBLY,
+	ARCH,
+	BEAM_GRID,
+	BRACED_FRAME,
+	GIRDER,
+	REINFORCEMENT_UNIT,
+	RIGID_FRAME,
+	SLAB_FIELD,
+	TRUSS,
+	USERDEFINED,
+	NOTDEFINED
+}

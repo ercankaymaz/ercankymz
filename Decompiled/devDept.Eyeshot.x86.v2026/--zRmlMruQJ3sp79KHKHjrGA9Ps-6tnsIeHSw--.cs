@@ -1,0 +1,4 @@
+internal interface _0023_003DzRmlMruQJ3sp79KHKHjrGA9Ps_00246tnsIeHSw_003D_003D
+{
+	void _0023_003DzBfj4rLQuIs4orp78rm53qyjX3AQ5IxIkZECOMXcjOiLjDca9_zhnzESRuVSetEgoqzRgUpn4Y2kt();
+}

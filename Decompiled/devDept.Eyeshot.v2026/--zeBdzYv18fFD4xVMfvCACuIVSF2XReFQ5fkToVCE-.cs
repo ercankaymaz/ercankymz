@@ -1,0 +1,32 @@
+using System;
+
+internal class _0023_003DzeBdzYv18fFD4xVMfvCACuIVSF2XReFQ5fkToVCE_003D : _0023_003DzgAQC25q3Qy03ePvGjY8E7SH31ZS_npX7fEe56V0_003D
+{
+	public enum _0023_003DzCp025oNguDa9
+	{
+		REFERENCE_DIM = 3
+	}
+
+	public static double _0023_003Dz6pajdGM_003D(uint _0023_003DzDVubtvo_003D, uint _0023_003DzFj_0024IqDQ_003D, uint _0023_003DzjdeMMkk_003D, uint _0023_003Dzm4eSPQQ_003D, _0023_003Dz4rzdYKa1XuIx_Imdw_WlPSpzrHlvzPor3A_003D_003D _0023_003Dzl3DhHgI_003D)
+	{
+		double[] array = new double[3];
+		double[] array2 = new double[3];
+		double[] array3 = new double[3];
+		_0023_003Dz6lGncTjN6Lvoy8Z4ebbI5fd5YT7n3USMLZ8_8WVYRfPlDeGSxIXlVlFDcAOn._0023_003Dz5qB7rtrS_X1x(_0023_003DzFj_0024IqDQ_003D, _0023_003Dzl3DhHgI_003D, _0023_003DzDVubtvo_003D, _0023_003Dzl3DhHgI_003D, 0u, array);
+		_0023_003Dz6lGncTjN6Lvoy8Z4ebbI5fd5YT7n3USMLZ8_8WVYRfPlDeGSxIXlVlFDcAOn._0023_003Dz5qB7rtrS_X1x(_0023_003DzjdeMMkk_003D, _0023_003Dzl3DhHgI_003D, _0023_003DzDVubtvo_003D, _0023_003Dzl3DhHgI_003D, 0u, array2);
+		_0023_003Dz6lGncTjN6Lvoy8Z4ebbI5fd5YT7n3USMLZ8_8WVYRfPlDeGSxIXlVlFDcAOn._0023_003Dz5qB7rtrS_X1x(_0023_003Dzm4eSPQQ_003D, _0023_003Dzl3DhHgI_003D, _0023_003DzDVubtvo_003D, _0023_003Dzl3DhHgI_003D, 0u, array3);
+		_0023_003Dz2r0HNeQGzT4RUytme3ESyC2QrG3puCjuXZyTNu3nY4_0024boKdwBASbP9Q_003D._0023_003Dzt_0024wZMac_003D(array);
+		_0023_003Dz2r0HNeQGzT4RUytme3ESyC2QrG3puCjuXZyTNu3nY4_0024boKdwBASbP9Q_003D._0023_003Dzt_0024wZMac_003D(array2);
+		_0023_003Dz2r0HNeQGzT4RUytme3ESyC2QrG3puCjuXZyTNu3nY4_0024boKdwBASbP9Q_003D._0023_003Dzt_0024wZMac_003D(array3);
+		double y = _0023_003Dz6lGncTjN6Lvoy8Z4ebbI5fd5YT7n3USMLZ8_8WVYRfPlDeGSxIXlVlFDcAOn._0023_003Dz6qLQi_0024_nDIMnqbCZBg_003D_003D(0u, array, 0u, array2, 0u, array3);
+		_0023_003Dz6lGncTjN6Lvoy8Z4ebbI5fd5YT7n3USMLZ8_8WVYRfPlDeGSxIXlVlFDcAOn._0023_003Dz1l0EiMs_003D(array2, array3);
+		_0023_003Dz6lGncTjN6Lvoy8Z4ebbI5fd5YT7n3USMLZ8_8WVYRfPlDeGSxIXlVlFDcAOn._0023_003Dz1l0EiMs_003D(array, array2);
+		double x = _0023_003Dz6lGncTjN6Lvoy8Z4ebbI5fd5YT7n3USMLZ8_8WVYRfPlDeGSxIXlVlFDcAOn._0023_003DzHX2sd2E_003D(array2, array3);
+		return 2.0 * Math.Atan2(y, x);
+	}
+
+	public override double _0023_003DzMugtXY0i04ylA_0014hdNt4_003D(_0023_003Dz4rzdYKa1XuIx_Imdw_WlPSpzrHlvzPor3A_003D_003D _0023_003Dzl3DhHgI_003D)
+	{
+		throw new NotImplementedException();
+	}
+}

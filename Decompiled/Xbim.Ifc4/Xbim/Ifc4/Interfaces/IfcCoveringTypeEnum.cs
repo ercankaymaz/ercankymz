@@ -1,0 +1,17 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcCoveringTypeEnum : byte
+{
+	CEILING,
+	FLOORING,
+	CLADDING,
+	ROOFING,
+	MOLDING,
+	SKIRTINGBOARD,
+	INSULATION,
+	MEMBRANE,
+	SLEEVING,
+	WRAPPING,
+	USERDEFINED,
+	NOTDEFINED
+}

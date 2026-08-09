@@ -1,0 +1,14 @@
+namespace Xbim.Ifc4x3.ProductExtension;
+
+public enum IfcVehicleTypeEnum : byte
+{
+	CARGO,
+	ROLLINGSTOCK,
+	VEHICLE,
+	VEHICLEAIR,
+	VEHICLEMARINE,
+	VEHICLETRACKED,
+	VEHICLEWHEELED,
+	USERDEFINED,
+	NOTDEFINED
+}

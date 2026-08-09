@@ -1,0 +1,3 @@
+using devDept.Graphics;
+
+internal delegate void _0023_003DzV7sx_SUdPs3R7VRkU2AvNbdwAaO8zAi_gg_003D_003D(RenderContextBase _0023_003DzQdnFby4_003D, VBOParams _0023_003DzmPmPjCPqZ3T3);

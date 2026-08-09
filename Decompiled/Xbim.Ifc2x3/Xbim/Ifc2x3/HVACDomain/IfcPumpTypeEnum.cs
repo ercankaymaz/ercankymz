@@ -1,0 +1,12 @@
+namespace Xbim.Ifc2x3.HVACDomain;
+
+public enum IfcPumpTypeEnum : byte
+{
+	CIRCULATOR,
+	ENDSUCTION,
+	SPLITCASE,
+	VERTICALINLINE,
+	VERTICALTURBINE,
+	USERDEFINED,
+	NOTDEFINED
+}

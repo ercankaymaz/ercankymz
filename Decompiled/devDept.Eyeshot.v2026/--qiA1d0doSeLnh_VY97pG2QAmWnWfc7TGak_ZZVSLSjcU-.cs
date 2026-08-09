@@ -1,0 +1,4 @@
+internal abstract class _0023_003DqiA1d0doSeLnh_VY97pG2QAmWnWfc7TGak_ZZVSLSjcU_003D
+{
+	public abstract byte _0023_003Dz5X9cdP7TrgrdPx0If8tVEEi6NdL5ax_00247XEJ4AW86KFqLMqebj0qzls9VtNXr9fHdJP1qqnSZhh4l10WlSBY8ef0_003D();
+}

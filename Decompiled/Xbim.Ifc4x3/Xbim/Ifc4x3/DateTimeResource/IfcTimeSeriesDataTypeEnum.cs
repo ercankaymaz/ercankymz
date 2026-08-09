@@ -1,0 +1,12 @@
+namespace Xbim.Ifc4x3.DateTimeResource;
+
+public enum IfcTimeSeriesDataTypeEnum : byte
+{
+	CONTINUOUS,
+	DISCRETE,
+	DISCRETEBINARY,
+	PIECEWISEBINARY,
+	PIECEWISECONSTANT,
+	PIECEWISECONTINUOUS,
+	NOTDEFINED
+}

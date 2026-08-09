@@ -1,0 +1,27 @@
+using System;
+
+internal abstract class _0023_003Dq0sd17OXY9HyRTHP4MNrXEWjZPbMynKvVMW_pliUAx6w_003D : _0023_003DqaEtT9DoRRoUP_0024LS5u4B6AmbrhvUvlroRd1oNAew2QJs_003D
+{
+	private Type _0023_003Dz9jrlnWk_003D;
+
+	public _0023_003Dq0sd17OXY9HyRTHP4MNrXEWjZPbMynKvVMW_pliUAx6w_003D(int _0023_003Dz9jrlnWk_003D)
+		: base(_0023_003Dz9jrlnWk_003D)
+	{
+	}
+
+	public Type _0023_003DznlMw3Z6vPsFd4RZ75Ii7QhJ7FGdgEIeMO4R17cc_003D()
+	{
+		return _0023_003Dz9jrlnWk_003D;
+	}
+
+	public void _0023_003Dz_0024WOmwPiJ7UFMYHpG_kOLOeBLqKyQ(Type _0023_003Dz9jrlnWk_003D)
+	{
+		this._0023_003Dz9jrlnWk_003D = _0023_003Dz9jrlnWk_003D;
+	}
+
+	public abstract object _0023_003DzVdsM_TqzcZphD3EV12i7hTzyWsLk_C1xSWiVqGX0jsgiOLbnX0cnK_lndyxe_nqJxFgf5Pc_003D();
+
+	public abstract void _0023_003DzpdkhhN_ttDJPnMOKfwQuVe11pWUTsgOoNzbENBGBc6yaXkicGB6vHpMOhrb8QgDFC_RCmrewfatBmzI78itMRsZRRyaU(object _0023_003Dz9jrlnWk_003D);
+
+	public abstract bool _0023_003Dz_0024XWP1lkLfu0cK7NP2crUhlK_0024c2OIc_0024_L_00241EdJIIMr2cAy6qs0odTCwjJuvfwRdcyoYqrMTfqWvIvksobrg_003D_003D(_0023_003Dq0sd17OXY9HyRTHP4MNrXEWjZPbMynKvVMW_pliUAx6w_003D _0023_003Dz9jrlnWk_003D);
+}

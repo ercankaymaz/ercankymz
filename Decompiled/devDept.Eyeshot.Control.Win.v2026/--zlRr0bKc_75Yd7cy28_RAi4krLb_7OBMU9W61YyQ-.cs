@@ -1,0 +1,3 @@
+using devDept.Eyeshot;
+
+internal delegate void _0023_003DzlRr0bKc_75Yd7cy28_RAi4krLb_7OBMU9W61YyQ_003D(DrawSceneParams _0023_003DzCBM7XJK4_5H_0024);

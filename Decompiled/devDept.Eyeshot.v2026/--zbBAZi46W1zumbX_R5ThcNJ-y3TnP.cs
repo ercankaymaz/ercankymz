@@ -1,0 +1,14 @@
+internal sealed class _0023_003DzbBAZi46W1zumbX_R5ThcNJ_0024y3TnP
+{
+	public _0023_003DzC8_AFnebcwUyTZxkDjjmIIXgzH_00241 _0023_003Dzalvl9z8_003D;
+
+	public double _0023_003Dz6pajdGM_003D;
+
+	public _0023_003Dz25XJrJIetZ23qUhcBtaV9aOv_sJhH9e8gw_003D_003D _0023_003DzKjF_hSw_003D;
+
+	public _0023_003Dz25XJrJIetZ23qUhcBtaV9aOv_sJhH9e8gw_003D_003D _0023_003DzfBEBL_o_003D;
+
+	public ushort _0023_003Dz9AdWyDpcQrDA_0024nMZuw_003D_003D;
+
+	public double[] _0023_003Dzt5qQHCWPJf_A;
+}

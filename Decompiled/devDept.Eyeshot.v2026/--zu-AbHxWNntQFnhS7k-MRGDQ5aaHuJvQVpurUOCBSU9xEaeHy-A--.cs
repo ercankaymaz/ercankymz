@@ -1,0 +1,16 @@
+using System.Diagnostics;
+
+internal struct _0023_003Dzu_0024AbHxWNntQFnhS7k_0024MRGDQ5aaHuJvQVpurUOCBSU9xEaeHy_0024A_003D_003D
+{
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public _0023_003DziJMX5yLUIl6aG8i6otH_Tt4lCe8uMGF4e_0024ZFO_QWDFyZN5iXGkLjbQk_003D _0023_003DzURG76J4gm4OOcd_VOC5fHPoS0_0024f9mzEnVAEuvxGZIIgH;
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public double _0023_003DzVvkLpZU_003D;
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003DzubU7U_0024bDSKiB;
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003DzKuKiXKE_0024eyKw;
+}

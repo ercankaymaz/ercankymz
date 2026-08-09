@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>buOpcDlls</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Org.BouncyCastle.pqc.crypto.picnic.lowmcL1.bz2" />
+    <None Remove="Org.BouncyCastle.pqc.crypto.picnic.lowmcL3.bz2" />
+    <None Remove="Org.BouncyCastle.pqc.crypto.picnic.lowmcL5.bz2" />
+    <None Remove="Org.BouncyCastle.pqc.crypto.sike.p434.bz2" />
+    <None Remove="Org.BouncyCastle.pqc.crypto.sike.p503.bz2" />
+    <None Remove="Org.BouncyCastle.pqc.crypto.sike.p610.bz2" />
+    <None Remove="Org.BouncyCastle.pqc.crypto.sike.p751.bz2" />
+    <None Remove="ILLink.Substitutions.xml" />
+    <None Remove="Opc.Ua.Schema.Opc.Ua.Types.bsd" />
+    <None Remove="Opc.Ua.Types.Schemas.BuiltInTypes.bsd" />
+    <None Remove="Opc.Ua.Types.Schemas.StandardTypes.bsd" />
+    <None Remove="Opc.Ua.Schema.Opc.Ua.Types.xsd" />
+    <None Remove="Opc.Ua.Schema.UANodeSet.xsd" />
+    <None Remove="Opc.Ua.Stack.Generated.Opc.Ua.PredefinedNodes.uanodes" />
+    <None Remove="Opc.Ua.Types.Utils.LocalizedData.txt" />
+    <None Remove="Opc.Ua.Schema.ServerCapabilities.csv" />
+    <None Remove="Opc.Ua.Schema.Opc.Ua.NodeSet2.xml.zip" />
+    <None Remove="ILLink.Substitutions.xml" />
+    <None Remove="ILLink.Substitutions.xml" />
+    <None Remove="ILLink.Substitutions.xml" />
+    <EmbeddedResource Include="Org.BouncyCastle.pqc.crypto.picnic.lowmcL1.bz2" LogicalName="Org.BouncyCastle.pqc.crypto.picnic.lowmcL1.bz2" />
+    <EmbeddedResource Include="Org.BouncyCastle.pqc.crypto.picnic.lowmcL3.bz2" LogicalName="Org.BouncyCastle.pqc.crypto.picnic.lowmcL3.bz2" />
+    <EmbeddedResource Include="Org.BouncyCastle.pqc.crypto.picnic.lowmcL5.bz2" LogicalName="Org.BouncyCastle.pqc.crypto.picnic.lowmcL5.bz2" />
+    <EmbeddedResource Include="Org.BouncyCastle.pqc.crypto.sike.p434.bz2" LogicalName="Org.BouncyCastle.pqc.crypto.sike.p434.bz2" />
+    <EmbeddedResource Include="Org.BouncyCastle.pqc.crypto.sike.p503.bz2" LogicalName="Org.BouncyCastle.pqc.crypto.sike.p503.bz2" />
+    <EmbeddedResource Include="Org.BouncyCastle.pqc.crypto.sike.p610.bz2" LogicalName="Org.BouncyCastle.pqc.crypto.sike.p610.bz2" />
+    <EmbeddedResource Include="Org.BouncyCastle.pqc.crypto.sike.p751.bz2" LogicalName="Org.BouncyCastle.pqc.crypto.sike.p751.bz2" />
+    <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
+    <EmbeddedResource Include="Opc.Ua.Schema.Opc.Ua.Types.bsd" LogicalName="Opc.Ua.Schema.Opc.Ua.Types.bsd" />
+    <EmbeddedResource Include="Opc.Ua.Types.Schemas.BuiltInTypes.bsd" LogicalName="Opc.Ua.Types.Schemas.BuiltInTypes.bsd" />
+    <EmbeddedResource Include="Opc.Ua.Types.Schemas.StandardTypes.bsd" LogicalName="Opc.Ua.Types.Schemas.StandardTypes.bsd" />
+    <EmbeddedResource Include="Opc.Ua.Schema.Opc.Ua.Types.xsd" LogicalName="Opc.Ua.Schema.Opc.Ua.Types.xsd" />
+    <EmbeddedResource Include="Opc.Ua.Schema.UANodeSet.xsd" LogicalName="Opc.Ua.Schema.UANodeSet.xsd" />
+    <EmbeddedResource Include="Opc.Ua.Stack.Generated.Opc.Ua.PredefinedNodes.uanodes" LogicalName="Opc.Ua.Stack.Generated.Opc.Ua.PredefinedNodes.uanodes" />
+    <EmbeddedResource Include="Opc.Ua.Types.Utils.LocalizedData.txt" LogicalName="Opc.Ua.Types.Utils.LocalizedData.txt" />
+    <EmbeddedResource Include="Opc.Ua.Schema.ServerCapabilities.csv" LogicalName="Opc.Ua.Schema.ServerCapabilities.csv" />
+    <EmbeddedResource Include="Opc.Ua.Schema.Opc.Ua.NodeSet2.xml.zip" LogicalName="Opc.Ua.Schema.Opc.Ua.NodeSet2.xml.zip" />
+    <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
+    <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
+    <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+</Project>

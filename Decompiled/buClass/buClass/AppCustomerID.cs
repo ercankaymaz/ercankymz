@@ -1,0 +1,38 @@
+namespace buClass;
+
+public enum AppCustomerID
+{
+	CMD,
+	CMS,
+	Kutez,
+	SMM,
+	AsMetal,
+	Yilmaz,
+	Özmaksan,
+	Özçelik,
+	Atech,
+	Pala,
+	Bulunmaz,
+	Heff,
+	Tunca,
+	Orimak,
+	AES,
+	DincMak,
+	SAM,
+	EminTosun,
+	MacBend,
+	Kaban,
+	Safas,
+	Alfa,
+	Vape,
+	CMZ,
+	ABM,
+	JetRobotik,
+	Mdk,
+	Eventus,
+	MacroMac,
+	PWM,
+	Somut,
+	Infinite,
+	Ozgenc
+}

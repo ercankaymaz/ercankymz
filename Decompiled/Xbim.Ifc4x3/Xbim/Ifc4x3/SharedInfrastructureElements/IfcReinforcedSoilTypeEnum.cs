@@ -1,0 +1,13 @@
+namespace Xbim.Ifc4x3.SharedInfrastructureElements;
+
+public enum IfcReinforcedSoilTypeEnum : byte
+{
+	DYNAMICALLYCOMPACTED,
+	GROUTED,
+	REPLACED,
+	ROLLERCOMPACTED,
+	SURCHARGEPRELOADED,
+	VERTICALLYDRAINED,
+	USERDEFINED,
+	NOTDEFINED
+}

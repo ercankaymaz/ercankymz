@@ -1,0 +1,21 @@
+using System.Runtime.InteropServices;
+
+namespace Opc.Ua.Configuration;
+
+[ComVisible(true)]
+public interface IApplicationConfigurationBuilderClientOptions : IApplicationConfigurationBuilderSecurity
+{
+	IApplicationConfigurationBuilderClientOptions SetDefaultSessionTimeout(int defaultSessionTimeout);
+
+	IApplicationConfigurationBuilderClientOptions AddWellKnownDiscoveryUrls(string wellKnownDiscoveryUrl);
+
+	IApplicationConfigurationBuilderClientOptions AddDiscoveryServer(EndpointDescription discoveryServer);
+
+	IApplicationConfigurationBuilderClientOptions SetEndpointCacheFilePath(string endpointCacheFilePath);
+
+	IApplicationConfigurationBuilderClientOptions SetMinSubscriptionLifetime(int minSubscriptionLifetime);
+
+	IApplicationConfigurationBuilderClientOptions SetReverseConnect(ReverseConnectClientConfiguration reverseConnect);
+
+	IApplicationConfigurationBuilderClientOptions SetClientOperationLimits(OperationLimits operationLimits);
+}

@@ -1,0 +1,17 @@
+namespace Xbim.Ifc4x3.ProductExtension;
+
+public enum IfcSpatialZoneTypeEnum : byte
+{
+	CONSTRUCTION,
+	FIRESAFETY,
+	INTERFERENCE,
+	LIGHTING,
+	OCCUPANCY,
+	RESERVATION,
+	SECURITY,
+	THERMAL,
+	TRANSPORT,
+	VENTILATION,
+	USERDEFINED,
+	NOTDEFINED
+}

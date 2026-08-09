@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>Microsoft.Windows.Design.Interaction</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWPF>True</UseWPF>
+    <TargetFramework>net35</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="ms\internal\interaction\adornerfontresourcedictionary.baml" />
+    <None Remove="themes\generic.baml" />
+    <None Remove="ms\internal\interaction\adornercolorresourcedictionary.baml" />
+    <EmbeddedResource Include="ms\internal\interaction\adornerfontresourcedictionary.baml" LogicalName="ms/internal/interaction/adornerfontresourcedictionary.baml" />
+    <EmbeddedResource Include="themes\generic.baml" LogicalName="themes/generic.baml" />
+    <EmbeddedResource Include="ms\internal\interaction\adornercolorresourcedictionary.baml" LogicalName="ms/internal/interaction/adornercolorresourcedictionary.baml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+    <Reference Include="Microsoft.Windows.Design.Extensibility">
+      <HintPath>..\..\Microsoft.Windows.Design.Extensibility.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="System.Core">
+      <HintPath>C:\WINDOWS\Microsoft.NET\Framework64\v4.0.30319\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="UIAutomationTypes" />
+  </ItemGroup>
+</Project>

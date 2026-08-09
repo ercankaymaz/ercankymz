@@ -1,0 +1,10 @@
+using System.Diagnostics;
+
+internal struct _0023_003DzGFDZtB7kvP_0024kXqzx6UxJJ14ATLJwpheOuA_003D_003D
+{
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public _0023_003DzBn2nX1VxOJ3z6Bv8_0024GZfBA4slVj97g_mm8WLQKg_003D _0023_003DzejDtVY0_003D;
+
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	public _0023_003DzhAnSgdT_iDp2x7BqdF8bRMY_003D _0023_003DzCwm4OmI_003D;
+}

@@ -1,0 +1,24 @@
+namespace ACadSharp;
+
+public enum GroupCodeValueType
+{
+	None,
+	String,
+	Point3D,
+	Double,
+	Byte,
+	Int16,
+	Int32,
+	Int64,
+	Handle,
+	ObjectId,
+	Bool,
+	Chunk,
+	Comment,
+	ExtendedDataString,
+	ExtendedDataChunk,
+	ExtendedDataHandle,
+	ExtendedDataDouble,
+	ExtendedDataInt16,
+	ExtendedDataInt32
+}

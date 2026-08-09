@@ -1,0 +1,12 @@
+﻿*.dll
+*.exe
+*.pdb
+*.zip
+*.7z
+*.rar
+*.nupkg
+
+bin/
+obj/
+.vs/
+packages/

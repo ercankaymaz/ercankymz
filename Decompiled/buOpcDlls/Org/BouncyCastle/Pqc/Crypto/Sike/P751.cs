@@ -1,0 +1,240 @@
+using System.Collections.Generic;
+using System.IO;
+using Org.BouncyCastle.Utilities.IO.Compression;
+
+namespace Org.BouncyCastle.Pqc.Crypto.Sike;
+
+internal class P751 : Internal
+{
+	internal P751(bool isCompressed)
+	{
+		COMPRESS = isCompressed;
+		CRYPTO_SECRETKEYBYTES = 644u;
+		CRYPTO_PUBLICKEYBYTES = 564u;
+		CRYPTO_BYTES = 32u;
+		CRYPTO_CIPHERTEXTBYTES = 596;
+		if (isCompressed)
+		{
+			CRYPTO_SECRETKEYBYTES = 602u;
+			CRYPTO_PUBLICKEYBYTES = 335u;
+			CRYPTO_CIPHERTEXTBYTES = 410;
+		}
+		NWORDS_FIELD = 12u;
+		PRIME_ZERO_WORDS = 5u;
+		NBITS_FIELD = 751u;
+		MAXBITS_FIELD = 768u;
+		MAXWORDS_FIELD = (MAXBITS_FIELD + Internal.RADIX - 1) / Internal.RADIX;
+		NWORDS64_FIELD = (NBITS_FIELD + 63) / 64;
+		NBITS_ORDER = 384u;
+		NWORDS_ORDER = (NBITS_ORDER + Internal.RADIX - 1) / Internal.RADIX;
+		NWORDS64_ORDER = (NBITS_ORDER + 63) / 64;
+		MAXBITS_ORDER = NBITS_ORDER;
+		ALICE = 0u;
+		BOB = 1u;
+		OALICE_BITS = 372u;
+		OBOB_BITS = 379u;
+		OBOB_EXPON = 239u;
+		MASK_ALICE = 15u;
+		MASK_BOB = 3u;
+		PARAM_A = 6u;
+		PARAM_C = 1u;
+		MAX_INT_POINTS_ALICE = 8u;
+		MAX_INT_POINTS_BOB = 10u;
+		MAX_Alice = 186u;
+		MAX_Bob = 239u;
+		MSG_BYTES = 32u;
+		SECRETKEY_A_BYTES = (OALICE_BITS + 7) / 8;
+		SECRETKEY_B_BYTES = (OBOB_BITS - 1 + 7) / 8;
+		FP2_ENCODED_BYTES = 2 * ((NBITS_FIELD + 7) / 8);
+		PRIME = new ulong[12]
+		{
+			18446744073709551615uL, 18446744073709551615uL, 18446744073709551615uL, 18446744073709551615uL, 18446744073709551615uL, 17199246976927924223uL, 16423667440329193640uL, 15750665808104639606uL, 598583372241692790uL, 9611443585101748040uL,
+			1014031881231588454uL, 123032916064028uL
+		};
+		PRIMEx2 = new ulong[12]
+		{
+			18446744073709551614uL, 18446744073709551615uL, 18446744073709551615uL, 18446744073709551615uL, 18446744073709551615uL, 15951749880146296831uL, 14400590806948835665uL, 13054587542499727597uL, 1197166744483385581uL, 776143096493944464uL,
+			2028063762463176909uL, 246065832128056uL
+		};
+		PRIMEx4 = new ulong[12]
+		{
+			18446744073709551612uL, 18446744073709551615uL, 18446744073709551615uL, 18446744073709551615uL, 18446744073709551615uL, 13456755686583042047uL, 10354437540188119715uL, 7662431011289903579uL, 2394333488966771163uL, 1552286192987888928uL,
+			4056127524926353818uL, 492131664256112uL
+		};
+		PRIMEp1 = new ulong[12]
+		{
+			0uL, 0uL, 0uL, 0uL, 0uL, 17199246976927924224uL, 16423667440329193640uL, 15750665808104639606uL, 598583372241692790uL, 9611443585101748040uL,
+			1014031881231588454uL, 123032916064028uL
+		};
+		PRIMEx16p = new ulong[24]
+		{
+			16uL, 0uL, 0uL, 0uL, 0uL, 3026418949592973312uL, 9398220047042800354uL, 12487528204518977827uL, 17738820235684933924uL, 6028454529806440190uL,
+			4444467948008272687uL, 6389925372342901886uL, 9183714343363691506uL, 5885816994991374139uL, 15511269745733968757uL, 6605506351970878676uL, 11826827898049043624uL, 2354645367770068943uL, 4229001520684072827uL, 8116152847571104894uL,
+			5904732737952813393uL, 12541849493931687641uL, 16092533092944000694uL, 13129340006uL
+		};
+		Alice_order = new ulong[6] { 0uL, 0uL, 0uL, 0uL, 0uL, 4503599627370496uL };
+		Bob_order = new ulong[6] { 14512942843351961323uL, 6463124234301828670uL, 16827274972312858025uL, 3121071280576823428uL, 2957168939937196118uL, 503942824198258913uL };
+		A_gen = new ulong[72]
+		{
+			9822147065185090216uL, 13425902357697129504uL, 13938563312470237261uL, 586935199814300635uL, 1231476659462315650uL, 15200349552625419408uL, 7720484030924475341uL, 10594672674827951252uL, 16258160073680417295uL, 9900115913593791836uL,
+			2594594101592586405uL, 16460334914570uL, 12589684371389518740uL, 12332659108360031092uL, 16510385560356170993uL, 9730777839585202459uL, 17903424488311508735uL, 5769280992065803964uL, 5532188670625076987uL, 16579944219273134793uL,
+			11273833143932675593uL, 14491979851476136262uL, 9207655709386969385uL, 36625983307955uL, 1122465274781142185uL, 8515870630345178839uL, 16522000615137270631uL, 10711565273514878189uL, 15314004285403374021uL, 4840703288083784924uL,
+			13590004812123635944uL, 12882217991877249059uL, 17191071062736800731uL, 8865126078528016748uL, 3693150086021936691uL, 36658777259884uL, 17077429180071124812uL, 18158079048006766323uL, 1672925350903708369uL, 13862967679991471090uL,
+			2382796300166624212uL, 13977248558483123863uL, 2278800419424555458uL, 118108782222142818uL, 1476285485934066847uL, 16034197662737970158uL, 2038060998052304781uL, 107394058694173uL, 1585483835096717809uL, 11931875557452383223uL,
+			7781638337591394101uL, 6664888135375272208uL, 2840823194606539793uL, 12795682130246575520uL, 2611282525231902794uL, 6070226513535983789uL, 14818409522906275305uL, 15252419596163003285uL, 7824800416788242299uL, 58455551134839uL,
+			11203073095899037416uL, 15794937577346159166uL, 2745271787383434087uL, 11641405899540905191uL, 10870594127288654381uL, 11105192472711036386uL, 14727745195886210467uL, 1375411507907286301uL, 14178291107140140658uL, 5435466916003927824uL,
+			8796316040578972826uL, 31328095521215uL
+		};
+		B_gen = new ulong[72]
+		{
+			9613244219595815052uL, 8392675302948378161uL, 9147551389475264226uL, 10681340829511687623uL, 1891166766906289442uL, 8726784965380087145uL, 278069042628663236uL, 321051512772386179uL, 4418794039415165171uL, 811238939992429693uL,
+			11875834369919409703uL, 56397746590099uL, 0uL, 0uL, 0uL, 0uL, 0uL, 0uL, 0uL, 0uL,
+			0uL, 0uL, 0uL, 0uL, 10267279138215760704uL, 15455480150741085920uL, 18292544765444947000uL, 601370936378187550uL, 15472156581712037259uL, 5596913087184264637uL,
+			5895422123728360424uL, 16546858821940167717uL, 10412066657013232056uL, 5132030994927125788uL, 3098590566816827475uL, 44009130331453uL, 0uL, 0uL, 0uL, 0uL,
+			0uL, 0uL, 0uL, 0uL, 0uL, 0uL, 0uL, 0uL, 13070667682173250844uL, 278885298517689489uL,
+			16120934674390684754uL, 12236545707274815619uL, 9611450916420723852uL, 2637748658071451261uL, 3544807444712948572uL, 16213618612546618337uL, 16912673257488186033uL, 13195093391319151071uL, 17886130922126146806uL, 59505860712722uL,
+			6397758586429206260uL, 9338639848856234571uL, 4403427314326644353uL, 10612695944165988144uL, 11149562808784569047uL, 16467442628418687666uL, 15521226430153318uL, 3328537178486072741uL, 17900197353359942647uL, 10368784128223943932uL,
+			18031568085834724987uL, 115645459333053uL
+		};
+		Montgomery_R2 = new ulong[12]
+		{
+			2535603850726686808uL, 15780896088201250090uL, 6788776303855402382uL, 17585428585582356230uL, 5274503137951975249uL, 2266259624764636289uL, 11695651972693921304uL, 13072885652150159301uL, 4908312795585420432uL, 6229583484603254826uL,
+			488927695601805643uL, 72213483953973uL
+		};
+		Montgomery_one = new ulong[12]
+		{
+			149933uL, 0uL, 0uL, 0uL, 0uL, 9444048418595930112uL, 6136068611055053926uL, 7599709743867700432uL, 14455912356952952366uL, 5522737203492907350uL,
+			1222606818372667369uL, 49869481633250uL
+		};
+		strat_Alice = new uint[185]
+		{
+			80u, 48u, 27u, 15u, 8u, 4u, 2u, 1u, 1u, 2u,
+			1u, 1u, 4u, 2u, 1u, 1u, 2u, 1u, 1u, 7u,
+			4u, 2u, 1u, 1u, 2u, 1u, 1u, 3u, 2u, 1u,
+			1u, 1u, 1u, 12u, 7u, 4u, 2u, 1u, 1u, 2u,
+			1u, 1u, 3u, 2u, 1u, 1u, 1u, 1u, 5u, 3u,
+			2u, 1u, 1u, 1u, 1u, 2u, 1u, 1u, 1u, 21u,
+			12u, 7u, 4u, 2u, 1u, 1u, 2u, 1u, 1u, 3u,
+			2u, 1u, 1u, 1u, 1u, 5u, 3u, 2u, 1u, 1u,
+			1u, 1u, 2u, 1u, 1u, 1u, 9u, 5u, 3u, 2u,
+			1u, 1u, 1u, 1u, 2u, 1u, 1u, 1u, 4u, 2u,
+			1u, 1u, 1u, 2u, 1u, 1u, 33u, 20u, 12u, 7u,
+			4u, 2u, 1u, 1u, 2u, 1u, 1u, 3u, 2u, 1u,
+			1u, 1u, 1u, 5u, 3u, 2u, 1u, 1u, 1u, 1u,
+			2u, 1u, 1u, 1u, 8u, 5u, 3u, 2u, 1u, 1u,
+			1u, 1u, 2u, 1u, 1u, 1u, 4u, 2u, 1u, 1u,
+			2u, 1u, 1u, 16u, 8u, 4u, 2u, 1u, 1u, 1u,
+			2u, 1u, 1u, 4u, 2u, 1u, 1u, 2u, 1u, 1u,
+			8u, 4u, 2u, 1u, 1u, 2u, 1u, 1u, 4u, 2u,
+			1u, 1u, 2u, 1u, 1u
+		};
+		strat_Bob = new uint[238]
+		{
+			112u, 63u, 32u, 16u, 8u, 4u, 2u, 1u, 1u, 2u,
+			1u, 1u, 4u, 2u, 1u, 1u, 2u, 1u, 1u, 8u,
+			4u, 2u, 1u, 1u, 2u, 1u, 1u, 4u, 2u, 1u,
+			1u, 2u, 1u, 1u, 16u, 8u, 4u, 2u, 1u, 1u,
+			2u, 1u, 1u, 4u, 2u, 1u, 1u, 2u, 1u, 1u,
+			8u, 4u, 2u, 1u, 1u, 2u, 1u, 1u, 4u, 2u,
+			1u, 1u, 2u, 1u, 1u, 31u, 16u, 8u, 4u, 2u,
+			1u, 1u, 2u, 1u, 1u, 4u, 2u, 1u, 1u, 2u,
+			1u, 1u, 8u, 4u, 2u, 1u, 1u, 2u, 1u, 1u,
+			4u, 2u, 1u, 1u, 2u, 1u, 1u, 15u, 8u, 4u,
+			2u, 1u, 1u, 2u, 1u, 1u, 4u, 2u, 1u, 1u,
+			2u, 1u, 1u, 7u, 4u, 2u, 1u, 1u, 2u, 1u,
+			1u, 3u, 2u, 1u, 1u, 1u, 1u, 49u, 31u, 16u,
+			8u, 4u, 2u, 1u, 1u, 2u, 1u, 1u, 4u, 2u,
+			1u, 1u, 2u, 1u, 1u, 8u, 4u, 2u, 1u, 1u,
+			2u, 1u, 1u, 4u, 2u, 1u, 1u, 2u, 1u, 1u,
+			15u, 8u, 4u, 2u, 1u, 1u, 2u, 1u, 1u, 4u,
+			2u, 1u, 1u, 2u, 1u, 1u, 7u, 4u, 2u, 1u,
+			1u, 2u, 1u, 1u, 3u, 2u, 1u, 1u, 1u, 1u,
+			21u, 12u, 8u, 4u, 2u, 1u, 1u, 2u, 1u, 1u,
+			4u, 2u, 1u, 1u, 2u, 1u, 1u, 5u, 3u, 2u,
+			1u, 1u, 1u, 1u, 2u, 1u, 1u, 1u, 9u, 5u,
+			3u, 2u, 1u, 1u, 1u, 1u, 2u, 1u, 1u, 1u,
+			4u, 2u, 1u, 1u, 1u, 2u, 1u, 1u
+		};
+		if (!COMPRESS)
+		{
+			return;
+		}
+		MASK2_BOB = 0u;
+		MASK3_BOB = 255u;
+		ORDER_A_ENCODED_BYTES = SECRETKEY_A_BYTES;
+		ORDER_B_ENCODED_BYTES = SECRETKEY_B_BYTES;
+		PARTIALLY_COMPRESSED_CHUNK_CT = 4 * ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 2;
+		COMPRESSED_CHUNK_CT = 3 * ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 2;
+		UNCOMPRESSEDPK_BYTES = 564u;
+		TABLE_R_LEN = 17u;
+		TABLE_V_LEN = 34u;
+		TABLE_V3_LEN = 20u;
+		W_2 = 4u;
+		W_3 = 3u;
+		ELL2_W = (uint)(1 << (int)W_2);
+		ELL3_W = 27u;
+		ELL2_EMODW = (uint)(1 << (int)(OALICE_BITS % W_2));
+		ELL3_EMODW = 9u;
+		DLEN_2 = (OALICE_BITS + W_2 - 1) / W_2;
+		DLEN_3 = (OBOB_EXPON + W_3 - 1) / W_3;
+		PLEN_2 = 94u;
+		PLEN_3 = 81u;
+		Dictionary<string, string> dictionary = new Dictionary<string, string>();
+		using (Stream stream = typeof(P751).Assembly.GetManifestResourceStream("Org.BouncyCastle.pqc.crypto.sike.p751.bz2"))
+		{
+			using StreamReader streamReader = new StreamReader(Bzip2.DecompressInput(stream));
+			string text = streamReader.ReadLine();
+			int num = 0;
+			while (text != null)
+			{
+				string text2 = text;
+				if (text2 != "")
+				{
+					if (num > 1)
+					{
+						text2 = text2.Replace(",", "");
+					}
+					int num2 = text2.IndexOf('=');
+					string key = text2.Substring(0, num2).Trim();
+					string value = text2.Substring(num2 + 1).Trim();
+					dictionary.Add(key, value);
+				}
+				text = streamReader.ReadLine();
+				num++;
+			}
+		}
+		ph2_path = Internal.ReadIntsFromProperty(dictionary, "ph2_path", PLEN_2);
+		ph3_path = Internal.ReadIntsFromProperty(dictionary, "ph3_path", PLEN_3);
+		A_gen = Internal.ReadFromProperty(dictionary, "A_gen", 6 * NWORDS64_FIELD);
+		B_gen = Internal.ReadFromProperty(dictionary, "B_gen", 6 * NWORDS64_FIELD);
+		XQB3 = Internal.ReadFromProperty(dictionary, "XQB3", 2 * NWORDS64_FIELD);
+		A_basis_zero = Internal.ReadFromProperty(dictionary, "A_basis_zero", 8 * NWORDS64_FIELD);
+		B_basis_zero = Internal.ReadFromProperty(dictionary, "B_basis_zero", 8 * NWORDS64_FIELD);
+		B_gen_3_tors = Internal.ReadFromProperty(dictionary, "B_gen_3_tors", 16 * NWORDS64_FIELD);
+		g_R_S_im = Internal.ReadFromProperty(dictionary, "g_R_S_im", NWORDS64_FIELD);
+		Montgomery_R2 = Internal.ReadFromProperty(dictionary, "Montgomery_R2", NWORDS64_FIELD);
+		Montgomery_RB1 = Internal.ReadFromProperty(dictionary, "Montgomery_RB1", NWORDS64_FIELD);
+		Montgomery_RB2 = Internal.ReadFromProperty(dictionary, "Montgomery_RB2", NWORDS64_FIELD);
+		Montgomery_one = Internal.ReadFromProperty(dictionary, "Montgomery_one", NWORDS64_FIELD);
+		threeinv = Internal.ReadFromProperty(dictionary, "threeinv", NWORDS64_FIELD);
+		u_entang = Internal.ReadFromProperty(dictionary, "u_entang", 2 * NWORDS64_FIELD);
+		u0_entang = Internal.ReadFromProperty(dictionary, "u0_entang", 2 * NWORDS64_FIELD);
+		table_r_qr = Internal.ReadFromProperty(dictionary, "table_r_qr", TABLE_R_LEN, NWORDS64_FIELD);
+		table_r_qnr = Internal.ReadFromProperty(dictionary, "table_r_qnr", TABLE_R_LEN, NWORDS64_FIELD);
+		table_v_qr = Internal.ReadFromProperty(dictionary, "table_v_qr", TABLE_V_LEN, NWORDS64_FIELD);
+		table_v_qnr = Internal.ReadFromProperty(dictionary, "table_v_qnr", TABLE_V_LEN, NWORDS64_FIELD);
+		v_3_torsion = Internal.ReadFromProperty(dictionary, "v_3_torsion", TABLE_V3_LEN, 2u, NWORDS64_FIELD);
+		T_tate3 = Internal.ReadFromProperty(dictionary, "T_tate3", (6 * (OBOB_EXPON - 1) + 4) * NWORDS64_FIELD);
+		T_tate2_firststep_P = Internal.ReadFromProperty(dictionary, "T_tate2_firststep_P", 4 * NWORDS64_FIELD);
+		T_tate2_P = Internal.ReadFromProperty(dictionary, "T_tate2_P", 3 * (OALICE_BITS - 2) * NWORDS64_FIELD);
+		T_tate2_firststep_Q = Internal.ReadFromProperty(dictionary, "T_tate2_firststep_Q", 4 * NWORDS64_FIELD);
+		T_tate2_Q = Internal.ReadFromProperty(dictionary, "T_tate2_Q", 3 * (OALICE_BITS - 2) * NWORDS64_FIELD);
+		ph2_T = Internal.ReadFromProperty(dictionary, "ph2_T", DLEN_2 * (ELL2_W >> 1) * 2 * NWORDS64_FIELD);
+		ph3_T1 = Internal.ReadFromProperty(dictionary, "ph3_T1", DLEN_3 * (ELL3_W >> 1) * 2 * NWORDS64_FIELD);
+		ph3_T2 = Internal.ReadFromProperty(dictionary, "ph3_T2", DLEN_3 * (ELL3_W >> 1) * 2 * NWORDS64_FIELD);
+		Montgomery_R = new ulong[NWORDS64_FIELD];
+		ph2_T1 = new ulong[2 * ((DLEN_2 - 1) * (ELL2_W / 2) + (ph2_path[PLEN_2 - 1] - 1))];
+		ph2_T2 = new ulong[2 * ((DLEN_2 - 1) * (ELL2_W / 2) + (ph2_path[PLEN_2 - 1] - 1))];
+		ph3_T = new ulong[DLEN_3 * (ELL3_W >> 1) * 2 * NWORDS64_FIELD];
+	}
+}

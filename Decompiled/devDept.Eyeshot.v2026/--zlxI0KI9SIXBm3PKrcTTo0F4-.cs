@@ -1,0 +1,10 @@
+internal class _0023_003DzlxI0KI9SIXBm3PKrcTTo0F4_003D
+{
+	public char _0023_003DzEKSHIVc_003D;
+
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003DzZbOaTIM_003D;
+
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003DzCGTSeY0_003D;
+
+	public double _0023_003DzVvkLpZU_003D;
+}

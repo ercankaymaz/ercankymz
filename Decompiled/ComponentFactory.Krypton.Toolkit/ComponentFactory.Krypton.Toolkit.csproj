@@ -1,0 +1,123 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>ComponentFactory.Krypton.Toolkit</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net40</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTreeView.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonInputBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTaskDialogCommand.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTaskDialog.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonMessageBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTrackBar.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonManager.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonHeaderGroup.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonGroup.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonHeader.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonPanel.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonLabel.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonPalette.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonSplitContainer.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckSet.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonBorderEdge.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonGroupBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonWrapLabel.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonSeparator.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDateTimePicker.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonMonthCalendar.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonBreadCrumbItem.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDomainUpDown.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonBreadCrumb.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonNumericUpDown.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuImageSelect.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCommand.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckedListBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonListBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonColorButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDropButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuColorColumns.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonMaskedTextBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuItem.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuItems.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuSeparator.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuHeading.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenu.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonRichTextBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonComboBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTextBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDataGridView.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonRadioButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonButtonSpec.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonGroupPanel.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonForm.bmp" />
+    <None Remove="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonLinkLabel.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTreeView.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTreeView.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonInputBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonInputBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTaskDialogCommand.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTaskDialogCommand.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTaskDialog.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTaskDialog.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonMessageBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonMessageBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTrackBar.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTrackBar.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonManager.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonManager.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonHeaderGroup.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonHeaderGroup.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonButton.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonGroup.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonGroup.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonHeader.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonHeader.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonPanel.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonPanel.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonLabel.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonLabel.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonPalette.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonPalette.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonSplitContainer.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonSplitContainer.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckButton.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckSet.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckSet.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonBorderEdge.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonBorderEdge.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonGroupBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonGroupBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonWrapLabel.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonWrapLabel.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonSeparator.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonSeparator.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDateTimePicker.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDateTimePicker.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonMonthCalendar.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonMonthCalendar.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonBreadCrumbItem.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonBreadCrumbItem.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDomainUpDown.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDomainUpDown.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonBreadCrumb.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonBreadCrumb.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonNumericUpDown.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonNumericUpDown.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuImageSelect.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuImageSelect.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCommand.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCommand.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckedListBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckedListBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonListBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonListBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonColorButton.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonColorButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDropButton.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDropButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuColorColumns.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuColorColumns.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonMaskedTextBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonMaskedTextBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuItem.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuItem.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuItems.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuItems.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuSeparator.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuSeparator.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuHeading.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenuHeading.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenu.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonContextMenu.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonRichTextBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonRichTextBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonComboBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonComboBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTextBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonTextBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDataGridView.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonDataGridView.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonRadioButton.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonRadioButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckBox.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonCheckBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonButtonSpec.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonButtonSpec.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonGroupPanel.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonGroupPanel.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonForm.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonForm.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonLinkLabel.bmp" LogicalName="ComponentFactory.Krypton.Toolkit.ToolboxBitmaps.KryptonLinkLabel.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Design" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+</Project>

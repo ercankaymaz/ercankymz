@@ -1,0 +1,40 @@
+using System;
+
+internal sealed class _0023_003Dq5Kh1KFPacGgmvXUmsZ8pdYe_00247qav8fqJrDmEOfGvalg_003D : _0023_003DqQ6UyaJUbdMWx9XeEXjd_0024_0024moFNSbcLywtyRILEay3coI_003D
+{
+	private _0023_003Dq9o_OPfa_DuRpdjQlVA0aikQBglJvnKXy_XHJM32RhTg_003D _0023_003Dzq80RbjQ_003D;
+
+	public _0023_003Dq5Kh1KFPacGgmvXUmsZ8pdYe_00247qav8fqJrDmEOfGvalg_003D()
+		: base(2)
+	{
+	}
+
+	public _0023_003Dq9o_OPfa_DuRpdjQlVA0aikQBglJvnKXy_XHJM32RhTg_003D _0023_003Dzsg16MNLOFrIol9kAkfDFT25y5dmq()
+	{
+		return _0023_003Dzq80RbjQ_003D;
+	}
+
+	public void _0023_003DzzYzgkSraKLDKGhNE6_isGLbZYUM4(_0023_003Dq9o_OPfa_DuRpdjQlVA0aikQBglJvnKXy_XHJM32RhTg_003D _0023_003Dzq80RbjQ_003D)
+	{
+		this._0023_003Dzq80RbjQ_003D = _0023_003Dzq80RbjQ_003D;
+	}
+
+	public override _0023_003Dq9o_OPfa_DuRpdjQlVA0aikQBglJvnKXy_XHJM32RhTg_003D _0023_003DzyXuMCKr5ollRSyGP77LhpIxltxI6fJCPk09Wc78CZkM1QMvfaSf1BHT_0TwgWPUF6hom1_0iwKoV7BcTFQ_003D_003D(_0023_003Dq9o_OPfa_DuRpdjQlVA0aikQBglJvnKXy_XHJM32RhTg_003D _0023_003Dzq80RbjQ_003D)
+	{
+		_0023_003Dz05CWvVBsjB3cxobQmNkHCwE5n_QA(_0023_003Dzq80RbjQ_003D._0023_003Dzf66g2pe9JoHb867POLaHUYc_003D());
+		if (_0023_003Dzq80RbjQ_003D._0023_003DzSc9BEm4yQ0_0024Kknkei2yM1sP76Bdbuq2mN_f70WU_003D() == 2)
+		{
+			_0023_003DzzYzgkSraKLDKGhNE6_isGLbZYUM4(((_0023_003Dq5Kh1KFPacGgmvXUmsZ8pdYe_00247qav8fqJrDmEOfGvalg_003D)_0023_003Dzq80RbjQ_003D)._0023_003Dzsg16MNLOFrIol9kAkfDFT25y5dmq());
+			return this;
+		}
+		throw new ArgumentOutOfRangeException();
+	}
+
+	public override _0023_003Dq9o_OPfa_DuRpdjQlVA0aikQBglJvnKXy_XHJM32RhTg_003D _0023_003Dz048eNPCCLNNmZFIiW7pSmsLry714y0ieZoaY0obA2vjaWKhL_0024Ft9HlWoFrDEcPmBFkeHbqme9OIi()
+	{
+		_0023_003Dq5Kh1KFPacGgmvXUmsZ8pdYe_00247qav8fqJrDmEOfGvalg_003D obj = new _0023_003Dq5Kh1KFPacGgmvXUmsZ8pdYe_00247qav8fqJrDmEOfGvalg_003D();
+		obj._0023_003DzzYzgkSraKLDKGhNE6_isGLbZYUM4(_0023_003Dzsg16MNLOFrIol9kAkfDFT25y5dmq());
+		obj._0023_003Dz05CWvVBsjB3cxobQmNkHCwE5n_QA(_0023_003Dzf66g2pe9JoHb867POLaHUYc_003D());
+		return obj;
+	}
+}

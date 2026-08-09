@@ -1,0 +1,50 @@
+using System;
+
+internal sealed class _0023_003DzntKPXmU_SFh7iBgnO2un5k3niitxK1gUn9Tp9Jk_003D
+{
+	private int _0023_003DzNaAhXSlB_0024QT8;
+
+	private int _0023_003DzEfCxfUNyj9HQ;
+
+	private int _0023_003Dzaml3swo_003D;
+
+	private long _0023_003Dzu_0024BV_boJlVng5lSSBA_003D_003D;
+
+	public _0023_003DzntKPXmU_SFh7iBgnO2un5k3niitxK1gUn9Tp9Jk_003D(int _0023_003Dzf5hu_38_003D, int _0023_003DzQRMV62AXh5Ks, int _0023_003Dz5ClDkrA_003D, long _0023_003DzS5Zl0kavL07jDLzhIA_003D_003D)
+	{
+		_0023_003DzNaAhXSlB_0024QT8 = _0023_003Dzf5hu_38_003D;
+		_0023_003DzEfCxfUNyj9HQ = _0023_003DzQRMV62AXh5Ks;
+		_0023_003Dzaml3swo_003D = _0023_003Dz5ClDkrA_003D;
+		_0023_003Dzu_0024BV_boJlVng5lSSBA_003D_003D = _0023_003DzS5Zl0kavL07jDLzhIA_003D_003D;
+	}
+
+	public virtual int _0023_003DzMZORT0_wD2iU()
+	{
+		return _0023_003DzNaAhXSlB_0024QT8;
+	}
+
+	public virtual _0023_003DzntKPXmU_SFh7iBgnO2un5k3niitxK1gUn9Tp9Jk_003D _0023_003Dzl_0024kBRC0_003D()
+	{
+		return new _0023_003DzntKPXmU_SFh7iBgnO2un5k3niitxK1gUn9Tp9Jk_003D(_0023_003DzNaAhXSlB_0024QT8, _0023_003DzEfCxfUNyj9HQ, _0023_003Dzaml3swo_003D, _0023_003Dzu_0024BV_boJlVng5lSSBA_003D_003D);
+	}
+
+	public static _0023_003DzntKPXmU_SFh7iBgnO2un5k3niitxK1gUn9Tp9Jk_003D _0023_003DzuuY9lIM_003D(_0023_003Dz1k8g79YtmFbIePcxbICwvq0f_Fuo9R7q0g_003D_003D _0023_003DzEP3lrAc_003D)
+	{
+		_0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH8 _0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9 = _0023_003DzEP3lrAc_003D._0023_003DzpFQU3MrOxdf3();
+		int _0023_003Dzf5hu_38_003D = _0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003Dzmf8mDHW8MUJO();
+		int num = -1;
+		if ((double)_0023_003DzEP3lrAc_003D._0023_003DzxS4fhlkxDQAJ() >= 9.0)
+		{
+			num = _0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003DzYeSlt_NVa_00248u();
+			if (num != 1)
+			{
+				throw new ArgumentException(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302935043) + num);
+			}
+			if ((double)_0023_003DzEP3lrAc_003D._0023_003DzxS4fhlkxDQAJ() < 9.5)
+			{
+				_0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003Dzx_sdUG0Jm7Dk(2);
+			}
+		}
+		return new _0023_003DzntKPXmU_SFh7iBgnO2un5k3niitxK1gUn9Tp9Jk_003D(_0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003Dzm7mcmeeaNf5j(), _0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003DzvI_0024VUB8xYlas(), _0023_003Dzf5hu_38_003D, num);
+	}
+}

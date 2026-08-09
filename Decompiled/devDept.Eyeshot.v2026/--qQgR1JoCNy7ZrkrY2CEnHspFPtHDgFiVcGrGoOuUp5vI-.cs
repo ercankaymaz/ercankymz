@@ -1,0 +1,6 @@
+using System;
+
+[_0023_003Dqi8YNSAnTImltsLBegHZ980SB7t_00241v1JGbE3zuSYcZ2U_003D]
+internal sealed class _0023_003DqQgR1JoCNy7ZrkrY2CEnHspFPtHDgFiVcGrGoOuUp5vI_003D : Attribute
+{
+}

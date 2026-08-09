@@ -1,0 +1,136 @@
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+
+namespace System.Text.Json.Serialization.Metadata;
+
+internal sealed class ReflectionMemberAccessor : MemberAccessor
+{
+	[RequiresDynamicCode("JSON serialization and deserialization might require types that cannot be statically analyzed and might need runtime code generation. Use System.Text.Json source generation for native AOT applications.")]
+	[RequiresUnreferencedCode("JSON serialization and deserialization might require types that cannot be statically analyzed and might need runtime code generation. Use System.Text.Json source generation for native AOT applications.")]
+	public ReflectionMemberAccessor()
+	{
+	}
+
+	[UnconditionalSuppressMessage("Trimming", "IL2067:Target parameter argument does not satisfy 'DynamicallyAccessedMembersAttribute' in call to target method. The parameter of method does not have matching annotations.", Justification = "The constructor has been marked RequiresUnreferencedCode")]
+	public override Func<object> CreateParameterlessConstructor(Type type, ConstructorInfo ctorInfo)
+	{
+		if (type.IsAbstract)
+		{
+			return null;
+		}
+		if ((object)ctorInfo == null)
+		{
+			if (!type.IsValueType)
+			{
+				return null;
+			}
+			return () => Activator.CreateInstance(type, nonPublic: false);
+		}
+		return () => ctorInfo.Invoke(null);
+	}
+
+	public override Func<object[], T> CreateParameterizedConstructor<T>(ConstructorInfo constructor)
+	{
+		int parameterCount = constructor.GetParameters().Length;
+		return delegate(object[] arguments)
+		{
+			object[] array = new object[parameterCount];
+			for (int i = 0; i < parameterCount; i++)
+			{
+				array[i] = arguments[i];
+			}
+			try
+			{
+				return (T)constructor.Invoke(array);
+			}
+			catch (TargetInvocationException ex)
+			{
+				throw ex.InnerException ?? ex;
+			}
+		};
+	}
+
+	public override JsonTypeInfo.ParameterizedConstructorDelegate<T, TArg0, TArg1, TArg2, TArg3> CreateParameterizedConstructor<T, TArg0, TArg1, TArg2, TArg3>(ConstructorInfo constructor)
+	{
+		int parameterCount = constructor.GetParameters().Length;
+		return delegate(TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3)
+		{
+			object[] array = new object[parameterCount];
+			for (int i = 0; i < parameterCount; i++)
+			{
+				switch (i)
+				{
+				case 0:
+					array[0] = arg0;
+					break;
+				case 1:
+					array[1] = arg1;
+					break;
+				case 2:
+					array[2] = arg2;
+					break;
+				case 3:
+					array[3] = arg3;
+					break;
+				default:
+					throw new InvalidOperationException();
+				}
+			}
+			return (T)constructor.Invoke(array);
+		};
+	}
+
+	public override Action<TCollection, object> CreateAddMethodDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods)] TCollection>()
+	{
+		Type typeFromHandle = typeof(TCollection);
+		_ = JsonTypeInfo.ObjectType;
+		MethodInfo addMethod = typeFromHandle.GetMethod("Push") ?? typeFromHandle.GetMethod("Enqueue");
+		return delegate(TCollection collection, object element)
+		{
+			addMethod.Invoke(collection, new object[1] { element });
+		};
+	}
+
+	[UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "The constructor has been marked RequiresUnreferencedCode")]
+	[UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "The constructor has been marked RequiresDynamicCode")]
+	public override Func<IEnumerable<TElement>, TCollection> CreateImmutableEnumerableCreateRangeDelegate<TCollection, TElement>()
+	{
+		return (Func<IEnumerable<TElement>, TCollection>)typeof(TCollection).GetImmutableEnumerableCreateRangeMethod(typeof(TElement)).CreateDelegate(typeof(Func<IEnumerable<TElement>, TCollection>));
+	}
+
+	[UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "The constructor has been marked RequiresUnreferencedCode")]
+	[UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "The constructor has been marked RequiresDynamicCode")]
+	public override Func<IEnumerable<KeyValuePair<TKey, TValue>>, TCollection> CreateImmutableDictionaryCreateRangeDelegate<TCollection, TKey, TValue>()
+	{
+		return (Func<IEnumerable<KeyValuePair<TKey, TValue>>, TCollection>)typeof(TCollection).GetImmutableDictionaryCreateRangeMethod(typeof(TKey), typeof(TValue)).CreateDelegate(typeof(Func<IEnumerable<KeyValuePair<TKey, TValue>>, TCollection>));
+	}
+
+	public override Func<object, TProperty> CreatePropertyGetter<TProperty>(PropertyInfo propertyInfo)
+	{
+		MethodInfo getMethodInfo = propertyInfo.GetMethod;
+		return (object obj) => (TProperty)getMethodInfo.Invoke(obj, null);
+	}
+
+	public override Action<object, TProperty> CreatePropertySetter<TProperty>(PropertyInfo propertyInfo)
+	{
+		MethodInfo setMethodInfo = propertyInfo.SetMethod;
+		return delegate(object obj, TProperty value)
+		{
+			setMethodInfo.Invoke(obj, new object[1] { value });
+		};
+	}
+
+	public override Func<object, TProperty> CreateFieldGetter<TProperty>(FieldInfo fieldInfo)
+	{
+		return (object obj) => (TProperty)fieldInfo.GetValue(obj);
+	}
+
+	public override Action<object, TProperty> CreateFieldSetter<TProperty>(FieldInfo fieldInfo)
+	{
+		return delegate(object obj, TProperty value)
+		{
+			fieldInfo.SetValue(obj, value);
+		};
+	}
+}

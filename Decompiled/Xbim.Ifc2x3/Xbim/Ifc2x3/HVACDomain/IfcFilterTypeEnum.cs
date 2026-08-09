@@ -1,0 +1,12 @@
+namespace Xbim.Ifc2x3.HVACDomain;
+
+public enum IfcFilterTypeEnum : byte
+{
+	AIRPARTICLEFILTER,
+	ODORFILTER,
+	OILFILTER,
+	STRAINER,
+	WATERFILTER,
+	USERDEFINED,
+	NOTDEFINED
+}

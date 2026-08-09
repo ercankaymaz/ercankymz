@@ -1,0 +1,61 @@
+using System;
+using System.Runtime.CompilerServices;
+
+internal sealed class _0023_003Dz6aZVluM0HoQZHUo9pw_003D_003D : _0023_003DzZlxBDckOvvWbf2obvg_003D_003D, _0023_003DzjSZsgkNJEO4TqLsFoQ_003D_003D
+{
+	private _0023_003Dzs2pGYRHYf_0024Yyb009_Q_003D_003D _0023_003DzmIbTkD8_003D;
+
+	private _0023_003Dzs2pGYRHYf_0024Yyb009_Q_003D_003D _0023_003DzffqPLNQ_003D;
+
+	private int _0023_003Dz7uX3t_0024g_003D;
+
+	public _0023_003Dz6aZVluM0HoQZHUo9pw_003D_003D(_0023_003Dzs2pGYRHYf_0024Yyb009_Q_003D_003D _0023_003DzmIbTkD8_003D, _0023_003Dzs2pGYRHYf_0024Yyb009_Q_003D_003D _0023_003DzffqPLNQ_003D)
+		: this(_0023_003DzmIbTkD8_003D, _0023_003DzffqPLNQ_003D, 0)
+	{
+	}
+
+	public _0023_003Dz6aZVluM0HoQZHUo9pw_003D_003D(_0023_003Dzs2pGYRHYf_0024Yyb009_Q_003D_003D _0023_003DzmIbTkD8_003D, _0023_003Dzs2pGYRHYf_0024Yyb009_Q_003D_003D _0023_003DzffqPLNQ_003D, int _0023_003Dz7uX3t_0024g_003D)
+	{
+		this._0023_003DzmIbTkD8_003D = _0023_003DzmIbTkD8_003D;
+		this._0023_003DzffqPLNQ_003D = _0023_003DzffqPLNQ_003D;
+		this._0023_003Dz7uX3t_0024g_003D = _0023_003Dz7uX3t_0024g_003D;
+	}
+
+	[SpecialName]
+	public int _0023_003Dz8F8_002454umdoK7()
+	{
+		return _0023_003Dz7uX3t_0024g_003D;
+	}
+
+	public void _0023_003DzebfWBK1CW3R8(int _0023_003DzPzO_0024GUk_003D)
+	{
+		_0023_003Dz7uX3t_0024g_003D = _0023_003DzPzO_0024GUk_003D;
+	}
+
+	[SpecialName]
+	public int _0023_003DzUETs27sA9vaD()
+	{
+		return _0023_003DzmIbTkD8_003D._0023_003Dz2QVVx8s_003D;
+	}
+
+	[SpecialName]
+	public int _0023_003DzVic4_DuBdM_0024t()
+	{
+		return _0023_003DzffqPLNQ_003D._0023_003Dz2QVVx8s_003D;
+	}
+
+	public _0023_003Dzs2pGYRHYf_0024Yyb009_Q_003D_003D _0023_003DzlowB12I_003D(int _0023_003DzyzK8swU_003D)
+	{
+		return _0023_003DzyzK8swU_003D switch
+		{
+			0 => _0023_003DzmIbTkD8_003D, 
+			1 => _0023_003DzffqPLNQ_003D, 
+			_ => throw new IndexOutOfRangeException(), 
+		};
+	}
+
+	public _0023_003Dz8HH5LuV8BsqKJ6xMrg_003D_003D _0023_003DzPq45nGk_003D(int _0023_003DzyzK8swU_003D)
+	{
+		throw new NotImplementedException();
+	}
+}

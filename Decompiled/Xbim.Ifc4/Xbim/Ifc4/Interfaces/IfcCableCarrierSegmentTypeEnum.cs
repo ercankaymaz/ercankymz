@@ -1,0 +1,11 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcCableCarrierSegmentTypeEnum : byte
+{
+	CABLELADDERSEGMENT,
+	CABLETRAYSEGMENT,
+	CABLETRUNKINGSEGMENT,
+	CONDUITSEGMENT,
+	USERDEFINED,
+	NOTDEFINED
+}

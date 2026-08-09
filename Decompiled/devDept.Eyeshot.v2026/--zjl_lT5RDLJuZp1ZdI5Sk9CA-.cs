@@ -1,0 +1,78 @@
+using System.Collections.Generic;
+
+internal sealed class _0023_003Dzjl_lT5RDLJuZp1ZdI5Sk9CA_003D : _0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D
+{
+	private int _0023_003DzQmYIamt6wOkL;
+
+	internal _0023_003DzemlTiYWC36sO_0024NbVtg_003D_003D _0023_003Dz4h89SpjJsmqnhfZLgQ_003D_003D;
+
+	internal _0023_003DzBkRUjdfBubiQ6AtzDJO3GqP0hamB _0023_003Dzvf4IVQQf9FW4VgFctK_3Hi4_003D;
+
+	internal _0023_003DzWeLcFNnq3Jd9ST_rNz_diLr6zZy4 _0023_003DzZ3QlhPdVqw9why6QP68y2y0_003D;
+
+	internal _0023_003Dzjl_lT5RDLJuZp1ZdI5Sk9CA_003D(int _0023_003DzkXQ_IWk_003D, string _0023_003DzY4oh8qo_003D, string _0023_003DzPzO_0024GUk_003D, Dictionary<int, _0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D> _0023_003Dz9UNAzE0_003D, ref int _0023_003DzJjVQTzpKI4Ni, bool _0023_003Dzm4CSmX5Y3o6Q)
+		: base(_0023_003DzkXQ_IWk_003D, _0023_003DzY4oh8qo_003D, _0023_003DzPzO_0024GUk_003D, _0023_003Dz9UNAzE0_003D, ref _0023_003DzJjVQTzpKI4Ni, _0023_003Dzm4CSmX5Y3o6Q)
+	{
+		_0023_003DzQmYIamt6wOkL = -1;
+		_0023_003Dz4h89SpjJsmqnhfZLgQ_003D_003D = null;
+		_0023_003Dzvf4IVQQf9FW4VgFctK_3Hi4_003D = null;
+		_0023_003DzZ3QlhPdVqw9why6QP68y2y0_003D = null;
+		_0023_003Dz9GKXKtrg_0024MPY(_0023_003Dz9UNAzE0_003D, _0023_003Dzm4CSmX5Y3o6Q);
+	}
+
+	internal override void _0023_003Dz9GKXKtrg_0024MPY(Dictionary<int, _0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D> _0023_003Dz9UNAzE0_003D, bool _0023_003Dzm4CSmX5Y3o6Q)
+	{
+		_0023_003DzpXqcGaz7sKJt = false;
+		switch (_0023_003Dz7duJoMQ_003D)
+		{
+		case (_0023_003DzyPjMV3hYmPOOmhGI9w_003D_003D)0:
+		{
+			string _0023_003Dz7TFjJCU_003D = _0023_003DziHtkvmE_003D;
+			string _0023_003DzgPsOl1A_003D = string.Empty;
+			int result = -1;
+			int result2 = -1;
+			_0023_003Dz0cCjg9B5UMsA._0023_003DzBOy9x2E_003D(ref _0023_003Dz7TFjJCU_003D, ref _0023_003DzgPsOl1A_003D);
+			_0023_003Dz0cCjg9B5UMsA._0023_003DzohBaW6OtXTjN(ref _0023_003Dz7TFjJCU_003D, ref _0023_003DzgPsOl1A_003D);
+			_0023_003DzgPsOl1A_003D = _0023_003DzgPsOl1A_003D.Trim();
+			_0023_003DzgPsOl1A_003D = _0023_003DzgPsOl1A_003D.Remove(0, 1);
+			int.TryParse(_0023_003DzgPsOl1A_003D, out result);
+			_0023_003DzQmYIamt6wOkL = result;
+			if (_0023_003DzQmYIamt6wOkL == 0)
+			{
+				_0023_003Dz0cCjg9B5UMsA._0023_003DzohBaW6OtXTjN(ref _0023_003Dz7TFjJCU_003D, ref _0023_003DzgPsOl1A_003D);
+				_0023_003DzgPsOl1A_003D = _0023_003Dz7TFjJCU_003D.Trim();
+				_0023_003DzgPsOl1A_003D = _0023_003Dz7TFjJCU_003D.Remove(0, 1);
+				int.TryParse(_0023_003DzgPsOl1A_003D, out result2);
+				_0023_003DzQmYIamt6wOkL = result2;
+			}
+			_0023_003DzpXqcGaz7sKJt = false;
+			_0023_003Dz7duJoMQ_003D = (_0023_003DzyPjMV3hYmPOOmhGI9w_003D_003D)1;
+			break;
+		}
+		case (_0023_003DzyPjMV3hYmPOOmhGI9w_003D_003D)1:
+		{
+			_0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D _0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D2 = _0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D._0023_003Dzi25acTKdSsWw(_0023_003DzQmYIamt6wOkL, _0023_003Dz9UNAzE0_003D);
+			if (_0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D2.GetType() == typeof(_0023_003DzemlTiYWC36sO_0024NbVtg_003D_003D))
+			{
+				_0023_003Dz4h89SpjJsmqnhfZLgQ_003D_003D = _0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D._0023_003Dzi25acTKdSsWw(_0023_003DzQmYIamt6wOkL, _0023_003Dz9UNAzE0_003D) as _0023_003DzemlTiYWC36sO_0024NbVtg_003D_003D;
+				_0023_003Dzvf4IVQQf9FW4VgFctK_3Hi4_003D = null;
+			}
+			else if (_0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D2.GetType() == typeof(_0023_003DzWeLcFNnq3Jd9ST_rNz_diLr6zZy4))
+			{
+				_0023_003DzZ3QlhPdVqw9why6QP68y2y0_003D = _0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D._0023_003Dzi25acTKdSsWw(_0023_003DzQmYIamt6wOkL, _0023_003Dz9UNAzE0_003D) as _0023_003DzWeLcFNnq3Jd9ST_rNz_diLr6zZy4;
+				_0023_003Dz4h89SpjJsmqnhfZLgQ_003D_003D = null;
+				_0023_003Dzvf4IVQQf9FW4VgFctK_3Hi4_003D = null;
+			}
+			else if (_0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D2.GetType() == typeof(_0023_003DzBkRUjdfBubiQ6AtzDJO3GqP0hamB))
+			{
+				_0023_003Dzvf4IVQQf9FW4VgFctK_3Hi4_003D = _0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D._0023_003Dzi25acTKdSsWw(_0023_003DzQmYIamt6wOkL, _0023_003Dz9UNAzE0_003D) as _0023_003DzBkRUjdfBubiQ6AtzDJO3GqP0hamB;
+				_0023_003Dz4h89SpjJsmqnhfZLgQ_003D_003D = null;
+			}
+			break;
+		}
+		case (_0023_003DzyPjMV3hYmPOOmhGI9w_003D_003D)2:
+			_0023_003DzpXqcGaz7sKJt = true;
+			break;
+		}
+	}
+}

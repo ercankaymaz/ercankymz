@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UglyToad.PdfPig.Fonts</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net471</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier-Bold.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier-BoldOblique.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier-Oblique.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica-Bold.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica-BoldOblique.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica-Oblique.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Symbol.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-Bold.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-BoldItalic.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-Italic.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-Roman.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.ZapfDingbats.afm" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.MustRead.html" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.GlyphList.additional" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.GlyphList.glyphlist" />
+    <None Remove="UglyToad.PdfPig.Fonts.Resources.GlyphList.zapfdingbats" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier-Bold.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier-Bold.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier-BoldOblique.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier-BoldOblique.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier-Oblique.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier-Oblique.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Courier.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica-Bold.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica-Bold.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica-BoldOblique.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica-BoldOblique.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica-Oblique.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica-Oblique.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Helvetica.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Symbol.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Symbol.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-Bold.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-Bold.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-BoldItalic.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-BoldItalic.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-Italic.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-Italic.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-Roman.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.Times-Roman.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.ZapfDingbats.afm" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.ZapfDingbats.afm" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.MustRead.html" LogicalName="UglyToad.PdfPig.Fonts.Resources.AdobeFontMetrics.MustRead.html" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.GlyphList.additional" LogicalName="UglyToad.PdfPig.Fonts.Resources.GlyphList.additional" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.GlyphList.glyphlist" LogicalName="UglyToad.PdfPig.Fonts.Resources.GlyphList.glyphlist" />
+    <EmbeddedResource Include="UglyToad.PdfPig.Fonts.Resources.GlyphList.zapfdingbats" LogicalName="UglyToad.PdfPig.Fonts.Resources.GlyphList.zapfdingbats" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Memory">
+      <HintPath>..\..\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Core">
+      <HintPath>..\..\UglyToad.PdfPig.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Tokens">
+      <HintPath>..\..\UglyToad.PdfPig.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Tokenization">
+      <HintPath>..\..\UglyToad.PdfPig.Tokenization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Buffers">
+      <HintPath>..\..\System.Buffers.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,6 @@
+internal sealed class _0023_003Dzxch8kasLIN5KpLpoa9RtaQLze4eLkv9oVw_003D_003D : _0023_003Dz7uBooE_zzKE2sS9HueUYKeON16ZVyFrcti7Q1pc_003D
+{
+	public char _0023_003DzOv4J8oWzNzmYYdihTJZXEDg_003D;
+
+	public _0023_003DzEFVzpegW2EKTuQGfGvZoSnY_003D[] _0023_003DzyeNu5igFNtgdNJTkLw_003D_003D;
+}

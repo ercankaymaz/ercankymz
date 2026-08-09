@@ -1,0 +1,143 @@
+internal sealed class _0023_003Dzrq_ULEW2thcsXLBqBg_003D_003D
+{
+	public static int _0023_003DzAUmhyb7XHw_0024g = 75;
+
+	public static ulong _0023_003Dz6vglHXOFkIIClXrY7A_003D_003D = ulong.MaxValue;
+
+	public static void _0023_003DzjsV9cchzxlqa(ref _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ _0023_003DzB1esJ_0024UGBJQG, uint _0023_003Dz14lzA48_003D)
+	{
+		_0023_003DzB1esJ_0024UGBJQG = new _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ();
+		if (_0023_003Dz14lzA48_003D < 15)
+		{
+			_0023_003Dz14lzA48_003D = 15u;
+		}
+		uint num = (uint)((double)_0023_003Dz14lzA48_003D * 100.0 / 75.0);
+		while (_0023_003Dz14lzA48_003D <= num)
+		{
+			_0023_003Dz14lzA48_003D <<= 1;
+		}
+		_0023_003DzB1esJ_0024UGBJQG._0023_003DzTbDlaOM_003D = new _0023_003DzbHyY53vyamMoy4toXVXGNRi38Xv8[_0023_003Dz14lzA48_003D];
+		_0023_003DzB1esJ_0024UGBJQG._0023_003Dzf6nLlO4iKSro = 0u;
+		_0023_003DzB1esJ_0024UGBJQG._0023_003Dz14lzA48_003D = _0023_003Dz14lzA48_003D;
+	}
+
+	public static ulong _0023_003DzFlhJF0BOc1UA(ref _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ _0023_003DzEtD38Xc_003D, ulong _0023_003DzGGUd1aw_003D)
+	{
+		ulong num = _0023_003Dzn8vphCCDQw29(_0023_003DzGGUd1aw_003D) % _0023_003DzEtD38Xc_003D._0023_003Dz14lzA48_003D;
+		ulong num2 = num;
+		while (_0023_003DzEtD38Xc_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D != 0L && _0023_003DzEtD38Xc_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D != _0023_003DzGGUd1aw_003D)
+		{
+			num++;
+			if (num == _0023_003DzEtD38Xc_003D._0023_003Dz14lzA48_003D)
+			{
+				num = 0uL;
+			}
+			if (num == num2)
+			{
+				return _0023_003Dz6vglHXOFkIIClXrY7A_003D_003D;
+			}
+		}
+		if (_0023_003DzEtD38Xc_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D != 0L)
+		{
+			return _0023_003DzEtD38Xc_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzPzO_0024GUk_003D;
+		}
+		return _0023_003Dz6vglHXOFkIIClXrY7A_003D_003D;
+	}
+
+	public static ulong _0023_003Dzn8vphCCDQw29(ulong _0023_003DzGGUd1aw_003D)
+	{
+		_0023_003DzGGUd1aw_003D = ((_0023_003DzGGUd1aw_003D >> 32) ^ _0023_003DzGGUd1aw_003D) * 15485907386658061715uL;
+		_0023_003DzGGUd1aw_003D = ((_0023_003DzGGUd1aw_003D >> 32) ^ _0023_003DzGGUd1aw_003D) * 15485907386658061715uL;
+		_0023_003DzGGUd1aw_003D = (_0023_003DzGGUd1aw_003D >> 32) ^ _0023_003DzGGUd1aw_003D;
+		return _0023_003DzGGUd1aw_003D;
+	}
+
+	public static bool _0023_003DzQIj1Djg7GscNeSLyKg_003D_003D(ref _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ _0023_003Dzi6_5x7g_003D)
+	{
+		return _0023_003Dzi6_5x7g_003D._0023_003Dzf6nLlO4iKSro * 100 / _0023_003DzAUmhyb7XHw_0024g > _0023_003Dzi6_5x7g_003D._0023_003Dz14lzA48_003D;
+	}
+
+	public static void _0023_003DzbuDog8c7UWI6(ref _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ _0023_003Dzi6_5x7g_003D)
+	{
+		_0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ2 = _0023_003Dzi6_5x7g_003D;
+		uint num = _0023_003Dzi6_5x7g_003D._0023_003Dz14lzA48_003D * 2;
+		_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D = new _0023_003DzbHyY53vyamMoy4toXVXGNRi38Xv8[num];
+		if (_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D.Length == 0)
+		{
+			_0023_003Dzi6_5x7g_003D = _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ2;
+			return;
+		}
+		_0023_003Dzi6_5x7g_003D._0023_003Dzf6nLlO4iKSro = 0u;
+		_0023_003Dzi6_5x7g_003D._0023_003Dz14lzA48_003D = num;
+		for (uint num2 = 0u; num2 < _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ2._0023_003Dz14lzA48_003D; num2++)
+		{
+			if (_0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ2._0023_003DzTbDlaOM_003D[num2]._0023_003DzGGUd1aw_003D != 0L)
+			{
+				_0023_003DzIUXTIE4CmpCe(ref _0023_003Dzi6_5x7g_003D, _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ2._0023_003DzTbDlaOM_003D[num2]._0023_003DzGGUd1aw_003D, _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ2._0023_003DzTbDlaOM_003D[num2]._0023_003DzPzO_0024GUk_003D);
+			}
+		}
+	}
+
+	public static void _0023_003DzIUXTIE4CmpCe(ref _0023_003Dzl_0024wIXLunKWiLwVxuSyEnLPG7WPbZ _0023_003Dzi6_5x7g_003D, ulong _0023_003DzGGUd1aw_003D, ulong _0023_003DzPzO_0024GUk_003D)
+	{
+		ulong num = _0023_003Dzn8vphCCDQw29(_0023_003DzGGUd1aw_003D) % _0023_003Dzi6_5x7g_003D._0023_003Dz14lzA48_003D;
+		ulong num2 = num;
+		if (_0023_003DzGGUd1aw_003D == 0L)
+		{
+			return;
+		}
+		if (_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D == 0L)
+		{
+			_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D = _0023_003DzGGUd1aw_003D;
+			_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzPzO_0024GUk_003D = _0023_003DzPzO_0024GUk_003D;
+			_0023_003Dzi6_5x7g_003D._0023_003Dzf6nLlO4iKSro++;
+			return;
+		}
+		while (_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D != 0L)
+		{
+			if (_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D == _0023_003DzGGUd1aw_003D)
+			{
+				_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzPzO_0024GUk_003D = _0023_003DzPzO_0024GUk_003D;
+				return;
+			}
+			num++;
+			if (num == _0023_003Dzi6_5x7g_003D._0023_003Dz14lzA48_003D)
+			{
+				num = 0uL;
+			}
+			if (num != num2)
+			{
+				continue;
+			}
+			if (_0023_003DzQIj1Djg7GscNeSLyKg_003D_003D(ref _0023_003Dzi6_5x7g_003D))
+			{
+				_0023_003DzbuDog8c7UWI6(ref _0023_003Dzi6_5x7g_003D);
+				_0023_003DzIUXTIE4CmpCe(ref _0023_003Dzi6_5x7g_003D, _0023_003DzGGUd1aw_003D, _0023_003DzPzO_0024GUk_003D);
+				return;
+			}
+			if (_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D != 0L)
+			{
+				num++;
+				if (num == _0023_003Dzi6_5x7g_003D._0023_003Dz14lzA48_003D)
+				{
+					num = 0uL;
+				}
+				if (num == num2)
+				{
+					_0023_003DzbuDog8c7UWI6(ref _0023_003Dzi6_5x7g_003D);
+					_0023_003DzIUXTIE4CmpCe(ref _0023_003Dzi6_5x7g_003D, _0023_003DzGGUd1aw_003D, _0023_003DzPzO_0024GUk_003D);
+				}
+				else
+				{
+					_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D = _0023_003DzGGUd1aw_003D;
+					_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzPzO_0024GUk_003D = _0023_003DzPzO_0024GUk_003D;
+					_0023_003Dzi6_5x7g_003D._0023_003Dzf6nLlO4iKSro++;
+				}
+				return;
+			}
+		}
+		_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzGGUd1aw_003D = _0023_003DzGGUd1aw_003D;
+		_0023_003Dzi6_5x7g_003D._0023_003DzTbDlaOM_003D[num]._0023_003DzPzO_0024GUk_003D = _0023_003DzPzO_0024GUk_003D;
+		_0023_003Dzi6_5x7g_003D._0023_003Dzf6nLlO4iKSro++;
+	}
+}

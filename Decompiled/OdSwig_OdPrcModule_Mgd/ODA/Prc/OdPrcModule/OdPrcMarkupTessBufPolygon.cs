@@ -1,0 +1,231 @@
+using System;
+using System.ComponentModel;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using ODA.Kernel.TD_RootIntegrated;
+
+namespace ODA.Prc.OdPrcModule;
+
+public class OdPrcMarkupTessBufPolygon : OdPrcMarkupTessBuf
+{
+	public delegate IntPtr SwigDelegateOdPrcMarkupTessBufPolygon_0(IntPtr protocolClass);
+
+	public delegate IntPtr SwigDelegateOdPrcMarkupTessBufPolygon_1();
+
+	public delegate void SwigDelegateOdPrcMarkupTessBufPolygon_2(IntPtr pSource);
+
+	private object locker = new object();
+
+	private HandleRef swigCPtr;
+
+	private SwigDelegateOdPrcMarkupTessBufPolygon_0 swigDelegate0;
+
+	private SwigDelegateOdPrcMarkupTessBufPolygon_1 swigDelegate1;
+
+	private SwigDelegateOdPrcMarkupTessBufPolygon_2 swigDelegate2;
+
+	private static Type[] swigMethodTypes0 = new Type[1] { typeof(OdRxClass) };
+
+	private static Type[] swigMethodTypes1 = new Type[0];
+
+	private static Type[] swigMethodTypes2 = new Type[1] { typeof(OdRxObject) };
+
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public OdPrcMarkupTessBufPolygon(IntPtr cPtr, bool cMemoryOwn)
+		: base(OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_SWIGUpcast(cPtr), cMemoryOwn)
+	{
+		swigCPtr = new HandleRef(this, cPtr);
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public static HandleRef getCPtr(OdPrcMarkupTessBufPolygon obj)
+	{
+		return obj?.swigCPtr ?? new HandleRef(null, IntPtr.Zero);
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		lock (this)
+		{
+			if (swigCPtr.Handle != IntPtr.Zero)
+			{
+				if (swigCMemOwn)
+				{
+					swigCMemOwn = false;
+					OdPrcModule_GlobalsPINVOKE.delete_OdPrcMarkupTessBufPolygon(swigCPtr);
+				}
+				swigCPtr = new HandleRef(null, IntPtr.Zero);
+			}
+			base.Dispose(disposing);
+		}
+	}
+
+	public new static OdPrcMarkupTessBufPolygon cast(OdRxObject pObj)
+	{
+		OdPrcMarkupTessBufPolygon rXObject = Helpers.GetRXObject<OdPrcMarkupTessBufPolygon>(OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_cast(OdRxObject.getCPtr(pObj)), bOwn: true, bTryAddToTransaction: true);
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return rXObject;
+	}
+
+	public new static OdRxClass desc()
+	{
+		OdRxClass rXObject = Helpers.GetRXObject<OdRxClass>(OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_desc(), bOwn: false, bTryAddToTransaction: true);
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return rXObject;
+	}
+
+	public override OdRxClass isA()
+	{
+		OdRxClass rXObject = Helpers.GetRXObject<OdRxClass>(SwigDerivedClassHasMethod("isA", swigMethodTypes1) ? OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_isASwigExplicitOdPrcMarkupTessBufPolygon(swigCPtr) : OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_isA(swigCPtr), bOwn: false, bTryAddToTransaction: true);
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return rXObject;
+	}
+
+	public override OdRxObject queryX(OdRxClass protocolClass)
+	{
+		OdRxObject rXObject = Helpers.GetRXObject<OdRxObject>(SwigDerivedClassHasMethod("queryX", swigMethodTypes0) ? OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_queryXSwigExplicitOdPrcMarkupTessBufPolygon(swigCPtr, OdRxClass.getCPtr(protocolClass)) : OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_queryX(swigCPtr, OdRxClass.getCPtr(protocolClass)), bOwn: false, bTryAddToTransaction: true);
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return rXObject;
+	}
+
+	public OdPrcFloatPointArray getPolygon()
+	{
+		OdPrcFloatPointArray result = new OdPrcFloatPointArray(OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_getPolygon(swigCPtr), cMemoryOwn: false);
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return result;
+	}
+
+	public OdResult setPolygon(OdPrcFloatPointArray points)
+	{
+		int result = OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_setPolygon__SWIG_0(swigCPtr, OdPrcFloatPointArray.getCPtr(points));
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return (OdResult)result;
+	}
+
+	public OdResult setPolygon(OdPrcFloatPoint points, uint numPoints)
+	{
+		int result = OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_setPolygon__SWIG_1(swigCPtr, OdPrcFloatPoint.getCPtr(points), numPoints);
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return (OdResult)result;
+	}
+
+	public OdResult setPolygon(float points, uint numPoints)
+	{
+		int result = OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_setPolygon__SWIG_2(swigCPtr, points, numPoints);
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return (OdResult)result;
+	}
+
+	protected new static string getRealClassName(IntPtr ptr)
+	{
+		string result = OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_getRealClassName(ptr);
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return result;
+	}
+
+	public new static OdPrcMarkupTessBufPolygon createObject()
+	{
+		OdPrcMarkupTessBufPolygon rXObject = Helpers.GetRXObject<OdPrcMarkupTessBufPolygon>(OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_createObject(), bOwn: true, bTryAddToTransaction: true);
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		return rXObject;
+	}
+
+	public OdPrcMarkupTessBufPolygon()
+		: this(OdPrcModule_GlobalsPINVOKE.new_OdPrcMarkupTessBufPolygon(), cMemoryOwn: true)
+	{
+		if (OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Pending)
+		{
+			throw OdPrcModule_GlobalsPINVOKE.SWIGPendingException.Retrieve();
+		}
+		_ = typeof(OdPrcMarkupTessBufPolygon) != GetType();
+		SwigDirectorConnect();
+		DelegateHolder.OnHoldSwigDirectorDelegates(this);
+		MemoryManager.GetMemoryManager().GetCurrentTransaction();
+	}
+
+	private void SwigDirectorConnect()
+	{
+		if (SwigDerivedClassHasMethod("queryX", swigMethodTypes0))
+		{
+			swigDelegate0 = SwigDirectorMethodqueryX;
+		}
+		if (SwigDerivedClassHasMethod("isA", swigMethodTypes1))
+		{
+			swigDelegate1 = SwigDirectorMethodisA;
+		}
+		if (SwigDerivedClassHasMethod("copyFrom", swigMethodTypes2))
+		{
+			swigDelegate2 = SwigDirectorMethodcopyFrom;
+		}
+		OdPrcModule_GlobalsPINVOKE.OdPrcMarkupTessBufPolygon_director_connect(swigCPtr, swigDelegate0, swigDelegate1, swigDelegate2);
+	}
+
+	private bool SwigDerivedClassHasMethod(string methodName, Type[] methodTypes)
+	{
+		return GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, methodTypes, null).DeclaringType.IsSubclassOf(typeof(OdPrcMarkupTessBufPolygon));
+	}
+
+	private IntPtr SwigDirectorMethodqueryX(IntPtr protocolClass)
+	{
+		return OdRxObject.getCPtr(queryX(Helpers.GetRXObject<OdRxClass>(protocolClass, bOwn: false, bTryAddToTransaction: false))).Handle;
+	}
+
+	private IntPtr SwigDirectorMethodisA()
+	{
+		return OdRxClass.getCPtr(isA()).Handle;
+	}
+
+	private void SwigDirectorMethodcopyFrom(IntPtr pSource)
+	{
+		try
+		{
+			copyFrom(Helpers.GetRXObject<OdRxObject>(pSource, bOwn: false, bTryAddToTransaction: false));
+		}
+		catch (OdEdEmptyInput err)
+		{
+			OdPrcModule_Globals.throw_native_OdError(err);
+		}
+		catch (OdEdOtherInput err2)
+		{
+			OdPrcModule_Globals.throw_native_OdError(err2);
+		}
+		catch (OdError err3)
+		{
+			OdPrcModule_Globals.throw_native_OdError(err3);
+		}
+		catch (Exception ex)
+		{
+			OdPrcModule_Globals.throw_native_exception_string(ex.ToString());
+		}
+	}
+}

@@ -1,0 +1,48 @@
+internal sealed class _0023_003DzRj0oSIvy0ugjIiIM6NlSLa1FzoC5
+{
+	public _0023_003DzGnN8g3pVzss0YAt2fehPTDsXB32Q _0023_003Dzalvl9z8_003D;
+
+	public char _0023_003DzX_bjfACpRara;
+
+	public char _0023_003DzQVJGmW7MqtN2;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003DzYrKWGPFLq_78;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003DzJKKT8w2JlZOn;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003DzbUvT9Pc_003D;
+
+	public double _0023_003DzEGKj_0024SNUUihi;
+
+	public double _0023_003Dz_gbL4wz7_0024Ge1;
+
+	public double _0023_003DzTruHvE_0024PuoOB;
+
+	public char _0023_003Dzo9SepbWOgtcG;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003DzXq1BPpQ_003D;
+
+	public double _0023_003DzvHQqcBrLCD8Zivs0dg_003D_003D;
+
+	public uint _0023_003DzU7eDCS_XZhhv;
+
+	public char _0023_003DzI9RHnR4XCCgj3TUoJQ_003D_003D;
+
+	public char _0023_003DzyffpZdA2oPxJXpF3LQ_003D_003D;
+
+	public uint _0023_003DzqLg2YxLQcCSiAYLQHw_003D_003D;
+
+	public uint _0023_003DzqNp7yXAvGxZe2KjGIg_003D_003D;
+
+	public double[] _0023_003Dzr7tgnwG7XK6N;
+
+	public _0023_003DzT1L5rTrI9vthR7RA3BxbIj3Tcsae[] _0023_003DzIyTwAk4zYM2h;
+
+	public uint _0023_003DzGzdQjd28ilTxQBSLyw_003D_003D;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D[] _0023_003DzoCHBJGxE9KUk;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003DzmHuN_HszKd_NssbiUA_003D_003D;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003DzGWtllAWh2CMQ17vZYA_003D_003D;
+}

@@ -1,0 +1,12 @@
+namespace Xbim.Ifc4x3.ElectricalDomain;
+
+public enum IfcOutletTypeEnum : byte
+{
+	AUDIOVISUALOUTLET,
+	COMMUNICATIONSOUTLET,
+	DATAOUTLET,
+	POWEROUTLET,
+	TELEPHONEOUTLET,
+	USERDEFINED,
+	NOTDEFINED
+}

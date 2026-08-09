@@ -1,0 +1,72 @@
+using System;
+using Xbim.Common;
+using Xbim.Common.Exceptions;
+using Xbim.Ifc2x3.MeasureResource;
+using Xbim.Ifc4.Interfaces;
+using Xbim.Ifc4.MeasureResource;
+
+namespace Xbim.Ifc2x3.StructuralLoadResource;
+
+[ExpressType("IfcStructuralConnectionCondition", 639)]
+public abstract class IfcStructuralConnectionCondition : PersistEntity, IIfcStructuralConnectionCondition, IPersistEntity, IPersist, IEquatable<IfcStructuralConnectionCondition>
+{
+	private Xbim.Ifc2x3.MeasureResource.IfcLabel? _name;
+
+	[CrossSchemaAttribute(typeof(IIfcStructuralConnectionCondition), 1)]
+	Xbim.Ifc4.MeasureResource.IfcLabel? IIfcStructuralConnectionCondition.Name
+	{
+		get
+		{
+			if (!Name.HasValue)
+			{
+				return null;
+			}
+			return new Xbim.Ifc4.MeasureResource.IfcLabel(Name.Value);
+		}
+		set
+		{
+			Name = (value.HasValue ? new Xbim.Ifc2x3.MeasureResource.IfcLabel?(new Xbim.Ifc2x3.MeasureResource.IfcLabel(value.Value)) : ((Xbim.Ifc2x3.MeasureResource.IfcLabel?)null));
+		}
+	}
+
+	[EntityAttribute(1, EntityAttributeState.Optional, EntityAttributeType.None, EntityAttributeType.None, null, null, 1)]
+	public Xbim.Ifc2x3.MeasureResource.IfcLabel? Name
+	{
+		get
+		{
+			if (_activated)
+			{
+				return _name;
+			}
+			Activate();
+			return _name;
+		}
+		set
+		{
+			SetValue(delegate(Xbim.Ifc2x3.MeasureResource.IfcLabel? v)
+			{
+				_name = v;
+			}, _name, value, "Name", 1);
+		}
+	}
+
+	internal IfcStructuralConnectionCondition(IModel model, int label, bool activated)
+		: base(model, label, activated)
+	{
+	}
+
+	public override void Parse(int propIndex, IPropertyValue value, int[] nestedIndex)
+	{
+		if (propIndex == 0)
+		{
+			_name = value.StringVal;
+			return;
+		}
+		throw new XbimParserException($"Attribute index {propIndex + 1} is out of range for {GetType().Name.ToUpper()}");
+	}
+
+	public bool Equals(IfcStructuralConnectionCondition other)
+	{
+		return this == other;
+	}
+}

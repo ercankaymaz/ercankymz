@@ -1,0 +1,70 @@
+internal sealed class _0023_003DzgeckWYd_XzvwHKdPfxPuPoU_003D : _0023_003DzEQGbZrrI5UoV_C_0024_LB92uQqNGNTiFXRSWQ_003D_003D
+{
+	public double _0023_003Dz0MKCPImtYEFFnpTHzw_003D_003D;
+
+	public double _0023_003DzGhg7q_qKpfOE;
+
+	public double _0023_003DzSUgAdT6DFzvWwWkE01AUEO4_003D;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003Dz6jn0Rb6OL3QG;
+
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003Dz2L6xVKs3ik6_0024;
+
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003DzKSMUNb92tuMd;
+
+	public double _0023_003DzytuB6bQmIK7liuvHAw_003D_003D;
+
+	public double _0023_003DzxLDOtKxP8Ill;
+
+	public double _0023_003DzbAWD4wVBqeVX;
+
+	public double _0023_003DzGQTXrvcVSkqo;
+
+	public char _0023_003Dzp1pg8Tg9x0Yfx4JqYA_003D_003D;
+
+	public char _0023_003DzKFfxeqFjIiZx;
+
+	public char _0023_003Dzeza7jvExgR7B40dU76YO9XE_003D;
+
+	public char _0023_003DzDHtJa4QFUrlq0bErpNEew40_003D;
+
+	public double _0023_003DzKjMf0xrRnKZLv267_0024w_003D_003D;
+
+	public double _0023_003Dzi04jnSJRsWh1Sdbb5w_003D_003D;
+
+	public _0023_003Dzw7QT09EaLKBdtibL6A_003D_003D _0023_003DzICQ8H3KdxVw34DXKBQ_003D_003D = new _0023_003Dzw7QT09EaLKBdtibL6A_003D_003D();
+
+	public char _0023_003DzOD12kneC7pGJ0VAP_0024w_003D_003D;
+
+	public char _0023_003DzbAGCSxEb4u7Y;
+
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003Dzdc6c2lEuaHuA;
+
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003DzOIVYUH7QxV29;
+
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003DzXd8r_f9BxzF8;
+
+	public double _0023_003DzlHbkgrcRahtwg6T6GZNSliw_003D;
+
+	public ushort _0023_003Dz7FCP3t_Klyd7HLuDvdi1bSA_003D;
+
+	public char _0023_003Dzag3X7Gh_wub6MyXdyk1P_0024_0024_pcJrn;
+
+	public _0023_003DzEFVzpegW2EKTuQGfGvZoSnY_003D _0023_003DzTi71S4I_003D;
+
+	public _0023_003DzEFVzpegW2EKTuQGfGvZoSnY_003D _0023_003DzB90jspOe_fPXYjAmMQ_003D_003D;
+
+	public _0023_003DzEFVzpegW2EKTuQGfGvZoSnY_003D _0023_003DzooUAI5w_003D;
+
+	public _0023_003DzEFVzpegW2EKTuQGfGvZoSnY_003D _0023_003Dzy90o9pxOMOIG;
+
+	public _0023_003DzEFVzpegW2EKTuQGfGvZoSnY_003D _0023_003DzZTcdDOMIzPct;
+
+	public _0023_003DzEFVzpegW2EKTuQGfGvZoSnY_003D _0023_003Dz6JoB5RXeybz9QKssqA_003D_003D;
+
+	public ushort _0023_003Dzrrfe4D89e1vO;
+
+	public char _0023_003Dz_HD_opIW9F60;
+
+	public char _0023_003Dzzf_0024zTmKZkTBt;
+}

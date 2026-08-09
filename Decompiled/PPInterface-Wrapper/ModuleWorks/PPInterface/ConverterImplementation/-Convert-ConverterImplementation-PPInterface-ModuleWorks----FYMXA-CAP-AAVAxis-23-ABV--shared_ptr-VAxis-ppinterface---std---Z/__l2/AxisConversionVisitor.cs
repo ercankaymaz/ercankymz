@@ -1,0 +1,10 @@
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace ModuleWorks.PPInterface.ConverterImplementation._003FConvert_0040ConverterImplementation_0040PPInterface_0040ModuleWorks_0040_0040_0024_0024FYMXA_0024CAP_0024AAVAxis_004023_0040ABV_003F_0024shared_ptr_0040VAxis_0040ppinterface_0040_0040_0040std_0040_0040_0040Z.__l2;
+
+[StructLayout(LayoutKind.Sequential, Size = 12)]
+[NativeCppClass]
+internal struct AxisConversionVisitor
+{
+}

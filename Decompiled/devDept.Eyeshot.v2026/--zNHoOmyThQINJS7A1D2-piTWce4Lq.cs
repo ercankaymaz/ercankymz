@@ -1,0 +1,10 @@
+internal sealed class _0023_003DzNHoOmyThQINJS7A1D2_0024piTWce4Lq
+{
+	internal long _0023_003DzvXOLtKg_003D;
+
+	internal _0023_003DznQrAIndhjBEbgEOPeD32utw_003D _0023_003DzebGJf6xGF4Su;
+
+	internal _0023_003DznQrAIndhjBEbgEOPeD32utw_003D _0023_003Dz6OiaMgb0SeRc;
+
+	internal _0023_003DzNHoOmyThQINJS7A1D2_0024piTWce4Lq _0023_003Dzg_0024_0024HtRw_003D;
+}

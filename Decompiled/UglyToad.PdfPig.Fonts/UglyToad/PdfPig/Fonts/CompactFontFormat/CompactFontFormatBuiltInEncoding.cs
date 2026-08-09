@@ -1,0 +1,33 @@
+using System.Collections.Generic;
+
+namespace UglyToad.PdfPig.Fonts.CompactFontFormat;
+
+internal abstract class CompactFontFormatBuiltInEncoding : CompactFontFormatBaseEncoding
+{
+	public class Supplement
+	{
+		public int Code { get; }
+
+		public int Sid { get; }
+
+		public string Name { get; }
+
+		public Supplement(int code, int sid, string name)
+		{
+			Code = code;
+			Sid = sid;
+			Name = name;
+		}
+	}
+
+	public IReadOnlyList<Supplement> Supplements { get; }
+
+	protected CompactFontFormatBuiltInEncoding(IReadOnlyList<Supplement> supplements)
+	{
+		Supplements = supplements;
+		foreach (Supplement supplement in supplements)
+		{
+			Add(supplement.Code, supplement.Sid, supplement.Name);
+		}
+	}
+}

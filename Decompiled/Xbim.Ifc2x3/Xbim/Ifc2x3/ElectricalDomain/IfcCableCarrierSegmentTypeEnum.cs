@@ -1,0 +1,11 @@
+namespace Xbim.Ifc2x3.ElectricalDomain;
+
+public enum IfcCableCarrierSegmentTypeEnum : byte
+{
+	CABLELADDERSEGMENT,
+	CABLETRAYSEGMENT,
+	CABLETRUNKINGSEGMENT,
+	CONDUITSEGMENT,
+	USERDEFINED,
+	NOTDEFINED
+}

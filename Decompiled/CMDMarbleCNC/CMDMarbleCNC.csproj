@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>CMDMarbleCNC</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <OutputType>WinExe</OutputType>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net48</TargetFramework>
+    <Prefer32Bit>True</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="Basler.Pylon">
+      <HintPath>..\..\Basler.Pylon.dll</HintPath>
+    </Reference>
+    <Reference Include="buEyeBase">
+      <HintPath>..\..\buEyeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="buControls">
+      <HintPath>..\..\buControls.dll</HintPath>
+    </Reference>
+    <Reference Include="buClass">
+      <HintPath>..\..\buClass.dll</HintPath>
+    </Reference>
+    <Reference Include="buComm">
+      <HintPath>..\..\buComm.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>..\..\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="buMarble">
+      <HintPath>..\..\buMarble.dll</HintPath>
+    </Reference>
+    <Reference Include="buMotion">
+      <HintPath>..\..\buMotion.dll</HintPath>
+    </Reference>
+    <Reference Include="buCadCamRes">
+      <HintPath>..\..\buCadCamRes.dll</HintPath>
+    </Reference>
+    <Reference Include="CmdLangAPI">
+      <HintPath>..\..\CmdLangAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="buOpcUA">
+      <HintPath>..\..\buOpcUA.dll</HintPath>
+    </Reference>
+    <Reference Include="buOpcDlls">
+      <HintPath>..\..\buOpcDlls.dll</HintPath>
+    </Reference>
+    <Reference Include="buMW">
+      <HintPath>..\..\buMW.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.Control.Win.v2026">
+      <HintPath>..\..\devDept.Eyeshot.Control.Win.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="buCore">
+      <HintPath>..\..\buCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

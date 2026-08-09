@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>ComponentFactory.Krypton.Ribbon</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net40</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupDateTimePicker.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupDomainUpDown.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupNumericUpDown.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonGalleryRange.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonGallery.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupColorButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupClusterColorButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupMaskedTextBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupRichTextBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupComboBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupTextBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupCustomControl.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupRadioButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupCheckBox.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupLabel.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupClusterButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupLines.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupCluster.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupTriple.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupSeparator.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonQATButton.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonContext.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroup.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonTab.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbon.bmp" />
+    <None Remove="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonRecentDoc.png" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupDateTimePicker.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupDateTimePicker.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupDomainUpDown.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupDomainUpDown.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupNumericUpDown.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupNumericUpDown.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonGalleryRange.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonGalleryRange.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonGallery.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonGallery.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupColorButton.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupColorButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupClusterColorButton.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupClusterColorButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupMaskedTextBox.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupMaskedTextBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupRichTextBox.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupRichTextBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupComboBox.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupComboBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupTextBox.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupTextBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupCustomControl.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupCustomControl.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupRadioButton.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupRadioButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupCheckBox.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupCheckBox.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupLabel.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupLabel.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupClusterButton.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupClusterButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupLines.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupLines.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupCluster.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupCluster.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupTriple.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupTriple.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupButton.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupSeparator.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroupSeparator.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonQATButton.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonQATButton.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonContext.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonContext.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroup.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonGroup.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonTab.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonTab.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbon.bmp" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbon.bmp" />
+    <EmbeddedResource Include="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonRecentDoc.png" LogicalName="ComponentFactory.Krypton.Ribbon.ToolboxBitmaps.KryptonRibbonRecentDoc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ComponentFactory.Krypton.Toolkit">
+      <HintPath>..\..\ComponentFactory.Krypton.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Design" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>buCadCamRes</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>..\..\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="buClass">
+      <HintPath>..\..\buClass.dll</HintPath>
+    </Reference>
+    <Reference Include="buEyeBase">
+      <HintPath>..\..\buEyeBase.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.Control.Win.v2026">
+      <HintPath>..\..\devDept.Eyeshot.Control.Win.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="mwInterop" />
+    <Reference Include="buMW">
+      <HintPath>..\..\buMW.dll</HintPath>
+    </Reference>
+    <Reference Include="buCore">
+      <HintPath>..\..\buCore.dll</HintPath>
+    </Reference>
+    <Reference Include="buControls">
+      <HintPath>..\..\buControls.dll</HintPath>
+    </Reference>
+    <Reference Include="hasp_net_windows">
+      <HintPath>..\..\hasp_net_windows.dll</HintPath>
+    </Reference>
+    <Reference Include="buPowerNest">
+      <HintPath>..\..\buPowerNest.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Toolkit">
+      <HintPath>..\..\ComponentFactory.Krypton.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Ribbon">
+      <HintPath>..\..\ComponentFactory.Krypton.Ribbon.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="devDept.Eyeshot.x86.v2026">
+      <HintPath>..\..\devDept.Eyeshot.x86.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="mwEntities">
+      <HintPath>..\..\mwEntities.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="CmdLangAPI">
+      <HintPath>..\..\CmdLangAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="buFile">
+      <HintPath>..\..\buFile.dll</HintPath>
+    </Reference>
+    <Reference Include="buComm">
+      <HintPath>..\..\buComm.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.Ribbon">
+      <HintPath>..\..\System.Windows.Forms.Ribbon.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

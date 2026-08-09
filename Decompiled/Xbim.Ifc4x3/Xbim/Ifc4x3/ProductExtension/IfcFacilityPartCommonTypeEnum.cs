@@ -1,0 +1,15 @@
+namespace Xbim.Ifc4x3.ProductExtension;
+
+public enum IfcFacilityPartCommonTypeEnum : byte
+{
+	ABOVEGROUND,
+	BELOWGROUND,
+	JUNCTION,
+	LEVELCROSSING,
+	SEGMENT,
+	SUBSTRUCTURE,
+	SUPERSTRUCTURE,
+	TERMINAL,
+	USERDEFINED,
+	NOTDEFINED
+}

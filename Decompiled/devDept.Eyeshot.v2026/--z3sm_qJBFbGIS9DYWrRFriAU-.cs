@@ -1,0 +1,27 @@
+using System.Collections.Generic;
+
+internal sealed class _0023_003Dz3sm_qJBFbGIS9DYWrRFriAU_003D : IComparer<_0023_003DzjRXPOgi64J9bDXgzQQ_003D_003D>
+{
+	public int Compare(_0023_003DzjRXPOgi64J9bDXgzQQ_003D_003D _0023_003DzFj_0024IqDQ_003D, _0023_003DzjRXPOgi64J9bDXgzQQ_003D_003D _0023_003DzjdeMMkk_003D)
+	{
+		_0023_003DzE3S8W5Y0znsdryov_0024w_003D_003D _0023_003DzLiDbFtubATq = _0023_003DzFj_0024IqDQ_003D._0023_003DzLiDbFtubATq7;
+		_0023_003DzE3S8W5Y0znsdryov_0024w_003D_003D _0023_003DzLiDbFtubATq2 = _0023_003DzjdeMMkk_003D._0023_003DzLiDbFtubATq7;
+		if (_0023_003DzLiDbFtubATq._0023_003Dz40R7bAU_003D < _0023_003DzLiDbFtubATq2._0023_003Dz40R7bAU_003D)
+		{
+			return -1;
+		}
+		if (_0023_003DzLiDbFtubATq._0023_003Dz40R7bAU_003D > _0023_003DzLiDbFtubATq2._0023_003Dz40R7bAU_003D)
+		{
+			return 1;
+		}
+		if (_0023_003DzLiDbFtubATq._0023_003DzBJFJHwk_003D < _0023_003DzLiDbFtubATq2._0023_003DzBJFJHwk_003D)
+		{
+			return -1;
+		}
+		if (_0023_003DzLiDbFtubATq._0023_003DzBJFJHwk_003D > _0023_003DzLiDbFtubATq2._0023_003DzBJFJHwk_003D)
+		{
+			return 1;
+		}
+		return 0;
+	}
+}

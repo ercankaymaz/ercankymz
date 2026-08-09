@@ -1,0 +1,12 @@
+using System.Runtime.CompilerServices;
+
+internal abstract class _0023_003DzEQGbZrrI5UoV_C_0024_LB92uQqNGNTiFXRSWQ_003D_003D : _0023_003DzFFa68cDwKT9Nvkz69w_003D_003D
+{
+	public _0023_003DzuqG6DP387FQG8BlGRzb_0024HyQ_003D _0023_003DztbByVAY_003D = new _0023_003DzuqG6DP387FQG8BlGRzb_0024HyQ_003D();
+
+	[SpecialName]
+	public _0023_003DzSAjeO2nN5hgQxcvyiQ_003D_003D _0023_003DzP_0024Bri_0024EhFRU_0024()
+	{
+		return _0023_003DztbByVAY_003D;
+	}
+}

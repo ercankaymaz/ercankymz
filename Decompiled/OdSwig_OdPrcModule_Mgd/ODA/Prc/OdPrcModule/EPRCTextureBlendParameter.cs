@@ -1,0 +1,17 @@
+namespace ODA.Prc.OdPrcModule;
+
+public enum EPRCTextureBlendParameter
+{
+	KEPRCTextureBlendParameter_Unknown,
+	KEPRCTextureBlendParameter_Zero,
+	KEPRCTextureBlendParameter_One,
+	KEPRCTextureBlendParameter_SrcColor,
+	KEPRCTextureBlendParameter_OneMinusSrcColor,
+	KEPRCTextureBlendParameter_DstColor,
+	KEPRCTextureBlendParameter_OneMinusDstColor,
+	KEPRCTextureBlendParameter_SrcAlpha,
+	KEPRCTextureBlendParameter_OneMinusSrcAlpha,
+	KEPRCTextureBlendParameter_DstAlpha,
+	KEPRCTextureBlendParameter_OneMinusDstAlpha,
+	KEPRCTextureBlendParameter_SrcAlphaSaturate
+}

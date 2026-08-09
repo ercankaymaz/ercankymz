@@ -1,0 +1,16 @@
+namespace Xbim.Ifc4x3.RailDomain;
+
+public enum IfcRailwayPartTypeEnum : byte
+{
+	ABOVETRACK,
+	DILATIONTRACK,
+	LINESIDE,
+	LINESIDEPART,
+	PLAINTRACK,
+	SUBSTRUCTURE,
+	TRACK,
+	TRACKPART,
+	TURNOUTTRACK,
+	USERDEFINED,
+	NOTDEFINED
+}

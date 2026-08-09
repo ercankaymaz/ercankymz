@@ -1,0 +1,25 @@
+using System;
+using System.IO;
+
+internal static class _0023_003DzBOtWiQ1EHdOx4tiCSynTQp8_0024mU5u_HOKPP8WN3g_003D
+{
+	public static void _0023_003DzYDJGVL3zK9ReNIxKjw_003D_003D(StreamWriter _0023_003DzxZjYFj_ZO2U2, string _0023_003DzKyscVGNg5_0024ku, string _0023_003DzceYT38VLWPlW, int _0023_003DzZdr1ht3UjC_0024U)
+	{
+		_ = _0023_003DzKyscVGNg5_0024ku.Length;
+		_ = _0023_003DzceYT38VLWPlW.Length;
+		string text = _0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302668823) + _0023_003DzKyscVGNg5_0024ku + _0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302934389) + _0023_003DzceYT38VLWPlW + _0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302669038);
+		_0023_003DzxZjYFj_ZO2U2.Write(text + _0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302915165));
+		Console.WriteLine(text);
+	}
+
+	public static void _0023_003DzYDJGVL3zK9ReNIxKjw_003D_003D(string _0023_003DzKyscVGNg5_0024ku, string _0023_003DzceYT38VLWPlW, int _0023_003DzZdr1ht3UjC_0024U)
+	{
+		_ = _0023_003DzKyscVGNg5_0024ku.Length;
+		_ = _0023_003DzceYT38VLWPlW.Length;
+		string empty = string.Empty;
+		Console.WriteLine(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302668964));
+		Console.WriteLine(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302668937));
+		_0023_003DzPuhhONXsaFv8tZekxfrMwXLB4_0024AJ._0023_003Dz3aD3nLtzl35c(empty, 0, _0023_003DzZdr1ht3UjC_0024U, _0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302909683));
+		Console.WriteLine(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302668964));
+	}
+}

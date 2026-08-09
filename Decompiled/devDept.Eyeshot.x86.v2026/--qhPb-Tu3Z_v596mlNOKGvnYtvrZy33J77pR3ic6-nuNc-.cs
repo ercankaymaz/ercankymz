@@ -1,0 +1,9 @@
+internal static class _0023_003DqhPb_0024Tu3Z_v596mlNOKGvnYtvrZy33J77pR3ic6_0024nuNc_003D<_0023_003Dzq80RbjQ_003D>
+{
+	public static readonly _0023_003Dzq80RbjQ_003D[] _0023_003Dzq80RbjQ_003D;
+
+	static _0023_003DqhPb_0024Tu3Z_v596mlNOKGvnYtvrZy33J77pR3ic6_0024nuNc_003D()
+	{
+		global::_0023_003DqhPb_0024Tu3Z_v596mlNOKGvnYtvrZy33J77pR3ic6_0024nuNc_003D<_0023_003Dzq80RbjQ_003D>._0023_003Dzq80RbjQ_003D = new _0023_003Dzq80RbjQ_003D[0];
+	}
+}

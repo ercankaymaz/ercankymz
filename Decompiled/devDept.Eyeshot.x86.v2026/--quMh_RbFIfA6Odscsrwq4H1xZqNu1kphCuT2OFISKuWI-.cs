@@ -1,0 +1,10 @@
+using System.Security.Cryptography;
+
+internal interface _0023_003DquMh_RbFIfA6Odscsrwq4H1xZqNu1kphCuT2OFISKuWI_003D
+{
+	int _0023_003DzSEY04nxJtfqOe_NEWeo3eOc0Etbe_0024Jj8XZu70RmqdWkClVfxadDA7Yv3_toO92Ul_00242tmYNYn1vth6Wdsbw_003D_003D();
+
+	int _0023_003DzT9eA_I8w0CDvq_YsYh_iH47uTsD9brXMemU1_QcwtWy1NzoCuxvYwQduSWZOuC3GCh0X92w_003D();
+
+	int _0023_003Dzhdoh5k6m_0024AO52PAYFXGKQO9OGwW5kHwW2wyWQpayqijlwE_0024xck_GBc28La0KktESKmzv8a_0024ZIXdc4iz8z4aF4eo_003D(byte[] _0023_003Dzq80RbjQ_003D, int _0023_003DzZzVr6_0024U_003D, int _0023_003Dz7hRN5Rg_003D, byte[] _0023_003DzcbLoSrg_003D, int _0023_003DzqMLoHoQ_003D, RandomNumberGenerator _0023_003DzuwE9t4w_003D);
+}

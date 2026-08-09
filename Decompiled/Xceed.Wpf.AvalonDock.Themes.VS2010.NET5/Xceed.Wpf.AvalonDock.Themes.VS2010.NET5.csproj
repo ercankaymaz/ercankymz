@@ -1,0 +1,97 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>Xceed.Wpf.AvalonDock.Themes.VS2010.NET5</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWPF>True</UseWPF>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="images\dockdocumentasanchorabletop.png" />
+    <None Remove="images\dockanchorablebottom.png" />
+    <None Remove="images\pinclose.png" />
+    <None Remove="images\htabgroup.png" />
+    <None Remove="images\locked.png" />
+    <None Remove="images\pinmenu_dark.png" />
+    <None Remove="images\dockanchorabletop.png" />
+    <None Remove="images\pinautohide_black.png" />
+    <None Remove="images\dockanchorableright.png" />
+    <None Remove="images\dockdocumentasanchorableleft.png" />
+    <None Remove="images\vtabgroup.png" />
+    <None Remove="images\pinmaximize_dark.png" />
+    <None Remove="images\pinrestore_black.png" />
+    <None Remove="images\pinmenu.png" />
+    <None Remove="images\pinautohide.png" />
+    <None Remove="images\dockdocumentbottom.png" />
+    <None Remove="images\dockdocumentleft.png" />
+    <None Remove="images\dockpaneempty.png" />
+    <None Remove="images\pinclose_black.png" />
+    <None Remove="theme.baml" />
+    <None Remove="images\pinautohide_dark.png" />
+    <None Remove="images\pinrestore.png" />
+    <None Remove="images\pindocmenu.png" />
+    <None Remove="brushes.baml" />
+    <None Remove="images\dockdocumentinside.png" />
+    <None Remove="images\pindocmenu_black.png" />
+    <None Remove="images\dockdocumentasanchorableright.png" />
+    <None Remove="images\pinmaximize.png" />
+    <None Remove="images\pinclose_dark.png" />
+    <None Remove="images\pinmaximize_black.png" />
+    <None Remove="images\dockdocumentright.png" />
+    <None Remove="images\dockanchorableleft.png" />
+    <None Remove="images\dockdocumentasanchorablebottom.png" />
+    <None Remove="images\pinrestore_dark.png" />
+    <None Remove="images\pinmenu_black.png" />
+    <None Remove="images\dockdocumenttop.png" />
+    <None Remove="images\dockpanelargeempty.png" />
+    <EmbeddedResource Include="images\dockdocumentasanchorabletop.png" LogicalName="images/dockdocumentasanchorabletop.png" />
+    <EmbeddedResource Include="images\dockanchorablebottom.png" LogicalName="images/dockanchorablebottom.png" />
+    <EmbeddedResource Include="images\pinclose.png" LogicalName="images/pinclose.png" />
+    <EmbeddedResource Include="images\htabgroup.png" LogicalName="images/htabgroup.png" />
+    <EmbeddedResource Include="images\locked.png" LogicalName="images/locked.png" />
+    <EmbeddedResource Include="images\pinmenu_dark.png" LogicalName="images/pinmenu_dark.png" />
+    <EmbeddedResource Include="images\dockanchorabletop.png" LogicalName="images/dockanchorabletop.png" />
+    <EmbeddedResource Include="images\pinautohide_black.png" LogicalName="images/pinautohide_black.png" />
+    <EmbeddedResource Include="images\dockanchorableright.png" LogicalName="images/dockanchorableright.png" />
+    <EmbeddedResource Include="images\dockdocumentasanchorableleft.png" LogicalName="images/dockdocumentasanchorableleft.png" />
+    <EmbeddedResource Include="images\vtabgroup.png" LogicalName="images/vtabgroup.png" />
+    <EmbeddedResource Include="images\pinmaximize_dark.png" LogicalName="images/pinmaximize_dark.png" />
+    <EmbeddedResource Include="images\pinrestore_black.png" LogicalName="images/pinrestore_black.png" />
+    <EmbeddedResource Include="images\pinmenu.png" LogicalName="images/pinmenu.png" />
+    <EmbeddedResource Include="images\pinautohide.png" LogicalName="images/pinautohide.png" />
+    <EmbeddedResource Include="images\dockdocumentbottom.png" LogicalName="images/dockdocumentbottom.png" />
+    <EmbeddedResource Include="images\dockdocumentleft.png" LogicalName="images/dockdocumentleft.png" />
+    <EmbeddedResource Include="images\dockpaneempty.png" LogicalName="images/dockpaneempty.png" />
+    <EmbeddedResource Include="images\pinclose_black.png" LogicalName="images/pinclose_black.png" />
+    <EmbeddedResource Include="theme.baml" LogicalName="theme.baml" />
+    <EmbeddedResource Include="images\pinautohide_dark.png" LogicalName="images/pinautohide_dark.png" />
+    <EmbeddedResource Include="images\pinrestore.png" LogicalName="images/pinrestore.png" />
+    <EmbeddedResource Include="images\pindocmenu.png" LogicalName="images/pindocmenu.png" />
+    <EmbeddedResource Include="brushes.baml" LogicalName="brushes.baml" />
+    <EmbeddedResource Include="images\dockdocumentinside.png" LogicalName="images/dockdocumentinside.png" />
+    <EmbeddedResource Include="images\pindocmenu_black.png" LogicalName="images/pindocmenu_black.png" />
+    <EmbeddedResource Include="images\dockdocumentasanchorableright.png" LogicalName="images/dockdocumentasanchorableright.png" />
+    <EmbeddedResource Include="images\pinmaximize.png" LogicalName="images/pinmaximize.png" />
+    <EmbeddedResource Include="images\pinclose_dark.png" LogicalName="images/pinclose_dark.png" />
+    <EmbeddedResource Include="images\pinmaximize_black.png" LogicalName="images/pinmaximize_black.png" />
+    <EmbeddedResource Include="images\dockdocumentright.png" LogicalName="images/dockdocumentright.png" />
+    <EmbeddedResource Include="images\dockanchorableleft.png" LogicalName="images/dockanchorableleft.png" />
+    <EmbeddedResource Include="images\dockdocumentasanchorablebottom.png" LogicalName="images/dockdocumentasanchorablebottom.png" />
+    <EmbeddedResource Include="images\pinrestore_dark.png" LogicalName="images/pinrestore_dark.png" />
+    <EmbeddedResource Include="images\pinmenu_black.png" LogicalName="images/pinmenu_black.png" />
+    <EmbeddedResource Include="images\dockdocumenttop.png" LogicalName="images/dockdocumenttop.png" />
+    <EmbeddedResource Include="images\dockpanelargeempty.png" LogicalName="images/dockpanelargeempty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Xceed.Wpf.AvalonDock.NET5">
+      <HintPath>..\..\Xceed.Wpf.AvalonDock.NET5.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

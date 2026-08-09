@@ -1,0 +1,9 @@
+using System.Runtime.InteropServices;
+
+[StructLayout(LayoutKind.Sequential)]
+internal sealed class _0023_003DzT81WH9epKmrwLotmP_0024toyKdXwoeKU4QQmw_003D_003D
+{
+	public _0023_003DzRi4Hcpg3W7qZ0yAklSr_0024xfD5Kvut4sd5nA_003D_003D _0023_003Dzalvl9z8_003D;
+
+	public _0023_003Dzc_0024RxHQF25XTbxR31YGLZGVY_003D _0023_003DzPzO_0024GUk_003D;
+}

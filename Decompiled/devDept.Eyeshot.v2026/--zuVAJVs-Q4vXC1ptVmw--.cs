@@ -1,0 +1,20 @@
+internal sealed class _0023_003DzuVAJVs_0024Q4vXC1ptVmw_003D_003D
+{
+	public double _0023_003DzjbqS1qE_003D;
+
+	public double _0023_003Dz1v6oPQk_003D;
+
+	public double _0023_003Dzt_m8zV0_003D;
+
+	public _0023_003DzjRXPOgi64J9bDXgzQQ_003D_003D[] _0023_003Dzi6QKiYM_003D;
+
+	public _0023_003DzjRXPOgi64J9bDXgzQQ_003D_003D[] _0023_003DzFDwqpgU_003D;
+
+	public int _0023_003DzPK2MTH9_rxca;
+
+	public _0023_003DzuVAJVs_0024Q4vXC1ptVmw_003D_003D()
+	{
+		_0023_003Dzi6QKiYM_003D = new _0023_003DzjRXPOgi64J9bDXgzQQ_003D_003D[2];
+		_0023_003DzFDwqpgU_003D = new _0023_003DzjRXPOgi64J9bDXgzQQ_003D_003D[2];
+	}
+}

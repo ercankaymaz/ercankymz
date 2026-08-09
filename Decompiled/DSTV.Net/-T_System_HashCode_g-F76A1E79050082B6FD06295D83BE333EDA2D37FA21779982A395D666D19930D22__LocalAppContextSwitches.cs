@@ -1,0 +1,53 @@
+using System;
+using System.Runtime.CompilerServices;
+
+internal static class _003CT_System_HashCode_g_003EF76A1E79050082B6FD06295D83BE333EDA2D37FA21779982A395D666D19930D22__LocalAppContextSwitches
+{
+	private static int s_useNonRandomizedHashSeed;
+
+	public static bool UseNonRandomizedHashSeed
+	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		get
+		{
+			return GetCachedSwitchValue("Switch.System.Data.UseNonRandomizedHashSeed", ref s_useNonRandomizedHashSeed);
+		}
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	internal static bool GetCachedSwitchValue(string switchName, ref int cachedSwitchValue)
+	{
+		if (cachedSwitchValue < 0)
+		{
+			return false;
+		}
+		if (cachedSwitchValue > 0)
+		{
+			return true;
+		}
+		return GetCachedSwitchValueInternal(switchName, ref cachedSwitchValue);
+	}
+
+	private static bool GetCachedSwitchValueInternal(string switchName, ref int cachedSwitchValue)
+	{
+		if (!AppContext.TryGetSwitch(switchName, out var isEnabled))
+		{
+			isEnabled = GetSwitchDefaultValue(switchName);
+		}
+		AppContext.TryGetSwitch("TestSwitch.LocalAppContext.DisableCaching", out var isEnabled2);
+		if (!isEnabled2)
+		{
+			cachedSwitchValue = (isEnabled ? 1 : (-1));
+		}
+		return isEnabled;
+	}
+
+	private static bool GetSwitchDefaultValue(string switchName)
+	{
+		if (switchName == "Switch.System.Runtime.Serialization.SerializationGuard")
+		{
+			return true;
+		}
+		return false;
+	}
+}

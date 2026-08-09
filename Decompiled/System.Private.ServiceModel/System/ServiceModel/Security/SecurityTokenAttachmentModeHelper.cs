@@ -1,0 +1,53 @@
+using System.ComponentModel;
+
+namespace System.ServiceModel.Security;
+
+internal static class SecurityTokenAttachmentModeHelper
+{
+	internal static bool IsDefined(SecurityTokenAttachmentMode value)
+	{
+		if (value != SecurityTokenAttachmentMode.Endorsing && value != SecurityTokenAttachmentMode.Signed && value != SecurityTokenAttachmentMode.SignedEncrypted)
+		{
+			return value == SecurityTokenAttachmentMode.SignedEndorsing;
+		}
+		return true;
+	}
+
+	internal static void Validate(SecurityTokenAttachmentMode value)
+	{
+		if (!IsDefined(value))
+		{
+			throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidEnumArgumentException("value", (int)value, typeof(SecurityTokenAttachmentMode)));
+		}
+	}
+
+	internal static void Categorize(SecurityTokenAttachmentMode value, out bool isBasic, out bool isSignedButNotBasic, out ReceiveSecurityHeaderBindingModes mode)
+	{
+		Validate(value);
+		switch (value)
+		{
+		case SecurityTokenAttachmentMode.Endorsing:
+			isBasic = false;
+			isSignedButNotBasic = false;
+			mode = ReceiveSecurityHeaderBindingModes.Endorsing;
+			break;
+		case SecurityTokenAttachmentMode.Signed:
+			isBasic = false;
+			isSignedButNotBasic = true;
+			mode = ReceiveSecurityHeaderBindingModes.Signed;
+			break;
+		case SecurityTokenAttachmentMode.SignedEncrypted:
+			isBasic = true;
+			isSignedButNotBasic = false;
+			mode = ReceiveSecurityHeaderBindingModes.Basic;
+			break;
+		case SecurityTokenAttachmentMode.SignedEndorsing:
+			isBasic = false;
+			isSignedButNotBasic = true;
+			mode = ReceiveSecurityHeaderBindingModes.SignedEndorsing;
+			break;
+		default:
+			throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new ArgumentOutOfRangeException("value"));
+		}
+	}
+}

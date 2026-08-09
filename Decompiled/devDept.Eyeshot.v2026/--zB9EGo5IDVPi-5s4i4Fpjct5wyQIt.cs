@@ -1,0 +1,10 @@
+internal sealed class _0023_003DzB9EGo5IDVPi_00245s4i4Fpjct5wyQIt
+{
+	public _0023_003Dzv1xYz4vP1uodvImerKneh9da6jYijm1lcQ_003D_003D _0023_003DztUjb52A_003D;
+
+	public double _0023_003DzvAxV_0024Ic_003D;
+
+	public uint _0023_003Dzjcx0hV4_003D;
+
+	public _0023_003DzhH20_vyshI_0024v_0024t89s2sv27s_003D _0023_003Dzalvl9z8_003D;
+}

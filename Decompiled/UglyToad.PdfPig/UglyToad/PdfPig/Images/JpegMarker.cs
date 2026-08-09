@@ -1,0 +1,38 @@
+namespace UglyToad.PdfPig.Images;
+
+internal enum JpegMarker : byte
+{
+	StartOfBaselineDctFrame = 192,
+	StartOfProgressiveDctFrame = 194,
+	DefineHuffmanTable = 196,
+	StartOfScan = 218,
+	DefineQuantizationTable = 219,
+	DefineRestartInterval = 221,
+	Restart0 = 208,
+	Restart1 = 209,
+	Restart2 = 210,
+	Restart3 = 211,
+	Restart4 = 212,
+	Restart5 = 213,
+	Restart6 = 214,
+	Restart7 = 215,
+	StartOfImage = 216,
+	EndOfImage = 217,
+	ApplicationSpecific0 = 224,
+	ApplicationSpecific1 = 225,
+	ApplicationSpecific2 = 226,
+	ApplicationSpecific3 = 227,
+	ApplicationSpecific4 = 228,
+	ApplicationSpecific5 = 229,
+	ApplicationSpecific6 = 230,
+	ApplicationSpecific7 = 231,
+	ApplicationSpecific8 = 232,
+	ApplicationSpecific9 = 233,
+	ApplicationSpecific10 = 234,
+	ApplicationSpecific11 = 235,
+	ApplicationSpecific12 = 236,
+	ApplicationSpecific13 = 237,
+	ApplicationSpecific14 = 238,
+	ApplicationSpecific15 = 239,
+	Comment = 254
+}

@@ -1,0 +1,16 @@
+internal sealed class _0023_003DzoToahTctbh8xkDC8LH4nErY_003D
+{
+	internal int _0023_003DzzjNZ6dI_003D;
+
+	internal bool _0023_003DzJyTBFAo_003D;
+
+	internal bool _0023_003DztYGqfm0_003D;
+
+	internal _0023_003DzoToahTctbh8xkDC8LH4nErY_003D _0023_003DzeIBHT54tcynP;
+
+	internal _0023_003DzMgTMRDlbnEwHgIhEM9omy9A_003D _0023_003DzaN7t8ns_003D;
+
+	internal _0023_003DzMgTMRDlbnEwHgIhEM9omy9A_003D _0023_003DzZN5eYCjlIZKw;
+
+	internal _0023_003DzUQB2kRME9xLX78IfsYf5M4A_003D _0023_003DzFfxAmxQ_003D;
+}

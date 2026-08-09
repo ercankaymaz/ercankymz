@@ -1,0 +1,56 @@
+internal sealed class _0023_003DzQBRAmxkxgQEF5oFgQg0ygh4_003D : _0023_003DzsbeHAAjCqCPR
+{
+	public _0023_003DzQBRAmxkxgQEF5oFgQg0ygh4_003D()
+	{
+		_0023_003DzY_d7Tns_003D = 0;
+		_0023_003DzzhSDYPa50tjn = null;
+		_0023_003DzSVkTbmk_003D = 1u;
+		_0023_003DzeBP9GLo_003D = new _0023_003DzuZbFh91Sk2oHmMNHhA_003D_003D();
+	}
+
+	public override void Dispose()
+	{
+		if (_0023_003DzeBP9GLo_003D != null)
+		{
+			_0023_003DzeBP9GLo_003D._0023_003DzWz6I9bg_003D();
+		}
+		base.Dispose();
+	}
+
+	public override void _0023_003DzjpKkg5PwQXfk(_0023_003DzDS4a8SQ0SZSap4ac3A_003D_003D _0023_003DzuwH5j5s_003D)
+	{
+		_0023_003Dz_0024KKopL9T7nzT = _0023_003DzuwH5j5s_003D;
+		_0023_003DzeBP9GLo_003D._0023_003DzxAH9L_0024VFiZ6m();
+		_0023_003DzeBP9GLo_003D._0023_003Dzw5liT4nVBUF_0024((int)_0023_003DzSVkTbmk_003D);
+		_0023_003DzeBP9GLo_003D._0023_003DzaCgY2eQ_003D(_0023_003DzuwH5j5s_003D._0023_003DzceNyInx9KKsG);
+	}
+
+	public override void _0023_003Dzc_0024pb7t4_003D(_0023_003DzF340z2kdR1wSrBzDCQ_003D_003D _0023_003Dzrli3h4E_003D)
+	{
+		_0023_003DzBJKc1MC4nIjzw_Hl_0024Q_003D_003D(_0023_003Dzrli3h4E_003D);
+	}
+
+	public override void _0023_003Dzc_0024pb7t4_003D()
+	{
+	}
+
+	protected void _0023_003DzBJKc1MC4nIjzw_Hl_0024Q_003D_003D(_0023_003DzF340z2kdR1wSrBzDCQ_003D_003D _0023_003Dzrli3h4E_003D)
+	{
+		_0023_003DzY_d7Tns_003D = 0;
+		int num = 0;
+		double num2 = _0023_003DzzhSDYPa50tjn._0023_003DzIkPRXYA_003D();
+		double _0023_003DzTyRT9EKZwiFO = _0023_003Dzrli3h4E_003D._0023_003DzBJFJHwk_003D - num2;
+		double _0023_003Dzlz__Rj_9vMSq = _0023_003Dzrli3h4E_003D._0023_003DzBJFJHwk_003D + num2;
+		double _0023_003DzpxSEnRjmHNTz = _0023_003Dzrli3h4E_003D._0023_003Dz40R7bAU_003D - num2;
+		double _0023_003DzlF2pcRTUaC4q = _0023_003Dzrli3h4E_003D._0023_003Dz40R7bAU_003D + num2;
+		foreach (_0023_003DzJSv_IuScKRfn item in _0023_003DzeBP9GLo_003D._0023_003DzTc6UTYdwu5VlmRV_0024EszaP83_00243CxO(_0023_003DzzhSDYPa50tjn, _0023_003Dzrli3h4E_003D))
+		{
+			if (_0023_003DzzhSDYPa50tjn._0023_003DzzSjnXmrsuAepxLu2FQ_003D_003D(item._0023_003DzURVICbg_003D._0023_003Dz2bkFrf_00246WSWM, item._0023_003DzURVICbg_003D._0023_003DzsVJSw85carf0, _0023_003DzTyRT9EKZwiFO, _0023_003Dzlz__Rj_9vMSq, _0023_003DzpxSEnRjmHNTz, _0023_003DzlF2pcRTUaC4q) && _0023_003Dzrli3h4E_003D._0023_003Dz_JojPRlCDQpL(item))
+			{
+				_0023_003DzzhSDYPa50tjn._0023_003DzAuzAB79Pwj5S4SKNzQ_003D_003D(_0023_003Dzrli3h4E_003D, item, null);
+				num++;
+			}
+		}
+		_0023_003DzY_d7Tns_003D = num;
+	}
+}

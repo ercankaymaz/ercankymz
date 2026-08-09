@@ -1,0 +1,10 @@
+using System;
+
+namespace ODA.Kernel.TD_RootIntegrated;
+
+[Flags]
+public enum OdGiRayTraceProc_RayTracingMode
+{
+	kStandardMode = 0,
+	kSortedMode = 1
+}

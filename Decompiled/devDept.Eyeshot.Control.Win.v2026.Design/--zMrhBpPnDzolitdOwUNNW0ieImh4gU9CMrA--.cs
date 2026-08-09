@@ -1,0 +1,4 @@
+internal interface _0023_003DzMrhBpPnDzolitdOwUNNW0ieImh4gU9CMrA_003D_003D<_0023_003Dz9jrlnWk_003D> : _0023_003DzlU__zrag1e28xTYK0fcXRbDGh5QRCpTpug_003D_003D
+{
+	global::_0023_003DzRXXiQJlcBn8hYO1bGEjyrkZzcVIuGI4H_g_003D_003D<_0023_003Dz9jrlnWk_003D> GetEnumerator();
+}

@@ -1,0 +1,8 @@
+internal sealed class _0023_003DzisGtdpEc86Q3Jsi6rrYCmtjr8JtBnnlTH9R6smo_003D
+{
+	public _0023_003DzGnN8g3pVzss0YAt2fehPTDsXB32Q _0023_003Dzalvl9z8_003D;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003DzlY77YgY_003D;
+
+	public double _0023_003Dzo9ajQUuoihC2;
+}

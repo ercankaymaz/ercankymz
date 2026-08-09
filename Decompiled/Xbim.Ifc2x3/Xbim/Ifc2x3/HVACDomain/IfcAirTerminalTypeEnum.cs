@@ -1,0 +1,14 @@
+namespace Xbim.Ifc2x3.HVACDomain;
+
+public enum IfcAirTerminalTypeEnum : byte
+{
+	GRILLE,
+	REGISTER,
+	DIFFUSER,
+	EYEBALL,
+	IRIS,
+	LINEARGRILLE,
+	LINEARDIFFUSER,
+	USERDEFINED,
+	NOTDEFINED
+}

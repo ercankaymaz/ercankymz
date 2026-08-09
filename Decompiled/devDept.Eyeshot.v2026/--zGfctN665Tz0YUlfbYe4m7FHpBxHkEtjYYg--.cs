@@ -1,0 +1,4 @@
+using devDept.Eyeshot;
+using devDept.Eyeshot.Entities;
+
+internal delegate void _0023_003DzGfctN665Tz0YUlfbYe4m7FHpBxHkEtjYYg_003D_003D(DrawParams _0023_003DzlOBVNI5j_n_0024E, Entity _0023_003Dzs_0024uS8LA_003D, bool _0023_003DzNGLWIVQ_003D, GfxAttributesWire _0023_003DzqP5lTto_003D);

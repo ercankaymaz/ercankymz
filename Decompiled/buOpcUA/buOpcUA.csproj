@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>buOpcUA</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="-3bcae739-7deb-435a-9f3e-41ba545ee0c4-" />
+    <EmbeddedResource Include="-3bcae739-7deb-435a-9f3e-41ba545ee0c4-" LogicalName="{3bcae739-7deb-435a-9f3e-41ba545ee0c4}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="buOpcDlls">
+      <HintPath>..\..\buOpcDlls.dll</HintPath>
+    </Reference>
+    <Reference Include="buClass">
+      <HintPath>..\..\buClass.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+</Project>

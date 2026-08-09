@@ -1,0 +1,16 @@
+internal sealed class _0023_003DzsZ4ZibZTpgv3
+{
+	public _0023_003DzoC5nni_JI9M0 _0023_003DzvTrROpt34EeJ;
+
+	public _0023_003DzoC5nni_JI9M0 _0023_003DzZYrLGHE_003D;
+
+	public _0023_003DzsZ4ZibZTpgv3()
+	{
+	}
+
+	public _0023_003DzsZ4ZibZTpgv3(_0023_003DzoC5nni_JI9M0 _0023_003DzuwH5j5s_003D, _0023_003DzoC5nni_JI9M0 _0023_003DzXrexKjY_003D)
+	{
+		_0023_003DzvTrROpt34EeJ = _0023_003DzuwH5j5s_003D;
+		_0023_003DzZYrLGHE_003D = _0023_003DzXrexKjY_003D;
+	}
+}

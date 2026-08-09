@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>OdSwig_PlotSettingsValidator_Mgd</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net40</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="OdSwig_TD_RootIntegrated_Mgd">
+      <HintPath>..\..\OdSwig_TD_RootIntegrated_Mgd.dll</HintPath>
+    </Reference>
+    <Reference Include="OdSwig_TD_DbCoreIntegrated_Mgd">
+      <HintPath>..\..\OdSwig_TD_DbCoreIntegrated_Mgd.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

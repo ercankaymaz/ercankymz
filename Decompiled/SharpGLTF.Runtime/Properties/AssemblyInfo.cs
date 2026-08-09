@@ -1,0 +1,20 @@
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
+using System.Security;
+using System.Security.Permissions;
+
+[assembly: AssemblyCompany("Vicente Penades")]
+[assembly: AssemblyConfiguration("Release")]
+[assembly: AssemblyCopyright("Copyright (c) 2025 Vicente Penades")]
+[assembly: AssemblyDescription("SharpGLTF is a C# library for reading and writing glTF2 3D models")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.0+4b28af2b6e5e30c6bade3f8baaf6b5e1a67ceb98")]
+[assembly: AssemblyProduct("SharpGLTF.Runtime")]
+[assembly: AssemblyTitle("SharpGLTF.Runtime")]
+[assembly: AssemblyMetadata("RepositoryUrl", "https://github.com/vpenades/SharpGLTF")]
+[assembly: InternalsVisibleTo("SharpGLTF.Core.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100318e6698f4f41b26736d5881759c6afde44d17c06b63d2e383c915ca1fed6ec1b6eb2e1c38013feb2320224ace549b7701e22e6e0f7770e0d72b5c199f9e969bf2c2668c0ebeb035e539fb534d9ef24053aa9997d2d72534a6c1da8ab58e353ed6eb62ad9eb1f4a044893d7a50a226e4701d4e472a7dc1918caee6794d9c4cae")]
+[assembly: InternalsVisibleTo("SharpGLTF.Toolkit.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100318e6698f4f41b26736d5881759c6afde44d17c06b63d2e383c915ca1fed6ec1b6eb2e1c38013feb2320224ace549b7701e22e6e0f7770e0d72b5c199f9e969bf2c2668c0ebeb035e539fb534d9ef24053aa9997d2d72534a6c1da8ab58e353ed6eb62ad9eb1f4a044893d7a50a226e4701d4e472a7dc1918caee6794d9c4cae")]
+[assembly: InternalsVisibleTo("SharpGLTF.Ext.3DTiles.Tests, PublicKey=0024000004800000940000000602000000240000525341310004000001000100318e6698f4f41b26736d5881759c6afde44d17c06b63d2e383c915ca1fed6ec1b6eb2e1c38013feb2320224ace549b7701e22e6e0f7770e0d72b5c199f9e969bf2c2668c0ebeb035e539fb534d9ef24053aa9997d2d72534a6c1da8ab58e353ed6eb62ad9eb1f4a044893d7a50a226e4701d4e472a7dc1918caee6794d9c4cae")]
+[assembly: AssemblyVersion("1.0.0.0")]

@@ -1,0 +1,6 @@
+internal sealed class _0023_003DzwJUj3Ludjfv4LdpeBQ_003D_003D
+{
+	public _0023_003DzFojHQdGSdFDtEdoRCKp_0024w9o_003D _0023_003DzRQ5AXwU_003D = new _0023_003DzFojHQdGSdFDtEdoRCKp_0024w9o_003D();
+
+	public _0023_003DzFojHQdGSdFDtEdoRCKp_0024w9o_003D _0023_003Dz1OjKZwTTwYnn = new _0023_003DzFojHQdGSdFDtEdoRCKp_0024w9o_003D();
+}

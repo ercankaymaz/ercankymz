@@ -1,0 +1,19 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcCommunicationsApplianceTypeEnum : byte
+{
+	ANTENNA,
+	COMPUTER,
+	FAX,
+	GATEWAY,
+	MODEM,
+	NETWORKAPPLIANCE,
+	NETWORKBRIDGE,
+	NETWORKHUB,
+	PRINTER,
+	REPEATER,
+	ROUTER,
+	SCANNER,
+	USERDEFINED,
+	NOTDEFINED
+}

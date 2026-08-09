@@ -1,0 +1,13 @@
+using Xbim.Common;
+using Xbim.Ifc4.ExternalReferenceResource;
+
+namespace Xbim.Ifc4.Interfaces;
+
+public interface IIfcSectionProperties : IIfcPreDefinedProperties, IIfcPropertyAbstraction, IPersistEntity, IPersist, IfcResourceObjectSelect, IIfcResourceObjectSelect, IExpressSelectType
+{
+	IfcSectionTypeEnum SectionType { get; set; }
+
+	IIfcProfileDef StartProfile { get; set; }
+
+	IIfcProfileDef EndProfile { get; set; }
+}

@@ -1,0 +1,15 @@
+namespace Xbim.Ifc4x3.RailDomain;
+
+public enum IfcTrackElementTypeEnum : byte
+{
+	BLOCKINGDEVICE,
+	DERAILER,
+	FROG,
+	HALF_SET_OF_BLADES,
+	SLEEPER,
+	SPEEDREGULATOR,
+	TRACKENDOFALIGNMENT,
+	VEHICLESTOP,
+	USERDEFINED,
+	NOTDEFINED
+}

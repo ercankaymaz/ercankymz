@@ -1,0 +1,14 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcWasteTerminalTypeEnum : byte
+{
+	FLOORTRAP,
+	FLOORWASTE,
+	GULLYSUMP,
+	GULLYTRAP,
+	ROOFDRAIN,
+	WASTEDISPOSALUNIT,
+	WASTETRAP,
+	USERDEFINED,
+	NOTDEFINED
+}

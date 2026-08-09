@@ -1,0 +1,13 @@
+namespace Xbim.Ifc4x3.ElectricalDomain;
+
+public enum IfcDistributionBoardTypeEnum : byte
+{
+	CONSUMERUNIT,
+	DISPATCHINGBOARD,
+	DISTRIBUTIONBOARD,
+	DISTRIBUTIONFRAME,
+	MOTORCONTROLCENTRE,
+	SWITCHBOARD,
+	USERDEFINED,
+	NOTDEFINED
+}

@@ -1,0 +1,427 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>Xceed.Wpf.Toolkit.NET5</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWPF>True</UseWPF>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="themes\generic\images\minimize_hover.png" />
+    <None Remove="themes\luna.normalcolor.baml" />
+    <None Remove="colorcanvas\themes\aero2.normalcolor.baml" />
+    <None Remove="propertygrid\images\inheritance11.png" />
+    <None Remove="iconbutton\themes\generic.baml" />
+    <None Remove="themes\generic\images\close_rounded_pressed.png" />
+    <None Remove="themes\generic\brushes.baml" />
+    <None Remove="themes\aero2\common.baml" />
+    <None Remove="buttonspinner\themes\aero2.normalcolor.baml" />
+    <None Remove="calculator\themes\aero2.normalcolor.baml" />
+    <None Remove="numericupdown\themes\generic.baml" />
+    <None Remove="themes\classic.baml" />
+    <None Remove="themes\generic\images\close_toolwindow_hover.png" />
+    <None Remove="chromes\themes\generic.baml" />
+    <None Remove="propertygrid\images\clearfilter16_white.png" />
+    <None Remove="multilinetexteditor\themes\aero2.normalcolor.baml" />
+    <None Remove="datetimepicker\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\generic\images\resize_grip.png" />
+    <None Remove="themes\generic\images\minimize_pressed.png" />
+    <None Remove="messagebox\themes\aero2.normalcolor.baml" />
+    <None Remove="richtextboxformatbar\images\italic_white16.png" />
+    <None Remove="propertygrid\images\clearfilter16_green.png" />
+    <None Remove="zoombox\resources\zoomrelative.cur" />
+    <None Remove="themes\generic\glyphs.baml" />
+    <None Remove="collectioncontrol\images\duplicate.png" />
+    <None Remove="datetimeupdown\themes\generic.baml" />
+    <None Remove="propertygrid\themes\generic.baml" />
+    <None Remove="colorpicker\themes\aero2.normalcolor.baml" />
+    <None Remove="rangeslider\themes\aero2.normalcolor.baml" />
+    <None Remove="propertygrid\images\sortascending16_white.png" />
+    <None Remove="messagebox\icons\error48.png" />
+    <None Remove="timespanupdown\themes\aero2.normalcolor.baml" />
+    <None Remove="watermarktextbox\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\generic\images\restore_inactive.png" />
+    <None Remove="themes\generic\images\maximize_pressed.png" />
+    <None Remove="timepicker\themes\aero2.normalcolor.baml" />
+    <None Remove="calculator\themes\generic.baml" />
+    <None Remove="themes\generic\images\close_rounded_hover.png" />
+    <None Remove="dropdownbutton\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\generic\images\close_rounded_inactive.png" />
+    <None Remove="datetimeupdown\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\generic\images\close_inactive.png" />
+    <None Remove="richtextboxformatbar\images\rightalign16.png" />
+    <None Remove="richtextboxformatbar\images\leftalign_white16.png" />
+    <None Remove="themes\generic\images\minimize_inactive.png" />
+    <None Remove="themes\aero2\glyphs.baml" />
+    <None Remove="timepicker\themes\generic.baml" />
+    <None Remove="chromes\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\aero2.normalcolor.baml" />
+    <None Remove="primitives\themes\aero2\selectoritem.baml" />
+    <None Remove="themes\generic\images\restore_normal.png" />
+    <None Remove="propertygrid\images\clearfilter16.png" />
+    <None Remove="themes\aero2\brushes.baml" />
+    <None Remove="propertygrid\images\resource11.png" />
+    <None Remove="childwindow\themes\aero2.normalcolor.baml" />
+    <None Remove="propertygrid\images\categorize16.png" />
+    <None Remove="watermarkcombobox\themes\aero2.normalcolor.baml" />
+    <None Remove="childwindow\themes\generic.baml" />
+    <None Remove="busyindicator\themes\generic.baml" />
+    <None Remove="collectioncontrol\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\generic.baml" />
+    <None Remove="richtextboxformatbar\themes\generic.baml" />
+    <None Remove="watermarktextbox\themes\generic.baml" />
+    <None Remove="timespanupdown\themes\generic.baml" />
+    <None Remove="collectioncontrol\images\duplicate_white.png" />
+    <None Remove="zoombox\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\generic\images\close_pressed.png" />
+    <None Remove="colorpicker\themes\generic.baml" />
+    <None Remove="richtextboxformatbar\images\bold_white16.png" />
+    <None Remove="richtextboxformatbar\images\leftalign16.png" />
+    <None Remove="richtextboxformatbar\images\underline16.png" />
+    <None Remove="richtextboxformatbar\images\centeralign16.png" />
+    <None Remove="splitbutton\themes\aero2.normalcolor.baml" />
+    <None Remove="checkcombobox\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\generic\images\maximize_inactive.png" />
+    <None Remove="multilinetexteditor\themes\generic.baml" />
+    <None Remove="themes\generic\images\maximize_hover.png" />
+    <None Remove="themes\luna.homestead.baml" />
+    <None Remove="datetimepicker\themes\generic.baml" />
+    <None Remove="calculatorupdown\themes\generic.baml" />
+    <None Remove="messagebox\themes\generic.baml" />
+    <None Remove="rangeslider\themes\generic.baml" />
+    <None Remove="richtextboxformatbar\images\centeralign_white16.png" />
+    <None Remove="themes\generic\buttons.baml" />
+    <None Remove="calculatorupdown\themes\aero2.normalcolor.baml" />
+    <None Remove="wizard\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\luna.metallic.baml" />
+    <None Remove="busyindicator\themes\aero2.normalcolor.baml" />
+    <None Remove="richtextboxformatbar\images\texthighlightcolorpicker16.png" />
+    <None Remove="richtextboxformatbar\images\texthighlightcolorpicker_white16.png" />
+    <None Remove="themes\generic\images\close_normal.png" />
+    <None Remove="richtextboxformatbar\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\aero.normalcolor.baml" />
+    <None Remove="collectioncontrol\images\delete16_white.png" />
+    <None Remove="propertygrid\images\database11.png" />
+    <None Remove="primitives\themes\generic\selectoritem.baml" />
+    <None Remove="richtextboxformatbar\images\numbering_white16.png" />
+    <None Remove="themes\generic\images\maximize_disabled.png" />
+    <None Remove="zoombox\themes\generic.baml" />
+    <None Remove="themes\generic\images\close_toolwindow_pressed.png" />
+    <None Remove="themes\generic\images\restore_pressed.png" />
+    <None Remove="checklistbox\themes\aero2.normalcolor.baml" />
+    <None Remove="themes\generic\images\restore_disabled.png" />
+    <None Remove="themes\generic\common.baml" />
+    <None Remove="checklistbox\themes\generic.baml" />
+    <None Remove="wizard\themes\generic.baml" />
+    <None Remove="collectioncontrol\images\delete16.png" />
+    <None Remove="propertygrid\themes\aero2.normalcolor.baml" />
+    <None Remove="richtextboxformatbar\images\numbering16.png" />
+    <None Remove="zoombox\resources\zoom.cur" />
+    <None Remove="primitives\themes\generic\windowcontrol.baml" />
+    <None Remove="messagebox\icons\warning48.png" />
+    <None Remove="propertygrid\images\local11.png" />
+    <None Remove="collectioncontrol\themes\generic.baml" />
+    <None Remove="propertygrid\images\sortascending16.png" />
+    <None Remove="collectioncontrol\implementation\collectioncontroldialog.baml" />
+    <None Remove="themes\generic\images\minimize_normal.png" />
+    <None Remove="richtextboxformatbar\images\bold16.png" />
+    <None Remove="themes\generic\images\maximize_normal.png" />
+    <None Remove="richtextboxformatbar\images\underline_white16.png" />
+    <None Remove="iconbutton\themes\aero2.normalcolor.baml" />
+    <None Remove="buttonspinner\themes\generic.baml" />
+    <None Remove="checkcombobox\themes\generic.baml" />
+    <None Remove="themes\generic\images\close_hover.png" />
+    <None Remove="themes\aero2\buttons.baml" />
+    <None Remove="themes\generic\images\close_toolwindow_inactive.png" />
+    <None Remove="themes\generic\images\close_rounded_normal.png" />
+    <None Remove="richtextboxformatbar\images\italic16.png" />
+    <None Remove="themes\aero\brushes_normalcolor.baml" />
+    <None Remove="numericupdown\themes\aero2.normalcolor.baml" />
+    <None Remove="pie\themes\aero2.normalcolor.baml" />
+    <None Remove="richtextboxformatbar\images\bullets_white16.png" />
+    <None Remove="richtextboxformatbar\images\fontcolorpicker_white16.png" />
+    <None Remove="colorcanvas\themes\generic.baml" />
+    <None Remove="primitives\themes\aero2\windowcontrol.baml" />
+    <None Remove="dropdownbutton\themes\generic.baml" />
+    <None Remove="richtextboxformatbar\images\bullets16.png" />
+    <None Remove="themes\royale.normalcolor.baml" />
+    <None Remove="propertygrid\images\advancedproperties11.png" />
+    <None Remove="magnifier\themes\generic.baml" />
+    <None Remove="richtextboxformatbar\images\fontcolorpicker16.png" />
+    <None Remove="splitbutton\themes\generic.baml" />
+    <None Remove="propertygrid\images\style11.png" />
+    <None Remove="themes\aero\buttons_normalcolor.baml" />
+    <None Remove="messagebox\icons\question48.png" />
+    <None Remove="messagebox\icons\information48.png" />
+    <None Remove="richtextboxformatbar\images\rightalign_white16.png" />
+    <None Remove="themes\generic\images\close_toolwindow_normal.png" />
+    <None Remove="watermarkcombobox\themes\generic.baml" />
+    <None Remove="richtextboxformatbar\images\justifyalign16.png" />
+    <None Remove="themes\generic\images\restore_hover.png" />
+    <None Remove="pie\themes\generic.baml" />
+    <None Remove="Xceed.Wpf.Toolkit.Calculator.Implementation.Calculator.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.AutoSelectTextBox.Implementation.AutoSelectTextBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.BusyIndicator.Implementation.BusyIndicator.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.ButtonSpinner.Implementation.ButtonSpinner.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.CheckComboBox.Implementation.CheckComboBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.CalculatorUpDown.Implementation.CalculatorUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.CheckListBox.Implementation.CheckListBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.ChildWindow.Implementation.ChildWindow.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.CollectionControl.Implementation.CollectionControl.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.CollectionControl.Implementation.CollectionControlButton.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.CollectionControl.Implementation.PrimitiveTypeCollectionControl.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.ColorCanvas.Implementation.ColorCanvas.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.ColorPicker.Implementation.ColorPicker.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.DateTimePicker.Implementation.DateTimePicker.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.DateTimeUpDown.Implementation.DateTimeUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.DropDownButton.Implementation.DropDownButton.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.IconButton.Implementation.IconButton.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.Magnifier.Implementation.Magnifier.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.MaskedTextBox.Implementation.MaskedTextBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.MessageBox.Implementation.MessageBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.MultiLineTextEditor.Implementation.MultiLineTextEditor.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.ByteUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.DecimalUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.DoubleUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.IntegerUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.LongUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.SByteUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.ShortUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.SingleUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.UIntegerUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.ULongUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.UShortUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.Panels.RandomPanel.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.Panels.WrapPanel.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.Pie.Implementation.Pie.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.Primitives.ValueRangeTextBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.Primitives.WindowContainer.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.Primitives.WindowControl.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.PropertyGrid.Implementation.PropertyGrid.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.RangeSlider.Implementation.RangeSlider.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.RichTextBox.RichTextBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.RichTextBoxFormatBar.RichTextBoxFormatBar.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.SplitButton.Implementation.SplitButton.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.StyleableWindow.Implementation.StyleableWindow.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.TimelinePanel.Implementation.TimelinePanel.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.TimePicker.Implementation.TimePicker.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.TimeSpanUpDown.Implementation.TimeSpanUpDown.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.WatermarkComboBox.Implementation.WatermarkComboBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.WatermarkPasswordBox.Implementation.WatermarkPasswordBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.WatermarkTextBox.Implementation.WatermarkTextBox.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.Wizard.Implementation.Wizard.Icon.bmp" />
+    <None Remove="Xceed.Wpf.Toolkit.Zoombox.Zoombox.Icon.bmp" />
+    <EmbeddedResource Include="themes\generic\images\minimize_hover.png" LogicalName="themes/generic/images/minimize_hover.png" />
+    <EmbeddedResource Include="themes\luna.normalcolor.baml" LogicalName="themes/luna.normalcolor.baml" />
+    <EmbeddedResource Include="colorcanvas\themes\aero2.normalcolor.baml" LogicalName="colorcanvas/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="propertygrid\images\inheritance11.png" LogicalName="propertygrid/images/inheritance11.png" />
+    <EmbeddedResource Include="iconbutton\themes\generic.baml" LogicalName="iconbutton/themes/generic.baml" />
+    <EmbeddedResource Include="themes\generic\images\close_rounded_pressed.png" LogicalName="themes/generic/images/close_rounded_pressed.png" />
+    <EmbeddedResource Include="themes\generic\brushes.baml" LogicalName="themes/generic/brushes.baml" />
+    <EmbeddedResource Include="themes\aero2\common.baml" LogicalName="themes/aero2/common.baml" />
+    <EmbeddedResource Include="buttonspinner\themes\aero2.normalcolor.baml" LogicalName="buttonspinner/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="calculator\themes\aero2.normalcolor.baml" LogicalName="calculator/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="numericupdown\themes\generic.baml" LogicalName="numericupdown/themes/generic.baml" />
+    <EmbeddedResource Include="themes\classic.baml" LogicalName="themes/classic.baml" />
+    <EmbeddedResource Include="themes\generic\images\close_toolwindow_hover.png" LogicalName="themes/generic/images/close_toolwindow_hover.png" />
+    <EmbeddedResource Include="chromes\themes\generic.baml" LogicalName="chromes/themes/generic.baml" />
+    <EmbeddedResource Include="propertygrid\images\clearfilter16_white.png" LogicalName="propertygrid/images/clearfilter16_white.png" />
+    <EmbeddedResource Include="multilinetexteditor\themes\aero2.normalcolor.baml" LogicalName="multilinetexteditor/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="datetimepicker\themes\aero2.normalcolor.baml" LogicalName="datetimepicker/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\generic\images\resize_grip.png" LogicalName="themes/generic/images/resize_grip.png" />
+    <EmbeddedResource Include="themes\generic\images\minimize_pressed.png" LogicalName="themes/generic/images/minimize_pressed.png" />
+    <EmbeddedResource Include="messagebox\themes\aero2.normalcolor.baml" LogicalName="messagebox/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\italic_white16.png" LogicalName="richtextboxformatbar/images/italic_white16.png" />
+    <EmbeddedResource Include="propertygrid\images\clearfilter16_green.png" LogicalName="propertygrid/images/clearfilter16_green.png" />
+    <EmbeddedResource Include="zoombox\resources\zoomrelative.cur" LogicalName="zoombox/resources/zoomrelative.cur" />
+    <EmbeddedResource Include="themes\generic\glyphs.baml" LogicalName="themes/generic/glyphs.baml" />
+    <EmbeddedResource Include="collectioncontrol\images\duplicate.png" LogicalName="collectioncontrol/images/duplicate.png" />
+    <EmbeddedResource Include="datetimeupdown\themes\generic.baml" LogicalName="datetimeupdown/themes/generic.baml" />
+    <EmbeddedResource Include="propertygrid\themes\generic.baml" LogicalName="propertygrid/themes/generic.baml" />
+    <EmbeddedResource Include="colorpicker\themes\aero2.normalcolor.baml" LogicalName="colorpicker/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="rangeslider\themes\aero2.normalcolor.baml" LogicalName="rangeslider/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="propertygrid\images\sortascending16_white.png" LogicalName="propertygrid/images/sortascending16_white.png" />
+    <EmbeddedResource Include="messagebox\icons\error48.png" LogicalName="messagebox/icons/error48.png" />
+    <EmbeddedResource Include="timespanupdown\themes\aero2.normalcolor.baml" LogicalName="timespanupdown/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="watermarktextbox\themes\aero2.normalcolor.baml" LogicalName="watermarktextbox/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\generic\images\restore_inactive.png" LogicalName="themes/generic/images/restore_inactive.png" />
+    <EmbeddedResource Include="themes\generic\images\maximize_pressed.png" LogicalName="themes/generic/images/maximize_pressed.png" />
+    <EmbeddedResource Include="timepicker\themes\aero2.normalcolor.baml" LogicalName="timepicker/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="calculator\themes\generic.baml" LogicalName="calculator/themes/generic.baml" />
+    <EmbeddedResource Include="themes\generic\images\close_rounded_hover.png" LogicalName="themes/generic/images/close_rounded_hover.png" />
+    <EmbeddedResource Include="dropdownbutton\themes\aero2.normalcolor.baml" LogicalName="dropdownbutton/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\generic\images\close_rounded_inactive.png" LogicalName="themes/generic/images/close_rounded_inactive.png" />
+    <EmbeddedResource Include="datetimeupdown\themes\aero2.normalcolor.baml" LogicalName="datetimeupdown/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\generic\images\close_inactive.png" LogicalName="themes/generic/images/close_inactive.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\rightalign16.png" LogicalName="richtextboxformatbar/images/rightalign16.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\leftalign_white16.png" LogicalName="richtextboxformatbar/images/leftalign_white16.png" />
+    <EmbeddedResource Include="themes\generic\images\minimize_inactive.png" LogicalName="themes/generic/images/minimize_inactive.png" />
+    <EmbeddedResource Include="themes\aero2\glyphs.baml" LogicalName="themes/aero2/glyphs.baml" />
+    <EmbeddedResource Include="timepicker\themes\generic.baml" LogicalName="timepicker/themes/generic.baml" />
+    <EmbeddedResource Include="chromes\themes\aero2.normalcolor.baml" LogicalName="chromes/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\aero2.normalcolor.baml" LogicalName="themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="primitives\themes\aero2\selectoritem.baml" LogicalName="primitives/themes/aero2/selectoritem.baml" />
+    <EmbeddedResource Include="themes\generic\images\restore_normal.png" LogicalName="themes/generic/images/restore_normal.png" />
+    <EmbeddedResource Include="propertygrid\images\clearfilter16.png" LogicalName="propertygrid/images/clearfilter16.png" />
+    <EmbeddedResource Include="themes\aero2\brushes.baml" LogicalName="themes/aero2/brushes.baml" />
+    <EmbeddedResource Include="propertygrid\images\resource11.png" LogicalName="propertygrid/images/resource11.png" />
+    <EmbeddedResource Include="childwindow\themes\aero2.normalcolor.baml" LogicalName="childwindow/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="propertygrid\images\categorize16.png" LogicalName="propertygrid/images/categorize16.png" />
+    <EmbeddedResource Include="watermarkcombobox\themes\aero2.normalcolor.baml" LogicalName="watermarkcombobox/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="childwindow\themes\generic.baml" LogicalName="childwindow/themes/generic.baml" />
+    <EmbeddedResource Include="busyindicator\themes\generic.baml" LogicalName="busyindicator/themes/generic.baml" />
+    <EmbeddedResource Include="collectioncontrol\themes\aero2.normalcolor.baml" LogicalName="collectioncontrol/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\generic.baml" LogicalName="themes/generic.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\themes\generic.baml" LogicalName="richtextboxformatbar/themes/generic.baml" />
+    <EmbeddedResource Include="watermarktextbox\themes\generic.baml" LogicalName="watermarktextbox/themes/generic.baml" />
+    <EmbeddedResource Include="timespanupdown\themes\generic.baml" LogicalName="timespanupdown/themes/generic.baml" />
+    <EmbeddedResource Include="collectioncontrol\images\duplicate_white.png" LogicalName="collectioncontrol/images/duplicate_white.png" />
+    <EmbeddedResource Include="zoombox\themes\aero2.normalcolor.baml" LogicalName="zoombox/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\generic\images\close_pressed.png" LogicalName="themes/generic/images/close_pressed.png" />
+    <EmbeddedResource Include="colorpicker\themes\generic.baml" LogicalName="colorpicker/themes/generic.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\bold_white16.png" LogicalName="richtextboxformatbar/images/bold_white16.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\leftalign16.png" LogicalName="richtextboxformatbar/images/leftalign16.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\underline16.png" LogicalName="richtextboxformatbar/images/underline16.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\centeralign16.png" LogicalName="richtextboxformatbar/images/centeralign16.png" />
+    <EmbeddedResource Include="splitbutton\themes\aero2.normalcolor.baml" LogicalName="splitbutton/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="checkcombobox\themes\aero2.normalcolor.baml" LogicalName="checkcombobox/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\generic\images\maximize_inactive.png" LogicalName="themes/generic/images/maximize_inactive.png" />
+    <EmbeddedResource Include="multilinetexteditor\themes\generic.baml" LogicalName="multilinetexteditor/themes/generic.baml" />
+    <EmbeddedResource Include="themes\generic\images\maximize_hover.png" LogicalName="themes/generic/images/maximize_hover.png" />
+    <EmbeddedResource Include="themes\luna.homestead.baml" LogicalName="themes/luna.homestead.baml" />
+    <EmbeddedResource Include="datetimepicker\themes\generic.baml" LogicalName="datetimepicker/themes/generic.baml" />
+    <EmbeddedResource Include="calculatorupdown\themes\generic.baml" LogicalName="calculatorupdown/themes/generic.baml" />
+    <EmbeddedResource Include="messagebox\themes\generic.baml" LogicalName="messagebox/themes/generic.baml" />
+    <EmbeddedResource Include="rangeslider\themes\generic.baml" LogicalName="rangeslider/themes/generic.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\centeralign_white16.png" LogicalName="richtextboxformatbar/images/centeralign_white16.png" />
+    <EmbeddedResource Include="themes\generic\buttons.baml" LogicalName="themes/generic/buttons.baml" />
+    <EmbeddedResource Include="calculatorupdown\themes\aero2.normalcolor.baml" LogicalName="calculatorupdown/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="wizard\themes\aero2.normalcolor.baml" LogicalName="wizard/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\luna.metallic.baml" LogicalName="themes/luna.metallic.baml" />
+    <EmbeddedResource Include="busyindicator\themes\aero2.normalcolor.baml" LogicalName="busyindicator/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\texthighlightcolorpicker16.png" LogicalName="richtextboxformatbar/images/texthighlightcolorpicker16.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\texthighlightcolorpicker_white16.png" LogicalName="richtextboxformatbar/images/texthighlightcolorpicker_white16.png" />
+    <EmbeddedResource Include="themes\generic\images\close_normal.png" LogicalName="themes/generic/images/close_normal.png" />
+    <EmbeddedResource Include="richtextboxformatbar\themes\aero2.normalcolor.baml" LogicalName="richtextboxformatbar/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\aero.normalcolor.baml" LogicalName="themes/aero.normalcolor.baml" />
+    <EmbeddedResource Include="collectioncontrol\images\delete16_white.png" LogicalName="collectioncontrol/images/delete16_white.png" />
+    <EmbeddedResource Include="propertygrid\images\database11.png" LogicalName="propertygrid/images/database11.png" />
+    <EmbeddedResource Include="primitives\themes\generic\selectoritem.baml" LogicalName="primitives/themes/generic/selectoritem.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\numbering_white16.png" LogicalName="richtextboxformatbar/images/numbering_white16.png" />
+    <EmbeddedResource Include="themes\generic\images\maximize_disabled.png" LogicalName="themes/generic/images/maximize_disabled.png" />
+    <EmbeddedResource Include="zoombox\themes\generic.baml" LogicalName="zoombox/themes/generic.baml" />
+    <EmbeddedResource Include="themes\generic\images\close_toolwindow_pressed.png" LogicalName="themes/generic/images/close_toolwindow_pressed.png" />
+    <EmbeddedResource Include="themes\generic\images\restore_pressed.png" LogicalName="themes/generic/images/restore_pressed.png" />
+    <EmbeddedResource Include="checklistbox\themes\aero2.normalcolor.baml" LogicalName="checklistbox/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="themes\generic\images\restore_disabled.png" LogicalName="themes/generic/images/restore_disabled.png" />
+    <EmbeddedResource Include="themes\generic\common.baml" LogicalName="themes/generic/common.baml" />
+    <EmbeddedResource Include="checklistbox\themes\generic.baml" LogicalName="checklistbox/themes/generic.baml" />
+    <EmbeddedResource Include="wizard\themes\generic.baml" LogicalName="wizard/themes/generic.baml" />
+    <EmbeddedResource Include="collectioncontrol\images\delete16.png" LogicalName="collectioncontrol/images/delete16.png" />
+    <EmbeddedResource Include="propertygrid\themes\aero2.normalcolor.baml" LogicalName="propertygrid/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\numbering16.png" LogicalName="richtextboxformatbar/images/numbering16.png" />
+    <EmbeddedResource Include="zoombox\resources\zoom.cur" LogicalName="zoombox/resources/zoom.cur" />
+    <EmbeddedResource Include="primitives\themes\generic\windowcontrol.baml" LogicalName="primitives/themes/generic/windowcontrol.baml" />
+    <EmbeddedResource Include="messagebox\icons\warning48.png" LogicalName="messagebox/icons/warning48.png" />
+    <EmbeddedResource Include="propertygrid\images\local11.png" LogicalName="propertygrid/images/local11.png" />
+    <EmbeddedResource Include="collectioncontrol\themes\generic.baml" LogicalName="collectioncontrol/themes/generic.baml" />
+    <EmbeddedResource Include="propertygrid\images\sortascending16.png" LogicalName="propertygrid/images/sortascending16.png" />
+    <EmbeddedResource Include="collectioncontrol\implementation\collectioncontroldialog.baml" LogicalName="collectioncontrol/implementation/collectioncontroldialog.baml" />
+    <EmbeddedResource Include="themes\generic\images\minimize_normal.png" LogicalName="themes/generic/images/minimize_normal.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\bold16.png" LogicalName="richtextboxformatbar/images/bold16.png" />
+    <EmbeddedResource Include="themes\generic\images\maximize_normal.png" LogicalName="themes/generic/images/maximize_normal.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\underline_white16.png" LogicalName="richtextboxformatbar/images/underline_white16.png" />
+    <EmbeddedResource Include="iconbutton\themes\aero2.normalcolor.baml" LogicalName="iconbutton/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="buttonspinner\themes\generic.baml" LogicalName="buttonspinner/themes/generic.baml" />
+    <EmbeddedResource Include="checkcombobox\themes\generic.baml" LogicalName="checkcombobox/themes/generic.baml" />
+    <EmbeddedResource Include="themes\generic\images\close_hover.png" LogicalName="themes/generic/images/close_hover.png" />
+    <EmbeddedResource Include="themes\aero2\buttons.baml" LogicalName="themes/aero2/buttons.baml" />
+    <EmbeddedResource Include="themes\generic\images\close_toolwindow_inactive.png" LogicalName="themes/generic/images/close_toolwindow_inactive.png" />
+    <EmbeddedResource Include="themes\generic\images\close_rounded_normal.png" LogicalName="themes/generic/images/close_rounded_normal.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\italic16.png" LogicalName="richtextboxformatbar/images/italic16.png" />
+    <EmbeddedResource Include="themes\aero\brushes_normalcolor.baml" LogicalName="themes/aero/brushes_normalcolor.baml" />
+    <EmbeddedResource Include="numericupdown\themes\aero2.normalcolor.baml" LogicalName="numericupdown/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="pie\themes\aero2.normalcolor.baml" LogicalName="pie/themes/aero2.normalcolor.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\bullets_white16.png" LogicalName="richtextboxformatbar/images/bullets_white16.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\fontcolorpicker_white16.png" LogicalName="richtextboxformatbar/images/fontcolorpicker_white16.png" />
+    <EmbeddedResource Include="colorcanvas\themes\generic.baml" LogicalName="colorcanvas/themes/generic.baml" />
+    <EmbeddedResource Include="primitives\themes\aero2\windowcontrol.baml" LogicalName="primitives/themes/aero2/windowcontrol.baml" />
+    <EmbeddedResource Include="dropdownbutton\themes\generic.baml" LogicalName="dropdownbutton/themes/generic.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\bullets16.png" LogicalName="richtextboxformatbar/images/bullets16.png" />
+    <EmbeddedResource Include="themes\royale.normalcolor.baml" LogicalName="themes/royale.normalcolor.baml" />
+    <EmbeddedResource Include="propertygrid\images\advancedproperties11.png" LogicalName="propertygrid/images/advancedproperties11.png" />
+    <EmbeddedResource Include="magnifier\themes\generic.baml" LogicalName="magnifier/themes/generic.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\fontcolorpicker16.png" LogicalName="richtextboxformatbar/images/fontcolorpicker16.png" />
+    <EmbeddedResource Include="splitbutton\themes\generic.baml" LogicalName="splitbutton/themes/generic.baml" />
+    <EmbeddedResource Include="propertygrid\images\style11.png" LogicalName="propertygrid/images/style11.png" />
+    <EmbeddedResource Include="themes\aero\buttons_normalcolor.baml" LogicalName="themes/aero/buttons_normalcolor.baml" />
+    <EmbeddedResource Include="messagebox\icons\question48.png" LogicalName="messagebox/icons/question48.png" />
+    <EmbeddedResource Include="messagebox\icons\information48.png" LogicalName="messagebox/icons/information48.png" />
+    <EmbeddedResource Include="richtextboxformatbar\images\rightalign_white16.png" LogicalName="richtextboxformatbar/images/rightalign_white16.png" />
+    <EmbeddedResource Include="themes\generic\images\close_toolwindow_normal.png" LogicalName="themes/generic/images/close_toolwindow_normal.png" />
+    <EmbeddedResource Include="watermarkcombobox\themes\generic.baml" LogicalName="watermarkcombobox/themes/generic.baml" />
+    <EmbeddedResource Include="richtextboxformatbar\images\justifyalign16.png" LogicalName="richtextboxformatbar/images/justifyalign16.png" />
+    <EmbeddedResource Include="themes\generic\images\restore_hover.png" LogicalName="themes/generic/images/restore_hover.png" />
+    <EmbeddedResource Include="pie\themes\generic.baml" LogicalName="pie/themes/generic.baml" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Calculator.Implementation.Calculator.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Calculator.Implementation.Calculator.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.AutoSelectTextBox.Implementation.AutoSelectTextBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.AutoSelectTextBox.Implementation.AutoSelectTextBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.BusyIndicator.Implementation.BusyIndicator.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.BusyIndicator.Implementation.BusyIndicator.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.ButtonSpinner.Implementation.ButtonSpinner.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.ButtonSpinner.Implementation.ButtonSpinner.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.CheckComboBox.Implementation.CheckComboBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.CheckComboBox.Implementation.CheckComboBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.CalculatorUpDown.Implementation.CalculatorUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.CalculatorUpDown.Implementation.CalculatorUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.CheckListBox.Implementation.CheckListBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.CheckListBox.Implementation.CheckListBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.ChildWindow.Implementation.ChildWindow.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.ChildWindow.Implementation.ChildWindow.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.CollectionControl.Implementation.CollectionControl.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.CollectionControl.Implementation.CollectionControl.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.CollectionControl.Implementation.CollectionControlButton.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.CollectionControl.Implementation.CollectionControlButton.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.CollectionControl.Implementation.PrimitiveTypeCollectionControl.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.CollectionControl.Implementation.PrimitiveTypeCollectionControl.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.ColorCanvas.Implementation.ColorCanvas.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.ColorCanvas.Implementation.ColorCanvas.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.ColorPicker.Implementation.ColorPicker.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.ColorPicker.Implementation.ColorPicker.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.DateTimePicker.Implementation.DateTimePicker.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.DateTimePicker.Implementation.DateTimePicker.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.DateTimeUpDown.Implementation.DateTimeUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.DateTimeUpDown.Implementation.DateTimeUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.DropDownButton.Implementation.DropDownButton.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.DropDownButton.Implementation.DropDownButton.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.IconButton.Implementation.IconButton.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.IconButton.Implementation.IconButton.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Magnifier.Implementation.Magnifier.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Magnifier.Implementation.Magnifier.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.MaskedTextBox.Implementation.MaskedTextBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.MaskedTextBox.Implementation.MaskedTextBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.MessageBox.Implementation.MessageBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.MessageBox.Implementation.MessageBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.MultiLineTextEditor.Implementation.MultiLineTextEditor.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.MultiLineTextEditor.Implementation.MultiLineTextEditor.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.ByteUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.ByteUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.DecimalUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.DecimalUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.DoubleUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.DoubleUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.IntegerUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.IntegerUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.LongUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.LongUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.SByteUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.SByteUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.ShortUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.ShortUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.SingleUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.SingleUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.UIntegerUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.UIntegerUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.ULongUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.ULongUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.UShortUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.NumericUpDown.Implementation.UShortUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Panels.RandomPanel.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Panels.RandomPanel.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Panels.WrapPanel.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Panels.WrapPanel.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Pie.Implementation.Pie.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Pie.Implementation.Pie.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Primitives.ValueRangeTextBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Primitives.ValueRangeTextBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Primitives.WindowContainer.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Primitives.WindowContainer.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Primitives.WindowControl.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Primitives.WindowControl.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.PropertyGrid.Implementation.PropertyGrid.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.PropertyGrid.Implementation.PropertyGrid.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.RangeSlider.Implementation.RangeSlider.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.RangeSlider.Implementation.RangeSlider.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.RichTextBox.RichTextBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.RichTextBox.RichTextBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.RichTextBoxFormatBar.RichTextBoxFormatBar.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.RichTextBoxFormatBar.RichTextBoxFormatBar.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.SplitButton.Implementation.SplitButton.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.SplitButton.Implementation.SplitButton.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.StyleableWindow.Implementation.StyleableWindow.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.StyleableWindow.Implementation.StyleableWindow.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.TimelinePanel.Implementation.TimelinePanel.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.TimelinePanel.Implementation.TimelinePanel.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.TimePicker.Implementation.TimePicker.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.TimePicker.Implementation.TimePicker.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.TimeSpanUpDown.Implementation.TimeSpanUpDown.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.TimeSpanUpDown.Implementation.TimeSpanUpDown.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.WatermarkComboBox.Implementation.WatermarkComboBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.WatermarkComboBox.Implementation.WatermarkComboBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.WatermarkPasswordBox.Implementation.WatermarkPasswordBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.WatermarkPasswordBox.Implementation.WatermarkPasswordBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.WatermarkTextBox.Implementation.WatermarkTextBox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.WatermarkTextBox.Implementation.WatermarkTextBox.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Wizard.Implementation.Wizard.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Wizard.Implementation.Wizard.Icon.bmp" />
+    <EmbeddedResource Include="Xceed.Wpf.Toolkit.Zoombox.Zoombox.Icon.bmp" LogicalName="Xceed.Wpf.Toolkit.Zoombox.Zoombox.Icon.bmp" />
+  </ItemGroup>
+  <ItemGroup />
+</Project>

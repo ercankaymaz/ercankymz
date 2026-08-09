@@ -1,0 +1,50 @@
+using System;
+
+namespace buClass;
+
+[Serializable]
+public enum buViewType
+{
+	Front,
+	Right,
+	Rear,
+	Left,
+	Top,
+	Bottom,
+	Isometric,
+	Dimetric,
+	Trimetric,
+	vcFrontFaceBottom,
+	vcFrontFaceRight,
+	vcFrontFaceTop,
+	vcFrontFaceLeft,
+	vcRightFaceBottom,
+	vcRightFaceRight,
+	vcRightFaceTop,
+	vcRightFaceLeft,
+	vcBackFaceBottom,
+	vcBackFaceRight,
+	vcBackFaceTop,
+	vcBackFaceLeft,
+	vcLeftFaceBottom,
+	vcLeftFaceRight,
+	vcLeftFaceTop,
+	vcLeftFaceLeft,
+	vcBottomFaceBottom,
+	vcBottomFaceRight,
+	vcBottomFaceTop,
+	vcBottomFaceLeft,
+	vcTopFaceBottom,
+	vcTopFaceRight,
+	vcTopFaceTop,
+	vcTopFaceLeft,
+	vcFrontFaceBottomLeft,
+	vcFrontFaceBottomRight,
+	vcFrontFaceTopLeft,
+	vcFrontFaceTopRight,
+	vcBackFaceBottomLeft,
+	vcBackFaceBottomRight,
+	vcBackFaceTopLeft,
+	vcBackFaceTopRight,
+	Other
+}

@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>devDept.Eyeshot.Control.Win.v2026.Design</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="yjUzfFzhwD" />
+    <None Remove="fced47c58ac749058205400145378eb6" />
+    <None Remove="OUaPc9aD6L" />
+    <None Remove="ff0b9a7e46c247bcbebb7c00a673e8f9" />
+    <EmbeddedResource Include="yjUzfFzhwD" LogicalName="yjUzfFzhwD" />
+    <EmbeddedResource Include="fced47c58ac749058205400145378eb6" LogicalName="fced47c58ac749058205400145378eb6" />
+    <EmbeddedResource Include="OUaPc9aD6L" LogicalName="OUaPc9aD6L" />
+    <EmbeddedResource Include="ff0b9a7e46c247bcbebb7c00a673e8f9" LogicalName="ff0b9a7e46c247bcbebb7c00a673e8f9" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>..\..\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.Control.Win.v2026">
+      <HintPath>..\..\devDept.Eyeshot.Control.Win.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing.Design" />
+  </ItemGroup>
+</Project>

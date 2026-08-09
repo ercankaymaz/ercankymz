@@ -1,0 +1,13 @@
+internal sealed class _0023_003Dz0qr_6uiSo_0024fu_0024rqPaEpyorQ_003D : _0023_003DzmjMRzsbwPsPuWB2CorgBfVc_003D
+{
+	public _0023_003Dz0qr_6uiSo_0024fu_0024rqPaEpyorQ_003D()
+	{
+	}
+
+	public _0023_003Dz0qr_6uiSo_0024fu_0024rqPaEpyorQ_003D(double _0023_003DzT2rcMwdKyFst, double _0023_003Dzs_RF9AyZjRXH)
+	{
+		_0023_003Dzjcj2XsoMWHv_UUmRAiHH5HOLQ3w7 _0023_003Dzt_m8zV0_003D = new _0023_003DzIllBES2_0024wdU5qrD4Q_0024wUWMk_003D(_0023_003DzT2rcMwdKyFst, _0023_003Dzs_RF9AyZjRXH);
+		_0023_003DzWWRVX5jMsRRX(_0023_003Dzt_m8zV0_003D, _0023_003DzT2rcMwdKyFst / 2.0, _0023_003Dzs_RF9AyZjRXH, 0.0);
+		_0023_003Dz736ekIs_003D = _0023_003Dzs_RF9AyZjRXH;
+	}
+}

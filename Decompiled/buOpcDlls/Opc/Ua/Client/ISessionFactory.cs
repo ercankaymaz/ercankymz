@@ -1,0 +1,29 @@
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Opc.Ua.Client;
+
+[ComVisible(true)]
+public interface ISessionFactory
+{
+	Task<ISession> CreateAsync(ApplicationConfiguration configuration, ConfiguredEndpoint endpoint, bool updateBeforeConnect, string sessionName, uint sessionTimeout, IUserIdentity identity, IList<string> preferredLocales, CancellationToken ct = default(CancellationToken));
+
+	Task<ISession> CreateAsync(ApplicationConfiguration configuration, ConfiguredEndpoint endpoint, bool updateBeforeConnect, bool checkDomain, string sessionName, uint sessionTimeout, IUserIdentity identity, IList<string> preferredLocales, CancellationToken ct = default(CancellationToken));
+
+	ISession Create(ApplicationConfiguration configuration, ITransportChannel channel, ConfiguredEndpoint endpoint, X509Certificate2 clientCertificate, EndpointDescriptionCollection availableEndpoints = null, StringCollection discoveryProfileUris = null);
+
+	Task<ITransportChannel> CreateChannelAsync(ApplicationConfiguration configuration, ITransportWaitingConnection connection, ConfiguredEndpoint endpoint, bool updateBeforeConnect, bool checkDomain, CancellationToken ct = default(CancellationToken));
+
+	Task<ISession> CreateAsync(ApplicationConfiguration configuration, ITransportWaitingConnection connection, ConfiguredEndpoint endpoint, bool updateBeforeConnect, bool checkDomain, string sessionName, uint sessionTimeout, IUserIdentity identity, IList<string> preferredLocales, CancellationToken ct = default(CancellationToken));
+
+	Task<ISession> CreateAsync(ApplicationConfiguration configuration, ReverseConnectManager reverseConnectManager, ConfiguredEndpoint endpoint, bool updateBeforeConnect, bool checkDomain, string sessionName, uint sessionTimeout, IUserIdentity userIdentity, IList<string> preferredLocales, CancellationToken ct = default(CancellationToken));
+
+	Task<ISession> RecreateAsync(ISession sessionTemplate, CancellationToken ct = default(CancellationToken));
+
+	Task<ISession> RecreateAsync(ISession sessionTemplate, ITransportWaitingConnection connection, CancellationToken ct = default(CancellationToken));
+
+	Task<ISession> RecreateAsync(ISession sessionTemplate, ITransportChannel transportChannel, CancellationToken ct = default(CancellationToken));
+}

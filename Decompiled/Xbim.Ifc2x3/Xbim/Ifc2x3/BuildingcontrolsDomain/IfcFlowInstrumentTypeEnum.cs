@@ -1,0 +1,15 @@
+namespace Xbim.Ifc2x3.BuildingcontrolsDomain;
+
+public enum IfcFlowInstrumentTypeEnum : byte
+{
+	PRESSUREGAUGE,
+	THERMOMETER,
+	AMMETER,
+	FREQUENCYMETER,
+	POWERFACTORMETER,
+	PHASEANGLEMETER,
+	VOLTMETER_PEAK,
+	VOLTMETER_RMS,
+	USERDEFINED,
+	NOTDEFINED
+}

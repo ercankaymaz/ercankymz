@@ -1,0 +1,82 @@
+using System.Runtime.CompilerServices;
+
+internal sealed class _0023_003DqpATz8D_jE9d2tWHW_0024puEsouHEkSPB0IO5IOk0EKTdk0_003D : _0023_003Dqv5jNEINgRiU3U0uL89SFaxyzWoSupFlnsL96ialj7gk_003D
+{
+	private string _0023_003DzjYYAPCA_003D;
+
+	private bool _0023_003DzVC9FBdo_003D;
+
+	private bool _0023_003DzwBouG0w_003D;
+
+	private _0023_003DqbhNRXVC7qubyuF3OY4q_0024sbgt7B_0024JKP7qkN8VY1ZCb_k_003D[] _0023_003Dzf4Pqh9s_003D = new _0023_003DqbhNRXVC7qubyuF3OY4q_0024sbgt7B_0024JKP7qkN8VY1ZCb_k_003D[0];
+
+	private int _0023_003DzTFNDoh0_003D = -1;
+
+	private int _0023_003DzraVZG9g_003D = -1;
+
+	public string _0023_003DzZBscPGgB_00243LV6QHIorCDWNUrvfAeUHqwgg_003D_003D()
+	{
+		return _0023_003DzjYYAPCA_003D;
+	}
+
+	public void _0023_003DzXo29RJWG4ZETOVgJ7zeSpac_003D(string _0023_003DzjYYAPCA_003D)
+	{
+		this._0023_003DzjYYAPCA_003D = _0023_003DzjYYAPCA_003D;
+	}
+
+	public bool _0023_003Dzo7ZRia_0024JJxZCLQfqQ7fz2bg_003D()
+	{
+		return _0023_003DzVC9FBdo_003D;
+	}
+
+	public void _0023_003DzKKSkPwq6xCl5XHjSuQ_003D_003D(bool _0023_003DzjYYAPCA_003D)
+	{
+		_0023_003DzVC9FBdo_003D = _0023_003DzjYYAPCA_003D;
+	}
+
+	public bool _0023_003Dzqwl_0024UZMrJFzEx6enPf9lzY8ID1fc()
+	{
+		return _0023_003DzwBouG0w_003D;
+	}
+
+	public void _0023_003DzCFA4r0I99Xh5tGi4FVReANfRsnHE(bool _0023_003DzjYYAPCA_003D)
+	{
+		_0023_003DzwBouG0w_003D = _0023_003DzjYYAPCA_003D;
+	}
+
+	public _0023_003DqbhNRXVC7qubyuF3OY4q_0024sbgt7B_0024JKP7qkN8VY1ZCb_k_003D[] _0023_003DzHmV3Hw5jCBIejani4IwF8_0024OiWi24()
+	{
+		return _0023_003Dzf4Pqh9s_003D;
+	}
+
+	public void _0023_003Dz2C0ODYy0e7pdHBht_0024qBvQEY_0024Dc2GcVhXqcnow_00248_003D(_0023_003DqbhNRXVC7qubyuF3OY4q_0024sbgt7B_0024JKP7qkN8VY1ZCb_k_003D[] _0023_003DzjYYAPCA_003D)
+	{
+		_0023_003Dzf4Pqh9s_003D = _0023_003DzjYYAPCA_003D;
+	}
+
+	public int _0023_003DzAQ85yP4iXai4PDN1Zn0ZohvyEbXbx7MRgg_003D_003D()
+	{
+		return _0023_003DzTFNDoh0_003D;
+	}
+
+	public void _0023_003DzOv7AmEYKF8_EJUMg64_fKBg7xP1wAU8TYQ_003D_003D(int _0023_003DzjYYAPCA_003D)
+	{
+		_0023_003DzTFNDoh0_003D = _0023_003DzjYYAPCA_003D;
+	}
+
+	public int _0023_003DzLlOLIHAC3hs_0024wr1KI_0024zoeSjoPQTc()
+	{
+		return _0023_003DzraVZG9g_003D;
+	}
+
+	public void _0023_003DzjX443Tf0l2uIAGM7lDu2TGM0H7KA(int _0023_003DzjYYAPCA_003D)
+	{
+		_0023_003DzraVZG9g_003D = _0023_003DzjYYAPCA_003D;
+	}
+
+	[SpecialName]
+	public override byte _0023_003DzrYIfhcGlGVe7T3fQtVmCnm8m2BhYb1LinJVGC5Gbj26ViVyT1IZX8w9Wxt_0024z_0024avheIBYlexd8AkLaZ_MjTw3ISU_003D()
+	{
+		return 2;
+	}
+}

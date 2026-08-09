@@ -1,0 +1,16 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcWallTypeEnum : byte
+{
+	MOVABLE,
+	PARAPET,
+	PARTITIONING,
+	PLUMBINGWALL,
+	SHEAR,
+	SOLIDWALL,
+	STANDARD,
+	POLYGONAL,
+	ELEMENTEDWALL,
+	USERDEFINED,
+	NOTDEFINED
+}

@@ -1,0 +1,14 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcPumpTypeEnum : byte
+{
+	CIRCULATOR,
+	ENDSUCTION,
+	SPLITCASE,
+	SUBMERSIBLEPUMP,
+	SUMPPUMP,
+	VERTICALINLINE,
+	VERTICALTURBINE,
+	USERDEFINED,
+	NOTDEFINED
+}

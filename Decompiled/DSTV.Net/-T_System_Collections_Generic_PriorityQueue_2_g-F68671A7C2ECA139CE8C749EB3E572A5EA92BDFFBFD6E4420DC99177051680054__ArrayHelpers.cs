@@ -1,0 +1,4 @@
+internal static class _003CT_System_Collections_Generic_PriorityQueue_2_g_003EF68671A7C2ECA139CE8C749EB3E572A5EA92BDFFBFD6E4420DC99177051680054__ArrayHelpers
+{
+	public const int MaxLength = 2147483591;
+}

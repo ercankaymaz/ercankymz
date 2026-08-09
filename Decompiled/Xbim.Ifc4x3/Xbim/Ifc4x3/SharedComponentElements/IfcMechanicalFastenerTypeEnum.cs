@@ -1,0 +1,22 @@
+namespace Xbim.Ifc4x3.SharedComponentElements;
+
+public enum IfcMechanicalFastenerTypeEnum : byte
+{
+	ANCHORBOLT,
+	BOLT,
+	CHAIN,
+	COUPLER,
+	DOWEL,
+	NAIL,
+	NAILPLATE,
+	RAILFASTENING,
+	RAILJOINT,
+	RIVET,
+	ROPE,
+	SCREW,
+	SHEARCONNECTOR,
+	STAPLE,
+	STUDSHEARCONNECTOR,
+	USERDEFINED,
+	NOTDEFINED
+}

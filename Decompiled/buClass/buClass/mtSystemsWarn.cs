@@ -1,0 +1,36 @@
+namespace buClass;
+
+public enum mtSystemsWarn
+{
+	NoWarning,
+	SystemOffline,
+	HomingMissing,
+	HasAlarm,
+	SystemRuning,
+	DriveDisabled,
+	SystemMoving,
+	SystemPaused,
+	NoSelectedAxis,
+	DontDoThisCommand,
+	FileNotLoaded,
+	AccEqualZero,
+	DecEqualZero,
+	JerkEqualZero,
+	WaitTimeLowerZero,
+	VelEqualZero,
+	AxesInSimulateddd,
+	IOSimulated,
+	AutoMode,
+	GantryError,
+	LevelNotEnoughtThisOp,
+	DoorOpen,
+	MacError,
+	SystemIsNotRunning,
+	CNCStepEqualZero,
+	PartNotZero,
+	DoorClose,
+	HandWheelActive,
+	SystemNotReady,
+	NotConnected,
+	ParameterWriting
+}

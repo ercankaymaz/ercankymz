@@ -1,0 +1,20 @@
+using System.Collections.Generic;
+
+internal interface _0023_003DzBtMRswEpRHvk5E9N8_ROkUGHcFKD
+{
+	ICollection<_0023_003Dzs2pGYRHYf_0024Yyb009_Q_003D_003D> _0023_003DzuSc2g6MGhoLvwL3__0024w_003D_003D();
+
+	IEnumerable<_0023_003DzDI6Y1m9lXi8KG_0024_8bQ_003D_003D> _0023_003DzmGwHGZz3zGjG();
+
+	ICollection<_0023_003DzIA38noYip5IdSgiUvzQQXtQ_003D> _0023_003DzDugehDLz2Pg5();
+
+	ICollection<_0023_003DzrFSevYmtHQTnxAoc9Q_003D_003D> _0023_003DzPvyA_tju2mOECWmhiQ_003D_003D();
+
+	IList<_0023_003DzzmyWHqyGgz5CKzPZ3A_003D_003D> _0023_003Dz0YassfQEfNm_();
+
+	_0023_003DzTovi_qDieZRnvMDU6A_003D_003D _0023_003DzZ8YE5PDmsiED();
+
+	void _0023_003Dzwvu0gI8_003D();
+
+	void _0023_003DzOkynKKo_003D(_0023_003Dzny1QiGTNYMVEqxpmzhDfFL6sinoG _0023_003DzuI5Ekdc_003D, bool _0023_003Dza0jCp_laTbjVnYTxmQ_003D_003D);
+}

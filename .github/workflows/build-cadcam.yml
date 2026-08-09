@@ -1,0 +1,86 @@
+name: Build CMDMarbleCNC Final DLLs
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
+
+      - name: Show toolchain
+        shell: pwsh
+        run: |
+          msbuild -version
+          Get-ChildItem Env: | Where-Object Name -match 'VisualStudio|Framework' | Sort-Object Name
+
+      - name: Repair support-source decompiler artifacts
+        shell: pwsh
+        run: |
+          ./build/Repair-SupportSources.ps1
+
+      - name: Normalize CAD CAM source line endings
+        shell: pwsh
+        run: |
+          ./build/Normalize-CadCamSources.ps1
+
+      - name: Apply CAD CAM logic fixes
+        shell: pwsh
+        run: |
+          ./build/Run-CadCamFixes.ps1
+
+      - name: Repair remaining CAD CAM compile artifacts
+        shell: pwsh
+        run: |
+          ./build/Repair-CadCamCompileErrors.ps1
+
+      - name: Audit complete application source tree
+        shell: pwsh
+        run: |
+          ./build/Static-Audit.ps1
+
+      - name: Restore large ModuleWorks dependencies
+        shell: pwsh
+        run: |
+          ./build/Restore-LargeDeps.ps1
+
+      - name: Build repaired CAD support chain and CAD CAM
+        shell: pwsh
+        run: |
+          ./build/Build-Final.ps1 -Configuration Release -Platform AnyCPU
+
+      - name: Collect final binaries
+        if: always()
+        shell: pwsh
+        run: |
+          ./build/Collect-Final.ps1
+
+      - name: Upload final DLL set
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CMDMarbleCNC-Final-DLLs
+          path: |
+            FINAL_DLLS/**
+            CADCAM_PATCH_REPORT.txt
+          if-no-files-found: warn
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CMDMarbleCNC-Build-Logs
+          path: BUILD_LOGS/**
+          if-no-files-found: warn

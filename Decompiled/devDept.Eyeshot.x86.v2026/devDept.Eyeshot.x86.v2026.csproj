@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>devDept.Eyeshot.x86.v2026</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net472</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="CL3QQXAGg" />
+    <None Remove="4dae3f2cded848578219b4b581e2ca0f" />
+    <EmbeddedResource Include="CL3QQXAGg" LogicalName="CL3QQXAGg" />
+    <EmbeddedResource Include="4dae3f2cded848578219b4b581e2ca0f" LogicalName="4dae3f2cded848578219b4b581e2ca0f" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OdSwig_TD_RootIntegrated_Mgd">
+      <HintPath>..\..\OdSwig_TD_RootIntegrated_Mgd.dll</HintPath>
+    </Reference>
+    <Reference Include="OdSwig_TD_BrepBuilderFiller_Mgd">
+      <HintPath>..\..\OdSwig_TD_BrepBuilderFiller_Mgd.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>..\..\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="OdSwig_TD_DbCoreIntegrated_Mgd">
+      <HintPath>..\..\OdSwig_TD_DbCoreIntegrated_Mgd.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="OdSwig_RcsFileServices_Mgd">
+      <HintPath>..\..\OdSwig_RcsFileServices_Mgd.dll</HintPath>
+    </Reference>
+    <Reference Include="OdSwig_TD_Dwf7Import_Mgd">
+      <HintPath>..\..\OdSwig_TD_Dwf7Import_Mgd.dll</HintPath>
+    </Reference>
+    <Reference Include="OdSwig_PlotSettingsValidator_Mgd">
+      <HintPath>..\..\OdSwig_PlotSettingsValidator_Mgd.dll</HintPath>
+    </Reference>
+    <Reference Include="OdSwig_PdfPublish_Mgd">
+      <HintPath>..\..\OdSwig_PdfPublish_Mgd.dll</HintPath>
+    </Reference>
+    <Reference Include="OdSwig_OdPrcModule_Mgd">
+      <HintPath>..\..\OdSwig_OdPrcModule_Mgd.dll</HintPath>
+    </Reference>
+    <Reference Include="OdSwig_TD_PdfExport_Mgd">
+      <HintPath>..\..\OdSwig_TD_PdfExport_Mgd.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace std;
+
+[StructLayout(LayoutKind.Sequential, Size = 12)]
+[NativeCppClass]
+internal struct vector_003Cstd_003A_003Ashared_ptr_003Cppinterface_003A_003AAxis_003E_002Cstd_003A_003Aallocator_003Cstd_003A_003Ashared_ptr_003Cppinterface_003A_003AAxis_003E_0020_003E_0020_003E
+{
+}

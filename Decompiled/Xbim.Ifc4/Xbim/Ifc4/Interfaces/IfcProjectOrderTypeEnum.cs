@@ -1,0 +1,12 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcProjectOrderTypeEnum : byte
+{
+	CHANGEORDER,
+	MAINTENANCEWORKORDER,
+	MOVEORDER,
+	PURCHASEORDER,
+	WORKORDER,
+	USERDEFINED,
+	NOTDEFINED
+}

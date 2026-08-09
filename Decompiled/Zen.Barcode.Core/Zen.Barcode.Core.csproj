@@ -1,0 +1,480 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Zen.Barcode.Core</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net20</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Zen.Barcode.Resources.rsc60.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr9.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv40_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv39_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv38_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv37_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv36_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv35_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv13_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv12_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv11_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv10_2.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc50.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv40_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv39_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv38_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv37_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv15_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv14_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv13_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv12_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv11_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv10_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc62.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc40.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr40.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv40_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv39_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv38_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv16_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv15_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv14_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv13_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv12_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv11_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc7.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc52.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc30.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr30.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv18_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv17_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv16_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv15_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv14_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv13_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc64.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc42.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc20.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr31.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr20.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv20_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv19_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv18_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv17_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv16_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv15_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv14_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc54.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc32.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc10.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr32.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr21.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr10.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv22_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv21_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv20_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv19_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv18_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv17_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv16_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc66.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc44.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc22.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr33.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr22.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr11.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv23_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv22_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv21_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv20_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv19_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv18_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv17_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc56.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc34.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr34.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr23.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr12.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv2_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv25_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv24_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv23_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv22_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv21_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv20_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv1_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv19_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc68.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc46.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc24.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc13.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr35.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr24.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr13.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv3_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv2_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv26_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv25_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv24_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv23_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv22_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv21_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv1_1.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc58.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc36.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr36.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr25.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr14.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv4_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv3_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv2_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv27_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv26_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv25_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv24_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv23_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv1_2.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc48.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc26.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc15.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr37.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr26.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr15.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv6_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv5_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv4_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv3_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv30_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv2_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv29_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv28_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv27_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv26_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv25_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv24_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv1_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc16.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr38.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr27.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr16.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv7_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv6_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv5_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv4_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv3_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv32_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv31_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv30_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv29_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv28_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv27_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv26_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc28.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc17.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr4.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr39.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr28.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr17.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv9_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv8_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv7_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv6_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv5_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv4_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv33_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv32_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv31_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv30_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv29_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv28_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv27_3.dat" />
+    <None Remove="Zen.Barcode.Resources.rsc18.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr5.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr29.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr18.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv9_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv8_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv7_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv6_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv5_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv34_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv33_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv32_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv31_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv30_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv29_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv28_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr6.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr19.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv9_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv8_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv7_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv36_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv35_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv34_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv33_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv32_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv31_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr7.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv9_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv8_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv37_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv36_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv35_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv34_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv33_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv10_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrvfr8.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv40_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv39_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv38_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv37_1.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv36_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv35_2.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv34_3.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv12_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv11_0.dat" />
+    <None Remove="Zen.Barcode.Resources.qrv10_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc60.dat" LogicalName="Zen.Barcode.Resources.rsc60.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr9.dat" LogicalName="Zen.Barcode.Resources.qrvfr9.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv40_1.dat" LogicalName="Zen.Barcode.Resources.qrv40_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv39_1.dat" LogicalName="Zen.Barcode.Resources.qrv39_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv38_1.dat" LogicalName="Zen.Barcode.Resources.qrv38_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv37_2.dat" LogicalName="Zen.Barcode.Resources.qrv37_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv36_3.dat" LogicalName="Zen.Barcode.Resources.qrv36_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv35_3.dat" LogicalName="Zen.Barcode.Resources.qrv35_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv13_0.dat" LogicalName="Zen.Barcode.Resources.qrv13_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv12_1.dat" LogicalName="Zen.Barcode.Resources.qrv12_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv11_1.dat" LogicalName="Zen.Barcode.Resources.qrv11_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv10_2.dat" LogicalName="Zen.Barcode.Resources.qrv10_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc50.dat" LogicalName="Zen.Barcode.Resources.rsc50.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv40_2.dat" LogicalName="Zen.Barcode.Resources.qrv40_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv39_2.dat" LogicalName="Zen.Barcode.Resources.qrv39_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv38_2.dat" LogicalName="Zen.Barcode.Resources.qrv38_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv37_3.dat" LogicalName="Zen.Barcode.Resources.qrv37_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv15_0.dat" LogicalName="Zen.Barcode.Resources.qrv15_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv14_0.dat" LogicalName="Zen.Barcode.Resources.qrv14_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv13_1.dat" LogicalName="Zen.Barcode.Resources.qrv13_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv12_2.dat" LogicalName="Zen.Barcode.Resources.qrv12_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv11_2.dat" LogicalName="Zen.Barcode.Resources.qrv11_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv10_3.dat" LogicalName="Zen.Barcode.Resources.qrv10_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc62.dat" LogicalName="Zen.Barcode.Resources.rsc62.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc40.dat" LogicalName="Zen.Barcode.Resources.rsc40.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr40.dat" LogicalName="Zen.Barcode.Resources.qrvfr40.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv40_3.dat" LogicalName="Zen.Barcode.Resources.qrv40_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv39_3.dat" LogicalName="Zen.Barcode.Resources.qrv39_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv38_3.dat" LogicalName="Zen.Barcode.Resources.qrv38_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv16_0.dat" LogicalName="Zen.Barcode.Resources.qrv16_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv15_1.dat" LogicalName="Zen.Barcode.Resources.qrv15_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv14_1.dat" LogicalName="Zen.Barcode.Resources.qrv14_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv13_2.dat" LogicalName="Zen.Barcode.Resources.qrv13_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv12_3.dat" LogicalName="Zen.Barcode.Resources.qrv12_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv11_3.dat" LogicalName="Zen.Barcode.Resources.qrv11_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc7.dat" LogicalName="Zen.Barcode.Resources.rsc7.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc52.dat" LogicalName="Zen.Barcode.Resources.rsc52.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc30.dat" LogicalName="Zen.Barcode.Resources.rsc30.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr30.dat" LogicalName="Zen.Barcode.Resources.qrvfr30.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv18_0.dat" LogicalName="Zen.Barcode.Resources.qrv18_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv17_0.dat" LogicalName="Zen.Barcode.Resources.qrv17_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv16_1.dat" LogicalName="Zen.Barcode.Resources.qrv16_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv15_2.dat" LogicalName="Zen.Barcode.Resources.qrv15_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv14_2.dat" LogicalName="Zen.Barcode.Resources.qrv14_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv13_3.dat" LogicalName="Zen.Barcode.Resources.qrv13_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc64.dat" LogicalName="Zen.Barcode.Resources.rsc64.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc42.dat" LogicalName="Zen.Barcode.Resources.rsc42.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc20.dat" LogicalName="Zen.Barcode.Resources.rsc20.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr31.dat" LogicalName="Zen.Barcode.Resources.qrvfr31.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr20.dat" LogicalName="Zen.Barcode.Resources.qrvfr20.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv20_0.dat" LogicalName="Zen.Barcode.Resources.qrv20_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv19_0.dat" LogicalName="Zen.Barcode.Resources.qrv19_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv18_1.dat" LogicalName="Zen.Barcode.Resources.qrv18_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv17_1.dat" LogicalName="Zen.Barcode.Resources.qrv17_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv16_2.dat" LogicalName="Zen.Barcode.Resources.qrv16_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv15_3.dat" LogicalName="Zen.Barcode.Resources.qrv15_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv14_3.dat" LogicalName="Zen.Barcode.Resources.qrv14_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc54.dat" LogicalName="Zen.Barcode.Resources.rsc54.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc32.dat" LogicalName="Zen.Barcode.Resources.rsc32.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc10.dat" LogicalName="Zen.Barcode.Resources.rsc10.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr32.dat" LogicalName="Zen.Barcode.Resources.qrvfr32.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr21.dat" LogicalName="Zen.Barcode.Resources.qrvfr21.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr10.dat" LogicalName="Zen.Barcode.Resources.qrvfr10.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv22_0.dat" LogicalName="Zen.Barcode.Resources.qrv22_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv21_0.dat" LogicalName="Zen.Barcode.Resources.qrv21_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv20_1.dat" LogicalName="Zen.Barcode.Resources.qrv20_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv19_1.dat" LogicalName="Zen.Barcode.Resources.qrv19_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv18_2.dat" LogicalName="Zen.Barcode.Resources.qrv18_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv17_2.dat" LogicalName="Zen.Barcode.Resources.qrv17_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv16_3.dat" LogicalName="Zen.Barcode.Resources.qrv16_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc66.dat" LogicalName="Zen.Barcode.Resources.rsc66.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc44.dat" LogicalName="Zen.Barcode.Resources.rsc44.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc22.dat" LogicalName="Zen.Barcode.Resources.rsc22.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr33.dat" LogicalName="Zen.Barcode.Resources.qrvfr33.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr22.dat" LogicalName="Zen.Barcode.Resources.qrvfr22.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr11.dat" LogicalName="Zen.Barcode.Resources.qrvfr11.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv23_0.dat" LogicalName="Zen.Barcode.Resources.qrv23_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv22_1.dat" LogicalName="Zen.Barcode.Resources.qrv22_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv21_1.dat" LogicalName="Zen.Barcode.Resources.qrv21_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv20_2.dat" LogicalName="Zen.Barcode.Resources.qrv20_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv19_2.dat" LogicalName="Zen.Barcode.Resources.qrv19_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv18_3.dat" LogicalName="Zen.Barcode.Resources.qrv18_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv17_3.dat" LogicalName="Zen.Barcode.Resources.qrv17_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc56.dat" LogicalName="Zen.Barcode.Resources.rsc56.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc34.dat" LogicalName="Zen.Barcode.Resources.rsc34.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr34.dat" LogicalName="Zen.Barcode.Resources.qrvfr34.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr23.dat" LogicalName="Zen.Barcode.Resources.qrvfr23.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr12.dat" LogicalName="Zen.Barcode.Resources.qrvfr12.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv2_0.dat" LogicalName="Zen.Barcode.Resources.qrv2_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv25_0.dat" LogicalName="Zen.Barcode.Resources.qrv25_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv24_0.dat" LogicalName="Zen.Barcode.Resources.qrv24_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv23_1.dat" LogicalName="Zen.Barcode.Resources.qrv23_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv22_2.dat" LogicalName="Zen.Barcode.Resources.qrv22_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv21_2.dat" LogicalName="Zen.Barcode.Resources.qrv21_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv20_3.dat" LogicalName="Zen.Barcode.Resources.qrv20_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv1_0.dat" LogicalName="Zen.Barcode.Resources.qrv1_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv19_3.dat" LogicalName="Zen.Barcode.Resources.qrv19_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc68.dat" LogicalName="Zen.Barcode.Resources.rsc68.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc46.dat" LogicalName="Zen.Barcode.Resources.rsc46.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc24.dat" LogicalName="Zen.Barcode.Resources.rsc24.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc13.dat" LogicalName="Zen.Barcode.Resources.rsc13.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr35.dat" LogicalName="Zen.Barcode.Resources.qrvfr35.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr24.dat" LogicalName="Zen.Barcode.Resources.qrvfr24.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr13.dat" LogicalName="Zen.Barcode.Resources.qrvfr13.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv3_0.dat" LogicalName="Zen.Barcode.Resources.qrv3_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv2_1.dat" LogicalName="Zen.Barcode.Resources.qrv2_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv26_0.dat" LogicalName="Zen.Barcode.Resources.qrv26_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv25_1.dat" LogicalName="Zen.Barcode.Resources.qrv25_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv24_1.dat" LogicalName="Zen.Barcode.Resources.qrv24_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv23_2.dat" LogicalName="Zen.Barcode.Resources.qrv23_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv22_3.dat" LogicalName="Zen.Barcode.Resources.qrv22_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv21_3.dat" LogicalName="Zen.Barcode.Resources.qrv21_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv1_1.dat" LogicalName="Zen.Barcode.Resources.qrv1_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc58.dat" LogicalName="Zen.Barcode.Resources.rsc58.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc36.dat" LogicalName="Zen.Barcode.Resources.rsc36.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr36.dat" LogicalName="Zen.Barcode.Resources.qrvfr36.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr25.dat" LogicalName="Zen.Barcode.Resources.qrvfr25.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr14.dat" LogicalName="Zen.Barcode.Resources.qrvfr14.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr1.dat" LogicalName="Zen.Barcode.Resources.qrvfr1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv4_0.dat" LogicalName="Zen.Barcode.Resources.qrv4_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv3_1.dat" LogicalName="Zen.Barcode.Resources.qrv3_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv2_2.dat" LogicalName="Zen.Barcode.Resources.qrv2_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv27_0.dat" LogicalName="Zen.Barcode.Resources.qrv27_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv26_1.dat" LogicalName="Zen.Barcode.Resources.qrv26_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv25_2.dat" LogicalName="Zen.Barcode.Resources.qrv25_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv24_2.dat" LogicalName="Zen.Barcode.Resources.qrv24_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv23_3.dat" LogicalName="Zen.Barcode.Resources.qrv23_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv1_2.dat" LogicalName="Zen.Barcode.Resources.qrv1_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc48.dat" LogicalName="Zen.Barcode.Resources.rsc48.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc26.dat" LogicalName="Zen.Barcode.Resources.rsc26.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc15.dat" LogicalName="Zen.Barcode.Resources.rsc15.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr37.dat" LogicalName="Zen.Barcode.Resources.qrvfr37.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr26.dat" LogicalName="Zen.Barcode.Resources.qrvfr26.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr2.dat" LogicalName="Zen.Barcode.Resources.qrvfr2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr15.dat" LogicalName="Zen.Barcode.Resources.qrvfr15.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv6_0.dat" LogicalName="Zen.Barcode.Resources.qrv6_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv5_0.dat" LogicalName="Zen.Barcode.Resources.qrv5_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv4_1.dat" LogicalName="Zen.Barcode.Resources.qrv4_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv3_2.dat" LogicalName="Zen.Barcode.Resources.qrv3_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv30_0.dat" LogicalName="Zen.Barcode.Resources.qrv30_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv2_3.dat" LogicalName="Zen.Barcode.Resources.qrv2_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv29_0.dat" LogicalName="Zen.Barcode.Resources.qrv29_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv28_0.dat" LogicalName="Zen.Barcode.Resources.qrv28_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv27_1.dat" LogicalName="Zen.Barcode.Resources.qrv27_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv26_2.dat" LogicalName="Zen.Barcode.Resources.qrv26_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv25_3.dat" LogicalName="Zen.Barcode.Resources.qrv25_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv24_3.dat" LogicalName="Zen.Barcode.Resources.qrv24_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv1_3.dat" LogicalName="Zen.Barcode.Resources.qrv1_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc16.dat" LogicalName="Zen.Barcode.Resources.rsc16.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr38.dat" LogicalName="Zen.Barcode.Resources.qrvfr38.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr3.dat" LogicalName="Zen.Barcode.Resources.qrvfr3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr27.dat" LogicalName="Zen.Barcode.Resources.qrvfr27.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr16.dat" LogicalName="Zen.Barcode.Resources.qrvfr16.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv7_0.dat" LogicalName="Zen.Barcode.Resources.qrv7_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv6_1.dat" LogicalName="Zen.Barcode.Resources.qrv6_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv5_1.dat" LogicalName="Zen.Barcode.Resources.qrv5_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv4_2.dat" LogicalName="Zen.Barcode.Resources.qrv4_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv3_3.dat" LogicalName="Zen.Barcode.Resources.qrv3_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv32_0.dat" LogicalName="Zen.Barcode.Resources.qrv32_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv31_0.dat" LogicalName="Zen.Barcode.Resources.qrv31_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv30_1.dat" LogicalName="Zen.Barcode.Resources.qrv30_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv29_1.dat" LogicalName="Zen.Barcode.Resources.qrv29_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv28_1.dat" LogicalName="Zen.Barcode.Resources.qrv28_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv27_2.dat" LogicalName="Zen.Barcode.Resources.qrv27_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv26_3.dat" LogicalName="Zen.Barcode.Resources.qrv26_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc28.dat" LogicalName="Zen.Barcode.Resources.rsc28.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc17.dat" LogicalName="Zen.Barcode.Resources.rsc17.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr4.dat" LogicalName="Zen.Barcode.Resources.qrvfr4.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr39.dat" LogicalName="Zen.Barcode.Resources.qrvfr39.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr28.dat" LogicalName="Zen.Barcode.Resources.qrvfr28.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr17.dat" LogicalName="Zen.Barcode.Resources.qrvfr17.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv9_0.dat" LogicalName="Zen.Barcode.Resources.qrv9_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv8_0.dat" LogicalName="Zen.Barcode.Resources.qrv8_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv7_1.dat" LogicalName="Zen.Barcode.Resources.qrv7_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv6_2.dat" LogicalName="Zen.Barcode.Resources.qrv6_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv5_2.dat" LogicalName="Zen.Barcode.Resources.qrv5_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv4_3.dat" LogicalName="Zen.Barcode.Resources.qrv4_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv33_0.dat" LogicalName="Zen.Barcode.Resources.qrv33_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv32_1.dat" LogicalName="Zen.Barcode.Resources.qrv32_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv31_1.dat" LogicalName="Zen.Barcode.Resources.qrv31_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv30_2.dat" LogicalName="Zen.Barcode.Resources.qrv30_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv29_2.dat" LogicalName="Zen.Barcode.Resources.qrv29_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv28_2.dat" LogicalName="Zen.Barcode.Resources.qrv28_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv27_3.dat" LogicalName="Zen.Barcode.Resources.qrv27_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.rsc18.dat" LogicalName="Zen.Barcode.Resources.rsc18.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr5.dat" LogicalName="Zen.Barcode.Resources.qrvfr5.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr29.dat" LogicalName="Zen.Barcode.Resources.qrvfr29.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr18.dat" LogicalName="Zen.Barcode.Resources.qrvfr18.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv9_1.dat" LogicalName="Zen.Barcode.Resources.qrv9_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv8_1.dat" LogicalName="Zen.Barcode.Resources.qrv8_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv7_2.dat" LogicalName="Zen.Barcode.Resources.qrv7_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv6_3.dat" LogicalName="Zen.Barcode.Resources.qrv6_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv5_3.dat" LogicalName="Zen.Barcode.Resources.qrv5_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv34_0.dat" LogicalName="Zen.Barcode.Resources.qrv34_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv33_1.dat" LogicalName="Zen.Barcode.Resources.qrv33_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv32_2.dat" LogicalName="Zen.Barcode.Resources.qrv32_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv31_2.dat" LogicalName="Zen.Barcode.Resources.qrv31_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv30_3.dat" LogicalName="Zen.Barcode.Resources.qrv30_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv29_3.dat" LogicalName="Zen.Barcode.Resources.qrv29_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv28_3.dat" LogicalName="Zen.Barcode.Resources.qrv28_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr6.dat" LogicalName="Zen.Barcode.Resources.qrvfr6.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr19.dat" LogicalName="Zen.Barcode.Resources.qrvfr19.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv9_2.dat" LogicalName="Zen.Barcode.Resources.qrv9_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv8_2.dat" LogicalName="Zen.Barcode.Resources.qrv8_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv7_3.dat" LogicalName="Zen.Barcode.Resources.qrv7_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv36_0.dat" LogicalName="Zen.Barcode.Resources.qrv36_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv35_0.dat" LogicalName="Zen.Barcode.Resources.qrv35_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv34_1.dat" LogicalName="Zen.Barcode.Resources.qrv34_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv33_2.dat" LogicalName="Zen.Barcode.Resources.qrv33_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv32_3.dat" LogicalName="Zen.Barcode.Resources.qrv32_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv31_3.dat" LogicalName="Zen.Barcode.Resources.qrv31_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr7.dat" LogicalName="Zen.Barcode.Resources.qrvfr7.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv9_3.dat" LogicalName="Zen.Barcode.Resources.qrv9_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv8_3.dat" LogicalName="Zen.Barcode.Resources.qrv8_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv37_0.dat" LogicalName="Zen.Barcode.Resources.qrv37_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv36_1.dat" LogicalName="Zen.Barcode.Resources.qrv36_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv35_1.dat" LogicalName="Zen.Barcode.Resources.qrv35_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv34_2.dat" LogicalName="Zen.Barcode.Resources.qrv34_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv33_3.dat" LogicalName="Zen.Barcode.Resources.qrv33_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv10_0.dat" LogicalName="Zen.Barcode.Resources.qrv10_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrvfr8.dat" LogicalName="Zen.Barcode.Resources.qrvfr8.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv40_0.dat" LogicalName="Zen.Barcode.Resources.qrv40_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv39_0.dat" LogicalName="Zen.Barcode.Resources.qrv39_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv38_0.dat" LogicalName="Zen.Barcode.Resources.qrv38_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv37_1.dat" LogicalName="Zen.Barcode.Resources.qrv37_1.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv36_2.dat" LogicalName="Zen.Barcode.Resources.qrv36_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv35_2.dat" LogicalName="Zen.Barcode.Resources.qrv35_2.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv34_3.dat" LogicalName="Zen.Barcode.Resources.qrv34_3.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv12_0.dat" LogicalName="Zen.Barcode.Resources.qrv12_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv11_0.dat" LogicalName="Zen.Barcode.Resources.qrv11_0.dat" />
+    <EmbeddedResource Include="Zen.Barcode.Resources.qrv10_1.dat" LogicalName="Zen.Barcode.Resources.qrv10_1.dat" />
+  </ItemGroup>
+  <ItemGroup />
+</Project>

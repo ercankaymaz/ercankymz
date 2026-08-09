@@ -1,0 +1,14 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcTankTypeEnum : byte
+{
+	BASIN,
+	BREAKPRESSURE,
+	EXPANSION,
+	FEEDANDEXPANSION,
+	PRESSUREVESSEL,
+	STORAGE,
+	VESSEL,
+	USERDEFINED,
+	NOTDEFINED
+}

@@ -1,0 +1,49 @@
+using System.Globalization;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Newtonsoft.Json.Linq;
+
+[Newtonsoft_002EJson_002ENullableContext(1)]
+[Newtonsoft_002EJson_002ENullable(0)]
+public class JRaw : JValue
+{
+	public static async Task<JRaw> CreateAsync(JsonReader reader, CancellationToken cancellationToken = default(CancellationToken))
+	{
+		using StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
+		using JsonTextWriter jsonWriter = new JsonTextWriter(sw);
+		await jsonWriter.WriteTokenSyncReadingAsync(reader, cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+		return new JRaw(sw.ToString());
+	}
+
+	public JRaw(JRaw other)
+		: base(other, null)
+	{
+	}
+
+	internal JRaw(JRaw other, [Newtonsoft_002EJson_002ENullable(2)] JsonCloneSettings settings)
+		: base(other, settings)
+	{
+	}
+
+	[Newtonsoft_002EJson_002ENullableContext(2)]
+	public JRaw(object rawJson)
+		: base(rawJson, JTokenType.Raw)
+	{
+	}
+
+	public static JRaw Create(JsonReader reader)
+	{
+		using StringWriter stringWriter = new StringWriter(CultureInfo.InvariantCulture);
+		using JsonTextWriter jsonTextWriter = new JsonTextWriter(stringWriter);
+		jsonTextWriter.WriteToken(reader);
+		return new JRaw(stringWriter.ToString());
+	}
+
+	internal override JToken CloneToken([Newtonsoft_002EJson_002ENullable(2)] JsonCloneSettings settings)
+	{
+		return new JRaw(this, settings);
+	}
+}

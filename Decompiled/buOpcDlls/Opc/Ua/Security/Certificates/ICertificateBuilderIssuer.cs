@@ -1,0 +1,8 @@
+using System.Runtime.InteropServices;
+
+namespace Opc.Ua.Security.Certificates;
+
+[ComVisible(true)]
+public interface ICertificateBuilderIssuer : ICertificateBuilderPublicKey, ICertificateBuilderRSAPublicKey, ICertificateBuilderECDsaPublicKey, ICertificateBuilderCreateForRSA, ICertificateBuilderParameter, ICertificateBuilderRSAParameter, ICertificateBuilderECCParameter, ICertificateBuilderCreateGenerator, ICertificateBuilderCreateForRSAGenerator, ICertificateBuilderCreateForECDsaGenerator
+{
+}

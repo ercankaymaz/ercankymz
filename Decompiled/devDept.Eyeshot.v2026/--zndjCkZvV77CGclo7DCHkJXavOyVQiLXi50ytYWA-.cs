@@ -1,0 +1,6 @@
+internal sealed class _0023_003DzndjCkZvV77CGclo7DCHkJXavOyVQiLXi50ytYWA_003D
+{
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003Dz8kp7SygSRsu4;
+
+	public _0023_003Dzt0vc_0024bWMDcGrN3_3oeRxiUi5sn1I4wXd4A_003D_003D _0023_003DzVAXPvdP6bLaB;
+}

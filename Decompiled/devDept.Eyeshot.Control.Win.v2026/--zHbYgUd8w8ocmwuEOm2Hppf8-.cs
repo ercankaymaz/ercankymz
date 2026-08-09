@@ -1,0 +1,16 @@
+using SharpDX.Direct3D11;
+
+internal interface _0023_003DzHbYgUd8w8ocmwuEOm2Hppf8_003D
+{
+	void _0023_003DzBA5OJQegAhUvIN1YjA_003D_003D(DeviceContext _0023_003DzoC62DbA_003D, _0023_003DzIIjZpH_kq1FIi9sU4NDjTUmSj7Ht _0023_003DzcHHD1CU_003D);
+
+	void _0023_003DzudrHn6AUig2kpFOdgw_003D_003D(DeviceContext _0023_003DzoC62DbA_003D, _0023_003DzgqtAaJ3PR7fqIQf4Y9MBhJQ3Betg _0023_003Dzt5jpbHs_003D);
+
+	InputLayout _0023_003Dzqa6FU0IQlA38();
+
+	void _0023_003DzxsnpbzVBq_0024v3(InputLayout _0023_003DzsLHxXyo_003D);
+
+	void _0023_003DzCCBca0k_003D(DeviceContext _0023_003DzP7fhLh8_003D, bool _0023_003DzSSU_OrNwA8uS);
+
+	void _0023_003DzY5NLG7xn1HVsQF5W_0024w_003D_003D(DeviceContext _0023_003DzoC62DbA_003D, bool _0023_003DzWtFDQr8_003D);
+}

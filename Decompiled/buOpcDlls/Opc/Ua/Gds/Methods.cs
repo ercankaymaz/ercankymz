@@ -1,0 +1,367 @@
+using System.CodeDom.Compiler;
+using System.Runtime.InteropServices;
+
+namespace Opc.Ua.Gds;
+
+[GeneratedCode("Opc.Ua.ModelCompiler", "1.0.0.0")]
+[ComVisible(true)]
+public static class Methods
+{
+	public const uint OPCUAGDSNamespaceMetadata_NamespaceFile_Open = 735u;
+
+	public const uint OPCUAGDSNamespaceMetadata_NamespaceFile_Close = 738u;
+
+	public const uint OPCUAGDSNamespaceMetadata_NamespaceFile_Read = 740u;
+
+	public const uint OPCUAGDSNamespaceMetadata_NamespaceFile_Write = 743u;
+
+	public const uint OPCUAGDSNamespaceMetadata_NamespaceFile_GetPosition = 745u;
+
+	public const uint OPCUAGDSNamespaceMetadata_NamespaceFile_SetPosition = 748u;
+
+	public const uint DirectoryType_FindApplications = 15u;
+
+	public const uint DirectoryType_RegisterApplication = 18u;
+
+	public const uint DirectoryType_UpdateApplication = 188u;
+
+	public const uint DirectoryType_UnregisterApplication = 21u;
+
+	public const uint DirectoryType_GetApplication = 210u;
+
+	public const uint DirectoryType_QueryApplications = 868u;
+
+	public const uint DirectoryType_QueryServers = 23u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustList_Open = 519u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustList_Close = 522u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustList_Read = 524u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustList_Write = 527u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustList_GetPosition = 529u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustList_SetPosition = 532u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks = 535u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_CertificateExpired_Disable = 15041u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_CertificateExpired_Enable = 15042u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_CertificateExpired_AddComment = 15043u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_CertificateExpired_Acknowledge = 15063u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_CertificateExpired_ShelvingState_TimedShelve = 15110u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_CertificateExpired_ShelvingState_Unshelve = 15112u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_CertificateExpired_ShelvingState_OneShotShelve = 15113u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_Disable = 15189u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_Enable = 15190u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_AddComment = 15191u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_Acknowledge = 15211u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_ShelvingState_TimedShelve = 15258u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_ShelvingState_Unshelve = 15260u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_ShelvingState_OneShotShelve = 15261u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustList_Open = 553u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustList_Close = 556u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustList_Read = 558u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustList_Write = 561u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustList_GetPosition = 563u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustList_SetPosition = 566u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustList_OpenWithMasks = 569u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_CertificateExpired_Disable = 15337u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_CertificateExpired_Enable = 15338u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_CertificateExpired_AddComment = 15339u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_CertificateExpired_Acknowledge = 15359u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_CertificateExpired_ShelvingState_TimedShelve = 15406u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_CertificateExpired_ShelvingState_Unshelve = 15408u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_CertificateExpired_ShelvingState_OneShotShelve = 15409u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_Disable = 15485u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_Enable = 15486u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_AddComment = 15487u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_Acknowledge = 15507u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_ShelvingState_TimedShelve = 15554u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_ShelvingState_Unshelve = 15556u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_ShelvingState_OneShotShelve = 15557u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustList_Open = 587u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustList_Close = 590u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustList_Read = 592u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustList_Write = 595u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustList_GetPosition = 597u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustList_SetPosition = 600u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustList_OpenWithMasks = 603u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_Disable = 15633u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_Enable = 15634u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_AddComment = 15635u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_Acknowledge = 15655u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_ShelvingState_TimedShelve = 15702u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_ShelvingState_Unshelve = 15704u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_ShelvingState_OneShotShelve = 15705u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_Disable = 15781u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_Enable = 15782u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_AddComment = 15783u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_Acknowledge = 15803u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_ShelvingState_TimedShelve = 15850u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_ShelvingState_Unshelve = 15852u;
+
+	public const uint CertificateDirectoryType_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_ShelvingState_OneShotShelve = 15853u;
+
+	public const uint CertificateDirectoryType_StartSigningRequest = 79u;
+
+	public const uint CertificateDirectoryType_StartNewKeyPairRequest = 76u;
+
+	public const uint CertificateDirectoryType_FinishRequest = 85u;
+
+	public const uint CertificateDirectoryType_RevokeCertificate = 15003u;
+
+	public const uint CertificateDirectoryType_GetCertificateGroups = 369u;
+
+	public const uint CertificateDirectoryType_GetTrustList = 197u;
+
+	public const uint CertificateDirectoryType_GetCertificateStatus = 222u;
+
+	public const uint KeyCredentialManagementFolderType_ServiceName_Placeholder_StartRequest = 168u;
+
+	public const uint KeyCredentialManagementFolderType_ServiceName_Placeholder_FinishRequest = 196u;
+
+	public const uint KeyCredentialManagement_ServiceName_Placeholder_StartRequest = 1012u;
+
+	public const uint KeyCredentialManagement_ServiceName_Placeholder_FinishRequest = 1015u;
+
+	public const uint KeyCredentialServiceType_StartRequest = 1023u;
+
+	public const uint KeyCredentialServiceType_FinishRequest = 1026u;
+
+	public const uint KeyCredentialServiceType_Revoke = 1029u;
+
+	public const uint AuthorizationServicesFolderType_ServiceName_Placeholder_GetServiceDescription = 238u;
+
+	public const uint AuthorizationServices_ServiceName_Placeholder_GetServiceDescription = 1001u;
+
+	public const uint AuthorizationServiceType_GetServiceDescription = 1004u;
+
+	public const uint AuthorizationServiceType_RequestAccessToken = 969u;
+
+	public const uint Directory_FindApplications = 143u;
+
+	public const uint Directory_RegisterApplication = 146u;
+
+	public const uint Directory_UpdateApplication = 200u;
+
+	public const uint Directory_UnregisterApplication = 149u;
+
+	public const uint Directory_GetApplication = 216u;
+
+	public const uint Directory_QueryApplications = 992u;
+
+	public const uint Directory_QueryServers = 151u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_Open = 622u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_Close = 625u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_Read = 627u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_Write = 630u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_GetPosition = 632u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_SetPosition = 635u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_OpenWithMasks = 638u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_CloseAndUpdate = 641u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_AddCertificate = 644u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustList_RemoveCertificate = 646u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_CertificateExpired_Disable = 15946u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_CertificateExpired_Enable = 15947u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_CertificateExpired_AddComment = 15948u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_CertificateExpired_Acknowledge = 15968u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_CertificateExpired_ShelvingState_TimedShelve = 16015u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_CertificateExpired_ShelvingState_Unshelve = 16017u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_CertificateExpired_ShelvingState_OneShotShelve = 16018u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_Disable = 16094u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_Enable = 16095u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_AddComment = 16096u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_Acknowledge = 16116u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_ShelvingState_TimedShelve = 16163u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_ShelvingState_Unshelve = 16165u;
+
+	public const uint Directory_CertificateGroups_DefaultApplicationGroup_TrustListOutOfDate_ShelvingState_OneShotShelve = 16166u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_Open = 656u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_Close = 659u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_Read = 661u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_Write = 664u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_GetPosition = 666u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_SetPosition = 669u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_OpenWithMasks = 672u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_CloseAndUpdate = 675u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_AddCertificate = 678u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustList_RemoveCertificate = 680u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_CertificateExpired_Disable = 16242u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_CertificateExpired_Enable = 16243u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_CertificateExpired_AddComment = 16244u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_CertificateExpired_Acknowledge = 16264u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_CertificateExpired_ShelvingState_TimedShelve = 16311u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_CertificateExpired_ShelvingState_Unshelve = 16313u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_CertificateExpired_ShelvingState_OneShotShelve = 16314u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_Disable = 16390u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_Enable = 16391u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_AddComment = 16392u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_Acknowledge = 16412u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_ShelvingState_TimedShelve = 16459u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_ShelvingState_Unshelve = 16461u;
+
+	public const uint Directory_CertificateGroups_DefaultHttpsGroup_TrustListOutOfDate_ShelvingState_OneShotShelve = 16462u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_Open = 690u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_Close = 693u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_Read = 695u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_Write = 698u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_GetPosition = 700u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_SetPosition = 703u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_OpenWithMasks = 706u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_CloseAndUpdate = 709u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_AddCertificate = 712u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustList_RemoveCertificate = 714u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_Disable = 16538u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_Enable = 16539u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_AddComment = 16540u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_Acknowledge = 16560u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_ShelvingState_TimedShelve = 16607u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_ShelvingState_Unshelve = 16609u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_CertificateExpired_ShelvingState_OneShotShelve = 16610u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_Disable = 16686u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_Enable = 16687u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_AddComment = 16688u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_Acknowledge = 16708u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_ShelvingState_TimedShelve = 16755u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_ShelvingState_Unshelve = 16757u;
+
+	public const uint Directory_CertificateGroups_DefaultUserTokenGroup_TrustListOutOfDate_ShelvingState_OneShotShelve = 16758u;
+
+	public const uint Directory_StartSigningRequest = 157u;
+
+	public const uint Directory_StartNewKeyPairRequest = 154u;
+
+	public const uint Directory_FinishRequest = 163u;
+
+	public const uint Directory_GetCertificateGroups = 508u;
+
+	public const uint Directory_GetTrustList = 204u;
+
+	public const uint Directory_GetCertificateStatus = 225u;
+}

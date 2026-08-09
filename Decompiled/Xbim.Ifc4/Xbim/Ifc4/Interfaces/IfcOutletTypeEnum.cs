@@ -1,0 +1,12 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcOutletTypeEnum : byte
+{
+	AUDIOVISUALOUTLET,
+	COMMUNICATIONSOUTLET,
+	POWEROUTLET,
+	DATAOUTLET,
+	TELEPHONEOUTLET,
+	USERDEFINED,
+	NOTDEFINED
+}

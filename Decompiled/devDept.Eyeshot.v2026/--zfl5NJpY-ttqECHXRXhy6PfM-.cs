@@ -1,0 +1,26 @@
+using System;
+using System.IO;
+
+internal static class _0023_003Dzfl5NJpY_0024ttqECHXRXhy6PfM_003D
+{
+	public static string _0023_003DzwR5yzjDgavw_0024(string _0023_003Dzg5oC_Hs_003D)
+	{
+		object[] _0023_003DzAvn2b38_003D = new object[1] { _0023_003Dzg5oC_Hs_003D };
+		return (string)_0023_003DzWt6eyPOE44Jm1kt8t7xd_1OQVV5oXNkh39_0024rNGXvPLnSb0yR5w_003D_003D._0023_003DzV8Qoap2BA2e7ihDorf63UrBqJsHfxy8392Oay0RbYfZ4Z2b43A_003D_003D()._0023_003DzrXgUYL0XH6cHIwqkUbl2jAY_003D(_0023_003DzWt6eyPOE44Jm1kt8t7xd_1OQVV5oXNkh39_0024rNGXvPLnSb0yR5w_003D_003D._0023_003DzBbbipLzVnuz3UMTaQrsmBHEULT9zYjvZXH2nU2CHpMurqdPqXQ_003D_003D(), "FoD=>q\"adL", _0023_003DzAvn2b38_003D);
+	}
+
+	public static bool _0023_003Dzt_0024ASY_8lIrEi(Type _0023_003DzEKSHIVc_003D, out Exception _0023_003Dz28FDiEs_003D)
+	{
+		object[] array = new object[2] { _0023_003DzEKSHIVc_003D, _0023_003Dz28FDiEs_003D };
+		_0023_003Dq6RsKbEvjyFgbikPCxI_0024iySfRGb_00247pE9aJ62ClYf_Igw_003D _0023_003Dq6RsKbEvjyFgbikPCxI_0024iySfRGb_00247pE9aJ62ClYf_Igw_003D2 = _0023_003DzWt6eyPOE44Jm1kt8t7xd_1OQVV5oXNkh39_0024rNGXvPLnSb0yR5w_003D_003D._0023_003DzV8Qoap2BA2e7ihDorf63UrBqJsHfxy8392Oay0RbYfZ4Z2b43A_003D_003D();
+		Stream _0023_003DziDLVpbY_003D = _0023_003DzWt6eyPOE44Jm1kt8t7xd_1OQVV5oXNkh39_0024rNGXvPLnSb0yR5w_003D_003D._0023_003DzBbbipLzVnuz3UMTaQrsmBHEULT9zYjvZXH2nU2CHpMurqdPqXQ_003D_003D();
+		try
+		{
+			return (bool)_0023_003Dq6RsKbEvjyFgbikPCxI_0024iySfRGb_00247pE9aJ62ClYf_Igw_003D2._0023_003DzrXgUYL0XH6cHIwqkUbl2jAY_003D(_0023_003DziDLVpbY_003D, "mf!.bq\"ad@", array);
+		}
+		finally
+		{
+			_0023_003Dz28FDiEs_003D = (Exception)array[1];
+		}
+	}
+}

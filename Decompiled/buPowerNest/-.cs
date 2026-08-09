@@ -1,0 +1,28 @@
+using System;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+
+internal delegate Encoding _0001();
+internal delegate string _0002(object P_0, byte[] P_1, int P_2, int P_3);
+internal delegate byte[] _0003(string P_0);
+internal delegate string _0004(string P_0);
+internal delegate bool _0005(object P_0);
+internal delegate void _0006(object P_0);
+internal delegate GCHandle _0007(object P_0);
+internal delegate IntPtr _0008(GCHandle P_0);
+internal delegate bool _000E(IntPtr P_0, IntPtr P_1);
+internal delegate GCHandle _000F(IntPtr P_0);
+internal delegate void _0010(object P_0);
+internal delegate bool _0011(object P_0, object P_1);
+internal delegate string _0012(IntPtr P_0);
+internal delegate string _0013(object P_0);
+internal delegate int _0014(IntPtr P_0);
+internal delegate bool _0015(string P_0, string P_1);
+internal delegate int _0016(string P_0);
+internal delegate Assembly _0017();
+internal delegate Stream _0018(object P_0, string P_1);
+internal delegate long _0019(object P_0);
+internal delegate int _001A(long P_0);
+internal delegate int _001B(object P_0, byte[] P_1, int P_2, int P_3);

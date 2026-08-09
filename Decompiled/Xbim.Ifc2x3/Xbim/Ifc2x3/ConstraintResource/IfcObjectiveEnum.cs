@@ -1,0 +1,13 @@
+namespace Xbim.Ifc2x3.ConstraintResource;
+
+public enum IfcObjectiveEnum : byte
+{
+	CODECOMPLIANCE,
+	DESIGNINTENT,
+	HEALTHANDSAFETY,
+	REQUIREMENT,
+	SPECIFICATION,
+	TRIGGERCONDITION,
+	USERDEFINED,
+	NOTDEFINED
+}

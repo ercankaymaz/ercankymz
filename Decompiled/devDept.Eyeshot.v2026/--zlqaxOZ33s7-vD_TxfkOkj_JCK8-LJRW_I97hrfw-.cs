@@ -1,0 +1,8 @@
+using System;
+
+internal interface _0023_003DzlqaxOZ33s7_0024vD_TxfkOkj_JCK8_0024LJRW_I97hrfw_003D
+{
+	void _0023_003Dzy9tytiY8GrO9(_0023_003DzBtMRswEpRHvk5E9N8_ROkUGHcFKD _0023_003DzGGJSiQk_003D, IProgress<double> _0023_003DzmHS7frs_003D);
+
+	void _0023_003Dzy9tytiY8GrO9(_0023_003DzBtMRswEpRHvk5E9N8_ROkUGHcFKD _0023_003DzGGJSiQk_003D, int _0023_003DzLMo0v2w_003D, IProgress<double> _0023_003DzmHS7frs_003D);
+}

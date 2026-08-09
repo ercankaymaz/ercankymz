@@ -1,0 +1,12 @@
+using System.Collections.Generic;
+
+internal sealed class _0023_003DzNkY6eoOq0flZMAhQrg_003D_003D : _0023_003DzW8zZzhCUviR_0024
+{
+	internal string _0023_003Dzp_0024tuCIXT0owG;
+
+	internal _0023_003DzNkY6eoOq0flZMAhQrg_003D_003D(_0023_003Dz9N0EO30xMNhQsnfa_0024A_003D_003D _0023_003DzELu0Pss_003D, Dictionary<int, _0023_003DzyJOsF5kmoztS1I0Xzw_003D_003D> _0023_003Dz9UNAzE0_003D, ref int _0023_003DzJjVQTzpKI4Ni, bool _0023_003Dzm4CSmX5Y3o6Q)
+		: base(_0023_003DzELu0Pss_003D, _0023_003Dz9UNAzE0_003D, ref _0023_003DzJjVQTzpKI4Ni, _0023_003Dzm4CSmX5Y3o6Q)
+	{
+		_0023_003Dzp_0024tuCIXT0owG = _0023_003DzELu0Pss_003D._0023_003Dzs_7kVZ4_003D(0);
+	}
+}

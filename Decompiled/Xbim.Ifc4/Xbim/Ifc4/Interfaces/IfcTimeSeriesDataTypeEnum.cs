@@ -1,0 +1,12 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcTimeSeriesDataTypeEnum : byte
+{
+	CONTINUOUS,
+	DISCRETE,
+	DISCRETEBINARY,
+	PIECEWISEBINARY,
+	PIECEWISECONSTANT,
+	PIECEWISECONTINUOUS,
+	NOTDEFINED
+}

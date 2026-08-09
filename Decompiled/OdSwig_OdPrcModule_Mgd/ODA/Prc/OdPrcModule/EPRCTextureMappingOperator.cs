@@ -1,0 +1,10 @@
+namespace ODA.Prc.OdPrcModule;
+
+public enum EPRCTextureMappingOperator
+{
+	KEPRCTextureMappingOperator_Unknown,
+	KEPRCTextureMappingOperator_Planar,
+	KEPRCTextureMappingOperator_Cylindrical,
+	KEPRCTextureMappingOperator_Spherical,
+	KEPRCTextureMappingOperator_Cubical
+}

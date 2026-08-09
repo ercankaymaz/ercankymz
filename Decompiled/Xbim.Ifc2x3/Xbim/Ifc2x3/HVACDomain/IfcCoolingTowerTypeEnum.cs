@@ -1,0 +1,10 @@
+namespace Xbim.Ifc2x3.HVACDomain;
+
+public enum IfcCoolingTowerTypeEnum : byte
+{
+	NATURALDRAFT,
+	MECHANICALINDUCEDDRAFT,
+	MECHANICALFORCEDDRAFT,
+	USERDEFINED,
+	NOTDEFINED
+}

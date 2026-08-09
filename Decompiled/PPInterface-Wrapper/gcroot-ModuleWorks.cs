@@ -1,0 +1,53 @@
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003APPInterface_003A_003AAxis_0020_005E_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003APPInterface_003A_003AOperation_0020_005E_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003AMarshalledDelegateTypes_003Cbool_002Cvoid_002Cvoid_002Cvoid_002Cvoid_002Cvoid_002Cvoid_002Cvoid_003E_003A_003AManaged_0020_005E_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003AMarshalledDelegateTypes_003Cvoid_002Cstd_003A_003Amap_003Cstd_003A_003Abasic_string_003Cchar_002Cstd_003A_003Achar_traits_003Cchar_003E_002Cstd_003A_003Aallocator_003Cchar_003E_0020_003E_002Cint_002Cstd_003A_003Aless_003Cstd_003A_003Abasic_string_003Cchar_002Cstd_003A_003Achar_traits_003Cchar_003E_002Cstd_003A_003Aallocator_003Cchar_003E_0020_003E_0020_003E_002Cstd_003A_003Aallocator_003Cstd_003A_003Apair_003Cstd_003A_003Abasic_string_003Cchar_002Cstd_003A_003Achar_traits_003Cchar_003E_002Cstd_003A_003Aallocator_003Cchar_003E_0020_003E_0020const_0020_002Cint_003E_0020_003E_0020_003E_0020const_0020_0026_002Cvoid_002Cvoid_002Cvoid_002Cvoid_002Cvoid_002Cvoid_003E_003A_003AManaged_0020_005E_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003APPInterface_003A_003ACancelHandler_0020_005E_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003APPInterface_003A_003APPFrameworkInput_0020_005E_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003APPInterface_003A_003AToolDescription_0020_005E_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003APPInterface_003A_003AVectord_0020_005E_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003APPInterface_003A_003AMachine_0020_005E_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct gcroot_003CModuleWorks_003A_003APPInterface_003A_003AMachineSettings_0020_005E_003E
+{
+}

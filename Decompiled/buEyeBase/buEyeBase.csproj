@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>buEyeBase</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>..\..\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="devDept.Eyeshot.Control.Win.v2026">
+      <HintPath>..\..\devDept.Eyeshot.Control.Win.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="buClass">
+      <HintPath>..\..\buClass.dll</HintPath>
+    </Reference>
+    <Reference Include="buControls">
+      <HintPath>..\..\buControls.dll</HintPath>
+    </Reference>
+    <Reference Include="buCore">
+      <HintPath>..\..\buCore.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="CmdLangAPI">
+      <HintPath>..\..\CmdLangAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Core" />
+    <Reference Include="devDept.Eyeshot.x86.v2026">
+      <HintPath>..\..\devDept.Eyeshot.x86.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="ImageProcessor">
+      <HintPath>..\..\ImageProcessor.dll</HintPath>
+    </Reference>
+    <Reference Include="Zen.Barcode.Core">
+      <HintPath>..\..\Zen.Barcode.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

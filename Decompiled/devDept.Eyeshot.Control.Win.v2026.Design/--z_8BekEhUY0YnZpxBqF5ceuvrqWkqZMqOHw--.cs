@@ -1,0 +1,8 @@
+internal interface _0023_003Dz_8BekEhUY0YnZpxBqF5ceuvrqWkqZMqOHw_003D_003D
+{
+	bool _0023_003Dzu24uCyrA6l4A4D0E8WPH4JUdWyoEW_0024bfOwW69FTSuEqD6_JBoS8_jPtd6Wx4CffFEyThftg_003D();
+
+	object _0023_003DzpZoU3PfuwSerq6SNZMhRutkewugnEuDYS0qtUqZ2N88h97WWKyz50Q4MPBP_G0q9eHCy_0024i7Zzxoi();
+
+	void _0023_003DzQvzVz_0024wQ9fIKcnPcCwU_rLpGMtgOZfutH1cXs6fDrqw42L5n5BwsB52aA00m0343C4fhM8myDcTq();
+}

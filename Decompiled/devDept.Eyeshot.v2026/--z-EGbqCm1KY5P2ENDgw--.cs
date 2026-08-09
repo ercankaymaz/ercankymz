@@ -1,0 +1,12 @@
+internal sealed class _0023_003Dz_0024EGbqCm1KY5P2ENDgw_003D_003D
+{
+	protected internal _0023_003Dzs2bajpKjWbmv2KO9uw_003D_003D _0023_003Dz8nwZRLA_003D;
+
+	protected internal uint _0023_003DzaKWk4triZ1SY;
+
+	protected internal _0023_003Dz_0024EGbqCm1KY5P2ENDgw_003D_003D(_0023_003Dzs2bajpKjWbmv2KO9uw_003D_003D _0023_003DzPN5KU8Q_003D, uint _0023_003DzbOZQdQM_003D)
+	{
+		_0023_003Dz8nwZRLA_003D = _0023_003DzPN5KU8Q_003D;
+		_0023_003DzaKWk4triZ1SY = _0023_003DzbOZQdQM_003D;
+	}
+}

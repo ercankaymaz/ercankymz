@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>buMotion</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="-163c7c6e-2694-4892-9368-a495d655cdb5-" />
+    <EmbeddedResource Include="-163c7c6e-2694-4892-9368-a495d655cdb5-" LogicalName="{163c7c6e-2694-4892-9368-a495d655cdb5}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="buClass">
+      <HintPath>..\..\buClass.dll</HintPath>
+    </Reference>
+    <Reference Include="buComm">
+      <HintPath>..\..\buComm.dll</HintPath>
+    </Reference>
+    <Reference Include="buControls">
+      <HintPath>..\..\buControls.dll</HintPath>
+    </Reference>
+    <Reference Include="buCore">
+      <HintPath>..\..\buCore.dll</HintPath>
+    </Reference>
+    <Reference Include="buOpcUA">
+      <HintPath>..\..\buOpcUA.dll</HintPath>
+    </Reference>
+    <Reference Include="buOpcDlls">
+      <HintPath>..\..\buOpcDlls.dll</HintPath>
+    </Reference>
+    <Reference Include="CmdLangAPI">
+      <HintPath>..\..\CmdLangAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+</Project>

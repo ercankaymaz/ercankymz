@@ -1,0 +1,36 @@
+namespace buClass;
+
+public enum ToolPurpose
+{
+	None = -1,
+	General = 0,
+	Milling = 1,
+	Cutting = 2,
+	Grinding = 3,
+	Hole = 4,
+	Drilling = 5,
+	Lathe = 6,
+	Derz = 7,
+	Text = 8,
+	PocketFlat = 9,
+	PocketCircular = 10,
+	CutOut = 11,
+	CutIn = 12,
+	CutCenter = 13,
+	GrindingRought = 14,
+	Saw = 15,
+	WaterJet = 16,
+	Plasma = 17,
+	LaserCut = 18,
+	Tapping = 19,
+	Slot = 20,
+	DiamondCut = 21,
+	Spin = 22,
+	Engrave = 23,
+	Info = 50,
+	MillingHead = 51,
+	AirDry = 52,
+	Pointer = 53,
+	Milling5Axis = 54,
+	Other = 100
+}

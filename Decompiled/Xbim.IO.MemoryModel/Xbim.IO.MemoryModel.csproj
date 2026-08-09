@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Xbim.IO.MemoryModel</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Xbim.IO.MemoryModel.Xml.BsConf.IFC4x1_RC3.xml" />
+    <None Remove="Xbim.IO.MemoryModel.Xml.BsConf.IFC4_ADD1_config.xml" />
+    <None Remove="Xbim.IO.MemoryModel.Xml.BsConf.IFC4_ADD2_config.xml" />
+    <None Remove="Xbim.IO.MemoryModel.Xml.BsConf.IFC4_config.xml" />
+    <EmbeddedResource Include="Xbim.IO.MemoryModel.Xml.BsConf.IFC4x1_RC3.xml" LogicalName="Xbim.IO.MemoryModel.Xml.BsConf.IFC4x1_RC3.xml" />
+    <EmbeddedResource Include="Xbim.IO.MemoryModel.Xml.BsConf.IFC4_ADD1_config.xml" LogicalName="Xbim.IO.MemoryModel.Xml.BsConf.IFC4_ADD1_config.xml" />
+    <EmbeddedResource Include="Xbim.IO.MemoryModel.Xml.BsConf.IFC4_ADD2_config.xml" LogicalName="Xbim.IO.MemoryModel.Xml.BsConf.IFC4_ADD2_config.xml" />
+    <EmbeddedResource Include="Xbim.IO.MemoryModel.Xml.BsConf.IFC4_config.xml" LogicalName="Xbim.IO.MemoryModel.Xml.BsConf.IFC4_config.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Xbim.Common">
+      <HintPath>..\..\Xbim.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>..\..\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>..\..\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.Ifc4">
+      <HintPath>..\..\Xbim.Ifc4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.Ifc4x3">
+      <HintPath>..\..\Xbim.Ifc4x3.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.Ifc2x3">
+      <HintPath>..\..\Xbim.Ifc2x3.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

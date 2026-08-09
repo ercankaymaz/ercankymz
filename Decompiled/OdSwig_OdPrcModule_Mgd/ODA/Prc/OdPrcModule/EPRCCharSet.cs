@@ -1,0 +1,38 @@
+namespace ODA.Prc.OdPrcModule;
+
+public enum EPRCCharSet
+{
+	KEPRCCharsetUnknown = -1,
+	KEPRCCharsetRoman,
+	KEPRCCharsetJapanese,
+	KEPRCCharsetTraditionalChinese,
+	KEPRCCharsetKorean,
+	KEPRCCharsetArabic,
+	KEPRCCharsetHebrew,
+	KEPRCCharsetGreek,
+	KEPRCCharsetCyrillic,
+	KEPRCCharsetRightLeft,
+	KEPRCCharsetDevanagari,
+	KEPRCCharsetGurmukhi,
+	KEPRCCharsetGujarati,
+	KEPRCCharsetOriya,
+	KEPRCCharsetBengali,
+	KEPRCCharsetTamil,
+	KEPRCCharsetTelugu,
+	KEPRCCharsetKannada,
+	KEPRCCharsetMalayalam,
+	KEPRCCharsetSinhalese,
+	KEPRCCharsetBurmese,
+	KEPRCCharsetKhmer,
+	KEPRCCharsetThai,
+	KEPRCCharsetLaotian,
+	KEPRCCharsetGeorgian,
+	KEPRCCharsetArmenian,
+	KEPRCCharsetSimplifiedChinese,
+	KEPRCCharsetTibetan,
+	KEPRCCharsetMongolian,
+	KEPRCCharsetGeez,
+	KEPRCCharsetEastEuropeanRoman,
+	KEPRCCharsetVietnamese,
+	KEPRCCharsetExtendedArabic
+}

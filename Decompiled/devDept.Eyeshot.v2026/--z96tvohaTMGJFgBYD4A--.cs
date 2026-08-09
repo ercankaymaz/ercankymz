@@ -1,0 +1,37 @@
+using System.IO;
+using System.Runtime.InteropServices;
+
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+internal sealed class _0023_003Dz96tvohaTMGJFgBYD4A_003D_003D
+{
+	public char[] _0023_003DzSeTR2cdZjCyF = new char[8];
+
+	public uint _0023_003DzqeEQW_0024E_003D;
+
+	public uint _0023_003DzPTM7dmE_003D;
+
+	public ulong _0023_003DzgfCf0g2tA_00248x;
+
+	public ulong _0023_003DzJvSTylPP3ZC4;
+
+	public ulong _0023_003DzJ0wj_MyDQIHi;
+
+	public ulong _0023_003Dz_0024yfaUwU_003D;
+
+	public void _0023_003Dzg2_DE0s_003D(int _0023_003Dz2gwSqZQ_003D, TextWriter _0023_003DzDdJAEBo_003D)
+	{
+		_0023_003DzDdJAEBo_003D.Write(_0023_003DzTmjmTPw_003D(_0023_003Dz2gwSqZQ_003D) + _0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302743098));
+		_0023_003DzDdJAEBo_003D.WriteLine(new string(_0023_003DzSeTR2cdZjCyF));
+		_0023_003DzDdJAEBo_003D.WriteLine(string.Format(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302743059), _0023_003DzTmjmTPw_003D(_0023_003Dz2gwSqZQ_003D), _0023_003DzqeEQW_0024E_003D));
+		_0023_003DzDdJAEBo_003D.WriteLine(string.Format(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302743286), _0023_003DzTmjmTPw_003D(_0023_003Dz2gwSqZQ_003D), _0023_003DzPTM7dmE_003D));
+		_0023_003DzDdJAEBo_003D.WriteLine(string.Format(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302743253), _0023_003DzTmjmTPw_003D(_0023_003Dz2gwSqZQ_003D), _0023_003DzgfCf0g2tA_00248x));
+		_0023_003DzDdJAEBo_003D.WriteLine(string.Format(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302743224), _0023_003DzTmjmTPw_003D(_0023_003Dz2gwSqZQ_003D), _0023_003DzJvSTylPP3ZC4));
+		_0023_003DzDdJAEBo_003D.WriteLine(string.Format(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302743191), _0023_003DzTmjmTPw_003D(_0023_003Dz2gwSqZQ_003D), _0023_003DzJ0wj_MyDQIHi));
+		_0023_003DzDdJAEBo_003D.WriteLine(string.Format(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302743930), _0023_003DzTmjmTPw_003D(_0023_003Dz2gwSqZQ_003D), _0023_003Dz_0024yfaUwU_003D));
+	}
+
+	public static string _0023_003DzTmjmTPw_003D(int _0023_003DzoMNiNRw_003D)
+	{
+		return new string(' ', _0023_003DzoMNiNRw_003D);
+	}
+}

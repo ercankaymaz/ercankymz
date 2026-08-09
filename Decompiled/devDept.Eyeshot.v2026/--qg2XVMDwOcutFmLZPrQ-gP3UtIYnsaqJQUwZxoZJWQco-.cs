@@ -1,0 +1,9 @@
+internal static class _0023_003Dqg2XVMDwOcutFmLZPrQ_0024gP3UtIYnsaqJQUwZxoZJWQco_003D<_0023_003DziDLVpbY_003D>
+{
+	public static readonly _0023_003DziDLVpbY_003D[] _0023_003DziDLVpbY_003D;
+
+	static _0023_003Dqg2XVMDwOcutFmLZPrQ_0024gP3UtIYnsaqJQUwZxoZJWQco_003D()
+	{
+		global::_0023_003Dqg2XVMDwOcutFmLZPrQ_0024gP3UtIYnsaqJQUwZxoZJWQco_003D<_0023_003DziDLVpbY_003D>._0023_003DziDLVpbY_003D = new _0023_003DziDLVpbY_003D[0];
+	}
+}

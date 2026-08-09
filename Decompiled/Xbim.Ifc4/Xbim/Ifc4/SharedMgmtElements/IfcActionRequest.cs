@@ -1,0 +1,165 @@
+using System;
+using System.Collections.Generic;
+using Xbim.Common;
+using Xbim.Common.Exceptions;
+using Xbim.Ifc4.Interfaces;
+using Xbim.Ifc4.Kernel;
+using Xbim.Ifc4.MeasureResource;
+
+namespace Xbim.Ifc4.SharedMgmtElements;
+
+[ExpressType("IfcActionRequest", 516)]
+public class IfcActionRequest : IfcControl, IInstantiableEntity, IPersistEntity, IPersist, IIfcActionRequest, IIfcControl, IIfcObject, IIfcObjectDefinition, IIfcRoot, IfcDefinitionSelect, IIfcDefinitionSelect, IExpressSelectType, IContainsEntityReferences, IEquatable<IfcActionRequest>
+{
+	private IfcActionRequestTypeEnum? _predefinedType;
+
+	private IfcLabel? _status;
+
+	private IfcText? _longDescription;
+
+	IfcActionRequestTypeEnum? IIfcActionRequest.PredefinedType
+	{
+		get
+		{
+			return PredefinedType;
+		}
+		set
+		{
+			PredefinedType = value;
+		}
+	}
+
+	IfcLabel? IIfcActionRequest.Status
+	{
+		get
+		{
+			return Status;
+		}
+		set
+		{
+			Status = value;
+		}
+	}
+
+	IfcText? IIfcActionRequest.LongDescription
+	{
+		get
+		{
+			return LongDescription;
+		}
+		set
+		{
+			LongDescription = value;
+		}
+	}
+
+	[EntityAttribute(7, EntityAttributeState.Optional, EntityAttributeType.Enum, EntityAttributeType.None, null, null, 19)]
+	public IfcActionRequestTypeEnum? PredefinedType
+	{
+		get
+		{
+			if (_activated)
+			{
+				return _predefinedType;
+			}
+			Activate();
+			return _predefinedType;
+		}
+		set
+		{
+			SetValue(delegate(IfcActionRequestTypeEnum? v)
+			{
+				_predefinedType = v;
+			}, _predefinedType, value, "PredefinedType", 7);
+		}
+	}
+
+	[EntityAttribute(8, EntityAttributeState.Optional, EntityAttributeType.None, EntityAttributeType.None, null, null, 20)]
+	public IfcLabel? Status
+	{
+		get
+		{
+			if (_activated)
+			{
+				return _status;
+			}
+			Activate();
+			return _status;
+		}
+		set
+		{
+			SetValue(delegate(IfcLabel? v)
+			{
+				_status = v;
+			}, _status, value, "Status", 8);
+		}
+	}
+
+	[EntityAttribute(9, EntityAttributeState.Optional, EntityAttributeType.None, EntityAttributeType.None, null, null, 21)]
+	public IfcText? LongDescription
+	{
+		get
+		{
+			if (_activated)
+			{
+				return _longDescription;
+			}
+			Activate();
+			return _longDescription;
+		}
+		set
+		{
+			SetValue(delegate(IfcText? v)
+			{
+				_longDescription = v;
+			}, _longDescription, value, "LongDescription", 9);
+		}
+	}
+
+	IEnumerable<IPersistEntity> IContainsEntityReferences.References
+	{
+		get
+		{
+			if (base.OwnerHistory != null)
+			{
+				yield return base.OwnerHistory;
+			}
+		}
+	}
+
+	internal IfcActionRequest(IModel model, int label, bool activated)
+		: base(model, label, activated)
+	{
+	}
+
+	public override void Parse(int propIndex, IPropertyValue value, int[] nestedIndex)
+	{
+		switch (propIndex)
+		{
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			base.Parse(propIndex, value, nestedIndex);
+			break;
+		case 6:
+			_predefinedType = (IfcActionRequestTypeEnum)Enum.Parse(typeof(IfcActionRequestTypeEnum), value.EnumVal, ignoreCase: true);
+			break;
+		case 7:
+			_status = value.StringVal;
+			break;
+		case 8:
+			_longDescription = value.StringVal;
+			break;
+		default:
+			throw new XbimParserException($"Attribute index {propIndex + 1} is out of range for {GetType().Name.ToUpper()}");
+		}
+	}
+
+	public bool Equals(IfcActionRequest other)
+	{
+		return this == other;
+	}
+}

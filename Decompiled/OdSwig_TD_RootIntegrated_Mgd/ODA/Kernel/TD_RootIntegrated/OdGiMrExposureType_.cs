@@ -1,0 +1,10 @@
+using System;
+
+namespace ODA.Kernel.TD_RootIntegrated;
+
+[Flags]
+public enum OdGiMrExposureType_
+{
+	krAutomatic = 0,
+	krLogarithmic = 1
+}

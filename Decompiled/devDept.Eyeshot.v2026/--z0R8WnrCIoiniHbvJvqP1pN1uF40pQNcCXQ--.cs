@@ -1,0 +1,6 @@
+internal sealed class _0023_003Dz0R8WnrCIoiniHbvJvqP1pN1uF40pQNcCXQ_003D_003D
+{
+	public uint _0023_003DzNWCsxLxejZ_0024FawQwsA_003D_003D;
+
+	public _0023_003DzKiuoTvlywaF652aM8ACj0ohagaPMML1zpg_003D_003D[] _0023_003DzGfHm4CnmO7hZ;
+}

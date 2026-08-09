@@ -1,0 +1,19 @@
+using System.Collections.Generic;
+
+internal static class _0023_003Dzhe0QPPDqEFeD
+{
+	internal static void _0023_003Dzl2vWevE_003D(this List<_0023_003DzS2iP22kRK_wR290tTpXL_0024UpEygCs._0023_003Dz4sKVLhT3tNY9R2RzGg_003D_003D> _0023_003DzcDEsV8s_003D, int _0023_003DzsSJGgWE_003D, _0023_003DzS2iP22kRK_wR290tTpXL_0024UpEygCs._0023_003Dz4sKVLhT3tNY9R2RzGg_003D_003D _0023_003DzPzO_0024GUk_003D)
+	{
+		if (_0023_003DzcDEsV8s_003D.Count > _0023_003DzsSJGgWE_003D)
+		{
+			_0023_003DzcDEsV8s_003D.RemoveRange(_0023_003DzsSJGgWE_003D, _0023_003DzcDEsV8s_003D.Count - _0023_003DzsSJGgWE_003D);
+		}
+		else if (_0023_003DzcDEsV8s_003D.Count < _0023_003DzsSJGgWE_003D)
+		{
+			for (int i = _0023_003DzcDEsV8s_003D.Count; i < _0023_003DzsSJGgWE_003D; i++)
+			{
+				_0023_003DzcDEsV8s_003D.Add(_0023_003DzPzO_0024GUk_003D);
+			}
+		}
+	}
+}

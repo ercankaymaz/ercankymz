@@ -1,0 +1,16 @@
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
+
+[assembly: InternalsVisibleTo("Xbim.Essentials.NetCore.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010029a3c6da60efcb3ebe48c3ce14a169b5fa08ffbf5f276392ffb2006a9a2d596f5929cf0e68568d14ac7cbe334440ca0b182be7fa6896d2a73036f24bca081b2427a8dec5689a97f3d62547acd5d471ee9f379540f338bbb0ae6a165b44b1ae34405624baa4388404bce6d3e30de128cec379147af363ce9c5845f4f92d405ed0")]
+[assembly: AssemblyCompany("Xbim Ltd.")]
+[assembly: AssemblyConfiguration("Release")]
+[assembly: AssemblyCopyright("Copyright © XBIM Ltd")]
+[assembly: AssemblyDescription("Manages Ifc or STEP Models backed by the ESENT database. Windows only.")]
+[assembly: AssemblyFileVersion("6.0.563.0")]
+[assembly: AssemblyInformationalVersion("6.0.0.0+73a05e53647e779d7d66b5516432c0b09be8a6ac")]
+[assembly: AssemblyProduct("XBIM Essentials")]
+[assembly: AssemblyTitle("Xbim.IO.Esent")]
+[assembly: AssemblyMetadata("RepositoryUrl", "https://github.com/xBimTeam/XbimEssentials/tree/master")]
+[assembly: AssemblyVersion("6.0.0.0")]

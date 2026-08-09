@@ -1,0 +1,147 @@
+using System;
+
+internal sealed class _0023_003DziSpEsFVRVaFVzg3eJfklRX0_003D
+{
+	private _0023_003Dz6LAuTGl0o3UU_aJQSAz0m7A_003D _0023_003Dz2DnLdTZ2C7WD;
+
+	private _0023_003DzF3moo4OTZQr_fhl5WFe9Jb0_003D _0023_003Dz1usenrr_0024HZXU;
+
+	public _0023_003DziSpEsFVRVaFVzg3eJfklRX0_003D(_0023_003Dz6LAuTGl0o3UU_aJQSAz0m7A_003D _0023_003Dz5mXDE7lKho5d, _0023_003DzF3moo4OTZQr_fhl5WFe9Jb0_003D _0023_003DzDx_f_0024qJqlcIG)
+	{
+		_0023_003Dz2DnLdTZ2C7WD = _0023_003Dz5mXDE7lKho5d;
+		_0023_003Dz1usenrr_0024HZXU = _0023_003DzDx_f_0024qJqlcIG;
+	}
+
+	public _0023_003DziSpEsFVRVaFVzg3eJfklRX0_003D()
+	{
+		_0023_003Dzsk4LmP82P1PKGVhBJT9FCjg_003D _0023_003DzpZ9im0izpG3k = new _0023_003Dzsk4LmP82P1PKGVhBJT9FCjg_003D();
+		_0023_003DzyVHXjb_0024HNNqhLu4TICUiEIc_003D _0023_003Dzm528LhE7YyFj = new _0023_003DzyVHXjb_0024HNNqhLu4TICUiEIc_003D();
+		_0023_003DzF3moo4OTZQr_fhl5WFe9Jb0_003D _0023_003DzF3moo4OTZQr_fhl5WFe9Jb0_003D2 = new _0023_003DzF3moo4OTZQr_fhl5WFe9Jb0_003D();
+		_0023_003DzQ9CpKjyLGJVaqN_0024g8SfdU_Y_003D _0023_003Dz2b0cm7S0DBX = new _0023_003DzQ9CpKjyLGJVaqN_0024g8SfdU_Y_003D(_0023_003Dzm528LhE7YyFj);
+		_0023_003DzSW_iG06uwSVUkdFx1ACOoOM_003D _0023_003DzAHX5TE0jHwu = new _0023_003DzSW_iG06uwSVUkdFx1ACOoOM_003D(_0023_003Dzm528LhE7YyFj);
+		_0023_003Dzgg1Z_0024Y4qDsmRHS2MJumtN5A_003D _0023_003DzSrxHyoo06mj_0024 = new _0023_003Dzgg1Z_0024Y4qDsmRHS2MJumtN5A_003D(_0023_003Dzm528LhE7YyFj);
+		_0023_003DzVxlkiBsYgpDisAbkKM0Oogc_003D _0023_003DzT2MhuyCqMhaK = new _0023_003DzVxlkiBsYgpDisAbkKM0Oogc_003D(_0023_003Dzm528LhE7YyFj, _0023_003Dz2b0cm7S0DBX, _0023_003DzAHX5TE0jHwu, _0023_003DzSrxHyoo06mj_0024);
+		_0023_003Dz6LAuTGl0o3UU_aJQSAz0m7A_003D _0023_003Dz6LAuTGl0o3UU_aJQSAz0m7A_003D2 = new _0023_003Dz6LAuTGl0o3UU_aJQSAz0m7A_003D(_0023_003DzpZ9im0izpG3k, _0023_003DzT2MhuyCqMhaK);
+		_0023_003Dz2DnLdTZ2C7WD = _0023_003Dz6LAuTGl0o3UU_aJQSAz0m7A_003D2;
+		_0023_003Dz1usenrr_0024HZXU = _0023_003DzF3moo4OTZQr_fhl5WFe9Jb0_003D2;
+	}
+
+	public void _0023_003Dzz8DDgng_003D(ref double _0023_003DzE8QrneA_003D, ref double _0023_003DzH9VU2k0_003D, ref double _0023_003DzshZYG54_003D, ref double _0023_003DzK_0024fbiW0_003D, ref double _0023_003DzV7CQ8i_0024IQFF4, ref double _0023_003Dz0EHe3x9D_0024WKc, ref double _0023_003Dz_RIBKgLFv5Xf, ref double _0023_003DzvXTrKFCnTlj3, ref double _0023_003DzCnu19x8_003D, ref double _0023_003DzBjVnhdQ_003D)
+	{
+		double num = 0.0;
+		double num2 = 0.0;
+		double num3 = 0.0;
+		double num4 = 0.0;
+		double num5 = 0.0;
+		double num6 = 0.0;
+		double num7 = 0.0;
+		double num8 = 0.0;
+		double num9 = 0.0;
+		double num10 = 0.0;
+		double num11 = 0.0;
+		double num12 = 0.0;
+		double num13 = 0.0;
+		double num14 = 0.0;
+		double num15 = 0.0;
+		double num16 = 0.0;
+		num8 = _0023_003Dz2DnLdTZ2C7WD._0023_003Dzz8DDgng_003D(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302911415));
+		if (_0023_003DzshZYG54_003D == 0.0)
+		{
+			_0023_003DzCnu19x8_003D = 1.0;
+			_0023_003DzBjVnhdQ_003D = 0.0;
+		}
+		else if (_0023_003DzH9VU2k0_003D == 0.0)
+		{
+			_0023_003DzCnu19x8_003D = 0.0;
+			_0023_003DzBjVnhdQ_003D = 1.0;
+			num15 = _0023_003DzK_0024fbiW0_003D;
+			_0023_003DzK_0024fbiW0_003D = _0023_003DzE8QrneA_003D;
+			_0023_003DzE8QrneA_003D = num15;
+			_0023_003DzH9VU2k0_003D = 0.0 - _0023_003DzshZYG54_003D;
+			_0023_003DzshZYG54_003D = 0.0;
+		}
+		else if (_0023_003DzE8QrneA_003D - _0023_003DzK_0024fbiW0_003D == 0.0 && _0023_003Dzt81xN7aa_002489vTvlbYozS6TUjvqyF._0023_003DzE4Ox648_003D(1.0, _0023_003DzH9VU2k0_003D) != _0023_003Dzt81xN7aa_002489vTvlbYozS6TUjvqyF._0023_003DzE4Ox648_003D(1.0, _0023_003DzshZYG54_003D))
+		{
+			_0023_003DzCnu19x8_003D = 1.0;
+			_0023_003DzBjVnhdQ_003D = 0.0;
+		}
+		else
+		{
+			num15 = _0023_003DzE8QrneA_003D - _0023_003DzK_0024fbiW0_003D;
+			num9 = 0.5 * num15;
+			num3 = Math.Max(Math.Abs(_0023_003DzH9VU2k0_003D), Math.Abs(_0023_003DzshZYG54_003D));
+			num4 = Math.Min(Math.Abs(_0023_003DzH9VU2k0_003D), Math.Abs(_0023_003DzshZYG54_003D)) * _0023_003Dzt81xN7aa_002489vTvlbYozS6TUjvqyF._0023_003DzE4Ox648_003D(1.0, _0023_003DzH9VU2k0_003D) * _0023_003Dzt81xN7aa_002489vTvlbYozS6TUjvqyF._0023_003DzE4Ox648_003D(1.0, _0023_003DzshZYG54_003D);
+			num11 = Math.Max(Math.Abs(num9), num3);
+			num16 = num9 / num11 * num9 + num3 / num11 * num4;
+			if (num16 >= 4.0 * num8)
+			{
+				num16 = num9 + _0023_003Dzt81xN7aa_002489vTvlbYozS6TUjvqyF._0023_003DzE4Ox648_003D(Math.Sqrt(num11) * Math.Sqrt(num16), num9);
+				_0023_003DzE8QrneA_003D = _0023_003DzK_0024fbiW0_003D + num16;
+				_0023_003DzK_0024fbiW0_003D += (0.0 - num3 / num16) * num4;
+				num14 = _0023_003Dz1usenrr_0024HZXU._0023_003Dzz8DDgng_003D(_0023_003DzshZYG54_003D, num16);
+				_0023_003DzCnu19x8_003D = num16 / num14;
+				_0023_003DzBjVnhdQ_003D = _0023_003DzshZYG54_003D / num14;
+				_0023_003DzH9VU2k0_003D -= _0023_003DzshZYG54_003D;
+				_0023_003DzshZYG54_003D = 0.0;
+			}
+			else
+			{
+				num12 = _0023_003DzH9VU2k0_003D + _0023_003DzshZYG54_003D;
+				num14 = _0023_003Dz1usenrr_0024HZXU._0023_003Dzz8DDgng_003D(num12, num15);
+				_0023_003DzCnu19x8_003D = Math.Sqrt(0.5 * (1.0 + Math.Abs(num12) / num14));
+				_0023_003DzBjVnhdQ_003D = (0.0 - num9 / (num14 * _0023_003DzCnu19x8_003D)) * _0023_003Dzt81xN7aa_002489vTvlbYozS6TUjvqyF._0023_003DzE4Ox648_003D(1.0, num12);
+				num = _0023_003DzE8QrneA_003D * _0023_003DzCnu19x8_003D + _0023_003DzH9VU2k0_003D * _0023_003DzBjVnhdQ_003D;
+				num2 = (0.0 - _0023_003DzE8QrneA_003D) * _0023_003DzBjVnhdQ_003D + _0023_003DzH9VU2k0_003D * _0023_003DzCnu19x8_003D;
+				num5 = _0023_003DzshZYG54_003D * _0023_003DzCnu19x8_003D + _0023_003DzK_0024fbiW0_003D * _0023_003DzBjVnhdQ_003D;
+				num7 = (0.0 - _0023_003DzshZYG54_003D) * _0023_003DzBjVnhdQ_003D + _0023_003DzK_0024fbiW0_003D * _0023_003DzCnu19x8_003D;
+				_0023_003DzE8QrneA_003D = num * _0023_003DzCnu19x8_003D + num5 * _0023_003DzBjVnhdQ_003D;
+				_0023_003DzH9VU2k0_003D = num2 * _0023_003DzCnu19x8_003D + num7 * _0023_003DzBjVnhdQ_003D;
+				_0023_003DzshZYG54_003D = (0.0 - num) * _0023_003DzBjVnhdQ_003D + num5 * _0023_003DzCnu19x8_003D;
+				_0023_003DzK_0024fbiW0_003D = (0.0 - num2) * _0023_003DzBjVnhdQ_003D + num7 * _0023_003DzCnu19x8_003D;
+				num15 = (_0023_003DzK_0024fbiW0_003D = (_0023_003DzE8QrneA_003D = 0.5 * (_0023_003DzE8QrneA_003D + _0023_003DzK_0024fbiW0_003D)));
+				if (_0023_003DzshZYG54_003D != 0.0)
+				{
+					if (_0023_003DzH9VU2k0_003D != 0.0)
+					{
+						if (_0023_003Dzt81xN7aa_002489vTvlbYozS6TUjvqyF._0023_003DzE4Ox648_003D(1.0, _0023_003DzH9VU2k0_003D) == _0023_003Dzt81xN7aa_002489vTvlbYozS6TUjvqyF._0023_003DzE4Ox648_003D(1.0, _0023_003DzshZYG54_003D))
+						{
+							double num17 = Math.Sqrt(Math.Abs(_0023_003DzH9VU2k0_003D));
+							num10 = Math.Sqrt(Math.Abs(_0023_003DzshZYG54_003D));
+							num9 = _0023_003Dzt81xN7aa_002489vTvlbYozS6TUjvqyF._0023_003DzE4Ox648_003D(num17 * num10, _0023_003DzshZYG54_003D);
+							num14 = 1.0 / Math.Sqrt(Math.Abs(_0023_003DzH9VU2k0_003D + _0023_003DzshZYG54_003D));
+							_0023_003DzE8QrneA_003D = num15 + num9;
+							_0023_003DzK_0024fbiW0_003D = num15 - num9;
+							_0023_003DzH9VU2k0_003D -= _0023_003DzshZYG54_003D;
+							_0023_003DzshZYG54_003D = 0.0;
+							num6 = num17 * num14;
+							num13 = num10 * num14;
+							num15 = _0023_003DzCnu19x8_003D * num6 - _0023_003DzBjVnhdQ_003D * num13;
+							_0023_003DzBjVnhdQ_003D = _0023_003DzCnu19x8_003D * num13 + _0023_003DzBjVnhdQ_003D * num6;
+							_0023_003DzCnu19x8_003D = num15;
+						}
+					}
+					else
+					{
+						_0023_003DzH9VU2k0_003D = 0.0 - _0023_003DzshZYG54_003D;
+						_0023_003DzshZYG54_003D = 0.0;
+						num15 = _0023_003DzCnu19x8_003D;
+						_0023_003DzCnu19x8_003D = 0.0 - _0023_003DzBjVnhdQ_003D;
+						_0023_003DzBjVnhdQ_003D = num15;
+					}
+				}
+			}
+		}
+		_0023_003DzV7CQ8i_0024IQFF4 = _0023_003DzE8QrneA_003D;
+		_0023_003Dz_RIBKgLFv5Xf = _0023_003DzK_0024fbiW0_003D;
+		if (_0023_003DzshZYG54_003D == 0.0)
+		{
+			_0023_003Dz0EHe3x9D_0024WKc = 0.0;
+			_0023_003DzvXTrKFCnTlj3 = 0.0;
+		}
+		else
+		{
+			_0023_003Dz0EHe3x9D_0024WKc = Math.Sqrt(Math.Abs(_0023_003DzH9VU2k0_003D)) * Math.Sqrt(Math.Abs(_0023_003DzshZYG54_003D));
+			_0023_003DzvXTrKFCnTlj3 = 0.0 - _0023_003Dz0EHe3x9D_0024WKc;
+		}
+	}
+}

@@ -1,0 +1,71 @@
+using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+internal static class _0023_003Dz59lijRsT8LI_0024XHJOQ_0024AIGNJAuo4Gno8YZbyXhC6NbIN90_6Sbg_003D_003D
+{
+	[StructLayout(LayoutKind.Explicit, Pack = 1, Size = 128)]
+	private struct a1
+	{
+	}
+
+	private static _0023_003DqUR7_0024aTHoiijy1rATVvJvahY_rqH1dc0o22bEKz0H3wo_003D _0023_003DzT7JJJ3Q8wXIpUFEmwdSzfeGGHa5IFZYN48lEIYp0IIP1FNeIew_003D_003D;
+
+	[ThreadStatic]
+	private static Stream _0023_003DzJt0mqpCUNRxYEwck0l525zNe3_0024G8lBL7EqtTO3sVJ1gh6f85uA_003D_003D;
+
+	internal static a1 a1/* Not supported: data(A5 7A D4 0F 8F F0 C2 7A FE 8E 0B 40 E0 66 0A 07 88 CE 2D 1C D5 DB 3C C4 97 34 90 C9 ED AC 55 80 1A 6A A6 DC B6 4B 39 4D E1 A7 F7 F7 40 ED A8 2E D0 9B 44 6E 77 A4 63 C1 6C 2A 4B 4E 89 57 50 36 E2 A5 88 56 EC 4D 41 FA 4E F3 0B 9E BE 6D B0 6A B7 A9 AE 5D AD 1B CB 7E EA 01 5B 52 E6 0E 51 16 A6 6E 0E 5E 9F 7D EC D4 9F B8 AD 7E B7 60 8A 12 61 13 31 07 B8 ED 88 8D 50 5C F5 3F E5 B7 1E CD) */;
+
+	public static string _0023_003DzIJp4Y1tp2tMLUYD1mViZE1zbrP77f8YdRIC0d2AX5zAas0JAzw_003D_003D()
+	{
+		return _0023_003DzSy_0024KIFd4r3JhmOzv30zRImcoHkdd._0023_003Dz4A3Alm0_003D(355528051);
+	}
+
+	public static Stream _0023_003Dz9h7prLD836B0_0024F42nFw7qcyRyorkXYYKZ0vX9bIws0q0ILDt6g_003D_003D()
+	{
+		if (_0023_003DzJt0mqpCUNRxYEwck0l525zNe3_0024G8lBL7EqtTO3sVJ1gh6f85uA_003D_003D == null)
+		{
+			_0023_003DzJt0mqpCUNRxYEwck0l525zNe3_0024G8lBL7EqtTO3sVJ1gh6f85uA_003D_003D = _0023_003DqYrt2RP8soCGyOZkcM_CFrNUNxwmjipQse6GTziyuxkw_003D._0023_003Dza2dv5wqmJ2l4SyonDO0O2e0yT5pQ4nGR5w_003D_003D(typeof(_0023_003Dz59lijRsT8LI_0024XHJOQ_0024AIGNJAuo4Gno8YZbyXhC6NbIN90_6Sbg_003D_003D).Assembly.GetManifestResourceStream("4dae3f2cded848578219b4b581e2ca0f"), new byte[128]
+			{
+				165, 122, 212, 15, 143, 240, 194, 122, 254, 142,
+				11, 64, 224, 102, 10, 7, 136, 206, 45, 28,
+				213, 219, 60, 196, 151, 52, 144, 201, 237, 172,
+				85, 128, 26, 106, 166, 220, 182, 75, 57, 77,
+				225, 167, 247, 247, 64, 237, 168, 46, 208, 155,
+				68, 110, 119, 164, 99, 193, 108, 42, 75, 78,
+				137, 87, 80, 54, 226, 165, 136, 86, 236, 77,
+				65, 250, 78, 243, 11, 158, 190, 109, 176, 106,
+				183, 169, 174, 93, 173, 27, 203, 126, 234, 1,
+				91, 82, 230, 14, 81, 22, 166, 110, 14, 94,
+				159, 125, 236, 212, 159, 184, 173, 126, 183, 96,
+				138, 18, 97, 19, 49, 7, 184, 237, 136, 141,
+				80, 92, 245, 63, 229, 183, 30, 205
+			}, _0023_003DzIJp4Y1tp2tMLUYD1mViZE1zbrP77f8YdRIC0d2AX5zAas0JAzw_003D_003D());
+		}
+		return _0023_003DzJt0mqpCUNRxYEwck0l525zNe3_0024G8lBL7EqtTO3sVJ1gh6f85uA_003D_003D;
+	}
+
+	internal static void _0023_003DzWfQoyWbc8RpQWX8j4PZB_UADbP460YP8WpY6BAqewwwHL_GMlA_003D_003D(_0023_003DqeT0OSI7BQiAkakglgmrHah29R0cJ2sPZGbWEHzx9sWs_003D P_0)
+	{
+		object[] _0023_003Dz7hRN5Rg_003D = new object[1] { P_0 };
+		_0023_003DzdzZLZbiwVTg1a0D6OXj_pZ7Vxsm1I1oH6u_0024_fyl4AGtqqQqxXQ_003D_003D()._0023_003DzcuxJrsHQF_Rj5c_67u2AJCIjdCLa(_0023_003Dz9h7prLD836B0_0024F42nFw7qcyRyorkXYYKZ0vX9bIws0q0ILDt6g_003D_003D(), "9`=tjq\"ad_", _0023_003Dz7hRN5Rg_003D);
+	}
+
+	[MethodImpl(MethodImplOptions.Synchronized)]
+	public static _0023_003DqeT0OSI7BQiAkakglgmrHah29R0cJ2sPZGbWEHzx9sWs_003D _0023_003DzdzZLZbiwVTg1a0D6OXj_pZ7Vxsm1I1oH6u_0024_fyl4AGtqqQqxXQ_003D_003D()
+	{
+		bool flag = default(bool);
+		if (_0023_003DzT7JJJ3Q8wXIpUFEmwdSzfeGGHa5IFZYN48lEIYp0IIP1FNeIew_003D_003D == null)
+		{
+			_0023_003DzT7JJJ3Q8wXIpUFEmwdSzfeGGHa5IFZYN48lEIYp0IIP1FNeIew_003D_003D = new _0023_003DqUR7_0024aTHoiijy1rATVvJvahY_rqH1dc0o22bEKz0H3wo_003D();
+			flag = true;
+		}
+		_0023_003DqeT0OSI7BQiAkakglgmrHah29R0cJ2sPZGbWEHzx9sWs_003D obj = new _0023_003DqeT0OSI7BQiAkakglgmrHah29R0cJ2sPZGbWEHzx9sWs_003D(_0023_003DzT7JJJ3Q8wXIpUFEmwdSzfeGGHa5IFZYN48lEIYp0IIP1FNeIew_003D_003D);
+		if (flag)
+		{
+			_0023_003DzWfQoyWbc8RpQWX8j4PZB_UADbP460YP8WpY6BAqewwwHL_GMlA_003D_003D(obj);
+		}
+		return obj;
+	}
+}

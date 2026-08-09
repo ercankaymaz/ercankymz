@@ -1,0 +1,35 @@
+namespace devDept.Graphics;
+
+public enum blendStateType
+{
+	Blend = 19775,
+	Blend_SrcAlphaOne_DstAlphaOneMinusSrcAlpha = 23871,
+	NoBlend = 15,
+	Blend_DstZero = 19983,
+	ColorMaskOff = 0,
+	Blend_SrcOne_DstZero = 19599,
+	Blend_SrcOne_DstOneMinusSrcAlpha = 19647,
+	Blend_SrcOne_DstOne = 19615,
+	Blend_Mask_RA = 19769,
+	NoBlend_Mask_RA = 9,
+	Blend_DstZero_Mask_RA = 19977,
+	Blend_SrcOne_DstZero_Mask_RA = 19593,
+	Blend_SrcOne_DstOne_Mask_RA = 19609,
+	Blend_Mask_GBA = 19774,
+	NoBlend_Mask_GBA = 14,
+	Blend_DstZero_Mask_GBA = 19982,
+	Blend_SrcOne_DstZero_Mask_GBA = 19598,
+	Blend_SrcOne_DstOne_Mask_GBA = 19614,
+	Blend_Mask_RGB = 19767,
+	NoBlend_Mask_RGB = 7,
+	Blend_DstZero_Mask_RGB = 19975,
+	Blend_SrcOne_DstZero_Mask_RGB = 19591,
+	Blend_SrcOne_DstOne_Mask_RGB = 19607,
+	Blend_Mask_A = 19768,
+	NoBlend_Mask_A = 8,
+	Blend_DstZero_Mask_A = 19976,
+	Blend_SrcOne_DstZero_Mask_A = 19592,
+	Blend_SrcOne_DstOne_Mask_A = 19608,
+	Blend_SrcZero_DstSrcAlpha_Mask_RGB = 19495,
+	XOR = 3823
+}

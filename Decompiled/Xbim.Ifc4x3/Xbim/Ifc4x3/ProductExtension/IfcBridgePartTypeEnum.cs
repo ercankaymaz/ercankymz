@@ -1,0 +1,17 @@
+namespace Xbim.Ifc4x3.ProductExtension;
+
+public enum IfcBridgePartTypeEnum : byte
+{
+	ABUTMENT,
+	DECK,
+	DECK_SEGMENT,
+	FOUNDATION,
+	PIER,
+	PIER_SEGMENT,
+	PYLON,
+	SUBSTRUCTURE,
+	SUPERSTRUCTURE,
+	SURFACESTRUCTURE,
+	USERDEFINED,
+	NOTDEFINED
+}

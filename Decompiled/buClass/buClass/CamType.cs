@@ -1,0 +1,52 @@
+using System;
+
+namespace buClass;
+
+[Serializable]
+public enum CamType
+{
+	None,
+	ContourClosedCenter,
+	ContourClosedOutside,
+	ContourClosedInside,
+	ContourOpenCenter,
+	ContourOpenLeft,
+	ContourOpenRight,
+	ContourMulti,
+	PocketCircular,
+	PocketFlat,
+	Point,
+	AreaScan,
+	Rough,
+	ParallelCut,
+	ConstantZ,
+	Pencil,
+	ProjectCurves,
+	Flatlands,
+	ConstantCusp,
+	Drill,
+	Contour4X,
+	Drill4X,
+	Face,
+	FloorFinishing,
+	Chamfer,
+	Engrave,
+	TextEngrave,
+	Trochoidal,
+	ContourClosed,
+	ContourOpen,
+	Contour,
+	Finish,
+	Center,
+	ConstantZPlusConstantCusp,
+	ConstantZPlusParallelCuts,
+	Geodesic,
+	Projection,
+	Rotary,
+	RotaryFinish,
+	RotaryRough,
+	CornerCleanByMilling,
+	CornerCleanByDrill,
+	SawCut,
+	MillingCut
+}

@@ -1,0 +1,4 @@
+internal interface _0023_003DzTNLWA4hl_0024C0hIOaNmw_003D_003D
+{
+	_0023_003DzBhBGHtMU6jbT _0023_003DzUVbWgHe0gKQ4();
+}

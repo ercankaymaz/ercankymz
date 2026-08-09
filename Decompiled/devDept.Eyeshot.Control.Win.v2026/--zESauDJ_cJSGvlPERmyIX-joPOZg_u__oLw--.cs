@@ -1,0 +1,16 @@
+using devDept.Graphics;
+
+internal sealed class _0023_003DzESauDJ_cJSGvlPERmyIX_0024joPOZg_u__oLw_003D_003D : _0023_003DzxMfii5FvRHCf7KMoYW35TB7JQjEk
+{
+	public _0023_003DzESauDJ_cJSGvlPERmyIX_0024joPOZg_u__oLw_003D_003D(int _0023_003DzIl_GzESL37hq74GQ_0024w_003D_003D, int _0023_003Dz8p0L55RRLe_P, _0023_003DzvOg1ehyRaBmw? _0023_003DzzNEWOmE_003D, bool _0023_003DzvwmFS1TFv_X5)
+		: base(_0023_003DzIl_GzESL37hq74GQ_0024w_003D_003D, _0023_003Dz8p0L55RRLe_P, _0023_003DzzNEWOmE_003D, _0023_003DzvwmFS1TFv_X5)
+	{
+	}
+
+	public override void Draw(OglRenderContext _0023_003DzmNZD0Zs_003D, int _0023_003Dz0ERCPQk_003D, uint? _0023_003Dz0nGtLL0_003D = null, uint? _0023_003DzF1puTpc_003D = null)
+	{
+		base.Draw(_0023_003DzmNZD0Zs_003D, _0023_003Dz0ERCPQk_003D, _0023_003Dz0nGtLL0_003D, _0023_003DzF1puTpc_003D);
+		_0023_003DzKRkQnBj3UOcc();
+		_0023_003Dzz8j8G7g_003D.Clear();
+	}
+}

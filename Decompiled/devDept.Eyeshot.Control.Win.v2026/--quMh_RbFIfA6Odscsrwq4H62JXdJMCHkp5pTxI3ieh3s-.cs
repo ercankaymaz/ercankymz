@@ -1,0 +1,26 @@
+internal sealed class _0023_003DquMh_RbFIfA6Odscsrwq4H62JXdJMCHkp5pTxI3ieh3s_003D
+{
+	private int _0023_003DzjYYAPCA_003D;
+
+	private bool _0023_003DzVC9FBdo_003D;
+
+	public int _0023_003Dzt1eFV4wjyaQl60ABlEzvR_jbEMrSq_00240mR6y9GXRV3_pj()
+	{
+		return _0023_003DzjYYAPCA_003D;
+	}
+
+	public void _0023_003DzfXSf_0024QgFPjOFKX5HXs3UmTKT6NOo(int _0023_003DzjYYAPCA_003D)
+	{
+		this._0023_003DzjYYAPCA_003D = _0023_003DzjYYAPCA_003D;
+	}
+
+	public bool _0023_003DzMW8RMCedlHk3F9zBMrk3xvIZGCxXxH2NIA_003D_003D()
+	{
+		return _0023_003DzVC9FBdo_003D;
+	}
+
+	public void _0023_003Dz98_EZkrfKcKT8PITYc_uFlrg6FC9HbOG4A_003D_003D(bool _0023_003DzjYYAPCA_003D)
+	{
+		_0023_003DzVC9FBdo_003D = _0023_003DzjYYAPCA_003D;
+	}
+}

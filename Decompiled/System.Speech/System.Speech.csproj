@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>System.Speech</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="upstable_chs.upsmap" />
+    <None Remove="upstable_cht.upsmap" />
+    <None Remove="upstable_deu.upsmap" />
+    <None Remove="upstable_enu.upsmap" />
+    <None Remove="upstable_esp.upsmap" />
+    <None Remove="upstable_fra.upsmap" />
+    <None Remove="upstable_jpn.upsmap" />
+    <None Remove="ILLink.Substitutions.xml" />
+    <EmbeddedResource Include="upstable_chs.upsmap" LogicalName="upstable_chs.upsmap" />
+    <EmbeddedResource Include="upstable_cht.upsmap" LogicalName="upstable_cht.upsmap" />
+    <EmbeddedResource Include="upstable_deu.upsmap" LogicalName="upstable_deu.upsmap" />
+    <EmbeddedResource Include="upstable_enu.upsmap" LogicalName="upstable_enu.upsmap" />
+    <EmbeddedResource Include="upstable_esp.upsmap" LogicalName="upstable_esp.upsmap" />
+    <EmbeddedResource Include="upstable_fra.upsmap" LogicalName="upstable_fra.upsmap" />
+    <EmbeddedResource Include="upstable_jpn.upsmap" LogicalName="upstable_jpn.upsmap" />
+    <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
+  </ItemGroup>
+  <ItemGroup />
+</Project>

@@ -1,0 +1,54 @@
+using System;
+
+internal sealed class _0023_003DzoTpeI7y7DTRWa_0024xEDg4ngF3SVQqLUMZ1BVJ2cP8_003D
+{
+	private int _0023_003DzNaAhXSlB_0024QT8;
+
+	private long _0023_003Dz30qA6iI_003D;
+
+	private int[] _0023_003DzxHAPXpBxi4e7;
+
+	public _0023_003DzoTpeI7y7DTRWa_0024xEDg4ngF3SVQqLUMZ1BVJ2cP8_003D(int _0023_003Dzf5hu_38_003D, long _0023_003Dz2cUJjZw_003D, int[] _0023_003DzaVgO0S3KWfrJ)
+	{
+		_0023_003DzNaAhXSlB_0024QT8 = _0023_003Dzf5hu_38_003D;
+		_0023_003Dz30qA6iI_003D = _0023_003Dz2cUJjZw_003D;
+		_0023_003DzxHAPXpBxi4e7 = _0023_003DzaVgO0S3KWfrJ;
+	}
+
+	public virtual int _0023_003DzMZORT0_wD2iU()
+	{
+		return _0023_003DzNaAhXSlB_0024QT8;
+	}
+
+	public virtual int[] _0023_003Dz9HhhwQK0Q70i()
+	{
+		return _0023_003DzxHAPXpBxi4e7;
+	}
+
+	public virtual _0023_003DzoTpeI7y7DTRWa_0024xEDg4ngF3SVQqLUMZ1BVJ2cP8_003D _0023_003Dzl_0024kBRC0_003D()
+	{
+		return new _0023_003DzoTpeI7y7DTRWa_0024xEDg4ngF3SVQqLUMZ1BVJ2cP8_003D(_0023_003DzNaAhXSlB_0024QT8, _0023_003Dz30qA6iI_003D, _0023_003DzUaX45abIO19sQfTsqditkJ4FOENY7dreSw_003D_003D._0023_003Dzl_0024kBRC0_003D(_0023_003DzxHAPXpBxi4e7));
+	}
+
+	public static _0023_003DzoTpeI7y7DTRWa_0024xEDg4ngF3SVQqLUMZ1BVJ2cP8_003D _0023_003DzuuY9lIM_003D(_0023_003Dz1k8g79YtmFbIePcxbICwvq0f_Fuo9R7q0g_003D_003D _0023_003DzEP3lrAc_003D)
+	{
+		_0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH8 _0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9 = _0023_003DzEP3lrAc_003D._0023_003DzpFQU3MrOxdf3();
+		int _0023_003Dzf5hu_38_003D = _0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003Dzmf8mDHW8MUJO();
+		int num = -1;
+		if ((double)_0023_003DzEP3lrAc_003D._0023_003DzxS4fhlkxDQAJ() >= 9.0)
+		{
+			num = _0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003DzYeSlt_NVa_00248u();
+			if (num != 1)
+			{
+				throw new ArgumentException(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302935043) + num);
+			}
+		}
+		long _0023_003Dz2cUJjZw_003D = _0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003DzvI_0024VUB8xYlas();
+		int[] array = new int[_0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003Dzmf8mDHW8MUJO()];
+		for (int i = 0; i < array.Length; i++)
+		{
+			array[i] = _0023_003Dz4BThAeMUVNi5lkbCFOKIerpsUKH9._0023_003Dzmf8mDHW8MUJO();
+		}
+		return new _0023_003DzoTpeI7y7DTRWa_0024xEDg4ngF3SVQqLUMZ1BVJ2cP8_003D(_0023_003Dzf5hu_38_003D, _0023_003Dz2cUJjZw_003D, array);
+	}
+}

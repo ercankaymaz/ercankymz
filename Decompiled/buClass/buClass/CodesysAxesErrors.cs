@@ -1,0 +1,36 @@
+namespace buClass;
+
+public enum CodesysAxesErrors
+{
+	SWLimit = 300,
+	HWLimit = 301,
+	DriveError = 302,
+	ErrorStop = 303,
+	FlowingError = 304,
+	HomeTimeout = 305,
+	Communication = 306,
+	DataLimitPosError = 307,
+	DataLimitNegError = 308,
+	SWLimitPositive = 309,
+	SWLimitNegative = 30310,
+	MCStop = 311,
+	MCReset = 312,
+	MCPower = 313,
+	MCMoveAbs = 314,
+	MCMoveRel = 315,
+	MCHome = 316,
+	MCSetPos = 317,
+	MCSetHome = 318,
+	MCJog = 319,
+	LimitDynamics = 320,
+	MCGearIn = 321,
+	MCGearOut = 322,
+	AxisOutOfLimit = 323,
+	SMCChangeDynamicLimits = 324,
+	SMCChangeRatio = 325,
+	SMCHome = 326,
+	SMCSoftLimit = 327,
+	SMCRampType = 328,
+	SMCMoveType = 329,
+	ReInit = 330
+}

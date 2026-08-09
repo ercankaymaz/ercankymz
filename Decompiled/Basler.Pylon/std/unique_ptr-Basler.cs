@@ -1,0 +1,15 @@
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace std;
+
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct unique_ptr_003CBasler_003A_003APylon_003A_003ANativeBufferContext_002Cstd_003A_003Adefault_delete_003CBasler_003A_003APylon_003A_003ANativeBufferContext_003E_0020_003E
+{
+}
+[StructLayout(LayoutKind.Sequential, Size = 4)]
+[NativeCppClass]
+internal struct unique_ptr_003CBasler_003A_003APylon_003A_003ACNativeBufferFactory_002Cstd_003A_003Adefault_delete_003CBasler_003A_003APylon_003A_003ACNativeBufferFactory_003E_0020_003E
+{
+}

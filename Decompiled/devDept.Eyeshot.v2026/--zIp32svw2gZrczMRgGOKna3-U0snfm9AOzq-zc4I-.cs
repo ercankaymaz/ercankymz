@@ -1,0 +1,12 @@
+internal sealed class _0023_003DzIp32svw2gZrczMRgGOKna3_0024U0snfm9AOzq_0024zc4I_003D
+{
+	public _0023_003DzIp32svw2gZrczMRgGOKna3_0024U0snfm9AOzq_0024zc4I_003D _0023_003Dzalvl9z8_003D;
+
+	public _0023_003DzNoIQmvJ9c8N2Yrhq2FkPT4I_003D _0023_003Dz_0024wQZnFQ_003D;
+
+	public uint _0023_003Dz2QVVx8s_003D;
+
+	public uint _0023_003DzEKSHIVc_003D;
+
+	public string _0023_003DzS_00246o7tc_003D;
+}

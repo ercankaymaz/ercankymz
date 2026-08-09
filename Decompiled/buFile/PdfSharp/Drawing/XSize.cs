@@ -1,0 +1,185 @@
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using PdfSharp.Internal;
+
+namespace PdfSharp.Drawing;
+
+[Serializable]
+[DebuggerDisplay("{DebuggerDisplay}")]
+public struct XSize : IFormattable
+{
+	private static readonly XSize s_empty;
+
+	private double _width;
+
+	private double _height;
+
+	public static XSize Empty => s_empty;
+
+	public bool IsEmpty => _width < 0.0;
+
+	public double Width
+	{
+		get
+		{
+			return _width;
+		}
+		set
+		{
+			if (IsEmpty)
+			{
+				throw new InvalidOperationException("CannotModifyEmptySize");
+			}
+			if (value < 0.0)
+			{
+				throw new ArgumentException("WidthCannotBeNegative");
+			}
+			_width = value;
+		}
+	}
+
+	public double Height
+	{
+		get
+		{
+			return _height;
+		}
+		set
+		{
+			if (IsEmpty)
+			{
+				throw new InvalidOperationException("CannotModifyEmptySize");
+			}
+			if (value < 0.0)
+			{
+				throw new ArgumentException("HeightCannotBeNegative");
+			}
+			_height = value;
+		}
+	}
+
+	private string DebuggerDisplay => string.Format(CultureInfo.InvariantCulture, "size=({2}{0:0.##########}, {1:0.##########})", _width, _height, IsEmpty ? "Empty " : "");
+
+	public XSize(double width, double height)
+	{
+		if (width < 0.0 || height < 0.0)
+		{
+			throw new ArgumentException("WidthAndHeightCannotBeNegative");
+		}
+		_width = width;
+		_height = height;
+	}
+
+	public static bool operator ==(XSize size1, XSize size2)
+	{
+		return size1.Width == size2.Width && size1.Height == size2.Height;
+	}
+
+	public static bool operator !=(XSize size1, XSize size2)
+	{
+		return !(size1 == size2);
+	}
+
+	public static bool Equals(XSize size1, XSize size2)
+	{
+		if (size1.IsEmpty)
+		{
+			return size2.IsEmpty;
+		}
+		return size1.Width.Equals(size2.Width) && size1.Height.Equals(size2.Height);
+	}
+
+	public override bool Equals(object o)
+	{
+		if (!(o is XSize))
+		{
+			return false;
+		}
+		return Equals(this, (XSize)o);
+	}
+
+	public bool Equals(XSize value)
+	{
+		return Equals(this, value);
+	}
+
+	public override int GetHashCode()
+	{
+		if (IsEmpty)
+		{
+			return 0;
+		}
+		return Width.GetHashCode() ^ Height.GetHashCode();
+	}
+
+	public static XSize Parse(string source)
+	{
+		CultureInfo invariantCulture = CultureInfo.InvariantCulture;
+		TokenizerHelper tokenizerHelper = new TokenizerHelper(source, invariantCulture);
+		string text = tokenizerHelper.NextTokenRequired();
+		XSize result = ((!(text == "Empty")) ? new XSize(Convert.ToDouble(text, invariantCulture), Convert.ToDouble(tokenizerHelper.NextTokenRequired(), invariantCulture)) : Empty);
+		tokenizerHelper.LastTokenRequired();
+		return result;
+	}
+
+	public XPoint ToXPoint()
+	{
+		return new XPoint(_width, _height);
+	}
+
+	public XVector ToXVector()
+	{
+		return new XVector(_width, _height);
+	}
+
+	public override string ToString()
+	{
+		return ConvertToString(null, null);
+	}
+
+	public string ToString(IFormatProvider provider)
+	{
+		return ConvertToString(null, provider);
+	}
+
+	string IFormattable.ToString(string format, IFormatProvider provider)
+	{
+		return ConvertToString(format, provider);
+	}
+
+	internal string ConvertToString(string format, IFormatProvider provider)
+	{
+		if (IsEmpty)
+		{
+			return "Empty";
+		}
+		char numericListSeparator = TokenizerHelper.GetNumericListSeparator(provider);
+		provider = provider ?? CultureInfo.InvariantCulture;
+		return string.Format(provider, "{1:" + format + "}{0}{2:" + format + "}", new object[3] { numericListSeparator, _width, _height });
+	}
+
+	public static explicit operator XVector(XSize size)
+	{
+		return new XVector(size._width, size._height);
+	}
+
+	public static explicit operator XPoint(XSize size)
+	{
+		return new XPoint(size._width, size._height);
+	}
+
+	private static XSize CreateEmptySize()
+	{
+		return new XSize
+		{
+			_width = double.NegativeInfinity,
+			_height = double.NegativeInfinity
+		};
+	}
+
+	static XSize()
+	{
+		s_empty = CreateEmptySize();
+	}
+}

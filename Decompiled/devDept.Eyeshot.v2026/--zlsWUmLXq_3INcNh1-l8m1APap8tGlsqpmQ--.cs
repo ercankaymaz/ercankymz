@@ -1,0 +1,12 @@
+internal sealed class _0023_003DzlsWUmLXq_3INcNh1_0024l8m1APap8tGlsqpmQ_003D_003D
+{
+	public _0023_003Dz0xvu31kUz3Zrym5ua2lDWRM3pxp_0PsIt1xrq3g_003D _0023_003Dzalvl9z8_003D;
+
+	public _0023_003DzEFVzpegW2EKTuQGfGvZoSnY_003D _0023_003Dzc20Pm_KhrJM2;
+
+	public string _0023_003Dz7vI21sf1P2h2;
+
+	public ushort _0023_003DzcHQel4p0QYrc;
+
+	public double _0023_003Dz6tVBpdk_003D;
+}

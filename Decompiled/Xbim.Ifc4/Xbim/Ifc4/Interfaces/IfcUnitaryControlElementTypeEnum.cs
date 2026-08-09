@@ -1,0 +1,15 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcUnitaryControlElementTypeEnum : byte
+{
+	ALARMPANEL,
+	CONTROLPANEL,
+	GASDETECTIONPANEL,
+	INDICATORPANEL,
+	MIMICPANEL,
+	HUMIDISTAT,
+	THERMOSTAT,
+	WEATHERSTATION,
+	USERDEFINED,
+	NOTDEFINED
+}

@@ -1,0 +1,14 @@
+namespace Xbim.Ifc2x3.SharedMgmtElements;
+
+public enum IfcCostScheduleTypeEnum : byte
+{
+	BUDGET,
+	COSTPLAN,
+	ESTIMATE,
+	TENDER,
+	PRICEDBILLOFQUANTITIES,
+	UNPRICEDBILLOFQUANTITIES,
+	SCHEDULEOFRATES,
+	USERDEFINED,
+	NOTDEFINED
+}

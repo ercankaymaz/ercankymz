@@ -1,0 +1,15 @@
+namespace Xbim.Ifc4x3.BuildingControlsDomain;
+
+public enum IfcAlarmTypeEnum : byte
+{
+	BELL,
+	BREAKGLASSBUTTON,
+	LIGHT,
+	MANUALPULLBOX,
+	RAILWAYCROCODILE,
+	RAILWAYDETONATOR,
+	SIREN,
+	WHISTLE,
+	USERDEFINED,
+	NOTDEFINED
+}

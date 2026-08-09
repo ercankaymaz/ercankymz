@@ -1,0 +1,8 @@
+using System.Runtime.InteropServices;
+
+namespace Opc.Ua.Configuration;
+
+[ComVisible(true)]
+public interface IApplicationConfigurationBuilderServerSelected : IApplicationConfigurationBuilderServerPolicies, IApplicationConfigurationBuilderServerOptions, IApplicationConfigurationBuilderClient, IApplicationConfigurationBuilderSecurity
+{
+}

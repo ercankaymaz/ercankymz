@@ -1,0 +1,10 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcAirTerminalBoxTypeEnum : byte
+{
+	CONSTANTFLOW,
+	VARIABLEFLOWPRESSUREDEPENDANT,
+	VARIABLEFLOWPRESSUREINDEPENDANT,
+	USERDEFINED,
+	NOTDEFINED
+}

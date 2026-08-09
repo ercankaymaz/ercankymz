@@ -1,0 +1,41 @@
+using System;
+
+namespace devDept.Eyeshot.Control.MultiTouch.Win32Helper;
+
+public class Factory
+{
+	private sealed class _0023_003DzFcIWOWrWc3qIvJKg9bJ4RV0_003D<_0023_003DzWoS2eJk_003D> where _0023_003DzWoS2eJk_003D : Handler
+	{
+		public IntPtr _0023_003DzVg1BG_0024g_003D;
+
+		public _0023_003DzmLo13MFX3OoqXvo7lKqFE7GrCiPCD_QTAO90IGn51jAwKE7T3Y7ycJk_003D _0023_003DzlFaBHk173XpQUAJ_bQ_003D_003D;
+
+		internal void _0023_003DzlYGdy7bkoMS_0024RalWPw_003D_003D(object _0023_003Dz7dLpRsk_003D, _0023_003Dz_EkGrGLIPQQmfLRjHvi_0024dNjyjzY6wyYo66v_0024LUo_003D _0023_003Dz1SmHC4c_003D)
+		{
+			if (_0023_003Dz1SmHC4c_003D._0023_003DzHbT_3NqI0iSb() == _0023_003DzVg1BG_0024g_003D && _0023_003Dz1SmHC4c_003D._0023_003Dz4oL6dgo_003D() == 130)
+			{
+				_0023_003DzlFaBHk173XpQUAJ_bQ_003D_003D._0023_003DzMHcytw295NXj();
+			}
+		}
+	}
+
+	public static T CreateHandler<T>(IntPtr hWnd) where T : Handler
+	{
+		_0023_003DzFcIWOWrWc3qIvJKg9bJ4RV0_003D<T> CS_0024_003C_003E8__locals6 = new _0023_003DzFcIWOWrWc3qIvJKg9bJ4RV0_003D<T>();
+		CS_0024_003C_003E8__locals6._0023_003DzVg1BG_0024g_003D = hWnd;
+		CS_0024_003C_003E8__locals6._0023_003DzlFaBHk173XpQUAJ_bQ_003D_003D = new _0023_003DzmLo13MFX3OoqXvo7lKqFE7GrCiPCD_QTAO90IGn51jAwKE7T3Y7ycJk_003D(CS_0024_003C_003E8__locals6._0023_003DzVg1BG_0024g_003D);
+		bool _0023_003DzNhabmH8_003D;
+		T val = Handler._0023_003Dz2u08Mcc_003D<T>(CS_0024_003C_003E8__locals6._0023_003DzlFaBHk173XpQUAJ_bQ_003D_003D, out _0023_003DzNhabmH8_003D);
+		if (_0023_003DzNhabmH8_003D)
+		{
+			val._0023_003DzHKs9aEm3O9Uc(delegate(object _0023_003Dz7dLpRsk_003D, _0023_003Dz_EkGrGLIPQQmfLRjHvi_0024dNjyjzY6wyYo66v_0024LUo_003D _0023_003Dz1SmHC4c_003D)
+			{
+				if (_0023_003Dz1SmHC4c_003D._0023_003DzHbT_3NqI0iSb() == CS_0024_003C_003E8__locals6._0023_003DzVg1BG_0024g_003D && _0023_003Dz1SmHC4c_003D._0023_003Dz4oL6dgo_003D() == 130)
+				{
+					CS_0024_003C_003E8__locals6._0023_003DzlFaBHk173XpQUAJ_bQ_003D_003D._0023_003DzMHcytw295NXj();
+				}
+			});
+		}
+		return val;
+	}
+}

@@ -1,0 +1,169 @@
+using System;
+
+internal sealed class _0023_003DzBhBGHtMU6jbT
+{
+	public double _0023_003DzgxEO_Ds_003D;
+
+	public double _0023_003DzPkYBqKE_003D;
+
+	public double _0023_003DzueQi_IQ_003D;
+
+	public double _0023_003DzKnTEIEE_003D;
+
+	private double? _0023_003Dz8aM_yH4_0024jQcc;
+
+	private double? _0023_003Dz2zdI_0024ZaWPnBJ;
+
+	public _0023_003DzBhBGHtMU6jbT()
+	{
+	}
+
+	public _0023_003DzBhBGHtMU6jbT(double _0023_003DzjTLb8o0_003D, double _0023_003DzK8V8En8_003D, double _0023_003DzgMKLm6g_003D, double _0023_003DzKKRScFA_003D)
+	{
+		_0023_003DzgxEO_Ds_003D = _0023_003DzjTLb8o0_003D;
+		_0023_003DzPkYBqKE_003D = _0023_003DzK8V8En8_003D;
+		_0023_003DzueQi_IQ_003D = _0023_003DzgMKLm6g_003D;
+		_0023_003DzKnTEIEE_003D = _0023_003DzKKRScFA_003D;
+	}
+
+	public _0023_003DzBhBGHtMU6jbT(float _0023_003DzBJFJHwk_003D, float _0023_003Dz40R7bAU_003D)
+	{
+		_0023_003DzgxEO_Ds_003D = _0023_003DzBJFJHwk_003D;
+		_0023_003DzueQi_IQ_003D = _0023_003DzBJFJHwk_003D;
+		_0023_003DzPkYBqKE_003D = _0023_003Dz40R7bAU_003D;
+		_0023_003DzKnTEIEE_003D = _0023_003Dz40R7bAU_003D;
+	}
+
+	public double _0023_003DzaAMsrVLRtAC7()
+	{
+		if (Math.Abs(_0023_003DzgxEO_Ds_003D - _0023_003DzueQi_IQ_003D) < 0.1)
+		{
+			_0023_003Dz8aM_yH4_0024jQcc = _0023_003DzgxEO_Ds_003D;
+		}
+		else
+		{
+			_0023_003Dz8aM_yH4_0024jQcc = _0023_003DzgxEO_Ds_003D + _0023_003DzueQi_IQ_003D * 0.5;
+		}
+		return _0023_003Dz8aM_yH4_0024jQcc.Value;
+	}
+
+	public double _0023_003DzkBxjeXIQ5Hun()
+	{
+		if (!_0023_003Dz2zdI_0024ZaWPnBJ.HasValue)
+		{
+			if (Math.Abs(_0023_003DzPkYBqKE_003D - _0023_003DzKnTEIEE_003D) < 0.1)
+			{
+				_0023_003Dz2zdI_0024ZaWPnBJ = _0023_003DzPkYBqKE_003D;
+			}
+			else
+			{
+				_0023_003Dz2zdI_0024ZaWPnBJ = _0023_003DzPkYBqKE_003D + _0023_003DzKnTEIEE_003D * 0.5;
+			}
+		}
+		return _0023_003Dz2zdI_0024ZaWPnBJ.Value;
+	}
+
+	public void _0023_003DzyX5IzxwWF_0024na(double _0023_003DzPzO_0024GUk_003D)
+	{
+		_0023_003Dz2zdI_0024ZaWPnBJ = _0023_003DzPzO_0024GUk_003D;
+	}
+
+	public double _0023_003Dzb8b9JMl4Ocb_()
+	{
+		return Math.Max(_0023_003DzueQi_IQ_003D - _0023_003DzgxEO_Ds_003D, 0.0) * Math.Max(_0023_003DzKnTEIEE_003D - _0023_003DzPkYBqKE_003D, 0.0);
+	}
+
+	public double _0023_003DzZJ_ZpnvF_2fN()
+	{
+		return Math.Max(_0023_003DzueQi_IQ_003D - _0023_003DzgxEO_Ds_003D, 0.0) + Math.Max(_0023_003DzKnTEIEE_003D - _0023_003DzPkYBqKE_003D, 0.0);
+	}
+
+	public void _0023_003Dz942IQrA_003D(_0023_003DzBhBGHtMU6jbT _0023_003Dzl_0024MIsC0_003D)
+	{
+		_0023_003DzgxEO_Ds_003D = Math.Min(_0023_003DzgxEO_Ds_003D, _0023_003Dzl_0024MIsC0_003D._0023_003DzgxEO_Ds_003D);
+		_0023_003DzPkYBqKE_003D = Math.Min(_0023_003DzPkYBqKE_003D, _0023_003Dzl_0024MIsC0_003D._0023_003DzPkYBqKE_003D);
+		_0023_003DzueQi_IQ_003D = Math.Max(_0023_003DzueQi_IQ_003D, _0023_003Dzl_0024MIsC0_003D._0023_003DzueQi_IQ_003D);
+		_0023_003DzKnTEIEE_003D = Math.Max(_0023_003DzKnTEIEE_003D, _0023_003Dzl_0024MIsC0_003D._0023_003DzKnTEIEE_003D);
+	}
+
+	public _0023_003DzBhBGHtMU6jbT _0023_003Dzx9P_oXY_003D()
+	{
+		return new _0023_003DzBhBGHtMU6jbT
+		{
+			_0023_003DzgxEO_Ds_003D = _0023_003DzgxEO_Ds_003D,
+			_0023_003DzPkYBqKE_003D = _0023_003DzPkYBqKE_003D,
+			_0023_003DzueQi_IQ_003D = _0023_003DzueQi_IQ_003D,
+			_0023_003DzKnTEIEE_003D = _0023_003DzKnTEIEE_003D
+		};
+	}
+
+	public _0023_003DzBhBGHtMU6jbT _0023_003DzQ7usAag_003D(_0023_003DzBhBGHtMU6jbT _0023_003Dzl_0024MIsC0_003D)
+	{
+		return new _0023_003DzBhBGHtMU6jbT
+		{
+			_0023_003DzgxEO_Ds_003D = Math.Max(_0023_003DzgxEO_Ds_003D, _0023_003Dzl_0024MIsC0_003D._0023_003DzgxEO_Ds_003D),
+			_0023_003DzPkYBqKE_003D = Math.Max(_0023_003DzPkYBqKE_003D, _0023_003Dzl_0024MIsC0_003D._0023_003DzPkYBqKE_003D),
+			_0023_003DzueQi_IQ_003D = Math.Min(_0023_003DzueQi_IQ_003D, _0023_003Dzl_0024MIsC0_003D._0023_003DzueQi_IQ_003D),
+			_0023_003DzKnTEIEE_003D = Math.Min(_0023_003DzKnTEIEE_003D, _0023_003Dzl_0024MIsC0_003D._0023_003DzKnTEIEE_003D)
+		};
+	}
+
+	public _0023_003DzBhBGHtMU6jbT _0023_003Dz2QGaqvvNYDmW3CcrCg_003D_003D(_0023_003DzBhBGHtMU6jbT _0023_003Dzl_0024MIsC0_003D)
+	{
+		_0023_003DzBhBGHtMU6jbT obj = _0023_003Dzx9P_oXY_003D();
+		obj._0023_003Dz942IQrA_003D(_0023_003Dzl_0024MIsC0_003D);
+		return obj;
+	}
+
+	public bool _0023_003Dzxbr8_0024Jk_003D(_0023_003DzBhBGHtMU6jbT _0023_003Dzl_0024MIsC0_003D)
+	{
+		if (_0023_003DzgxEO_Ds_003D <= _0023_003Dzl_0024MIsC0_003D._0023_003DzgxEO_Ds_003D && _0023_003DzPkYBqKE_003D <= _0023_003Dzl_0024MIsC0_003D._0023_003DzPkYBqKE_003D && _0023_003DzueQi_IQ_003D >= _0023_003Dzl_0024MIsC0_003D._0023_003DzueQi_IQ_003D)
+		{
+			return _0023_003DzKnTEIEE_003D >= _0023_003Dzl_0024MIsC0_003D._0023_003DzKnTEIEE_003D;
+		}
+		return false;
+	}
+
+	public bool _0023_003Dz07AstpQ_003D(_0023_003DzBhBGHtMU6jbT _0023_003Dzl_0024MIsC0_003D)
+	{
+		if (_0023_003DzgxEO_Ds_003D <= _0023_003Dzl_0024MIsC0_003D._0023_003DzueQi_IQ_003D && _0023_003DzPkYBqKE_003D <= _0023_003Dzl_0024MIsC0_003D._0023_003DzKnTEIEE_003D && _0023_003DzueQi_IQ_003D >= _0023_003Dzl_0024MIsC0_003D._0023_003DzgxEO_Ds_003D)
+		{
+			return _0023_003DzKnTEIEE_003D >= _0023_003Dzl_0024MIsC0_003D._0023_003DzPkYBqKE_003D;
+		}
+		return false;
+	}
+
+	public static _0023_003DzBhBGHtMU6jbT _0023_003DzzK_0024BlgRAhBL4()
+	{
+		return new _0023_003DzBhBGHtMU6jbT
+		{
+			_0023_003DzgxEO_Ds_003D = double.NegativeInfinity,
+			_0023_003DzPkYBqKE_003D = double.NegativeInfinity,
+			_0023_003DzueQi_IQ_003D = double.PositiveInfinity,
+			_0023_003DzKnTEIEE_003D = double.PositiveInfinity
+		};
+	}
+
+	public static _0023_003DzBhBGHtMU6jbT _0023_003DzFVkFr7ET3zgy()
+	{
+		return new _0023_003DzBhBGHtMU6jbT
+		{
+			_0023_003DzgxEO_Ds_003D = double.PositiveInfinity,
+			_0023_003DzPkYBqKE_003D = double.PositiveInfinity,
+			_0023_003DzueQi_IQ_003D = double.NegativeInfinity,
+			_0023_003DzKnTEIEE_003D = double.NegativeInfinity
+		};
+	}
+
+	public static double _0023_003DzOxKU6GM_003D(_0023_003DzBhBGHtMU6jbT _0023_003DzjbqS1qE_003D, _0023_003DzBhBGHtMU6jbT _0023_003Dz1v6oPQk_003D)
+	{
+		double num = Math.Sqrt(Math.Pow(_0023_003DzjbqS1qE_003D._0023_003DzaAMsrVLRtAC7(), 2.0) + Math.Pow(_0023_003DzjbqS1qE_003D._0023_003DzkBxjeXIQ5Hun(), 2.0));
+		double num2 = Math.Sqrt(Math.Pow(_0023_003Dz1v6oPQk_003D._0023_003DzaAMsrVLRtAC7(), 2.0) + Math.Pow(_0023_003Dz1v6oPQk_003D._0023_003DzkBxjeXIQ5Hun(), 2.0));
+		return Math.Abs(num - num2);
+	}
+
+	public override string ToString()
+	{
+		return string.Format(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302916151), _0023_003DzgxEO_Ds_003D, _0023_003DzPkYBqKE_003D, _0023_003DzueQi_IQ_003D, _0023_003DzKnTEIEE_003D);
+	}
+}

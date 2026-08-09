@@ -1,0 +1,90 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>devDept.Eyeshot.Control.Win.v2026</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="devDept.Eyeshot.Control.Design.bmp" />
+    <None Remove="devDept.Eyeshot.Control.Drawing.bmp" />
+    <None Remove="devDept.Eyeshot.Control.Simulation.bmp" />
+    <None Remove="devDept.Eyeshot.Control.Manufacture.bmp" />
+    <None Remove="CV46ozYKC69Xu" />
+    <None Remove="6f806c88b20d4dc1a619aa7d1ae33d3e" />
+    <None Remove="e0c14a7c59ea40cc2101ae7dad428b7d" />
+    <None Remove="182495f3b84445db76f453edff878b64" />
+    <None Remove="7662ce7543594b900554182320e3ac45" />
+    <None Remove="bfb2e2b454ef49beefa4355a61ca3383" />
+    <None Remove="233d51a68a6f4e42440caa32d037c951" />
+    <None Remove="5a806e6c472c40749ea6b766ea6771f9" />
+    <None Remove="EhOjLtnvh" />
+    <None Remove="8a9991d413514c29a00249facdcabb8b" />
+    <EmbeddedResource Include="devDept.Eyeshot.Control.Design.bmp" LogicalName="devDept.Eyeshot.Control.Design.bmp" />
+    <EmbeddedResource Include="devDept.Eyeshot.Control.Drawing.bmp" LogicalName="devDept.Eyeshot.Control.Drawing.bmp" />
+    <EmbeddedResource Include="devDept.Eyeshot.Control.Simulation.bmp" LogicalName="devDept.Eyeshot.Control.Simulation.bmp" />
+    <EmbeddedResource Include="devDept.Eyeshot.Control.Manufacture.bmp" LogicalName="devDept.Eyeshot.Control.Manufacture.bmp" />
+    <EmbeddedResource Include="CV46ozYKC69Xu" LogicalName="CV46ozYKC69Xu" />
+    <EmbeddedResource Include="6f806c88b20d4dc1a619aa7d1ae33d3e" LogicalName="6f806c88b20d4dc1a619aa7d1ae33d3e" />
+    <EmbeddedResource Include="e0c14a7c59ea40cc2101ae7dad428b7d" LogicalName="e0c14a7c59ea40cc2101ae7dad428b7d" />
+    <EmbeddedResource Include="182495f3b84445db76f453edff878b64" LogicalName="182495f3b84445db76f453edff878b64" />
+    <EmbeddedResource Include="7662ce7543594b900554182320e3ac45" LogicalName="7662ce7543594b900554182320e3ac45" />
+    <EmbeddedResource Include="bfb2e2b454ef49beefa4355a61ca3383" LogicalName="bfb2e2b454ef49beefa4355a61ca3383" />
+    <EmbeddedResource Include="233d51a68a6f4e42440caa32d037c951" LogicalName="233d51a68a6f4e42440caa32d037c951" />
+    <EmbeddedResource Include="5a806e6c472c40749ea6b766ea6771f9" LogicalName="5a806e6c472c40749ea6b766ea6771f9" />
+    <EmbeddedResource Include="EhOjLtnvh" LogicalName="EhOjLtnvh" />
+    <EmbeddedResource Include="8a9991d413514c29a00249facdcabb8b" LogicalName="8a9991d413514c29a00249facdcabb8b" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="devDept.Eyeshot.v2026">
+      <HintPath>..\..\devDept.Eyeshot.v2026.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11">
+      <HintPath>..\..\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI">
+      <HintPath>..\..\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics">
+      <HintPath>..\..\SharpDX.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.D3DCompiler">
+      <HintPath>..\..\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig">
+      <HintPath>..\..\UglyToad.PdfPig.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.DocumentLayoutAnalysis">
+      <HintPath>..\..\UglyToad.PdfPig.DocumentLayoutAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Tokens">
+      <HintPath>..\..\UglyToad.PdfPig.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Core">
+      <HintPath>..\..\UglyToad.PdfPig.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>..\..\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="Accessibility" />
+    <Reference Include="UglyToad.PdfPig.Filters.Dct.JpegLibrary">
+      <HintPath>..\..\UglyToad.PdfPig.Filters.Dct.JpegLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

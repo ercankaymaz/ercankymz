@@ -1,0 +1,17 @@
+internal sealed class _0023_003DzBvHNfJT9pSgd67vhZcGMr0XReb6mrHKArBwq3SY_003D
+{
+	public int _0023_003DznN5ttMs_003D;
+
+	public _0023_003Dzn90HZHruKzH3lZK_0024hw_003D_003D _0023_003Dz7kCGIQU_003D;
+
+	public _0023_003DzmKBPh7nOT6nY _0023_003DzAqOpw0w_003D;
+
+	public _0023_003DzmKBPh7nOT6nY _0023_003Dzwi058ac_003D;
+
+	public double _0023_003Dz4IJN9yU_003D;
+
+	public _0023_003DzBvHNfJT9pSgd67vhZcGMr0XReb6mrHKArBwq3SY_003D(int _0023_003DzyzK8swU_003D)
+	{
+		_0023_003DznN5ttMs_003D = _0023_003DzyzK8swU_003D;
+	}
+}

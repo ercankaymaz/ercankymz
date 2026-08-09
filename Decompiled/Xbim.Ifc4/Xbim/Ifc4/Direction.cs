@@ -1,0 +1,42 @@
+using Xbim.Ifc4.GeometryResource;
+
+namespace Xbim.Ifc4;
+
+internal class Direction : IVectorOrDirection
+{
+	public int Dim { get; set; }
+
+	public double[] DirectionRatios { get; set; }
+
+	public double X => DirectionRatios[0];
+
+	public double Y => DirectionRatios[1];
+
+	public double Z => DirectionRatios[2];
+
+	public Direction(double x, double y)
+	{
+		DirectionRatios = new double[3];
+		Dim = 2;
+		DirectionRatios[0] = x;
+		DirectionRatios[1] = y;
+	}
+
+	public Direction(double x, double y, double z)
+	{
+		DirectionRatios = new double[3];
+		Dim = 3;
+		DirectionRatios[0] = x;
+		DirectionRatios[1] = y;
+		DirectionRatios[2] = z;
+	}
+
+	public Direction(IfcDirection from)
+	{
+		DirectionRatios = new double[3];
+		DirectionRatios[0] = from.X;
+		DirectionRatios[1] = from.Y;
+		DirectionRatios[2] = from.Z;
+		Dim = (int)(long)from.Dim;
+	}
+}

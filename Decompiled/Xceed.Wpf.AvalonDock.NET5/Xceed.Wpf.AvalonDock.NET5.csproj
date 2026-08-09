@@ -1,0 +1,83 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>Xceed.Wpf.AvalonDock.NET5</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWPF>True</UseWPF>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>15.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="themes\generic\images\pinmenu.png" />
+    <None Remove="themes\generic\images\dockleft.png" />
+    <None Remove="themes\generic\images\htabgroup.png" />
+    <None Remove="themes\generic\images\dockpaneempty.png" />
+    <None Remove="themes\generic\images\pinmaximize.png" />
+    <None Remove="themes\generic\images\vtabgroup.png" />
+    <None Remove="themes\generic\images\dockright.png" />
+    <None Remove="themes\generic\images\innerdockpaneleft.png" />
+    <None Remove="themes\generic\images\innerdockpanebottom.png" />
+    <None Remove="themes\generic\images\pinautohide_white.png" />
+    <None Remove="themes\generic\images\innerdockdocpaneleft.png" />
+    <None Remove="themes\generic\images\pinclose_white.png" />
+    <None Remove="themes\default.baml" />
+    <None Remove="themes\generic\images\innerdockdocpanetop.png" />
+    <None Remove="themes\generic\images\locked.png" />
+    <None Remove="themes\generic\images\innerdockdocpanebottom.png" />
+    <None Remove="themes\generic\images\innerdockdocpaneright.png" />
+    <None Remove="themes\generic\images\innerdockpaneinside.png" />
+    <None Remove="themes\generic\images\pinmenu_white.png" />
+    <None Remove="themes\generic\images\pinclose.png" />
+    <None Remove="themes\generic\images\pinautohide.png" />
+    <None Remove="themes\generic.baml" />
+    <None Remove="themes\generic\images\dockpane.png" />
+    <None Remove="themes\generic\images\pindocmenu.png" />
+    <None Remove="themes\generic\images\pindocmenu_white.png" />
+    <None Remove="themes\generic\images\docktop.png" />
+    <None Remove="themes\generic\images\innerdockpaneright.png" />
+    <None Remove="themes\generic\images\pinmaximize_white.png" />
+    <None Remove="themes\generic\images\pinrestore.png" />
+    <None Remove="themes\generic\images\innerdockpanetop.png" />
+    <None Remove="themes\generic\images\pinrestore_white.png" />
+    <None Remove="themes\generic\images\dockbottom.png" />
+    <EmbeddedResource Include="themes\generic\images\pinmenu.png" LogicalName="themes/generic/images/pinmenu.png" />
+    <EmbeddedResource Include="themes\generic\images\dockleft.png" LogicalName="themes/generic/images/dockleft.png" />
+    <EmbeddedResource Include="themes\generic\images\htabgroup.png" LogicalName="themes/generic/images/htabgroup.png" />
+    <EmbeddedResource Include="themes\generic\images\dockpaneempty.png" LogicalName="themes/generic/images/dockpaneempty.png" />
+    <EmbeddedResource Include="themes\generic\images\pinmaximize.png" LogicalName="themes/generic/images/pinmaximize.png" />
+    <EmbeddedResource Include="themes\generic\images\vtabgroup.png" LogicalName="themes/generic/images/vtabgroup.png" />
+    <EmbeddedResource Include="themes\generic\images\dockright.png" LogicalName="themes/generic/images/dockright.png" />
+    <EmbeddedResource Include="themes\generic\images\innerdockpaneleft.png" LogicalName="themes/generic/images/innerdockpaneleft.png" />
+    <EmbeddedResource Include="themes\generic\images\innerdockpanebottom.png" LogicalName="themes/generic/images/innerdockpanebottom.png" />
+    <EmbeddedResource Include="themes\generic\images\pinautohide_white.png" LogicalName="themes/generic/images/pinautohide_white.png" />
+    <EmbeddedResource Include="themes\generic\images\innerdockdocpaneleft.png" LogicalName="themes/generic/images/innerdockdocpaneleft.png" />
+    <EmbeddedResource Include="themes\generic\images\pinclose_white.png" LogicalName="themes/generic/images/pinclose_white.png" />
+    <EmbeddedResource Include="themes\default.baml" LogicalName="themes/default.baml" />
+    <EmbeddedResource Include="themes\generic\images\innerdockdocpanetop.png" LogicalName="themes/generic/images/innerdockdocpanetop.png" />
+    <EmbeddedResource Include="themes\generic\images\locked.png" LogicalName="themes/generic/images/locked.png" />
+    <EmbeddedResource Include="themes\generic\images\innerdockdocpanebottom.png" LogicalName="themes/generic/images/innerdockdocpanebottom.png" />
+    <EmbeddedResource Include="themes\generic\images\innerdockdocpaneright.png" LogicalName="themes/generic/images/innerdockdocpaneright.png" />
+    <EmbeddedResource Include="themes\generic\images\innerdockpaneinside.png" LogicalName="themes/generic/images/innerdockpaneinside.png" />
+    <EmbeddedResource Include="themes\generic\images\pinmenu_white.png" LogicalName="themes/generic/images/pinmenu_white.png" />
+    <EmbeddedResource Include="themes\generic\images\pinclose.png" LogicalName="themes/generic/images/pinclose.png" />
+    <EmbeddedResource Include="themes\generic\images\pinautohide.png" LogicalName="themes/generic/images/pinautohide.png" />
+    <EmbeddedResource Include="themes\generic.baml" LogicalName="themes/generic.baml" />
+    <EmbeddedResource Include="themes\generic\images\dockpane.png" LogicalName="themes/generic/images/dockpane.png" />
+    <EmbeddedResource Include="themes\generic\images\pindocmenu.png" LogicalName="themes/generic/images/pindocmenu.png" />
+    <EmbeddedResource Include="themes\generic\images\pindocmenu_white.png" LogicalName="themes/generic/images/pindocmenu_white.png" />
+    <EmbeddedResource Include="themes\generic\images\docktop.png" LogicalName="themes/generic/images/docktop.png" />
+    <EmbeddedResource Include="themes\generic\images\innerdockpaneright.png" LogicalName="themes/generic/images/innerdockpaneright.png" />
+    <EmbeddedResource Include="themes\generic\images\pinmaximize_white.png" LogicalName="themes/generic/images/pinmaximize_white.png" />
+    <EmbeddedResource Include="themes\generic\images\pinrestore.png" LogicalName="themes/generic/images/pinrestore.png" />
+    <EmbeddedResource Include="themes\generic\images\innerdockpanetop.png" LogicalName="themes/generic/images/innerdockpanetop.png" />
+    <EmbeddedResource Include="themes\generic\images\pinrestore_white.png" LogicalName="themes/generic/images/pinrestore_white.png" />
+    <EmbeddedResource Include="themes\generic\images\dockbottom.png" LogicalName="themes/generic/images/dockbottom.png" />
+  </ItemGroup>
+  <ItemGroup />
+</Project>

@@ -1,0 +1,40 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
+internal sealed class _0023_003DqRhRZlYf2fNrXHviAJ2PxvkPlehAmJ_YHdX5RzgMcfu4_003D : _0023_003Dq_ibtQ1uSDbfMzR2aZwe8aJ_qUbgrdIrzp9AqqqgWLPs_003D
+{
+	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+	private readonly _0023_003DqymTLvf3BrhQp_00245V_LtgjgXU6SgFounTPVkTl8NOJahA_003D _0023_003DzjYYAPCA_003D;
+
+	public _0023_003DqRhRZlYf2fNrXHviAJ2PxvkPlehAmJ_YHdX5RzgMcfu4_003D(_0023_003DqymTLvf3BrhQp_00245V_LtgjgXU6SgFounTPVkTl8NOJahA_003D _0023_003DzjYYAPCA_003D)
+	{
+		this._0023_003DzjYYAPCA_003D = _0023_003DzjYYAPCA_003D;
+	}
+
+	public override void Dispose()
+	{
+		_0023_003DzjYYAPCA_003D._0023_003Dz08dfaeTlYlDOrKQHwzDg_0024EyYL5qvK_00247ZGvJofRnHYqhTGAiAqL5rsqvl9OegsnOFlA_003D_003D();
+	}
+
+	[SpecialName]
+	public override bool _0023_003DzwVg92l3jEKWvzTQ5P3WeDuFoGy_yub2GxBkf97bqgUrR9XzjWk8QKqF8TyF2X8UHveh67pq3APt6_azuyKpjbWs_003D()
+	{
+		return true;
+	}
+
+	[SpecialName]
+	public override int _0023_003DzJNkN_de2QQgIBI4XbCB_0024P8F4MtNUZAY7CqNjIQO57dSP2LqLV6FZxYreevxfTEjmn9Ywbh7E7fbU9R2nFClkIfw_003D()
+	{
+		return _0023_003DzjYYAPCA_003D._0023_003DzZDqnnKg37GEtT_33PX6wyVNswTNGTyLzJAP4KR6S_0024kQlrlTOziHvPrivZ4mJnAVCEwTAFR6slAf7v6ncq2zWW5s_003D();
+	}
+
+	public override int _0023_003Dz74czmZ4f1GsTNvvJNv9jiT8M_721YRTBQmcyB4xja1pDEfpyc9V3v75lCehZfZ3Us_F0DCOTU_00247R(byte[] _0023_003DzjYYAPCA_003D, int _0023_003DzVC9FBdo_003D, int _0023_003DzwBouG0w_003D, byte[] _0023_003Dzf4Pqh9s_003D, int _0023_003DzTFNDoh0_003D)
+	{
+		return this._0023_003DzjYYAPCA_003D._0023_003Dz5nAHdZwXgxZKJX5KcUGZE_00249djDP80F1785WQxrrORMgVHCvhH9fg_R62wi918twJv69Fj7kirC7eE4EKSSknyvviYDaD(_0023_003DzjYYAPCA_003D, _0023_003DzVC9FBdo_003D, _0023_003DzwBouG0w_003D, _0023_003Dzf4Pqh9s_003D, _0023_003DzTFNDoh0_003D);
+	}
+
+	public override byte[] _0023_003DzFTKLZnfC69fNvmtoItd7HUBg1zCNQYN7oP0aUoCy1sXo2Y6Xk96zs9eXQBcZAAXA9w_003D_003D(byte[] _0023_003DzjYYAPCA_003D, int _0023_003DzVC9FBdo_003D, int _0023_003DzwBouG0w_003D)
+	{
+		return this._0023_003DzjYYAPCA_003D._0023_003DzsyVb0Xl9oBJH6ZzBCgLuW77MOw37nkvhlZIWeUGOp_47LOkA4kCIPKoR1U1MrJOmxZg4r8iFifi_0024JcQf9gCtUyY_003D(_0023_003DzjYYAPCA_003D, _0023_003DzVC9FBdo_003D, _0023_003DzwBouG0w_003D);
+	}
+}

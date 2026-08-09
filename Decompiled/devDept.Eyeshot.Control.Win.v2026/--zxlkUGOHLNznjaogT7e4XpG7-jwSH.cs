@@ -1,0 +1,6 @@
+internal interface _0023_003DzxlkUGOHLNznjaogT7e4XpG7_0024jwSH
+{
+	void _0023_003DzshPEPAc_003D(_0023_003DzgqtAaJ3PR7fqIQf4Y9MBhJQ3Betg _0023_003DzcHHD1CU_003D);
+
+	int _0023_003DzL2jAKGI_003D();
+}

@@ -1,0 +1,19 @@
+namespace Xbim.Ifc4x3.SharedBldgElements;
+
+public enum IfcCoveringTypeEnum : byte
+{
+	CEILING,
+	CLADDING,
+	COPING,
+	FLOORING,
+	INSULATION,
+	MEMBRANE,
+	MOLDING,
+	ROOFING,
+	SKIRTINGBOARD,
+	SLEEVING,
+	TOPPING,
+	WRAPPING,
+	USERDEFINED,
+	NOTDEFINED
+}

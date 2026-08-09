@@ -1,0 +1,155 @@
+namespace Aladdin.HASP;
+
+internal static class ApiConst
+{
+	public enum hasp_error_codes
+	{
+		HASP_STATUS_OK = 0,
+		HASP_MEM_RANGE = 1,
+		HASP_INV_PROGNUM_OPT = 2,
+		HASP_INSUF_MEM = 3,
+		HASP_TMOF = 4,
+		HASP_ACCESS_DENIED = 5,
+		HASP_INCOMPAT_FEATURE = 6,
+		HASP_CONTAINER_NOT_FOUND = 7,
+		HASP_HASP_NOT_FOUND = 7,
+		HASP_TOO_SHORT = 8,
+		HASP_INV_HND = 9,
+		HASP_INV_FILEID = 10,
+		HASP_OLD_DRIVER = 11,
+		HASP_NO_TIME = 12,
+		HASP_SYS_ERR = 13,
+		HASP_NO_DRIVER = 14,
+		HASP_INV_FORMAT = 15,
+		HASP_REQ_NOT_SUPP = 16,
+		HASP_INV_UPDATE_OBJ = 17,
+		HASP_KEYID_NOT_FOUND = 18,
+		HASP_INV_UPDATE_DATA = 19,
+		HASP_INV_UPDATE_NOTSUPP = 20,
+		HASP_INV_UPDATE_CNTR = 21,
+		HASP_INV_VCODE = 22,
+		HASP_ENC_NOT_SUPP = 23,
+		HASP_INV_TIME = 24,
+		HASP_NO_BATTERY_POWER = 25,
+		HASP_NO_ACK_SPACE = 26,
+		HASP_TS_DETECTED = 27,
+		HASP_FEATURE_TYPE_NOT_IMPL = 28,
+		HASP_UNKNOWN_ALG = 29,
+		HASP_INV_SIG = 30,
+		HASP_FEATURE_NOT_FOUND = 31,
+		HASP_NO_LOG = 32,
+		HASP_LOCAL_COMM_ERR = 33,
+		HASP_UNKNOWN_VCODE = 34,
+		HASP_INV_SPEC = 35,
+		HASP_INV_SCOPE = 36,
+		HASP_TOO_MANY_KEYS = 37,
+		HASP_TOO_MANY_USERS = 38,
+		HASP_BROKEN_SESSION = 39,
+		HASP_REMOTE_COMM_ERR = 40,
+		HASP_FEATURE_EXPIRED = 41,
+		HASP_OLD_LM = 42,
+		HASP_DEVICE_ERR = 43,
+		HASP_UPDATE_BLOCKED = 44,
+		HASP_TIME_ERR = 45,
+		HASP_SCHAN_ERR = 46,
+		HASP_STORAGE_CORRUPT = 47,
+		HASP_NO_VLIB = 48,
+		HASP_INV_VLIB = 49,
+		HASP_SCOPE_RESULTS_EMPTY = 50,
+		HASP_VM_DETECTED = 51,
+		HASP_HARDWARE_MODIFIED = 52,
+		HASP_USER_DENIED = 53,
+		HASP_UPDATE_TOO_OLD = 54,
+		HASP_UPDATE_TOO_NEW = 55,
+		HASP_OLD_VLIB = 56,
+		HASP_UPLOAD_ERROR = 57,
+		HASP_INV_RECIPIENT = 58,
+		HASP_INV_DETACH_ACTION = 59,
+		HASP_TOO_MANY_PRODUCTS = 60,
+		HASP_INV_PRODUCT = 61,
+		HASP_UNKNOWN_RECIPIENT = 62,
+		HASP_INV_DURATION = 63,
+		HASP_CLONE_DETECTED = 64,
+		HASP_UPDATE_ALREADY_ADDED = 65,
+		HASP_HASP_INACTIVE = 66,
+		HASP_NO_DETACHABLE_FEATURE = 67,
+		HASP_NO_DEATCHABLE_FEATURE = 67,
+		HASP_TOO_MANY_HOSTS = 68,
+		HASP_REHOST_NOT_ALLOWED = 69,
+		HASP_LICENSE_REHOSTED = 70,
+		HASP_REHOST_ALREADY_APPLIED = 71,
+		HASP_CANNOT_READ_FILE = 72,
+		HASP_EXTENSION_NOT_ALLOWED = 73,
+		HASP_DETACH_DISABLED = 74,
+		HASP_REHOST_DISABLED = 75,
+		HASP_DETACHED_LICENSE_FOUND = 76,
+		HASP_RECIPIENT_OLD_LM = 77,
+		HASP_SECURE_STORE_ID_MISMATCH = 78,
+		HASP_DUPLICATE_HOSTNAME = 79,
+		HASP_MISSING_LM = 80,
+		HASP_NO_API_DYLIB = 400,
+		HASP_INV_API_DYLIB = 401,
+		HASP_INVALID_OBJECT = 500,
+		HASP_INVALID_PARAMETER = 501,
+		HASP_ALREADY_LOGGED_IN = 502,
+		HASP_ALREADY_LOGGED_OUT = 503,
+		HASP_OPERATION_FAILED = 525,
+		HASP_NO_EXTBLOCK = 600,
+		HASP_INV_PORT_TYPE = 650,
+		HASP_INV_PORT = 651,
+		HASP_NET_DLL_BROKEN = 652,
+		HASP_NOT_IMPL = 698,
+		HASP_INT_ERR = 699,
+		HASP_FIRST_HELPER = 2001,
+		HASP_FIRST_HASP_ACT = 3001,
+		HASP_NEXT_FREE_VALUES = 5001
+	}
+
+	public const int HASP_FEATURETYPE_MASK = -65536;
+
+	public const int HASP_PROGNUM_FEATURETYPE = -65536;
+
+	public const int HASP_PROGNUM_MASK = 255;
+
+	public const int HASP_PROGNUM_OPT_MASK = 65280;
+
+	public const int HASP_PROGNUM_OPT_NO_LOCAL = 32768;
+
+	public const int HASP_PROGNUM_OPT_NO_REMOTE = 16384;
+
+	public const int HASP_PROGNUM_OPT_PROCESS = 8192;
+
+	public const int HASP_PROGNUM_OPT_CLASSIC = 4096;
+
+	public const int HASP_PROGNUM_OPT_TS = 2048;
+
+	public const int HASP_DEFAULT_FID = 0;
+
+	public const int HASP_PROGNUM_DEFAULT_FID = -65536;
+
+	public const int HASP_FILEID_MAIN = 65520;
+
+	public const int HASP_FILEID_LICENSE = 65522;
+
+	public const int HASP_FILEID_RW = 65524;
+
+	public const int HASP_FILEID_RO = 65525;
+
+	public const string HASP_UPDATEINFO = "<haspformat format=\"updateinfo\"/>";
+
+	public const string HASP_FASTUPDATEINFO = "<haspformat format=\"fastupdateinfo\"/>";
+
+	public const string HASP_SESSIONINFO = "<haspformat format=\"sessioninfo\"/>";
+
+	public const string HASP_KEYINFO = "<haspformat format=\"keyinfo\"/>";
+
+	public const string HASP_RECIPIENT = "<haspformat root=\"location\">  <license_manager>    <attribute name=\"id\" />    <attribute name=\"time\" />    <element name=\"hostname\" />    <element name=\"version\" />    <element name=\"host_fingerprint\" />  </license_manager></haspformat>";
+
+	public const string HASP_FINGERPRINT = "<haspformat format=\"host_fingerprint\"/>";
+
+	public const int HASP_INVALID_HANDLE_VALUE = 0;
+
+	public const int HASP_MIN_BLOCK_SIZE = 16;
+
+	public const int HASP_MIN_BLOCK_SIZE_LEGACY = 8;
+}

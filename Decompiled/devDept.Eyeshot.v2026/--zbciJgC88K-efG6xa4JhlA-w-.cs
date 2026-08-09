@@ -1,0 +1,13 @@
+using System.Runtime.InteropServices;
+
+[StructLayout(LayoutKind.Sequential)]
+internal sealed class _0023_003DzbciJgC88K_0024efG6xa4JhlA_0024w_003D
+{
+	public _0023_003DzNoIQmvJ9c8N2Yrhq2FkPT4I_003D _0023_003DzC9qiCbFHV50HqBSrFA_003D_003D;
+
+	public uint _0023_003DzH8_0024D5gEvTVfrOAAEiw_003D_003D;
+
+	public _0023_003DzzlMbWWrDkS318b0iUogE3Ls_003D[] _0023_003DzrIW4Uvq1DEsh;
+
+	public _0023_003DzV4qZlCakiwYBU727wGloJLs0wdZwT1FQaoBoaUk_003D _0023_003Dzalvl9z8_003D;
+}

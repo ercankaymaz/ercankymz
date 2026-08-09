@@ -1,0 +1,18 @@
+using System;
+
+internal sealed class _0023_003Dq454RVlZTsmz9OfX8mKyUs_0024q4Jo_0024wztalNapROk_VG8k_003D : _0023_003DqKMIq_7Mly1WY7QqA819B_rLt2Q3pkIQ9GyjiPrFZWFk_003D
+{
+	public _0023_003Dq454RVlZTsmz9OfX8mKyUs_0024q4Jo_0024wztalNapROk_VG8k_003D()
+	{
+	}
+
+	public _0023_003Dq454RVlZTsmz9OfX8mKyUs_0024q4Jo_0024wztalNapROk_VG8k_003D(string _0023_003DzjYYAPCA_003D)
+		: base(_0023_003DzjYYAPCA_003D)
+	{
+	}
+
+	public _0023_003Dq454RVlZTsmz9OfX8mKyUs_0024q4Jo_0024wztalNapROk_VG8k_003D(string _0023_003DzjYYAPCA_003D, Exception _0023_003DzVC9FBdo_003D)
+		: base(_0023_003DzjYYAPCA_003D, _0023_003DzVC9FBdo_003D)
+	{
+	}
+}

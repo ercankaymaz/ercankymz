@@ -1,0 +1,6 @@
+namespace System.ServiceModel.Channels;
+
+internal interface IPipeTransportFactorySettings : IConnectionOrientedTransportChannelFactorySettings, IConnectionOrientedTransportFactorySettings, ITransportFactorySettings, IDefaultCommunicationTimeouts, IConnectionOrientedConnectionSettings
+{
+	NamedPipeSettings PipeSettings { get; }
+}

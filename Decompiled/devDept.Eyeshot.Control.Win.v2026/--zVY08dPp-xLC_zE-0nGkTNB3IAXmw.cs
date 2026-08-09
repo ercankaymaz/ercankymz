@@ -1,0 +1,22 @@
+internal enum _0023_003DzVY08dPp_0024xLC_zE_00240nGkTNB3IAXmw
+{
+	@float,
+	@int,
+	@uint,
+	@double,
+	vec4,
+	vec3,
+	vec2,
+	ivec4,
+	ivec3,
+	ivec2,
+	uvec4,
+	uvec3,
+	uvec2,
+	dvec4,
+	dvec3,
+	dvec2,
+	mat4,
+	mat3,
+	mat2
+}

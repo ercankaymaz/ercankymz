@@ -1,0 +1,552 @@
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+using buClass;
+using buControls.Controls;
+using buEyeBaseVer5;
+
+namespace MarbleCNC;
+
+public class F_Menu : Form
+{
+	public FormProperties PropertiesForm = new FormProperties();
+
+	private IContainer components = null;
+
+	private buGround buGround1;
+
+	public buButton btn_password;
+
+	public buButton btn_report;
+
+	public buButton btn_test;
+
+	public buButton btn_tools;
+
+	public buButton btn_settings;
+
+	public buButton btn_simulationpanel;
+
+	public buButton btn_closepc;
+
+	public buButton btn_selectmaterial;
+
+	public buButton btn_g54offset;
+
+	public buButton btn_calculations;
+
+	public buButton btn_maintanance;
+
+	public buButton btn_warmup;
+
+	public buButton btn_materialmeasurement;
+
+	public buButton btn_adminsettings;
+
+	public buButton btn_cancel;
+
+	public F_Menu()
+	{
+		InitializeComponent();
+	}
+
+	private void btn_ok_Click(object sender, EventArgs e)
+	{
+	}
+
+	public void InitVisual()
+	{
+		FileInfo fileInfo = new FileInfo(AppPath.MachineSettings + "\\ApplicationVisual.prm");
+		if (fileInfo.Exists)
+		{
+			Control.ControlCollection controlCollection = null;
+			controlCollection = buGround1.Controls;
+			controlCollection = hmiUICommands.SetVisualItem(controlCollection);
+		}
+		PropertiesForm.VisualUpdated = true;
+	}
+
+	public void LoadLanguage()
+	{
+		buGround1.Text = buLangTranslate.preDef.Menu;
+		btn_closepc.Text = buLangTranslate.preDef.Close + " PC";
+		btn_password.Text = buLangTranslate.preDef.Password;
+		btn_report.Text = buLangTranslate.preDef.Report;
+		btn_selectmaterial.Text = buLangTranslate.preDef.Material + " " + buLangTranslate.preDef.Select;
+		btn_settings.Text = buLangTranslate.preDef.Settings;
+		btn_simulationpanel.Text = buLangTranslate.preDef.Simulation;
+		btn_test.Text = buLangTranslate.preDef.Test;
+		btn_tools.Text = buLangTranslate.preDef.Tools + " " + buLangTranslate.preDef.List;
+		btn_g54offset.Text = buLangTranslate.preChar.G54 + " " + buLangTranslate.preDef.Offset;
+		btn_adminsettings.Text = buLangTranslate.preDef.Admin + " " + buLangTranslate.preDef.Settings;
+		btn_maintanance.Text = buLangTranslate.preDef.Maintanance;
+		btn_materialmeasurement.Text = buLangTranslate.preDef.Material + " " + buLangTranslate.preDef.Measure;
+		btn_calculations.Text = buLangTranslate.preDef.Calculate;
+	}
+
+	private void btn_cancel_Click(object sender, EventArgs e)
+	{
+		base.Visible = false;
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		if (disposing && components != null)
+		{
+			components.Dispose();
+		}
+		base.Dispose(disposing);
+	}
+
+	private void InitializeComponent()
+	{
+		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MarbleCNC.F_Menu));
+		this.buGround1 = new buControls.Controls.buGround();
+		this.btn_cancel = new buControls.Controls.buButton();
+		this.btn_adminsettings = new buControls.Controls.buButton();
+		this.btn_materialmeasurement = new buControls.Controls.buButton();
+		this.btn_warmup = new buControls.Controls.buButton();
+		this.btn_maintanance = new buControls.Controls.buButton();
+		this.btn_calculations = new buControls.Controls.buButton();
+		this.btn_g54offset = new buControls.Controls.buButton();
+		this.btn_selectmaterial = new buControls.Controls.buButton();
+		this.btn_closepc = new buControls.Controls.buButton();
+		this.btn_simulationpanel = new buControls.Controls.buButton();
+		this.btn_settings = new buControls.Controls.buButton();
+		this.btn_tools = new buControls.Controls.buButton();
+		this.btn_password = new buControls.Controls.buButton();
+		this.btn_report = new buControls.Controls.buButton();
+		this.btn_test = new buControls.Controls.buButton();
+		this.buGround1.SuspendLayout();
+		base.SuspendLayout();
+		this.buGround1.AuxInfo = null;
+		this.buGround1.BackColor = System.Drawing.Color.Transparent;
+		this.buGround1.Controls.Add(this.btn_cancel);
+		this.buGround1.Controls.Add(this.btn_adminsettings);
+		this.buGround1.Controls.Add(this.btn_materialmeasurement);
+		this.buGround1.Controls.Add(this.btn_warmup);
+		this.buGround1.Controls.Add(this.btn_maintanance);
+		this.buGround1.Controls.Add(this.btn_calculations);
+		this.buGround1.Controls.Add(this.btn_g54offset);
+		this.buGround1.Controls.Add(this.btn_selectmaterial);
+		this.buGround1.Controls.Add(this.btn_closepc);
+		this.buGround1.Controls.Add(this.btn_simulationpanel);
+		this.buGround1.Controls.Add(this.btn_settings);
+		this.buGround1.Controls.Add(this.btn_tools);
+		this.buGround1.Controls.Add(this.btn_password);
+		this.buGround1.Controls.Add(this.btn_report);
+		this.buGround1.Controls.Add(this.btn_test);
+		this.buGround1.ControlStyle = buControls.Controls.ControlStyle.Base3;
+		this.buGround1.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.buGround1.Display.GradientType = buControls.Controls.GradientMode.Lineer;
+		this.buGround1.Display.LineerGradient.FirstColor = System.Drawing.Color.Black;
+		this.buGround1.DisplayBottom.BackColor = System.Drawing.Color.Gray;
+		this.buGround1.DisplayTop.BackColor = System.Drawing.Color.DimGray;
+		this.buGround1.Dock = System.Windows.Forms.DockStyle.Fill;
+		this.buGround1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.buGround1.Ground.TopHeight = 50;
+		this.buGround1.Image = null;
+		this.buGround1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.buGround1.Location = new System.Drawing.Point(0, 0);
+		this.buGround1.Name = "buGround1";
+		this.buGround1.Sizable = true;
+		this.buGround1.Size = new System.Drawing.Size(604, 679);
+		this.buGround1.SmartBounds = true;
+		this.buGround1.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+		this.buGround1.TabIndex = 1;
+		this.buGround1.Text = "Menü";
+		this.btn_cancel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+		this.btn_cancel.BackColor = System.Drawing.Color.DimGray;
+		this.btn_cancel.ButtonCopy = false;
+		this.btn_cancel.ButtonDownDisplay.BackColor = System.Drawing.Color.Silver;
+		this.btn_cancel.ButtonOverDisplay.BackColor = System.Drawing.Color.Gray;
+		this.btn_cancel.ControlStyle = buControls.Controls.ControlStyle.FormButton;
+		this.btn_cancel.Display.BackColor = System.Drawing.Color.DimGray;
+		this.btn_cancel.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_cancel.Display.Border.Visible = false;
+		this.btn_cancel.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_cancel.Image = (System.Drawing.Image)resources.GetObject("btn_cancel.Image");
+		this.btn_cancel.Location = new System.Drawing.Point(550, 0);
+		this.btn_cancel.Margin = new System.Windows.Forms.Padding(4);
+		this.btn_cancel.Name = "btn_cancel";
+		this.btn_cancel.Size = new System.Drawing.Size(54, 50);
+		this.btn_cancel.TabIndex = 595;
+		this.btn_cancel.UseMnemonic = false;
+		this.btn_cancel.Click += new System.EventHandler(btn_cancel_Click);
+		this.btn_adminsettings.BackColor = System.Drawing.Color.Transparent;
+		this.btn_adminsettings.ButtonCopy = false;
+		this.btn_adminsettings.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_adminsettings.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_adminsettings.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_adminsettings.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_adminsettings.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_adminsettings.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_adminsettings.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_adminsettings.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_adminsettings.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_adminsettings.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_adminsettings.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_adminsettings.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_adminsettings.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_adminsettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_adminsettings.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_adminsettings.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_adminsettings.Image = (System.Drawing.Image)resources.GetObject("btn_adminsettings.Image");
+		this.btn_adminsettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_adminsettings.Location = new System.Drawing.Point(312, 499);
+		this.btn_adminsettings.Name = "btn_adminsettings";
+		this.btn_adminsettings.Size = new System.Drawing.Size(280, 75);
+		this.btn_adminsettings.TabIndex = 594;
+		this.btn_adminsettings.Text = "Admin Settings";
+		this.btn_adminsettings.UseMnemonic = false;
+		this.btn_materialmeasurement.BackColor = System.Drawing.Color.Transparent;
+		this.btn_materialmeasurement.ButtonCopy = false;
+		this.btn_materialmeasurement.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_materialmeasurement.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_materialmeasurement.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_materialmeasurement.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_materialmeasurement.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_materialmeasurement.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_materialmeasurement.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_materialmeasurement.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_materialmeasurement.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_materialmeasurement.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_materialmeasurement.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_materialmeasurement.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_materialmeasurement.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_materialmeasurement.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_materialmeasurement.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_materialmeasurement.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_materialmeasurement.Image = (System.Drawing.Image)resources.GetObject("btn_materialmeasurement.Image");
+		this.btn_materialmeasurement.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_materialmeasurement.Location = new System.Drawing.Point(311, 323);
+		this.btn_materialmeasurement.Name = "btn_materialmeasurement";
+		this.btn_materialmeasurement.Size = new System.Drawing.Size(280, 75);
+		this.btn_materialmeasurement.TabIndex = 593;
+		this.btn_materialmeasurement.Text = "Material Measure";
+		this.btn_materialmeasurement.UseMnemonic = false;
+		this.btn_warmup.BackColor = System.Drawing.Color.Transparent;
+		this.btn_warmup.ButtonCopy = false;
+		this.btn_warmup.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_warmup.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_warmup.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_warmup.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_warmup.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_warmup.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_warmup.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_warmup.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_warmup.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_warmup.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_warmup.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_warmup.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_warmup.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_warmup.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_warmup.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_warmup.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_warmup.Image = (System.Drawing.Image)resources.GetObject("btn_warmup.Image");
+		this.btn_warmup.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_warmup.Location = new System.Drawing.Point(311, 412);
+		this.btn_warmup.Name = "btn_warmup";
+		this.btn_warmup.Size = new System.Drawing.Size(280, 75);
+		this.btn_warmup.TabIndex = 592;
+		this.btn_warmup.Text = "Warm Up";
+		this.btn_warmup.UseMnemonic = false;
+		this.btn_maintanance.BackColor = System.Drawing.Color.Transparent;
+		this.btn_maintanance.ButtonCopy = false;
+		this.btn_maintanance.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_maintanance.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_maintanance.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_maintanance.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_maintanance.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_maintanance.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_maintanance.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_maintanance.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_maintanance.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_maintanance.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_maintanance.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_maintanance.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_maintanance.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_maintanance.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_maintanance.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_maintanance.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_maintanance.Image = (System.Drawing.Image)resources.GetObject("btn_maintanance.Image");
+		this.btn_maintanance.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_maintanance.Location = new System.Drawing.Point(12, 323);
+		this.btn_maintanance.Name = "btn_maintanance";
+		this.btn_maintanance.Size = new System.Drawing.Size(280, 75);
+		this.btn_maintanance.TabIndex = 590;
+		this.btn_maintanance.Text = "Maintanance";
+		this.btn_maintanance.UseMnemonic = false;
+		this.btn_calculations.BackColor = System.Drawing.Color.Transparent;
+		this.btn_calculations.ButtonCopy = false;
+		this.btn_calculations.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_calculations.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_calculations.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_calculations.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_calculations.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_calculations.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_calculations.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_calculations.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_calculations.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_calculations.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_calculations.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_calculations.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_calculations.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_calculations.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_calculations.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_calculations.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_calculations.Image = (System.Drawing.Image)resources.GetObject("btn_calculations.Image");
+		this.btn_calculations.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_calculations.Location = new System.Drawing.Point(312, 587);
+		this.btn_calculations.Name = "btn_calculations";
+		this.btn_calculations.Size = new System.Drawing.Size(280, 75);
+		this.btn_calculations.TabIndex = 589;
+		this.btn_calculations.Text = "Calculations";
+		this.btn_calculations.UseMnemonic = false;
+		this.btn_g54offset.BackColor = System.Drawing.Color.Transparent;
+		this.btn_g54offset.ButtonCopy = false;
+		this.btn_g54offset.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_g54offset.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_g54offset.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_g54offset.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_g54offset.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_g54offset.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_g54offset.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_g54offset.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_g54offset.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_g54offset.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_g54offset.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_g54offset.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_g54offset.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_g54offset.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_g54offset.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_g54offset.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_g54offset.Image = (System.Drawing.Image)resources.GetObject("btn_g54offset.Image");
+		this.btn_g54offset.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_g54offset.Location = new System.Drawing.Point(12, 148);
+		this.btn_g54offset.Name = "btn_g54offset";
+		this.btn_g54offset.Size = new System.Drawing.Size(280, 75);
+		this.btn_g54offset.TabIndex = 587;
+		this.btn_g54offset.Text = "G54 Offsets";
+		this.btn_g54offset.UseMnemonic = false;
+		this.btn_selectmaterial.BackColor = System.Drawing.Color.Transparent;
+		this.btn_selectmaterial.ButtonCopy = false;
+		this.btn_selectmaterial.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_selectmaterial.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_selectmaterial.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_selectmaterial.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_selectmaterial.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_selectmaterial.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_selectmaterial.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_selectmaterial.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_selectmaterial.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_selectmaterial.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_selectmaterial.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_selectmaterial.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_selectmaterial.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_selectmaterial.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_selectmaterial.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_selectmaterial.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_selectmaterial.Image = (System.Drawing.Image)resources.GetObject("btn_selectmaterial.Image");
+		this.btn_selectmaterial.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_selectmaterial.Location = new System.Drawing.Point(12, 412);
+		this.btn_selectmaterial.Name = "btn_selectmaterial";
+		this.btn_selectmaterial.Size = new System.Drawing.Size(280, 75);
+		this.btn_selectmaterial.TabIndex = 585;
+		this.btn_selectmaterial.Text = "Select Material";
+		this.btn_selectmaterial.UseMnemonic = false;
+		this.btn_closepc.BackColor = System.Drawing.Color.Transparent;
+		this.btn_closepc.ButtonCopy = false;
+		this.btn_closepc.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_closepc.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_closepc.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_closepc.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_closepc.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_closepc.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_closepc.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_closepc.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_closepc.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_closepc.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_closepc.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_closepc.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_closepc.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_closepc.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_closepc.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_closepc.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_closepc.Image = (System.Drawing.Image)resources.GetObject("btn_closepc.Image");
+		this.btn_closepc.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_closepc.Location = new System.Drawing.Point(12, 587);
+		this.btn_closepc.Name = "btn_closepc";
+		this.btn_closepc.Size = new System.Drawing.Size(280, 75);
+		this.btn_closepc.TabIndex = 584;
+		this.btn_closepc.Text = "Close PC";
+		this.btn_closepc.UseMnemonic = false;
+		this.btn_simulationpanel.BackColor = System.Drawing.Color.Transparent;
+		this.btn_simulationpanel.ButtonCopy = false;
+		this.btn_simulationpanel.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_simulationpanel.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_simulationpanel.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_simulationpanel.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_simulationpanel.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_simulationpanel.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_simulationpanel.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_simulationpanel.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_simulationpanel.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_simulationpanel.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_simulationpanel.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_simulationpanel.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_simulationpanel.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_simulationpanel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_simulationpanel.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_simulationpanel.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_simulationpanel.Image = (System.Drawing.Image)resources.GetObject("btn_simulationpanel.Image");
+		this.btn_simulationpanel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_simulationpanel.Location = new System.Drawing.Point(12, 499);
+		this.btn_simulationpanel.Name = "btn_simulationpanel";
+		this.btn_simulationpanel.Size = new System.Drawing.Size(280, 75);
+		this.btn_simulationpanel.TabIndex = 582;
+		this.btn_simulationpanel.Text = "Simulation Panel";
+		this.btn_simulationpanel.UseMnemonic = false;
+		this.btn_settings.BackColor = System.Drawing.Color.Transparent;
+		this.btn_settings.ButtonCopy = false;
+		this.btn_settings.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_settings.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_settings.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_settings.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_settings.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_settings.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_settings.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_settings.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_settings.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_settings.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_settings.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_settings.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_settings.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_settings.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_settings.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_settings.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_settings.Image = (System.Drawing.Image)resources.GetObject("btn_settings.Image");
+		this.btn_settings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_settings.Location = new System.Drawing.Point(12, 60);
+		this.btn_settings.Name = "btn_settings";
+		this.btn_settings.Size = new System.Drawing.Size(280, 75);
+		this.btn_settings.TabIndex = 579;
+		this.btn_settings.Text = "Settings";
+		this.btn_settings.UseMnemonic = false;
+		this.btn_tools.BackColor = System.Drawing.Color.Transparent;
+		this.btn_tools.ButtonCopy = false;
+		this.btn_tools.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_tools.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_tools.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_tools.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_tools.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_tools.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_tools.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_tools.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_tools.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_tools.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_tools.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_tools.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_tools.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_tools.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_tools.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_tools.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_tools.Image = (System.Drawing.Image)resources.GetObject("btn_tools.Image");
+		this.btn_tools.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_tools.Location = new System.Drawing.Point(311, 148);
+		this.btn_tools.Name = "btn_tools";
+		this.btn_tools.Size = new System.Drawing.Size(280, 75);
+		this.btn_tools.TabIndex = 575;
+		this.btn_tools.Text = "Tools List";
+		this.btn_tools.UseMnemonic = false;
+		this.btn_password.BackColor = System.Drawing.Color.Transparent;
+		this.btn_password.ButtonCopy = false;
+		this.btn_password.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_password.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_password.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_password.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_password.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_password.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_password.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_password.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_password.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_password.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_password.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_password.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_password.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_password.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_password.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_password.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_password.Image = (System.Drawing.Image)resources.GetObject("btn_password.Image");
+		this.btn_password.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_password.Location = new System.Drawing.Point(12, 234);
+		this.btn_password.Name = "btn_password";
+		this.btn_password.Size = new System.Drawing.Size(280, 75);
+		this.btn_password.TabIndex = 569;
+		this.btn_password.Text = "Şifre";
+		this.btn_password.UseMnemonic = false;
+		this.btn_report.BackColor = System.Drawing.Color.Transparent;
+		this.btn_report.ButtonCopy = false;
+		this.btn_report.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_report.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_report.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_report.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_report.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_report.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_report.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_report.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_report.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_report.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_report.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_report.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_report.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_report.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_report.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_report.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_report.Image = (System.Drawing.Image)resources.GetObject("btn_report.Image");
+		this.btn_report.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_report.Location = new System.Drawing.Point(311, 234);
+		this.btn_report.Name = "btn_report";
+		this.btn_report.Size = new System.Drawing.Size(280, 75);
+		this.btn_report.TabIndex = 568;
+		this.btn_report.Text = "Rapor";
+		this.btn_report.UseMnemonic = false;
+		this.btn_test.BackColor = System.Drawing.Color.Transparent;
+		this.btn_test.ButtonCopy = false;
+		this.btn_test.ButtonDownDisplay.BackColor = System.Drawing.Color.Gold;
+		this.btn_test.ButtonDownDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_test.ButtonDownDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_test.ButtonDownDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_test.ButtonOverDisplay.BackColor = System.Drawing.Color.Gainsboro;
+		this.btn_test.ButtonOverDisplay.Border.Color = System.Drawing.Color.Black;
+		this.btn_test.ButtonOverDisplay.Fonts.Font = new System.Drawing.Font("Arial", 11.25f, System.Drawing.FontStyle.Bold);
+		this.btn_test.ButtonOverDisplay.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_test.ControlStyle = buControls.Controls.ControlStyle.Menu3;
+		this.btn_test.Display.BackColor = System.Drawing.Color.PeachPuff;
+		this.btn_test.Display.Border.Color = System.Drawing.Color.Black;
+		this.btn_test.Display.Fonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 162);
+		this.btn_test.Display.Fonts.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_test.Font = new System.Drawing.Font("Microsoft Sans Serif", 10f);
+		this.btn_test.ForeColor = System.Drawing.Color.FromArgb(0, 27, 72);
+		this.btn_test.Geometry.ShapeMode = buControls.Controls.ShapeType.Arc;
+		this.btn_test.Image = (System.Drawing.Image)resources.GetObject("btn_test.Image");
+		this.btn_test.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		this.btn_test.Location = new System.Drawing.Point(311, 60);
+		this.btn_test.Name = "btn_test";
+		this.btn_test.Size = new System.Drawing.Size(280, 75);
+		this.btn_test.TabIndex = 565;
+		this.btn_test.Text = "Test";
+		this.btn_test.UseMnemonic = false;
+		base.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+		base.ClientSize = new System.Drawing.Size(604, 679);
+		base.Controls.Add(this.buGround1);
+		base.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+		base.Name = "F_Menu";
+		this.Text = "Menu";
+		this.buGround1.ResumeLayout(false);
+		base.ResumeLayout(false);
+	}
+}

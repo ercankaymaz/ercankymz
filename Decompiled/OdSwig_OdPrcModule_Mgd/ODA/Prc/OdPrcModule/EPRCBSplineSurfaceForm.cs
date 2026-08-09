@@ -1,0 +1,16 @@
+namespace ODA.Prc.OdPrcModule;
+
+public enum EPRCBSplineSurfaceForm
+{
+	KEPRCBSplineSurfaceFormPlane,
+	KEPRCBSplineSurfaceFormCylindrical,
+	KEPRCBSplineSurfaceFormConical,
+	KEPRCBSplineSurfaceFormSpherical,
+	KEPRCBSplineSurfaceFormRevolution,
+	KEPRCBSplineSurfaceFormRuled,
+	KEPRCBSplineSurfaceFormGeneralizedCone,
+	KEPRCBSplineSurfaceFormQuadric,
+	KEPRCBSplineSurfaceFormLinearExtrusion,
+	KEPRCBSplineSurfaceFormUnspecified,
+	KEPRCBSplineSurfaceFormPolynomial
+}

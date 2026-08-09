@@ -1,0 +1,48 @@
+internal sealed class _0023_003DzHAezStP_00247HHUTE1RE6BUhSJjAqiX8XVal0boMrZBItyb
+{
+	private int _0023_003Dz81yVjNg_003D;
+
+	private int _0023_003DzlQNkezBtuW3q;
+
+	private int _0023_003DzU3ekyVNIgirj;
+
+	private int _0023_003Dz4TOGAmInLFsm;
+
+	public _0023_003DzHAezStP_00247HHUTE1RE6BUhSJjAqiX8XVal0boMrZBItyb(int _0023_003DzBqM0smA_003D, int _0023_003DzxQDIHLk_003D, int _0023_003Dz3WRYvFY_003D, int _0023_003Dz10jdJiE_003D)
+	{
+		_0023_003Dz81yVjNg_003D = _0023_003DzBqM0smA_003D;
+		_0023_003DzlQNkezBtuW3q = _0023_003DzxQDIHLk_003D;
+		_0023_003DzU3ekyVNIgirj = _0023_003Dz3WRYvFY_003D;
+		_0023_003Dz4TOGAmInLFsm = _0023_003Dz10jdJiE_003D;
+	}
+
+	public virtual int _0023_003Dzg4vLGuo_003D()
+	{
+		return _0023_003Dz81yVjNg_003D;
+	}
+
+	public virtual int _0023_003DzzkMMMpLuvADm()
+	{
+		return _0023_003DzlQNkezBtuW3q;
+	}
+
+	public virtual int _0023_003Dzqn_YlnP2eEqA()
+	{
+		return _0023_003DzU3ekyVNIgirj;
+	}
+
+	public virtual void _0023_003DzVeKkOlEq9ytQ(int _0023_003DzPzO_0024GUk_003D)
+	{
+		_0023_003DzU3ekyVNIgirj = _0023_003DzPzO_0024GUk_003D;
+	}
+
+	public virtual int _0023_003Dz6bhkNzl_0024_M0L()
+	{
+		return _0023_003Dz4TOGAmInLFsm;
+	}
+
+	public static _0023_003DzHAezStP_00247HHUTE1RE6BUhSJjAqiX8XVal0boMrZBItyb _0023_003DzuuY9lIM_003D(_0023_003DzdwUsoVJh2asJi3cMG2Slo1jQ9syoz1RZlQ_003D_003D _0023_003DzG9R_0024MeNbh3wu, int _0023_003DzTKiG8fIp_0024c9W, int _0023_003Dz_FBmzuofgKMV, int _0023_003DzNhZmutdm_0024TFl, int _0023_003DzPL_uVY1aNgcE, int _0023_003DzI4AR_HE_003D)
+	{
+		return new _0023_003DzHAezStP_00247HHUTE1RE6BUhSJjAqiX8XVal0boMrZBItyb(_0023_003DzG9R_0024MeNbh3wu._0023_003DzyrUSnjH5Ld0s07AgsA_003D_003D(_0023_003DzTKiG8fIp_0024c9W) - 2, _0023_003DzG9R_0024MeNbh3wu._0023_003DzyrUSnjH5Ld0s07AgsA_003D_003D(_0023_003Dz_FBmzuofgKMV), _0023_003DzG9R_0024MeNbh3wu._0023_003DzyrUSnjH5Ld0s07AgsA_003D_003D(_0023_003DzNhZmutdm_0024TFl) + _0023_003DzI4AR_HE_003D, (_0023_003DzPL_uVY1aNgcE != -1) ? _0023_003DzG9R_0024MeNbh3wu._0023_003DzyrUSnjH5Ld0s07AgsA_003D_003D(_0023_003DzPL_uVY1aNgcE) : 0);
+	}
+}

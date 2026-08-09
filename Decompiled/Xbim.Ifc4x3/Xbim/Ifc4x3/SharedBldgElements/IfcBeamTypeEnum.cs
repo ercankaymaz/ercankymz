@@ -1,0 +1,19 @@
+namespace Xbim.Ifc4x3.SharedBldgElements;
+
+public enum IfcBeamTypeEnum : byte
+{
+	BEAM,
+	CORNICE,
+	DIAPHRAGM,
+	EDGEBEAM,
+	GIRDER_SEGMENT,
+	HATSTONE,
+	HOLLOWCORE,
+	JOIST,
+	LINTEL,
+	PIERCAP,
+	SPANDREL,
+	T_BEAM,
+	USERDEFINED,
+	NOTDEFINED
+}

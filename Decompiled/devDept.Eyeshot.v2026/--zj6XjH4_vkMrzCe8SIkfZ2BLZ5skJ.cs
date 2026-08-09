@@ -1,0 +1,23 @@
+using System;
+
+internal sealed class _0023_003Dzj6XjH4_vkMrzCe8SIkfZ2BLZ5skJ : _0023_003DzmjMRzsbwPsPuWB2CorgBfVc_003D
+{
+	public _0023_003Dzj6XjH4_vkMrzCe8SIkfZ2BLZ5skJ()
+	{
+	}
+
+	public _0023_003Dzj6XjH4_vkMrzCe8SIkfZ2BLZ5skJ(double _0023_003DzGCRALDaSBdu6, double _0023_003DzFAg3lSY_003D, double _0023_003DzT2rcMwdKyFst, double _0023_003DzmXqPvvk_003D)
+	{
+		_0023_003Dzjcj2XsoMWHv_UUmRAiHH5HOLQ3w7 _0023_003Dzt_m8zV0_003D = new _0023_003Dz4boGaYB3EvPdMPKMl0SZetA_003D(_0023_003DzGCRALDaSBdu6, _0023_003DzFAg3lSY_003D);
+		_0023_003Dzjcj2XsoMWHv_UUmRAiHH5HOLQ3w7 _0023_003Dzt_m8zV0_003D2 = new _0023_003Dz4boGaYB3EvPdMPKMl0SZetA_003D(_0023_003DzT2rcMwdKyFst, _0023_003DzmXqPvvk_003D);
+		_0023_003Dzjcj2XsoMWHv_UUmRAiHH5HOLQ3w7 _0023_003Dzt_m8zV0_003D3 = new _0023_003DzIllBES2_0024wdU5qrD4Q_0024wUWMk_003D(_0023_003DzT2rcMwdKyFst, 20.0);
+		double num = _0023_003DzGCRALDaSBdu6 / 2.0 / Math.Tan(_0023_003DzFAg3lSY_003D);
+		double num2 = 0.0 - (_0023_003DzGCRALDaSBdu6 / 2.0 / Math.Tan(_0023_003DzmXqPvvk_003D) - num);
+		double num3 = _0023_003DzT2rcMwdKyFst / 2.0 / Math.Tan(_0023_003DzmXqPvvk_003D) + num2;
+		double _0023_003DzqbBqndMXPkub = num3;
+		_0023_003DzWWRVX5jMsRRX(_0023_003Dzt_m8zV0_003D, _0023_003DzGCRALDaSBdu6 / 2.0, num, 0.0);
+		_0023_003DzWWRVX5jMsRRX(_0023_003Dzt_m8zV0_003D2, _0023_003DzT2rcMwdKyFst / 2.0, num3, num2);
+		_0023_003DzWWRVX5jMsRRX(_0023_003Dzt_m8zV0_003D3, _0023_003DzT2rcMwdKyFst / 2.0, num3 + 20.0, _0023_003DzqbBqndMXPkub);
+		_0023_003Dz736ekIs_003D = 30.0;
+	}
+}

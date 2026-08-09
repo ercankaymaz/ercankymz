@@ -1,0 +1,35 @@
+namespace buClass;
+
+public enum langEnumSystemWarnigs
+{
+	NoWarning,
+	Offline,
+	HomingNotDone,
+	AlarmOccur,
+	Runing,
+	AxesDisable,
+	Moving,
+	Paused,
+	NoSelectedAxis,
+	CanNotDoThisCommand,
+	FileNotLoaded,
+	AccLowerThanZero,
+	DecLowerThanZero,
+	JerkLowerThanZero,
+	WaitTimeLowerThanZero,
+	VelLowerThanZero,
+	AxesInSimulationMode,
+	IOsSimulationMode,
+	AutomaticMode,
+	GantryError,
+	LevelNotEnougthThisOperation,
+	DoorOpen,
+	MacError,
+	SystemIsNotRunning,
+	CNCStepEqualZero,
+	GainPArameterNotEnableFromPC,
+	SameToolNumberToolChange,
+	ZSafeLevelCantDoOperation,
+	YouCanDontThisCommnadForThisAxis,
+	NoCommunicationWtihController
+}

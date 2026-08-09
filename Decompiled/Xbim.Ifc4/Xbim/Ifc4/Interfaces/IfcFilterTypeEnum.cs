@@ -1,0 +1,13 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcFilterTypeEnum : byte
+{
+	AIRPARTICLEFILTER,
+	COMPRESSEDAIRFILTER,
+	ODORFILTER,
+	OILFILTER,
+	STRAINER,
+	WATERFILTER,
+	USERDEFINED,
+	NOTDEFINED
+}

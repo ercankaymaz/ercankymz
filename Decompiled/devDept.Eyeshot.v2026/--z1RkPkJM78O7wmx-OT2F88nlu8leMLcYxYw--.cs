@@ -1,0 +1,6 @@
+internal sealed class _0023_003Dz1RkPkJM78O7wmx_0024OT2F88nlu8leMLcYxYw_003D_003D
+{
+	public _0023_003Dzsau_1FFsbjFmmk_0024aoWUtt5p4arj1zssVtg_003D_003D _0023_003DzWM78eKc_003D = new _0023_003Dzsau_1FFsbjFmmk_0024aoWUtt5p4arj1zssVtg_003D_003D();
+
+	public _0023_003DzlF7xiEWYrRTdUlJ2_0024CPISAV_ytemrDY9pw_003D_003D _0023_003DzD7fR4lg_003D = new _0023_003DzlF7xiEWYrRTdUlJ2_0024CPISAV_ytemrDY9pw_003D_003D();
+}

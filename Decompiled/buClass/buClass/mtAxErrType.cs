@@ -1,0 +1,36 @@
+namespace buClass;
+
+public enum mtAxErrType
+{
+	SWLimit,
+	HWLimit,
+	DriveError,
+	ErrorStop,
+	FlowingError,
+	HomeTimeout,
+	Communication,
+	DataLimitPosError,
+	DataLimitNegError,
+	SWLimitPositive,
+	SWLimitNegative,
+	MCStop,
+	MCReset,
+	MCPower,
+	MCMoveAbs,
+	MCMoveRel,
+	MCHome,
+	MCSetPos,
+	MCSetHome,
+	MCJog,
+	LimitDynamics,
+	MCGearIn,
+	MCGearOut,
+	AxisOutOfLimit,
+	SMCChangeDynamicLimits,
+	SMCChangeRatio,
+	SMCHome,
+	SMCSoftLimit,
+	SMCRampType,
+	SMCMoveType,
+	ReInit
+}

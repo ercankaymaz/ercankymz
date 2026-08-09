@@ -1,0 +1,7 @@
+using System.Runtime.CompilerServices;
+
+internal interface _0023_003DzNLH1VGyzsIpHjLd7VjjTXLjTut_XyK6scQ_003D_003D<_0023_003DzjYYAPCA_003D> : _0023_003DzPzTScWYg1Dsn_0024md0OA8XSRYxl74vnpqaOw_003D_003D, _0023_003DzgPTxI_lBWsxh6L8SI2kS9jk9AFVTEYNe9A_003D_003D
+{
+	[SpecialName]
+	new _0023_003DzjYYAPCA_003D _0023_003DzbWTro8Ofp6GfrsLs5918L0W1PZLNIPA2tbg00hkwaERjF4ERuGpVpe8tDmvoeZ8Igwj65WVhFWv_();
+}

@@ -1,0 +1,11 @@
+using System.Runtime.InteropServices;
+
+namespace Opc.Ua.Configuration;
+
+[ComVisible(true)]
+public interface IApplicationConfigurationBuilderSecurityOptionStores : IApplicationConfigurationBuilderSecurityOptions, IApplicationConfigurationBuilderTraceConfiguration, IApplicationConfigurationBuilderCreate, IApplicationConfigurationBuilderExtension
+{
+	IApplicationConfigurationBuilderSecurityOptionStores AddSecurityConfigurationUserStore(string trustedRoot, string issuerRoot);
+
+	IApplicationConfigurationBuilderSecurityOptionStores AddSecurityConfigurationHttpsStore(string trustedRoot, string issuerRoot);
+}

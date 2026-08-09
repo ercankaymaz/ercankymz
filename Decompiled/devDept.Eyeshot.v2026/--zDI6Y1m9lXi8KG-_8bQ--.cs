@@ -1,0 +1,44 @@
+using System.Runtime.CompilerServices;
+
+internal sealed class _0023_003DzDI6Y1m9lXi8KG_0024_8bQ_003D_003D : _0023_003DzjSZsgkNJEO4TqLsFoQ_003D_003D
+{
+	private int _0023_003DzadOJFWDXi05QGVGpKg_003D_003D;
+
+	private int _0023_003Dz9ahY0_0024VCng45OyuCuQ_003D_003D;
+
+	private int _0023_003DzbgvhPZwQNgZwGYw3bQ_003D_003D;
+
+	public _0023_003DzDI6Y1m9lXi8KG_0024_8bQ_003D_003D(int _0023_003DzDVubtvo_003D, int _0023_003DzFj_0024IqDQ_003D)
+		: this(_0023_003DzDVubtvo_003D, _0023_003DzFj_0024IqDQ_003D, 0)
+	{
+	}
+
+	public _0023_003DzDI6Y1m9lXi8KG_0024_8bQ_003D_003D(int _0023_003DzDVubtvo_003D, int _0023_003DzFj_0024IqDQ_003D, int _0023_003Dz7uX3t_0024g_003D)
+	{
+		_0023_003DzZyjn15Cp_5Dj(_0023_003DzDVubtvo_003D);
+		_0023_003Dz2bae1MTaoCsx(_0023_003DzFj_0024IqDQ_003D);
+		_0023_003DzebfWBK1CW3R8(_0023_003Dz7uX3t_0024g_003D);
+	}
+
+	[SpecialName]
+	[CompilerGenerated]
+	public int _0023_003DzUETs27sA9vaD()
+	{
+		return _0023_003DzadOJFWDXi05QGVGpKg_003D_003D;
+	}
+
+	private void _0023_003DzZyjn15Cp_5Dj(int _0023_003DzPzO_0024GUk_003D)
+	{
+		_0023_003DzadOJFWDXi05QGVGpKg_003D_003D = _0023_003DzPzO_0024GUk_003D;
+	}
+
+	private void _0023_003Dz2bae1MTaoCsx(int _0023_003DzPzO_0024GUk_003D)
+	{
+		_0023_003Dz9ahY0_0024VCng45OyuCuQ_003D_003D = _0023_003DzPzO_0024GUk_003D;
+	}
+
+	private void _0023_003DzebfWBK1CW3R8(int _0023_003DzPzO_0024GUk_003D)
+	{
+		_0023_003DzbgvhPZwQNgZwGYw3bQ_003D_003D = _0023_003DzPzO_0024GUk_003D;
+	}
+}

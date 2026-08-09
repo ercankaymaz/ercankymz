@@ -1,0 +1,52 @@
+internal sealed class _0023_003DzBEedIFQsoSnWJL0MsMygMSsx_0024djL<_0023_003DzWWgGxds_003D, _0023_003DzDNpeQO0_003D> where _0023_003DzWWgGxds_003D : class where _0023_003DzDNpeQO0_003D : class
+{
+	private global::_0023_003DzBEedIFQsoSnWJL0MsMygMSsx_0024djL<_0023_003DzDNpeQO0_003D, _0023_003DzWWgGxds_003D> _0023_003DzpYJfrCk_003D;
+
+	public _0023_003DzWWgGxds_003D _0023_003DzOWmKG5M_003D;
+
+	public _0023_003DzBEedIFQsoSnWJL0MsMygMSsx_0024djL(_0023_003DzWWgGxds_003D _0023_003DzFJ9YvYA_003D)
+	{
+		_0023_003DzOWmKG5M_003D = _0023_003DzFJ9YvYA_003D;
+	}
+
+	public _0023_003DzDNpeQO0_003D _0023_003DzUtOYa_o_003D()
+	{
+		global::_0023_003DzBEedIFQsoSnWJL0MsMygMSsx_0024djL<_0023_003DzDNpeQO0_003D, _0023_003DzWWgGxds_003D> obj = _0023_003DzpYJfrCk_003D;
+		if (obj == null)
+		{
+			return null;
+		}
+		return obj._0023_003DzOWmKG5M_003D;
+	}
+
+	public void _0023_003Dzdlp53MQ_003D(global::_0023_003DzBEedIFQsoSnWJL0MsMygMSsx_0024djL<_0023_003DzDNpeQO0_003D, _0023_003DzWWgGxds_003D> _0023_003Dzzo8RvXc_003D)
+	{
+		global::_0023_003DzBEedIFQsoSnWJL0MsMygMSsx_0024djL<_0023_003DzDNpeQO0_003D, _0023_003DzWWgGxds_003D> obj = _0023_003DzpYJfrCk_003D;
+		if (((obj != null) ? obj._0023_003DzOWmKG5M_003D : null) != _0023_003Dzzo8RvXc_003D._0023_003DzOWmKG5M_003D)
+		{
+			_0023_003DzpYJfrCk_003D?._0023_003Dz6y_00245I4s_003D(_0023_003Dzsp0d_0024_0024o_003D: false);
+			_0023_003Dzzo8RvXc_003D._0023_003Dz6y_00245I4s_003D(_0023_003Dzsp0d_0024_0024o_003D: true);
+			_0023_003Dzzo8RvXc_003D._0023_003DzpYJfrCk_003D = this;
+			_0023_003DzpYJfrCk_003D = _0023_003Dzzo8RvXc_003D;
+		}
+	}
+
+	private void _0023_003Dz6y_00245I4s_003D(bool _0023_003Dzsp0d_0024_0024o_003D)
+	{
+		if (_0023_003Dzsp0d_0024_0024o_003D)
+		{
+			_0023_003DzpYJfrCk_003D?._0023_003Dz6y_00245I4s_003D(_0023_003Dzsp0d_0024_0024o_003D: false);
+		}
+		_0023_003DzpYJfrCk_003D = null;
+	}
+
+	public void _0023_003Dz6y_00245I4s_003D()
+	{
+		_0023_003Dz6y_00245I4s_003D(_0023_003Dzsp0d_0024_0024o_003D: true);
+	}
+
+	public override string ToString()
+	{
+		return string.Format(_0023_003DzUEQYRfd1JtmmO3VsmaV_0024uUiBTuoh._0023_003DzE8QrneA_003D(-302656886), _0023_003DzOWmKG5M_003D, _0023_003DzUtOYa_o_003D());
+	}
+}

@@ -1,0 +1,15 @@
+namespace Xbim.Ifc4.Interfaces;
+
+public enum IfcSpatialZoneTypeEnum : byte
+{
+	CONSTRUCTION,
+	FIRESAFETY,
+	LIGHTING,
+	OCCUPANCY,
+	SECURITY,
+	THERMAL,
+	TRANSPORT,
+	VENTILATION,
+	USERDEFINED,
+	NOTDEFINED
+}

@@ -1,0 +1,47 @@
+using System.Net;
+
+namespace System.ServiceModel.Security;
+
+public sealed class HttpDigestClientCredential
+{
+	private NetworkCredential _digestCredentials;
+
+	private bool _isReadOnly;
+
+	public NetworkCredential ClientCredential
+	{
+		get
+		{
+			return _digestCredentials;
+		}
+		set
+		{
+			ThrowIfImmutable();
+			_digestCredentials = value;
+		}
+	}
+
+	internal HttpDigestClientCredential()
+	{
+		_digestCredentials = new NetworkCredential();
+	}
+
+	internal HttpDigestClientCredential(HttpDigestClientCredential other)
+	{
+		_digestCredentials = SecurityUtils.GetNetworkCredentialsCopy(other._digestCredentials);
+		_isReadOnly = other._isReadOnly;
+	}
+
+	internal void MakeReadOnly()
+	{
+		_isReadOnly = true;
+	}
+
+	private void ThrowIfImmutable()
+	{
+		if (_isReadOnly)
+		{
+			throw DiagnosticUtility.ExceptionUtility.ThrowHelperError(new InvalidOperationException(System.SR.ObjectIsReadOnly));
+		}
+	}
+}
