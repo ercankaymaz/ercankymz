@@ -3,13 +3,15 @@ name: Test source inventory and build
 on:
   push:
     branches: [ Test ]
+  pull_request:
+    branches: [ Test ]
   workflow_dispatch:
 
 jobs:
   inventory-build:
     runs-on: windows-latest
     steps:
-      - name: Checkout Test
+      - name: Checkout source
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
