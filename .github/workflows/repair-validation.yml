@@ -47,8 +47,15 @@ jobs:
           "Click handlers: $((Select-String -Path $files.FullName -SimpleMatch '.Click +=' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append build-logs/inventory.txt
           "ValueChanged handlers: $((Select-String -Path $files.FullName -SimpleMatch '.ValueChanged +=' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append build-logs/inventory.txt
           "Convert.ToDouble uses: $((Select-String -Path $files.FullName -SimpleMatch 'Convert.ToDouble(' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append build-logs/inventory.txt
+          "Solutions/projects:" | Tee-Object -Append build-logs/inventory.txt
+          Get-ChildItem -Recurse -File -Include *.sln,*.csproj | ForEach-Object FullName | Tee-Object -Append build-logs/inventory.txt
           Select-String -Path $files.FullName -Pattern 'catch\s*(\([^)]*\))?\s*\{\s*\}' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } | Set-Content build-logs/empty-catches.txt
           Select-String -Path $files.FullName -Pattern '/\s*(Count|num\w*)' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } | Set-Content build-logs/division-candidates.txt
+
+      - name: Audit project binary dependencies
+        continue-on-error: true
+        shell: pwsh
+        run: ./.repair/dependency-audit.ps1
 
       - name: Restore and build
         shell: pwsh
@@ -62,21 +69,37 @@ jobs:
             foreach ($s in $solutions) {
               "===== SOLUTION $($s.FullName) =====" | Tee-Object -Append $log
               nuget restore $s.FullName 2>&1 | Tee-Object -Append $log
+              if ($LASTEXITCODE -ne 0) { "RESTORE_FAILED $($s.FullName)" | Tee-Object -Append $log; $failed = $true }
               msbuild $s.FullName /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
-              if ($LASTEXITCODE -ne 0) { $failed = $true }
+              if ($LASTEXITCODE -ne 0) { "BUILD_FAILED $($s.FullName)" | Tee-Object -Append $log; $failed = $true }
             }
           } elseif ($projects.Count -gt 0) {
             foreach ($p in $projects) {
               "===== PROJECT $($p.FullName) =====" | Tee-Object -Append $log
               nuget restore $p.FullName 2>&1 | Tee-Object -Append $log
+              if ($LASTEXITCODE -ne 0) { "RESTORE_FAILED $($p.FullName)" | Tee-Object -Append $log; $failed = $true }
               msbuild $p.FullName /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
-              if ($LASTEXITCODE -ne 0) { $failed = $true }
+              if ($LASTEXITCODE -ne 0) { "BUILD_FAILED $($p.FullName)" | Tee-Object -Append $log; $failed = $true }
             }
           } else {
             "NO_BUILD_PROJECTS_FOUND" | Tee-Object -Append $log
             $failed = $true
           }
           if ($failed) { exit 1 }
+
+      - name: Extract build errors
+        if: always()
+        shell: pwsh
+        run: |
+          $src = 'build-logs/build.txt'
+          $dst = 'build-logs/build-errors.txt'
+          if (Test-Path $src) {
+            $matches = @(Select-String -Path $src -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error|BUILD_FAILED|RESTORE_FAILED' -CaseSensitive:$false)
+            "Build error lines: $($matches.Count)" | Tee-Object $dst
+            $matches | ForEach-Object { $_.Line } | Select-Object -Unique | Add-Content $dst
+          } else {
+            'BUILD_LOG_NOT_FOUND' | Set-Content $dst
+          }
 
       - name: Collect DLL outputs
         if: always()
