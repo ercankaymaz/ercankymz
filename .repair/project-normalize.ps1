@@ -9,6 +9,7 @@ $netstandardFixes = 0
 $windowsTfmFixes = 0
 $resourceDedupeFixes = 0
 $projectReferenceFixes = 0
+$binaryRelinkFixes = 0
 $nullableFixes = 0
 $changedProjects = 0
 
@@ -29,6 +30,21 @@ foreach ($project in $allProjects) {
 }
 "Decompiled project map entries: $($projectMap.Count)" | Tee-Object -Append $log
 
+# Build a repository-wide map of original/recovered DLLs outside generated bin/obj.
+# Third-party assemblies should use their real binaries whenever available; rebuilding
+# heavily decompiled vendor code (SharpDX, Newtonsoft, Esent, etc.) creates thousands
+# of artificial compiler errors unrelated to the CAD/CAM application itself.
+$binaryMap = @{}
+Get-ChildItem -Recurse -Filter *.dll -File | Where-Object {
+    $_.FullName -notmatch '\\(bin|obj)\\'
+} | ForEach-Object {
+    $key = $_.BaseName.ToLowerInvariant()
+    if (-not $binaryMap.ContainsKey($key)) {
+        $binaryMap[$key] = $_.FullName
+    }
+}
+"Repository binary map entries: $($binaryMap.Count)" | Tee-Object -Append $log
+
 foreach ($project in $allProjects) {
     $path = $project.FullName
     $text = [IO.File]::ReadAllText($path)
@@ -38,27 +54,16 @@ foreach ($project in $allProjects) {
     $text = [regex]::Replace($text, '<LangVersion>\s*15(?:\.0)?\s*</LangVersion>', '<LangVersion>latest</LangVersion>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     if ($text -ne $before) { $langFixes++; "FIX LangVersion 15 -> latest: $path" | Tee-Object -Append $log }
 
-    # Newtonsoft's recovered sources contain nullable-reference annotations such as
-    # unconstrained T?. The original nullable metadata was lost by decompilation, so
-    # enable nullable context for this project to prevent T? being interpreted as
-    # Nullable<T> and breaking virtual override signatures.
     if ($project.Name -ieq 'Newtonsoft.Json.csproj' -and $text -notmatch '<Nullable>') {
         $text = $text.Replace('<GenerateAssemblyInfo>False</GenerateAssemblyInfo>', "<GenerateAssemblyInfo>False</GenerateAssemblyInfo>`n    <Nullable>enable</Nullable>")
         $nullableFixes++
         "FIX nullable context for Newtonsoft.Json: $path" | Tee-Object -Append $log
     }
 
-    # The recovered CAD/CAM application targets .NET Framework 4.8. Decompiled
-    # dependencies were inferred as mixed net40/net45/net472 targets, which makes
-    # valid source-project references incompatible. Align all net4x projects to net48.
     $before = $text
     $text = [regex]::Replace($text, '<TargetFramework>\s*net(?:40|45|451|452|46|461|462|47|471|472)\s*</TargetFramework>', '<TargetFramework>net48</TargetFramework>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     if ($text -ne $before) { $frameworkFixes++; "FIX .NET Framework target -> net48: $path" | Tee-Object -Append $log }
 
-    # netstandard projects recovered from binary dependencies are consumed only by
-    # this net48 desktop application. Building them as netstandard inside the repaired
-    # source graph produced NU1702/ref-pack failures and missing predefined System types.
-    # Align netstandard 1.x/2.0 sources to the host application's net48 target.
     $before = $text
     $text = [regex]::Replace($text, '<TargetFramework>\s*netstandard(?:1\.[0-6]|2\.0)\s*</TargetFramework>', '<TargetFramework>net48</TargetFramework>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     if ($text -ne $before) { $netstandardFixes++; "FIX recovered netstandard target -> net48: $path" | Tee-Object -Append $log }
@@ -95,9 +100,26 @@ foreach ($project in $allProjects) {
             if ([string]::IsNullOrWhiteSpace($hint)) { continue }
             $resolvedDll = [IO.Path]::GetFullPath((Join-Path $project.DirectoryName $hint))
             if (Test-Path -LiteralPath $resolvedDll -PathType Leaf) { continue }
+
             $include = [string]$ref.GetAttribute('Include')
             if ([string]::IsNullOrWhiteSpace($include)) { continue }
-            $assemblyKey = ($include.Split(',')[0]).Trim().ToLowerInvariant()
+            $assemblyName = ($include.Split(',')[0]).Trim()
+            $assemblyKey = $assemblyName.ToLowerInvariant()
+
+            # Keep company/CAD assemblies source-first so our repaired code is what gets
+            # compiled. Vendor/framework assemblies are binary-first when a recovered DLL
+            # exists somewhere else in the repository.
+            $preferSource = $assemblyKey.StartsWith('bu') -or $assemblyKey.StartsWith('cmd')
+            if (-not $preferSource -and $binaryMap.ContainsKey($assemblyKey)) {
+                $binaryPath = [string]$binaryMap[$assemblyKey]
+                $relativeDll = [IO.Path]::GetRelativePath($project.DirectoryName, $binaryPath).Replace('/', '\')
+                $hintNode.InnerText = $relativeDll
+                $binaryRelinkFixes++
+                $xmlChanged = $true
+                "FIX missing HintPath -> recovered binary: $path :: $include :: $relativeDll" | Tee-Object -Append $log
+                continue
+            }
+
             if (-not $projectMap.ContainsKey($assemblyKey)) { continue }
             $targetProject = [string]$projectMap[$assemblyKey]
             if ([string]::Equals($targetProject, $path, [StringComparison]::OrdinalIgnoreCase)) { continue }
@@ -105,7 +127,8 @@ foreach ($project in $allProjects) {
             $newRef = $projXml.CreateElement('ProjectReference', $ref.NamespaceURI)
             $newRef.SetAttribute('Include', $relativeProject)
             [void]$ref.ParentNode.ReplaceChild($newRef, $ref)
-            $projectReferenceFixes++; $xmlChanged = $true
+            $projectReferenceFixes++
+            $xmlChanged = $true
             "FIX missing HintPath -> ProjectReference: $path :: $include :: $relativeProject" | Tee-Object -Append $log
         }
         if ($xmlChanged) { $text = $projXml.OuterXml }
@@ -123,4 +146,5 @@ foreach ($project in $allProjects) {
 "netstandard -> net48 fixes: $netstandardFixes" | Tee-Object -Append $log
 "Windows TFM fixes: $windowsTfmFixes" | Tee-Object -Append $log
 "Duplicate EmbeddedResource fixes: $resourceDedupeFixes" | Tee-Object -Append $log
+"Recovered binary relinks: $binaryRelinkFixes" | Tee-Object -Append $log
 "HintPath -> ProjectReference fixes: $projectReferenceFixes" | Tee-Object -Append $log
