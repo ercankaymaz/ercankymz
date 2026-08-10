@@ -1,0 +1,110 @@
+name: Repair branch Windows CAD CAM validation
+
+on:
+  push:
+    branches:
+      - repair-all-errors
+  pull_request:
+    branches:
+      - Test
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Enable Git long paths
+        shell: pwsh
+        run: git config --global core.longpaths true
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Prepare logs
+        shell: pwsh
+        run: New-Item -ItemType Directory -Force build-logs | Out-Null
+
+      - name: Apply CAD CAM repairs
+        shell: pwsh
+        run: ./.repair/cadcam-repair.ps1
+
+      - name: Inventory and audit
+        shell: pwsh
+        run: |
+          $files = @(Get-ChildItem -Recurse -Filter *.cs -File)
+          "C# files: $($files.Count)" | Tee-Object build-logs/inventory.txt
+          "CSPROJ files: $((Get-ChildItem -Recurse -Filter *.csproj -File).Count)" | Tee-Object -Append build-logs/inventory.txt
+          "SLN files: $((Get-ChildItem -Recurse -Filter *.sln -File).Count)" | Tee-Object -Append build-logs/inventory.txt
+          "Form/UserControl classes: $((Select-String -Path $files.FullName -Pattern 'class\s+\w+\s*:\s*(Form|UserControl)' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append build-logs/inventory.txt
+          "Click handlers: $((Select-String -Path $files.FullName -SimpleMatch '.Click +=' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append build-logs/inventory.txt
+          "ValueChanged handlers: $((Select-String -Path $files.FullName -SimpleMatch '.ValueChanged +=' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append build-logs/inventory.txt
+          "Convert.ToDouble uses: $((Select-String -Path $files.FullName -SimpleMatch 'Convert.ToDouble(' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append build-logs/inventory.txt
+          Select-String -Path $files.FullName -Pattern 'catch\s*(\([^)]*\))?\s*\{\s*\}' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } | Set-Content build-logs/empty-catches.txt
+          Select-String -Path $files.FullName -Pattern '/\s*(Count|num\w*)' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } | Set-Content build-logs/division-candidates.txt
+
+      - name: Restore and build
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $log = 'build-logs/build.txt'
+          $solutions = @(Get-ChildItem -Recurse -Filter *.sln -File)
+          $projects = @(Get-ChildItem -Recurse -Filter *.csproj -File)
+          $failed = $false
+          if ($solutions.Count -gt 0) {
+            foreach ($s in $solutions) {
+              "===== SOLUTION $($s.FullName) =====" | Tee-Object -Append $log
+              nuget restore $s.FullName 2>&1 | Tee-Object -Append $log
+              msbuild $s.FullName /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
+              if ($LASTEXITCODE -ne 0) { $failed = $true }
+            }
+          } elseif ($projects.Count -gt 0) {
+            foreach ($p in $projects) {
+              "===== PROJECT $($p.FullName) =====" | Tee-Object -Append $log
+              nuget restore $p.FullName 2>&1 | Tee-Object -Append $log
+              msbuild $p.FullName /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
+              if ($LASTEXITCODE -ne 0) { $failed = $true }
+            }
+          } else {
+            "NO_BUILD_PROJECTS_FOUND" | Tee-Object -Append $log
+            $failed = $true
+          }
+          if ($failed) { exit 1 }
+
+      - name: Collect DLL outputs
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force final-dll | Out-Null
+          $seen = @{}
+          Get-ChildItem -Recurse -Filter *.dll -File | Where-Object { $_.FullName -match '\\(bin|Release)\\' } | ForEach-Object {
+            if (-not $seen.ContainsKey($_.Name)) {
+              Copy-Item $_.FullName (Join-Path final-dll $_.Name) -Force
+              $seen[$_.Name] = $_.FullName
+            }
+          }
+          "DLL count: $($seen.Count)" | Tee-Object build-logs/dll-count.txt
+          $seen.GetEnumerator() | Sort-Object Name | ForEach-Object { "$($_.Name) <= $($_.Value)" } | Add-Content build-logs/dll-count.txt
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repair-build-logs
+          path: build-logs
+          if-no-files-found: warn
+
+      - name: Upload DLLs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-dll
+          path: final-dll
+          if-no-files-found: warn
