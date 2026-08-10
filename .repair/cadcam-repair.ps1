@@ -81,6 +81,20 @@ Get-ChildItem -Recurse -Filter *.cs -File | ForEach-Object {
         "FIX zero-size geometry scale guard: $path" | Tee-Object -Append $log
     }
 
+    # C# 14 introduces 'field' as a contextual keyword inside property accessors.
+    # The decompiled ImageProcessor Rational<T>.MaxValue getter uses a local named
+    # field, which is then parsed as the backing-field keyword. Rename only that
+    # exact decompiler construct; behavior remains identical.
+    if ($path -like '*\ImageProcessor\Imaging\MetaData\Rational.cs') {
+        $beforeImageProcessor = $text
+        $text = $text.Replace('FieldInfo field = typeof(T).GetField("MaxValue", BindingFlags.Static | BindingFlags.Public);', 'FieldInfo fieldInfo = typeof(T).GetField("MaxValue", BindingFlags.Static | BindingFlags.Public);')
+        $text = $text.Replace('if (field != null)', 'if (fieldInfo != null)')
+        $text = $text.Replace('Convert.ToDecimal(field.GetValue(null))', 'Convert.ToDecimal(fieldInfo.GetValue(null))')
+        if ($text -ne $beforeImageProcessor) {
+            "FIX ImageProcessor C#14 field keyword conflict: $path" | Tee-Object -Append $log
+        }
+    }
+
     if ($text -ne $original) {
         [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
         $patchedCount++
