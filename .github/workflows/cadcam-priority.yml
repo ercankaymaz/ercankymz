@@ -59,23 +59,19 @@ jobs:
             'Decompiled/buCadCamRes/buCadCamRes.csproj',
             'Decompiled/CMDMarbleCNC/CMDMarbleCNC.csproj'
           )
-          $failed = $false
           foreach ($project in $projects) {
             if (-not (Test-Path $project)) {
               "PROJECT_NOT_FOUND $project" | Tee-Object -Append $log
-              $failed = $true
-              continue
+              exit 1
             }
             "===== PROJECT $project =====" | Tee-Object -Append $log
             msbuild $project /restore /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
             if ($LASTEXITCODE -ne 0) {
               "BUILD_FAILED $project" | Tee-Object -Append $log
-              $failed = $true
-            } else {
-              "BUILD_OK $project" | Tee-Object -Append $log
+              exit 1
             }
+            "BUILD_OK $project" | Tee-Object -Append $log
           }
-          if ($failed) { exit 1 }
 
       - name: Extract CAD CAM core errors
         if: always()
