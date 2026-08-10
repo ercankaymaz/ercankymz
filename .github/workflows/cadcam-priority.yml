@@ -32,14 +32,15 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Restore partial DLL bootstrap cache
+      - name: Restore validated DLL bootstrap cache
         continue-on-error: true
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          New-Item -ItemType Directory -Force build-logs | Out-Null
           New-Item -ItemType Directory -Force .repair/bootstrap-bin | Out-Null
-          gh run download 31432391159 --repo $env:GITHUB_REPOSITORY --name cadcam-core-dll --dir .repair/bootstrap-bin
+          gh run download 31433581668 --repo $env:GITHUB_REPOSITORY --name final-dll --dir .repair/bootstrap-bin
           if ($LASTEXITCODE -ne 0) {
             Write-Warning 'Bootstrap artifact could not be downloaded; continuing with source-only dependency resolution.'
             exit 0
