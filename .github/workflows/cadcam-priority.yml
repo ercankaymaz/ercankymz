@@ -37,6 +37,11 @@ jobs:
           ./.repair/cadcam-repair.ps1
           ./.repair/project-normalize.ps1
 
+      - name: Audit binary HintPath dependencies
+        continue-on-error: true
+        shell: pwsh
+        run: ./.repair/dependency-audit.ps1
+
       - name: Build CAD CAM core projects
         shell: pwsh
         run: |
