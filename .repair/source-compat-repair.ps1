@@ -3,7 +3,15 @@ New-Item -ItemType Directory -Force build-logs | Out-Null
 $log = 'build-logs/source-compat-repairs.txt'
 Remove-Item $log -ErrorAction Ignore
 $patched = 0
+$vendorProjectRefsRemoved = 0
 
+# Core assemblies are intentionally rebuilt from repaired source. Decompiled vendor
+# assemblies are NOT source dependencies of the repaired CAD/CAM graph because their
+# recovered code can contain thousands of artificial compiler errors.
+$coreAssemblies = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+@('buClass','buCore','buControls','buEyeBase','buCadCamRes','buMW','CMDMarbleCNC','CmdLangAPI') | ForEach-Object { [void]$coreAssemblies.Add($_) }
+
+# Repair known decompiler source-compatibility artifacts.
 $targets = @(
     'Decompiled/Newtonsoft.Json/Newtonsoft/Json/Linq/JContainer.cs'
 )
@@ -35,4 +43,52 @@ foreach ($relativePath in $targets) {
     }
 }
 
+# project-normalize may map missing HintPath references to decompiled projects. Keep
+# that behavior only for the CAD/CAM core allowlist. For every auxiliary/vendor
+# assembly, replace the generated ProjectReference with a plain assembly Reference.
+# If a real DLL is present MSBuild can resolve it; if it is absent we get one honest
+# missing-reference error instead of compiling broken third-party decompiler output.
+Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
+    $project = $_
+    try {
+        [xml]$xml = [IO.File]::ReadAllText($project.FullName)
+        $changed = $false
+        $projectRefs = @($xml.SelectNodes('//*[local-name()="ProjectReference"]'))
+        foreach ($projectRef in $projectRefs) {
+            $include = [string]$projectRef.GetAttribute('Include')
+            if ([string]::IsNullOrWhiteSpace($include)) { continue }
+
+            $targetPath = [IO.Path]::GetFullPath((Join-Path $project.DirectoryName $include))
+            $assemblyName = [IO.Path]::GetFileNameWithoutExtension($targetPath)
+            if ($coreAssemblies.Contains($assemblyName)) { continue }
+
+            # Prefer the target project's explicit AssemblyName when available.
+            if (Test-Path -LiteralPath $targetPath -PathType Leaf) {
+                try {
+                    [xml]$targetXml = [IO.File]::ReadAllText($targetPath)
+                    $assemblyNode = $targetXml.SelectSingleNode('//*[local-name()="AssemblyName"]')
+                    if ($null -ne $assemblyNode -and -not [string]::IsNullOrWhiteSpace($assemblyNode.InnerText)) {
+                        $assemblyName = $assemblyNode.InnerText.Trim()
+                    }
+                } catch { }
+            }
+
+            if ([string]::IsNullOrWhiteSpace($assemblyName)) { continue }
+            $reference = $xml.CreateElement('Reference', $projectRef.NamespaceURI)
+            $reference.SetAttribute('Include', $assemblyName)
+            [void]$projectRef.ParentNode.ReplaceChild($reference, $projectRef)
+            $vendorProjectRefsRemoved++
+            $changed = $true
+            "FIX vendor ProjectReference -> assembly Reference: $($project.FullName) :: $assemblyName" | Tee-Object -Append $log
+        }
+
+        if ($changed) {
+            [IO.File]::WriteAllText($project.FullName, $xml.OuterXml, [Text.UTF8Encoding]::new($false))
+        }
+    } catch {
+        "PROJECT XMLERR $($project.FullName): $($_.Exception.Message)" | Tee-Object -Append $log
+    }
+}
+
 "Patched compatibility sources: $patched" | Tee-Object -Append $log
+"Vendor ProjectReferences removed: $vendorProjectRefsRemoved" | Tee-Object -Append $log
