@@ -1,16 +1,13 @@
 name: CAD CAM core fast validation
 
 on:
-  push:
-    branches:
-      - repair-all-errors
   pull_request:
     branches:
       - Test
   workflow_dispatch:
 
 concurrency:
-  group: cadcam-core-${{ github.event.pull_request.number || github.ref }}
+  group: cadcam-core-pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
