@@ -5,11 +5,11 @@ Remove-Item $log -ErrorAction Ignore
 $patched = 0
 $vendorProjectRefsRemoved = 0
 
-# Core assemblies are intentionally rebuilt from repaired source. Decompiled vendor
-# assemblies are NOT source dependencies of the repaired CAD/CAM graph because their
-# recovered code can contain thousands of artificial compiler errors.
+# Core assemblies are intentionally rebuilt from repaired source. A very small set of
+# third-party assemblies is also source-built because we have explicit, verified
+# decompiler-compatibility repairs for them. Everything else remains binary-first.
 $coreAssemblies = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
-@('buClass','buCore','buControls','buEyeBase','buCadCamRes','buMW','CMDMarbleCNC','CmdLangAPI') | ForEach-Object { [void]$coreAssemblies.Add($_) }
+@('buClass','buCore','buControls','buEyeBase','buCadCamRes','buMW','CMDMarbleCNC','CmdLangAPI','Newtonsoft.Json','ImageProcessor') | ForEach-Object { [void]$coreAssemblies.Add($_) }
 
 # Repair known decompiler source-compatibility artifacts.
 $targets = @(
@@ -44,10 +44,10 @@ foreach ($relativePath in $targets) {
 }
 
 # project-normalize may map missing HintPath references to decompiled projects. Keep
-# that behavior only for the CAD/CAM core allowlist. For every auxiliary/vendor
-# assembly, replace the generated ProjectReference with a plain assembly Reference.
-# If a real DLL is present MSBuild can resolve it; if it is absent we get one honest
-# missing-reference error instead of compiling broken third-party decompiler output.
+# that behavior only for the repaired/source-build allowlist above. For every other
+# auxiliary/vendor assembly, replace the generated ProjectReference with a plain
+# assembly Reference. If a real DLL is present MSBuild can resolve it; if absent we get
+# one honest missing-reference error instead of compiling broken third-party output.
 Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
     $project = $_
     try {
@@ -60,9 +60,9 @@ Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
 
             $targetPath = [IO.Path]::GetFullPath((Join-Path $project.DirectoryName $include))
             $assemblyName = [IO.Path]::GetFileNameWithoutExtension($targetPath)
-            if ($coreAssemblies.Contains($assemblyName)) { continue }
 
-            # Prefer the target project's explicit AssemblyName when available.
+            # Prefer the target project's explicit AssemblyName when available before
+            # applying the allowlist decision; project folder and AssemblyName can differ.
             if (Test-Path -LiteralPath $targetPath -PathType Leaf) {
                 try {
                     [xml]$targetXml = [IO.File]::ReadAllText($targetPath)
@@ -73,7 +73,9 @@ Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
                 } catch { }
             }
 
+            if ($coreAssemblies.Contains($assemblyName)) { continue }
             if ([string]::IsNullOrWhiteSpace($assemblyName)) { continue }
+
             $reference = $xml.CreateElement('Reference', $projectRef.NamespaceURI)
             $reference.SetAttribute('Include', $assemblyName)
             [void]$projectRef.ParentNode.ReplaceChild($reference, $projectRef)
