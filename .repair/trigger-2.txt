@@ -1,1 +1,2 @@
 Trigger PR validation after enabling Git long paths on Test.
+Re-trigger Windows CAD/CAM audit and DLL build on 2026-08-10.
