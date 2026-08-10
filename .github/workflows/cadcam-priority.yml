@@ -1,0 +1,111 @@
+name: CAD CAM core fast validation
+
+on:
+  push:
+    branches:
+      - repair-all-errors
+  workflow_dispatch:
+
+jobs:
+  cadcam-core:
+    runs-on: windows-latest
+    steps:
+      - name: Enable Git long paths before checkout
+        shell: pwsh
+        run: |
+          git config --global core.longpaths true
+          git config --global core.protectNTFS false
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Prepare and normalize
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build-logs | Out-Null
+          ./.repair/cadcam-repair.ps1
+          ./.repair/project-normalize.ps1
+
+      - name: Build CAD CAM core projects
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $log = 'build-logs/cadcam-core-build.txt'
+          $projects = @(
+            'Decompiled/buClass/buClass.csproj',
+            'Decompiled/buCore/buCore.csproj',
+            'Decompiled/buControls/buControls.csproj',
+            'Decompiled/buEyeBase/buEyeBase.csproj',
+            'Decompiled/buCadCamRes/buCadCamRes.csproj',
+            'Decompiled/CMDMarbleCNC/CMDMarbleCNC.csproj'
+          )
+          $failed = $false
+          foreach ($project in $projects) {
+            if (-not (Test-Path $project)) {
+              "PROJECT_NOT_FOUND $project" | Tee-Object -Append $log
+              $failed = $true
+              continue
+            }
+            "===== PROJECT $project =====" | Tee-Object -Append $log
+            nuget restore $project 2>&1 | Tee-Object -Append $log
+            if ($LASTEXITCODE -ne 0) {
+              "RESTORE_FAILED $project" | Tee-Object -Append $log
+              $failed = $true
+            }
+            msbuild $project /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
+            if ($LASTEXITCODE -ne 0) {
+              "BUILD_FAILED $project" | Tee-Object -Append $log
+              $failed = $true
+            } else {
+              "BUILD_OK $project" | Tee-Object -Append $log
+            }
+          }
+          if ($failed) { exit 1 }
+
+      - name: Extract CAD CAM core errors
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build-logs | Out-Null
+          $src = 'build-logs/cadcam-core-build.txt'
+          $dst = 'build-logs/cadcam-core-errors.txt'
+          if (Test-Path $src) {
+            $matches = @(Select-String -Path $src -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error|BUILD_FAILED|RESTORE_FAILED|PROJECT_NOT_FOUND' -CaseSensitive:$false)
+            "CAD CAM core error lines: $($matches.Count)" | Tee-Object $dst
+            $matches | ForEach-Object { $_.Line } | Select-Object -Unique | Add-Content $dst
+          } else {
+            'CORE_BUILD_LOG_NOT_FOUND' | Set-Content $dst
+          }
+
+      - name: Collect core DLLs
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force core-dll | Out-Null
+          Get-ChildItem -Recurse -File -Filter *.dll | Where-Object { $_.FullName -match '\\bin\\Release\\' } | ForEach-Object {
+            Copy-Item $_.FullName (Join-Path core-dll $_.Name) -Force
+          }
+
+      - name: Upload core logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadcam-core-logs
+          path: build-logs
+          if-no-files-found: warn
+
+      - name: Upload core DLLs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cadcam-core-dll
+          path: core-dll
+          if-no-files-found: warn
