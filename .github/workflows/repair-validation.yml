@@ -57,6 +57,10 @@ jobs:
         shell: pwsh
         run: ./.repair/dependency-audit.ps1
 
+      - name: Audit CAM geometry singularities
+        shell: pwsh
+        run: ./.repair/cam-safety-audit.ps1
+
       - name: Restore and build
         shell: pwsh
         run: |
