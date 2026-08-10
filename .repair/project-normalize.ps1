@@ -30,10 +30,6 @@ foreach ($project in $allProjects) {
 }
 "Decompiled project map entries: $($projectMap.Count)" | Tee-Object -Append $log
 
-# Build a repository-wide map of original/recovered DLLs outside generated bin/obj.
-# Third-party assemblies should use their real binaries whenever available; rebuilding
-# heavily decompiled vendor code (SharpDX, Newtonsoft, Esent, etc.) creates thousands
-# of artificial compiler errors unrelated to the CAD/CAM application itself.
 $binaryMap = @{}
 Get-ChildItem -Recurse -Filter *.dll -File | Where-Object {
     $_.FullName -notmatch '\\(bin|obj)\\'
@@ -44,6 +40,13 @@ Get-ChildItem -Recurse -Filter *.dll -File | Where-Object {
     }
 }
 "Repository binary map entries: $($binaryMap.Count)" | Tee-Object -Append $log
+
+# Only these assemblies are intentionally rebuilt from repaired source. Auxiliary
+# obfuscated/vendor modules (including buPowerNest) are binary-first when a recovered
+# DLL is present, preventing decompiler-only duplicate-symbol errors from poisoning
+# the main CAD/CAM build graph.
+$sourceFirstAssemblies = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+@('buClass','buCore','buControls','buEyeBase','buCadCamRes','buMW','CMDMarbleCNC','CmdLangAPI') | ForEach-Object { [void]$sourceFirstAssemblies.Add($_) }
 
 foreach ($project in $allProjects) {
     $path = $project.FullName
@@ -105,11 +108,8 @@ foreach ($project in $allProjects) {
             if ([string]::IsNullOrWhiteSpace($include)) { continue }
             $assemblyName = ($include.Split(',')[0]).Trim()
             $assemblyKey = $assemblyName.ToLowerInvariant()
+            $preferSource = $sourceFirstAssemblies.Contains($assemblyName)
 
-            # Keep company/CAD assemblies source-first so our repaired code is what gets
-            # compiled. Vendor/framework assemblies are binary-first when a recovered DLL
-            # exists somewhere else in the repository.
-            $preferSource = $assemblyKey.StartsWith('bu') -or $assemblyKey.StartsWith('cmd')
             if (-not $preferSource -and $binaryMap.ContainsKey($assemblyKey)) {
                 $binaryPath = [string]$binaryMap[$assemblyKey]
                 $relativeDll = [IO.Path]::GetRelativePath($project.DirectoryName, $binaryPath).Replace('/', '\')
