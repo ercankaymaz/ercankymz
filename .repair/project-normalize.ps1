@@ -4,6 +4,7 @@ $log = 'build-logs/project-normalize.txt'
 Remove-Item $log -ErrorAction Ignore
 
 $langFixes = 0
+$frameworkFixes = 0
 $windowsTfmFixes = 0
 $resourceDedupeFixes = 0
 $projectReferenceFixes = 0
@@ -11,28 +12,19 @@ $changedProjects = 0
 
 $allProjects = @(Get-ChildItem -Recurse -Filter *.csproj -File)
 $projectMap = @{}
-
-# Build an assembly-name -> decompiled project map before changing any project.
 foreach ($project in $allProjects) {
     try {
         [xml]$mapXml = [IO.File]::ReadAllText($project.FullName)
         $assemblyNode = $mapXml.SelectSingleNode('//*[local-name()="AssemblyName"]')
-        $assemblyName = if ($null -ne $assemblyNode -and -not [string]::IsNullOrWhiteSpace($assemblyNode.InnerText)) {
-            $assemblyNode.InnerText.Trim()
-        } else {
-            [IO.Path]::GetFileNameWithoutExtension($project.Name)
-        }
+        $assemblyName = if ($null -ne $assemblyNode -and -not [string]::IsNullOrWhiteSpace($assemblyNode.InnerText)) { $assemblyNode.InnerText.Trim() } else { [IO.Path]::GetFileNameWithoutExtension($project.Name) }
         if (-not [string]::IsNullOrWhiteSpace($assemblyName)) {
             $key = $assemblyName.ToLowerInvariant()
-            if (-not $projectMap.ContainsKey($key)) {
-                $projectMap[$key] = $project.FullName
-            }
+            if (-not $projectMap.ContainsKey($key)) { $projectMap[$key] = $project.FullName }
         }
     } catch {
         "MAP XMLERR $($project.FullName): $($_.Exception.Message)" | Tee-Object -Append $log
     }
 }
-
 "Decompiled project map entries: $($projectMap.Count)" | Tee-Object -Append $log
 
 foreach ($project in $allProjects) {
@@ -42,20 +34,20 @@ foreach ($project in $allProjects) {
 
     $before = $text
     $text = [regex]::Replace($text, '<LangVersion>\s*15(?:\.0)?\s*</LangVersion>', '<LangVersion>latest</LangVersion>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
-    if ($text -ne $before) {
-        $langFixes++
-        "FIX LangVersion 15 -> latest: $path" | Tee-Object -Append $log
-    }
+    if ($text -ne $before) { $langFixes++; "FIX LangVersion 15 -> latest: $path" | Tee-Object -Append $log }
+
+    # The recovered CAD/CAM application targets .NET Framework 4.8. Decompiled
+    # dependencies were inferred as mixed net40/net45/net472 targets, which makes
+    # valid source-project references incompatible. Align all net4x projects to net48.
+    $before = $text
+    $text = [regex]::Replace($text, '<TargetFramework>\s*net(?:40|45|451|452|46|461|462|47|471|472)\s*</TargetFramework>', '<TargetFramework>net48</TargetFramework>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    if ($text -ne $before) { $frameworkFixes++; "FIX .NET Framework target -> net48: $path" | Tee-Object -Append $log }
 
     if ($text -match '<UseWindowsForms>\s*True\s*</UseWindowsForms>' -or $text -match '<UseWPF>\s*True\s*</UseWPF>' -or $text -match 'Sdk="Microsoft\.NET\.Sdk\.WindowsDesktop"') {
         foreach ($tfm in @('net5.0','net6.0','net7.0','net8.0','net9.0','net10.0')) {
             $plain = "<TargetFramework>$tfm</TargetFramework>"
             $windows = "<TargetFramework>$tfm-windows</TargetFramework>"
-            if ($text.Contains($plain)) {
-                $text = $text.Replace($plain, $windows)
-                $windowsTfmFixes++
-                "FIX Windows target framework $tfm -> $tfm-windows: $path" | Tee-Object -Append $log
-            }
+            if ($text.Contains($plain)) { $text = $text.Replace($plain, $windows); $windowsTfmFixes++; "FIX Windows target framework $tfm -> $tfm-windows: $path" | Tee-Object -Append $log }
         }
     }
 
@@ -65,12 +57,8 @@ foreach ($project in $allProjects) {
     $rebuilt = New-Object System.Collections.Generic.List[string]
     foreach ($line in $lines) {
         $trimmed = $line.Trim()
-        if ($trimmed -match '^<EmbeddedResource\s+Include="[^"]+"[^>]*?/?>$') {
-            if (-not $seenEmbedded.Add($trimmed)) {
-                $resourceDedupeFixes++
-                "FIX duplicate EmbeddedResource: $path :: $trimmed" | Tee-Object -Append $log
-                continue
-            }
+        if ($trimmed -match '^<EmbeddedResource\s+Include="[^"]+"[^>]*?/?>$' -and -not $seenEmbedded.Add($trimmed)) {
+            $resourceDedupeFixes++; "FIX duplicate EmbeddedResource: $path :: $trimmed" | Tee-Object -Append $log; continue
         }
         $rebuilt.Add($line)
     }
@@ -85,41 +73,32 @@ foreach ($project in $allProjects) {
             if ($null -eq $hintNode) { continue }
             $hint = [string]$hintNode.InnerText
             if ([string]::IsNullOrWhiteSpace($hint)) { continue }
-
             $resolvedDll = [IO.Path]::GetFullPath((Join-Path $project.DirectoryName $hint))
             if (Test-Path -LiteralPath $resolvedDll -PathType Leaf) { continue }
-
             $include = [string]$ref.GetAttribute('Include')
             if ([string]::IsNullOrWhiteSpace($include)) { continue }
             $assemblyKey = ($include.Split(',')[0]).Trim().ToLowerInvariant()
             if (-not $projectMap.ContainsKey($assemblyKey)) { continue }
-
             $targetProject = [string]$projectMap[$assemblyKey]
             if ([string]::Equals($targetProject, $path, [StringComparison]::OrdinalIgnoreCase)) { continue }
-
             $relativeProject = [IO.Path]::GetRelativePath($project.DirectoryName, $targetProject).Replace('/', '\')
             $newRef = $projXml.CreateElement('ProjectReference', $ref.NamespaceURI)
             $newRef.SetAttribute('Include', $relativeProject)
             [void]$ref.ParentNode.ReplaceChild($newRef, $ref)
-            $projectReferenceFixes++
-            $xmlChanged = $true
+            $projectReferenceFixes++; $xmlChanged = $true
             "FIX missing HintPath -> ProjectReference: $path :: $include :: $relativeProject" | Tee-Object -Append $log
         }
-        if ($xmlChanged) {
-            $text = $projXml.OuterXml
-        }
+        if ($xmlChanged) { $text = $projXml.OuterXml }
     } catch {
         "REFERENCE XMLERR ${path}: $($_.Exception.Message)" | Tee-Object -Append $log
     }
 
-    if ($text -ne $original) {
-        [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
-        $changedProjects++
-    }
+    if ($text -ne $original) { [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false)); $changedProjects++ }
 }
 
 "Changed projects: $changedProjects" | Tee-Object -Append $log
 "LangVersion fixes: $langFixes" | Tee-Object -Append $log
+".NET Framework -> net48 fixes: $frameworkFixes" | Tee-Object -Append $log
 "Windows TFM fixes: $windowsTfmFixes" | Tee-Object -Append $log
 "Duplicate EmbeddedResource fixes: $resourceDedupeFixes" | Tee-Object -Append $log
 "HintPath -> ProjectReference fixes: $projectReferenceFixes" | Tee-Object -Append $log
