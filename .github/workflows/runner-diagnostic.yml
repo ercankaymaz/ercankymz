@@ -1,0 +1,20 @@
+name: Runner diagnostic
+
+on:
+  pull_request:
+    branches:
+      - Test
+  workflow_dispatch:
+
+concurrency:
+  group: runner-diagnostic-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Smoke
+        run: |
+          echo "runner=ok"
+          uname -a
