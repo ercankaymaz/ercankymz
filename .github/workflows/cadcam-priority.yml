@@ -9,6 +9,10 @@ on:
       - Test
   workflow_dispatch:
 
+concurrency:
+  group: cadcam-core-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   cadcam-core:
     runs-on: windows-latest
