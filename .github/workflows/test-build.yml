@@ -34,9 +34,6 @@ jobs:
           "CS files: $((Get-ChildItem -Recurse -Filter *.cs -File).Count)" | Tee-Object build-logs/inventory.txt
           "CSPROJ files: $((Get-ChildItem -Recurse -Filter *.csproj -File).Count)" | Tee-Object -Append build-logs/inventory.txt
           "SLN files: $((Get-ChildItem -Recurse -Filter *.sln -File).Count)" | Tee-Object -Append build-logs/inventory.txt
-          "Top-level directories:" | Tee-Object -Append build-logs/inventory.txt
-          Get-ChildItem -Directory | Select-Object -ExpandProperty Name | Sort-Object | Tee-Object -Append build-logs/inventory.txt
-          "Solutions/projects:" | Tee-Object -Append build-logs/inventory.txt
           Get-ChildItem -Recurse -File -Include *.sln,*.csproj | ForEach-Object FullName | Tee-Object -Append build-logs/inventory.txt
 
       - name: Normalize decompiler project metadata
@@ -45,66 +42,150 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $log = 'build-logs/normalization.txt'
           Remove-Item $log -ErrorAction Ignore
-
-          # ILSpy-generated projects may request a language version newer than the
-          # compiler installed with Visual Studio. 'latest' selects the newest
-          # version actually supported by the runner's compiler.
           Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
             $path = $_.FullName
             $text = [IO.File]::ReadAllText($path)
             $original = $text
             $text = [regex]::Replace($text, '<LangVersion>\s*15\.0\s*</LangVersion>', '<LangVersion>latest</LangVersion>')
-
-            # SDK-style WPF/WinForms projects targeting net5+ must explicitly use
-            # a Windows target framework. Only touch projects that opt into a
-            # Windows desktop UI and are not already windows-qualified.
             if ($text -match '<UseWPF>\s*true\s*</UseWPF>|<UseWindowsForms>\s*true\s*</UseWindowsForms>') {
               $text = [regex]::Replace($text, '<TargetFramework>(net(?:5|6|7|8|9|10)\.0)</TargetFramework>', '<TargetFramework>$1-windows</TargetFramework>')
             }
-
-            # Decompiled SDK projects often explicitly include .resx/xml files
-            # that the SDK also includes implicitly.
-            if ($text -match '<EmbeddedResource\s+Include=') {
-              if ($text -notmatch '<EnableDefaultEmbeddedResourceItems>') {
-                $text = [regex]::Replace($text, '<PropertyGroup>', "<PropertyGroup>`r`n    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>", 1)
-              }
+            if ($text -match '<EmbeddedResource\s+Include=' -and $text -notmatch '<EnableDefaultEmbeddedResourceItems>') {
+              $text = [regex]::Replace($text, '<PropertyGroup>', "<PropertyGroup>`r`n    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>", 1)
             }
-
             if ($text -ne $original) {
               [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
               "PATCHED CSPROJ: $path" | Tee-Object -Append $log
             }
           }
 
-          # resgen cannot deserialize custom buControls design-time objects when
-          # rebuilding decompiled resources before buControls itself is available.
-          # Remove only those custom design-time serialized values; normal strings,
-          # images and standard resources are preserved.
           Get-ChildItem -Recurse -Filter *.resx -File | ForEach-Object {
             $path = $_.FullName
             $raw = [IO.File]::ReadAllText($path)
             if ($raw -notmatch 'buMutliTextbox\.ServiceColors') { return }
-            try {
-              [xml]$xml = $raw
-              $nodes = @($xml.root.data | Where-Object {
-                $_.type -match '^buMutliTextbox\.ServiceColors,' -or
-                (($_.mimetype -eq 'application/x-microsoft.net.object.binary.base64') -and ($_.value -match 'YnVNdXRsaVRleHRib3guU2VydmljZUNvbG9ycw'))
-              })
-              foreach ($node in $nodes) { [void]$xml.root.RemoveChild($node) }
-              if ($nodes.Count -gt 0) {
-                $settings = [Xml.XmlWriterSettings]::new()
-                $settings.Indent = $true
-                $settings.Encoding = [Text.UTF8Encoding]::new($false)
-                $writer = [Xml.XmlWriter]::Create($path, $settings)
-                $xml.Save($writer)
-                $writer.Close()
-                "PATCHED RESX ($($nodes.Count)): $path" | Tee-Object -Append $log
-              }
-            } catch {
-              "RESX PATCH FAILED: $path :: $($_.Exception.Message)" | Tee-Object -Append $log
-              throw
+            [xml]$xml = $raw
+            $nodes = @($xml.root.data | Where-Object {
+              $_.type -match '^buMutliTextbox\.ServiceColors,' -or
+              (($_.mimetype -eq 'application/x-microsoft.net.object.binary.base64') -and ($_.value -match 'YnVNdXRsaVRleHRib3guU2VydmljZUNvbG9ycw'))
+            })
+            foreach ($node in $nodes) { [void]$xml.root.RemoveChild($node) }
+            if ($nodes.Count -gt 0) {
+              $settings = [Xml.XmlWriterSettings]::new()
+              $settings.Indent = $true
+              $settings.Encoding = [Text.UTF8Encoding]::new($false)
+              $writer = [Xml.XmlWriter]::Create($path, $settings)
+              $xml.Save($writer)
+              $writer.Close()
+              "PATCHED RESX ($($nodes.Count)): $path" | Tee-Object -Append $log
             }
           }
+
+      - name: Professional CAD CAM logic repairs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $log = 'build-logs/cadcam-logic-repairs.txt'
+          Remove-Item $log -ErrorAction Ignore
+          $patchedCount = 0
+
+          Get-ChildItem -Recurse -Filter *.cs -File | ForEach-Object {
+            $path = $_.FullName
+            $text = [IO.File]::ReadAllText($path)
+            $original = $text
+
+            # Single-cut bug: commit the requested length before CAM geometry is calculated.
+            # The decompiled flow previously called doAddItemSingleCut() first and only then
+            # stored spn_lengthVer.Value, allowing the previous/stale length to be used.
+            $singleCutPattern = 'this\.doAddItemSingleCut\(new Point3D\(\),\s*buMarbleForms\.frmSingle\.spn_angleA\.Value,\s*buMarbleForms\.frmSingle\.spn_angleC\.Value,\s*false,\s*-1,\s*false\);\s*buMarbleCalc\.varOperation\.settingSliceCut\.CutLengthSingle\s*=\s*buMarbleForms\.frmSingle\.spn_lengthVer\.Value;'
+            if ([regex]::IsMatch($text, $singleCutPattern)) {
+              $replacement = @'
+ double requestedSingleCutLength = buMarbleForms.frmSingle.spn_lengthVer.Value;
+                if (double.IsNaN(requestedSingleCutLength) || double.IsInfinity(requestedSingleCutLength) || requestedSingleCutLength <= 0.0)
+                {
+                    MessageBox.Show("Cut length must be greater than zero.", "Marble CAM", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                buMarbleCalc.varOperation.settingSliceCut.CutLengthSingle = requestedSingleCutLength;
+                this.doAddItemSingleCut(new Point3D(), buMarbleForms.frmSingle.spn_angleA.Value, buMarbleForms.frmSingle.spn_angleC.Value, false, -1, false);
+'@
+              $text = [regex]::Replace($text, $singleCutPattern, $replacement, 1)
+              "FIX SingleCut stale-length/order: $path" | Tee-Object -Append $log
+            }
+
+            # Single-cut validation must not depend on whether listVerticalItems has entries.
+            $validationAnchor = 'MarbleTempVars\.listVerticalItems\s*=\s*new List<marbleCuttingItems>\(\);'
+            if ($text -match 'void\s+doAddItemSingleCut\s*\(' -and [regex]::IsMatch($text, $validationAnchor) -and $text -notmatch 'CADCAM_GUARD_SINGLE_CUT_LENGTH') {
+              $guard = @'
+MarbleTempVars.listVerticalItems = new List<marbleCuttingItems>();
+                // CADCAM_GUARD_SINGLE_CUT_LENGTH: validate independently of analysed item count.
+                if (double.IsNaN(buMarbleCalc.varOperation.settingSliceCut.CutLengthSingle) ||
+                    double.IsInfinity(buMarbleCalc.varOperation.settingSliceCut.CutLengthSingle) ||
+                    buMarbleCalc.varOperation.settingSliceCut.CutLengthSingle <= 0.0)
+                {
+                    list.Add(buLangTranslate.preSentencesMarble.CuttingLengthis0);
+                }
+'@
+              $text = [regex]::Replace($text, $validationAnchor, $guard, 1)
+              "FIX SingleCut unconditional length validation: $path" | Tee-Object -Append $log
+            }
+
+            # Digitizer/ASCII CAD coordinates must parse deterministically on Turkish and
+            # invariant locales. Avoid Convert.ToDouble culture-dependent geometry changes.
+            $coordPattern = 'Point3D\s+item4\s*=\s*new Point3D\(Convert\.ToDouble\(array\[0\]\),\s*Convert\.ToDouble\(array\[1\]\)\);'
+            if ([regex]::IsMatch($text, $coordPattern)) {
+              $coordReplacement = @'
+ double parsedX;
+                                    double parsedY;
+                                    bool parsedXOk = double.TryParse(array[0], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out parsedX) ||
+                                                     double.TryParse(array[0], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.CurrentCulture, out parsedX);
+                                    bool parsedYOk = double.TryParse(array[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out parsedY) ||
+                                                     double.TryParse(array[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.CurrentCulture, out parsedY);
+                                    if (!parsedXOk || !parsedYOk || double.IsNaN(parsedX) || double.IsNaN(parsedY) || double.IsInfinity(parsedX) || double.IsInfinity(parsedY))
+                                    {
+                                        continue;
+                                    }
+                                    Point3D item4 = new Point3D(parsedX, parsedY);
+'@
+              $text = [regex]::Replace($text, $coordPattern, $coordReplacement)
+              "FIX culture-safe CAD coordinate parsing: $path" | Tee-Object -Append $log
+            }
+
+            # Prevent invalid Infinity/NaN scaling when imported geometry has a zero-size
+            # bounding-box dimension. Keep scale neutral rather than corrupt coordinates.
+            $text2 = $text
+            $text = $text.Replace('Math.Abs(buMarbleCalc.varMarbleRunSettings.ScaleWidth / num)', '(Math.Abs(num) > 1E-9 ? Math.Abs(buMarbleCalc.varMarbleRunSettings.ScaleWidth / num) : 1.0)')
+            $text = $text.Replace('Math.Abs(buMarbleCalc.varMarbleRunSettings.ScaleHeight / num2)', '(Math.Abs(num2) > 1E-9 ? Math.Abs(buMarbleCalc.varMarbleRunSettings.ScaleHeight / num2) : 1.0)')
+            $text = $text.Replace('Math.Abs(buMarbleCalc.varMarbleRunSettings.ScaleDepth / num3)', '(Math.Abs(num3) > 1E-9 ? Math.Abs(buMarbleCalc.varMarbleRunSettings.ScaleDepth / num3) : 1.0)')
+            if ($text -ne $text2) {
+              "FIX zero-size geometry scale guard: $path" | Tee-Object -Append $log
+            }
+
+            if ($text -ne $original) {
+              [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
+              $patchedCount++
+            }
+          }
+
+          "Patched C# files: $patchedCount" | Tee-Object -Append $log
+
+      - name: Audit modules menus controls and CAM risks
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          $out = 'build-logs/cadcam-ui-audit.txt'
+          Remove-Item $out -ErrorAction Ignore
+          $files = @(Get-ChildItem -Recurse -Filter *.cs -File)
+          "C# files audited: $($files.Count)" | Tee-Object $out
+          "Form classes: $((Select-String -Path $files.FullName -Pattern 'class\s+\w+\s*:\s*(Form|UserControl)' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append $out
+          "Click handlers: $((Select-String -Path $files.FullName -SimpleMatch '.Click +=' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append $out
+          "ValueChanged handlers: $((Select-String -Path $files.FullName -SimpleMatch '.ValueChanged +=' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append $out
+          "Visible writes: $((Select-String -Path $files.FullName -SimpleMatch '.Visible =' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append $out
+          "Enabled writes: $((Select-String -Path $files.FullName -SimpleMatch '.Enabled =' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append $out
+          "Convert.ToDouble uses: $((Select-String -Path $files.FullName -SimpleMatch 'Convert.ToDouble(' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append $out
+          "Division candidates:" | Tee-Object -Append $out
+          Select-String -Path $files.FullName -Pattern '/\s*(Count|num\w*)' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } | Add-Content $out
+          "Potential empty catch blocks:" | Tee-Object -Append $out
+          Select-String -Path $files.FullName -Pattern 'catch\s*(\([^)]*\))?\s*\{\s*\}' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } | Add-Content $out
 
       - name: Scan common decompiler artifacts
         shell: pwsh
@@ -145,7 +226,6 @@ jobs:
             "NO_BUILD_PROJECTS_FOUND" | Tee-Object -Append $log
             $failed = $true
           }
-
           if ($failed) { exit 1 }
 
       - name: Collect DLL outputs
