@@ -3,13 +3,17 @@ name: Repair branch Windows CAD CAM validation
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+
 concurrency:
   group: cadcam-full-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - name: Enable Git long paths before checkout
         shell: pwsh
@@ -32,6 +36,22 @@ jobs:
         shell: pwsh
         run: New-Item -ItemType Directory -Force build-logs | Out-Null
 
+      - name: Restore validated DLL bootstrap cache
+        continue-on-error: true
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          New-Item -ItemType Directory -Force .repair/bootstrap-bin | Out-Null
+          gh run download 31433581668 --repo $env:GITHUB_REPOSITORY --name final-dll --dir .repair/bootstrap-bin
+          if ($LASTEXITCODE -ne 0) {
+            Write-Warning 'Bootstrap artifact could not be downloaded; continuing with source-only dependency resolution.'
+            exit 0
+          }
+          $dlls = @(Get-ChildItem .repair/bootstrap-bin -Recurse -File -Filter *.dll)
+          "Bootstrap DLL count: $($dlls.Count)" | Tee-Object build-logs/bootstrap-dlls.txt
+          $dlls | Sort-Object Name | ForEach-Object { $_.FullName } | Add-Content build-logs/bootstrap-dlls.txt
+
       - name: Apply CAD CAM repairs
         shell: pwsh
         run: ./.repair/cadcam-repair.ps1
@@ -39,6 +59,10 @@ jobs:
       - name: Normalize decompiled projects
         shell: pwsh
         run: ./.repair/project-normalize.ps1
+
+      - name: Repair recovered source compatibility
+        shell: pwsh
+        run: ./.repair/source-compat-repair.ps1
 
       - name: Inventory and audit
         shell: pwsh
@@ -48,6 +72,11 @@ jobs:
         continue-on-error: true
         shell: pwsh
         run: ./.repair/dependency-audit.ps1
+
+      - name: Audit core dependency manifest
+        continue-on-error: true
+        shell: pwsh
+        run: ./.repair/core-dependency-manifest.ps1
 
       - name: Audit CAM geometry singularities
         shell: pwsh
