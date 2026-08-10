@@ -46,6 +46,32 @@ Get-ChildItem -Recurse -Filter *.cs -File | ForEach-Object {
         "FIX culture-safe CAD coordinate parsing: $path" | Tee-Object -Append $log
     }
 
+    # Prevent a zero delta between generated Z levels from producing Infinity in
+    # ForwardBackward marble step interpolation. Duplicate levels are safely skipped.
+    $marbleStepPattern = 'double\s+num2\s*=\s*num1\s*-\s*doubleList\[index\];\s*double\s+num3\s*=\s*BackwardStep\s*/\s*num2;'
+    if ([regex]::IsMatch($text, $marbleStepPattern)) {
+        $marbleStepReplacement = @'
+      double num2 = num1 - doubleList[index];
+      if (Math.Abs(num2) <= 1E-9)
+      {
+        num1 = doubleList[index];
+        continue;
+      }
+      double num3 = BackwardStep / num2;
+'@
+        $text = [regex]::Replace($text, $marbleStepPattern, $marbleStepReplacement)
+        "FIX marble ForwardBackward zero-delta division: $path" | Tee-Object -Append $log
+    }
+
+    # Decompiled marble CAM bug: this expression modifies a temporary Pnt6DSim copy,
+    # leaving the actual simulation point unchanged. Pnt6DSim is a reference type, so
+    # mutating the list element directly keeps CAM and simulation Z offsets synchronized.
+    $simZPattern = 'new\s+Pnt6DSim\(Cam\.CamPoints\[index5\]\.SimilationPoint\.SimDetailedPoints\[index6\]\)\.Z\s*-=?\s*Tool\.Geometry\.Diameter\s*/\s*2\.0;'
+    if ([regex]::IsMatch($text, $simZPattern)) {
+        $text = [regex]::Replace($text, $simZPattern, 'Cam.CamPoints[index5].SimilationPoint.SimDetailedPoints[index6].Z -= Tool.Geometry.Diameter / 2.0;')
+        "FIX marble CAM simulation Z temporary-copy bug: $path" | Tee-Object -Append $log
+    }
+
     # Guard zero-size imported geometry dimensions against Infinity/NaN scaling.
     $beforeScale = $text
     $text = $text.Replace('Math.Abs(buMarbleCalc.varMarbleRunSettings.ScaleWidth / num)', '(Math.Abs(num) > 1E-9 ? Math.Abs(buMarbleCalc.varMarbleRunSettings.ScaleWidth / num) : 1.0)')
