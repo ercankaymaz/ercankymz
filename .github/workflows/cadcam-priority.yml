@@ -67,12 +67,7 @@ jobs:
               continue
             }
             "===== PROJECT $project =====" | Tee-Object -Append $log
-            nuget restore $project 2>&1 | Tee-Object -Append $log
-            if ($LASTEXITCODE -ne 0) {
-              "RESTORE_FAILED $project" | Tee-Object -Append $log
-              $failed = $true
-            }
-            msbuild $project /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
+            msbuild $project /restore /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
             if ($LASTEXITCODE -ne 0) {
               "BUILD_FAILED $project" | Tee-Object -Append $log
               $failed = $true
