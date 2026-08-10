@@ -40,7 +40,7 @@ foreach ($rule in $rules) {
 "LOW: $(@($findings | Where-Object Severity -eq 'LOW').Count)" | Tee-Object -Append $out
 
 $findings | Sort-Object Severity, Path, Line | ForEach-Object {
-    "[$($_.Severity)] $($_.Kind) :: $($_.Path):$($_.Line) :: $($_.Code)" | Add-Content $out
+    ('[{0}] {1} :: {2}:{3} :: {4}' -f $_.Severity, $_.Kind, $_.Path, $_.Line, $_.Code) | Add-Content $out
 }
 
 # Target known marble CAM patterns separately to make first build actionable.
@@ -56,6 +56,6 @@ $known = @(
 )
 foreach ($pattern in $known) {
     Select-String -Path $files.FullName -Pattern $pattern -ErrorAction SilentlyContinue | ForEach-Object {
-        "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" | Add-Content $out
+        ('{0}:{1}: {2}' -f $_.Path, $_.LineNumber, $_.Line.Trim()) | Add-Content $out
     }
 }
