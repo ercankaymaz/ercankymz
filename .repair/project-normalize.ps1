@@ -40,9 +40,6 @@ foreach ($project in $allProjects) {
     $text = [IO.File]::ReadAllText($path)
     $original = $text
 
-    # Decompiled projects currently contain C# 15.0, which is not accepted by
-    # the compiler on the Windows runner. 'latest' enables the newest supported
-    # syntax without hard-coding an unavailable language version.
     $before = $text
     $text = [regex]::Replace($text, '<LangVersion>\s*15(?:\.0)?\s*</LangVersion>', '<LangVersion>latest</LangVersion>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     if ($text -ne $before) {
@@ -50,7 +47,6 @@ foreach ($project in $allProjects) {
         "FIX LangVersion 15 -> latest: $path" | Tee-Object -Append $log
     }
 
-    # SDK-style WinForms/WPF projects targeting net5+ require a Windows TFM.
     if ($text -match '<UseWindowsForms>\s*True\s*</UseWindowsForms>' -or $text -match '<UseWPF>\s*True\s*</UseWPF>' -or $text -match 'Sdk="Microsoft\.NET\.Sdk\.WindowsDesktop"') {
         foreach ($tfm in @('net5.0','net6.0','net7.0','net8.0','net9.0','net10.0')) {
             $plain = "<TargetFramework>$tfm</TargetFramework>"
@@ -63,7 +59,6 @@ foreach ($project in $allProjects) {
         }
     }
 
-    # Decompilers can emit the same explicit EmbeddedResource Include repeatedly.
     $newline = if ($text.Contains("`r`n")) { "`r`n" } else { "`n" }
     $lines = $text -split "`r?`n"
     $seenEmbedded = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
@@ -81,10 +76,6 @@ foreach ($project in $allProjects) {
     }
     $text = [string]::Join($newline, $rebuilt)
 
-    # Most decompiled projects point HintPath references two directories upward
-    # to DLLs that are not present in the repository. When the same assembly has
-    # a decompiled csproj, use a ProjectReference instead. This restores the real
-    # dependency graph and lets MSBuild build dependencies in the correct order.
     try {
         [xml]$projXml = $text
         $refNodes = @($projXml.SelectNodes('//*[local-name()="Reference" and *[local-name()="HintPath"]]'))
@@ -118,7 +109,7 @@ foreach ($project in $allProjects) {
             $text = $projXml.OuterXml
         }
     } catch {
-        "REFERENCE XMLERR $path: $($_.Exception.Message)" | Tee-Object -Append $log
+        "REFERENCE XMLERR ${path}: $($_.Exception.Message)" | Tee-Object -Append $log
     }
 
     if ($text -ne $original) {
