@@ -59,35 +59,27 @@ jobs:
         shell: pwsh
         run: ./.repair/cam-safety-audit.ps1
 
-      - name: Restore and build
+      - name: Restore and build CAD CAM application graph
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Continue'
           $log = 'build-logs/build.txt'
-          $solutions = @(Get-ChildItem -Recurse -Filter *.sln -File)
-          $projects = @(Get-ChildItem -Recurse -Filter *.csproj -File)
-          $failed = $false
-          if ($solutions.Count -gt 0) {
-            foreach ($s in $solutions) {
-              "===== SOLUTION $($s.FullName) =====" | Tee-Object -Append $log
-              nuget restore $s.FullName 2>&1 | Tee-Object -Append $log
-              if ($LASTEXITCODE -ne 0) { "RESTORE_FAILED $($s.FullName)" | Tee-Object -Append $log; $failed = $true }
-              msbuild $s.FullName /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
-              if ($LASTEXITCODE -ne 0) { "BUILD_FAILED $($s.FullName)" | Tee-Object -Append $log; $failed = $true }
-            }
-          } elseif ($projects.Count -gt 0) {
-            foreach ($p in $projects) {
-              "===== PROJECT $($p.FullName) =====" | Tee-Object -Append $log
-              nuget restore $p.FullName 2>&1 | Tee-Object -Append $log
-              if ($LASTEXITCODE -ne 0) { "RESTORE_FAILED $($p.FullName)" | Tee-Object -Append $log; $failed = $true }
-              msbuild $p.FullName /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
-              if ($LASTEXITCODE -ne 0) { "BUILD_FAILED $($p.FullName)" | Tee-Object -Append $log; $failed = $true }
-            }
-          } else {
-            "NO_BUILD_PROJECTS_FOUND" | Tee-Object -Append $log
-            $failed = $true
+          $candidates = @(
+            'Decompiled/CMDMarbleCNC/CMDMarbleCNC.csproj',
+            'Decompiled/buCadCamRes/buCadCamRes.csproj'
+          )
+          $target = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (-not $target) {
+            'NO_CAD_CAM_ENTRY_PROJECT_FOUND' | Tee-Object -Append $log
+            exit 1
           }
-          if ($failed) { exit 1 }
+          "===== CAD CAM ENTRY PROJECT $target =====" | Tee-Object -Append $log
+          msbuild $target /restore /m /t:Rebuild /p:Configuration=Release /v:minimal 2>&1 | Tee-Object -Append $log
+          if ($LASTEXITCODE -ne 0) {
+            "BUILD_FAILED $target" | Tee-Object -Append $log
+            exit 1
+          }
+          "BUILD_OK $target" | Tee-Object -Append $log
 
       - name: Extract build errors
         if: always()
@@ -97,7 +89,7 @@ jobs:
           $src = 'build-logs/build.txt'
           $dst = 'build-logs/build-errors.txt'
           if (Test-Path $src) {
-            $matches = @(Select-String -Path $src -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error|BUILD_FAILED|RESTORE_FAILED' -CaseSensitive:$false)
+            $matches = @(Select-String -Path $src -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error|BUILD_FAILED|RESTORE_FAILED|NO_CAD_CAM_ENTRY_PROJECT_FOUND' -CaseSensitive:$false)
             "Build error lines: $($matches.Count)" | Tee-Object $dst
             $matches | ForEach-Object { $_.Line } | Select-Object -Unique | Add-Content $dst
           } else {
@@ -111,7 +103,7 @@ jobs:
           New-Item -ItemType Directory -Force build-logs | Out-Null
           New-Item -ItemType Directory -Force final-dll | Out-Null
           $seen = @{}
-          Get-ChildItem -Recurse -Filter *.dll -File | Where-Object { $_.FullName -match '\\(bin|Release)\\' } | ForEach-Object {
+          Get-ChildItem -Recurse -Filter *.dll -File | Where-Object { $_.FullName -match '\\bin\\Release\\' } | ForEach-Object {
             if (-not $seen.ContainsKey($_.Name)) {
               Copy-Item $_.FullName (Join-Path final-dll $_.Name) -Force
               $seen[$_.Name] = $_.FullName
