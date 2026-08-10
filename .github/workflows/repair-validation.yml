@@ -38,6 +38,10 @@ jobs:
         shell: pwsh
         run: ./.repair/cadcam-repair.ps1
 
+      - name: Normalize decompiled projects
+        shell: pwsh
+        run: ./.repair/project-normalize.ps1
+
       - name: Inventory and audit
         shell: pwsh
         run: ./.repair/inventory-audit.ps1
