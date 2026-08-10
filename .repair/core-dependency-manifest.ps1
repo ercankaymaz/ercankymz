@@ -13,7 +13,16 @@ $coreProjects = @(
     'Decompiled/CMDMarbleCNC/CMDMarbleCNC.csproj'
 )
 
-$repoRoot = (Get-Location).Path
+# Versions validated from the original binaries supplied for this CAD/CAM application.
+# These checks prevent a physically present but ABI-incompatible vendor DLL from hiding
+# behind a successful HintPath resolution and later producing misleading CS0012 errors.
+$expectedVersions = @{
+    'mwInterop' = '2025.12.1.2'
+    'devDept.Eyeshot.v2026' = '2026.1.187.0'
+    'devDept.Eyeshot.Control.Win.v2026' = '2026.1.187.0'
+    'devDept.Eyeshot.x86.v2026' = '2026.1.187.0'
+}
+
 $binaryMap = @{}
 Get-ChildItem -Recurse -Filter *.dll -File | Where-Object { $_.FullName -notmatch '\\(bin|obj)\\' } | ForEach-Object {
     if (-not $binaryMap.ContainsKey($_.BaseName)) { $binaryMap[$_.BaseName] = $_.FullName }
@@ -32,10 +41,34 @@ Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
 $missing = New-Object System.Collections.Generic.List[string]
 $resolvedBinary = New-Object System.Collections.Generic.List[string]
 $resolvedProject = New-Object System.Collections.Generic.List[string]
+$versionMismatch = New-Object System.Collections.Generic.List[string]
+
+function Test-BinaryIdentity([string]$simpleName, [string]$path, [string]$projectPath) {
+    try {
+        $an = [Reflection.AssemblyName]::GetAssemblyName($path)
+        $actualName = $an.Name
+        $actualVersion = $an.Version.ToString()
+        "IDENTITY $simpleName => $actualName, Version=$actualVersion :: $path" | Add-Content $out
+        if ($actualName -ne $simpleName) {
+            $versionMismatch.Add("ASSEMBLY_NAME_MISMATCH :: $projectPath :: expected=$simpleName :: actual=$actualName :: $path")
+        }
+        if ($expectedVersions.ContainsKey($simpleName)) {
+            $expected = [string]$expectedVersions[$simpleName]
+            if ($actualVersion -ne $expected) {
+                $versionMismatch.Add("ASSEMBLY_VERSION_MISMATCH :: $projectPath :: $simpleName :: expected=$expected :: actual=$actualVersion :: $path")
+            } else {
+                "VERSION_OK $simpleName $actualVersion" | Add-Content $out
+            }
+        }
+    } catch {
+        $versionMismatch.Add("ASSEMBLY_IDENTITY_UNREADABLE :: $projectPath :: $simpleName :: $path :: $($_.Exception.Message)")
+    }
+}
 
 'CAD/CAM core dependency manifest' | Set-Content $out
 "Repository binaries: $($binaryMap.Count)" | Add-Content $out
 "Repository projects: $($projectMap.Count)" | Add-Content $out
+"Expected critical versions: $($expectedVersions.Count)" | Add-Content $out
 
 foreach ($projectPath in $coreProjects) {
     if (-not (Test-Path -LiteralPath $projectPath)) {
@@ -69,9 +102,12 @@ foreach ($projectPath in $coreProjects) {
                 if (Test-Path -LiteralPath $full -PathType Leaf) {
                     $resolvedBinary.Add("$projectPath :: $simple :: $full")
                     "BINARY_OK $simple => $full" | Add-Content $out
+                    Test-BinaryIdentity $simple $full $projectPath
                 } elseif ($binaryMap.ContainsKey($simple)) {
-                    $resolvedBinary.Add("$projectPath :: $simple :: $($binaryMap[$simple])")
-                    "BINARY_ALT $simple => $($binaryMap[$simple])" | Add-Content $out
+                    $alt = [string]$binaryMap[$simple]
+                    $resolvedBinary.Add("$projectPath :: $simple :: $alt")
+                    "BINARY_ALT $simple => $alt" | Add-Content $out
+                    Test-BinaryIdentity $simple $alt $projectPath
                 } elseif ($projectMap.ContainsKey($simple)) {
                     $missing.Add("BINARY_REQUIRED_OR_SOURCE :: $projectPath :: $simple :: source=$($projectMap[$simple])")
                     "BINARY_MISS_SOURCE_EXISTS $simple => $($projectMap[$simple])" | Add-Content $out
@@ -93,6 +129,8 @@ foreach ($projectPath in $coreProjects) {
 "Resolved project refs: $($resolvedProject.Count)" | Add-Content $out
 "Resolved binary refs: $($resolvedBinary.Count)" | Add-Content $out
 "Actionable unresolved refs: $($missing.Count)" | Add-Content $out
+"Identity/version mismatches: $($versionMismatch.Count)" | Add-Content $out
 $missing | Sort-Object -Unique | ForEach-Object { "  $_" | Add-Content $out }
+$versionMismatch | Sort-Object -Unique | ForEach-Object { "  $_" | Add-Content $out }
 
-if ($missing.Count -gt 0) { exit 2 }
+if ($missing.Count -gt 0 -or $versionMismatch.Count -gt 0) { exit 2 }
