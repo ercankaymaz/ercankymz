@@ -6,6 +6,10 @@ on:
       - Test
   workflow_dispatch:
 
+concurrency:
+  group: cadcam-core-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   cadcam-core:
     runs-on: windows-2022
@@ -31,6 +35,11 @@ jobs:
           ./.repair/cadcam-repair.ps1
           ./.repair/project-normalize.ps1
           ./.repair/source-compat-repair.ps1
+
+      - name: Audit core dependency manifest
+        continue-on-error: true
+        shell: pwsh
+        run: ./.repair/core-dependency-manifest.ps1
 
       - name: Build buClass blocker
         shell: pwsh
