@@ -8,6 +8,7 @@ $frameworkFixes = 0
 $windowsTfmFixes = 0
 $resourceDedupeFixes = 0
 $projectReferenceFixes = 0
+$nullableFixes = 0
 $changedProjects = 0
 
 $allProjects = @(Get-ChildItem -Recurse -Filter *.csproj -File)
@@ -35,6 +36,16 @@ foreach ($project in $allProjects) {
     $before = $text
     $text = [regex]::Replace($text, '<LangVersion>\s*15(?:\.0)?\s*</LangVersion>', '<LangVersion>latest</LangVersion>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     if ($text -ne $before) { $langFixes++; "FIX LangVersion 15 -> latest: $path" | Tee-Object -Append $log }
+
+    # Newtonsoft's recovered sources contain nullable-reference annotations such as
+    # unconstrained T?. The original nullable metadata was lost by decompilation, so
+    # enable nullable context for this project to prevent T? being interpreted as
+    # Nullable<T> and breaking virtual override signatures.
+    if ($project.Name -ieq 'Newtonsoft.Json.csproj' -and $text -notmatch '<Nullable>') {
+        $text = $text.Replace('<GenerateAssemblyInfo>False</GenerateAssemblyInfo>', "<GenerateAssemblyInfo>False</GenerateAssemblyInfo>`n    <Nullable>enable</Nullable>")
+        $nullableFixes++
+        "FIX nullable context for Newtonsoft.Json: $path" | Tee-Object -Append $log
+    }
 
     # The recovered CAD/CAM application targets .NET Framework 4.8. Decompiled
     # dependencies were inferred as mixed net40/net45/net472 targets, which makes
@@ -98,6 +109,7 @@ foreach ($project in $allProjects) {
 
 "Changed projects: $changedProjects" | Tee-Object -Append $log
 "LangVersion fixes: $langFixes" | Tee-Object -Append $log
+"Nullable context fixes: $nullableFixes" | Tee-Object -Append $log
 ".NET Framework -> net48 fixes: $frameworkFixes" | Tee-Object -Append $log
 "Windows TFM fixes: $windowsTfmFixes" | Tee-Object -Append $log
 "Duplicate EmbeddedResource fixes: $resourceDedupeFixes" | Tee-Object -Append $log
