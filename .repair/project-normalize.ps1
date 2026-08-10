@@ -6,16 +6,43 @@ Remove-Item $log -ErrorAction Ignore
 $langFixes = 0
 $windowsTfmFixes = 0
 $resourceDedupeFixes = 0
+$projectReferenceFixes = 0
 $changedProjects = 0
 
-Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
-    $path = $_.FullName
+$allProjects = @(Get-ChildItem -Recurse -Filter *.csproj -File)
+$projectMap = @{}
+
+# Build an assembly-name -> decompiled project map before changing any project.
+foreach ($project in $allProjects) {
+    try {
+        [xml]$mapXml = [IO.File]::ReadAllText($project.FullName)
+        $assemblyNode = $mapXml.SelectSingleNode('//*[local-name()="AssemblyName"]')
+        $assemblyName = if ($null -ne $assemblyNode -and -not [string]::IsNullOrWhiteSpace($assemblyNode.InnerText)) {
+            $assemblyNode.InnerText.Trim()
+        } else {
+            [IO.Path]::GetFileNameWithoutExtension($project.Name)
+        }
+        if (-not [string]::IsNullOrWhiteSpace($assemblyName)) {
+            $key = $assemblyName.ToLowerInvariant()
+            if (-not $projectMap.ContainsKey($key)) {
+                $projectMap[$key] = $project.FullName
+            }
+        }
+    } catch {
+        "MAP XMLERR $($project.FullName): $($_.Exception.Message)" | Tee-Object -Append $log
+    }
+}
+
+"Decompiled project map entries: $($projectMap.Count)" | Tee-Object -Append $log
+
+foreach ($project in $allProjects) {
+    $path = $project.FullName
     $text = [IO.File]::ReadAllText($path)
     $original = $text
 
     # Decompiled projects currently contain C# 15.0, which is not accepted by
-    # the compiler on the Windows runner. 'latest' keeps modern decompiled syntax
-    # enabled without hard-coding an unavailable language version.
+    # the compiler on the Windows runner. 'latest' enables the newest supported
+    # syntax without hard-coding an unavailable language version.
     $before = $text
     $text = [regex]::Replace($text, '<LangVersion>\s*15(?:\.0)?\s*</LangVersion>', '<LangVersion>latest</LangVersion>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     if ($text -ne $before) {
@@ -37,7 +64,6 @@ Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
     }
 
     # Decompilers can emit the same explicit EmbeddedResource Include repeatedly.
-    # Remove exact duplicate Include lines while preserving the first declaration.
     $newline = if ($text.Contains("`r`n")) { "`r`n" } else { "`n" }
     $lines = $text -split "`r?`n"
     $seenEmbedded = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
@@ -55,6 +81,46 @@ Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
     }
     $text = [string]::Join($newline, $rebuilt)
 
+    # Most decompiled projects point HintPath references two directories upward
+    # to DLLs that are not present in the repository. When the same assembly has
+    # a decompiled csproj, use a ProjectReference instead. This restores the real
+    # dependency graph and lets MSBuild build dependencies in the correct order.
+    try {
+        [xml]$projXml = $text
+        $refNodes = @($projXml.SelectNodes('//*[local-name()="Reference" and *[local-name()="HintPath"]]'))
+        $xmlChanged = $false
+        foreach ($ref in $refNodes) {
+            $hintNode = $ref.SelectSingleNode('./*[local-name()="HintPath"]')
+            if ($null -eq $hintNode) { continue }
+            $hint = [string]$hintNode.InnerText
+            if ([string]::IsNullOrWhiteSpace($hint)) { continue }
+
+            $resolvedDll = [IO.Path]::GetFullPath((Join-Path $project.DirectoryName $hint))
+            if (Test-Path -LiteralPath $resolvedDll -PathType Leaf) { continue }
+
+            $include = [string]$ref.GetAttribute('Include')
+            if ([string]::IsNullOrWhiteSpace($include)) { continue }
+            $assemblyKey = ($include.Split(',')[0]).Trim().ToLowerInvariant()
+            if (-not $projectMap.ContainsKey($assemblyKey)) { continue }
+
+            $targetProject = [string]$projectMap[$assemblyKey]
+            if ([string]::Equals($targetProject, $path, [StringComparison]::OrdinalIgnoreCase)) { continue }
+
+            $relativeProject = [IO.Path]::GetRelativePath($project.DirectoryName, $targetProject).Replace('/', '\')
+            $newRef = $projXml.CreateElement('ProjectReference', $ref.NamespaceURI)
+            $newRef.SetAttribute('Include', $relativeProject)
+            [void]$ref.ParentNode.ReplaceChild($newRef, $ref)
+            $projectReferenceFixes++
+            $xmlChanged = $true
+            "FIX missing HintPath -> ProjectReference: $path :: $include :: $relativeProject" | Tee-Object -Append $log
+        }
+        if ($xmlChanged) {
+            $text = $projXml.OuterXml
+        }
+    } catch {
+        "REFERENCE XMLERR $path: $($_.Exception.Message)" | Tee-Object -Append $log
+    }
+
     if ($text -ne $original) {
         [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
         $changedProjects++
@@ -65,3 +131,4 @@ Get-ChildItem -Recurse -Filter *.csproj -File | ForEach-Object {
 "LangVersion fixes: $langFixes" | Tee-Object -Append $log
 "Windows TFM fixes: $windowsTfmFixes" | Tee-Object -Append $log
 "Duplicate EmbeddedResource fixes: $resourceDedupeFixes" | Tee-Object -Append $log
+"HintPath -> ProjectReference fixes: $projectReferenceFixes" | Tee-Object -Append $log
