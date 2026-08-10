@@ -5,6 +5,7 @@ Remove-Item $log -ErrorAction Ignore
 
 $langFixes = 0
 $frameworkFixes = 0
+$netstandardFixes = 0
 $windowsTfmFixes = 0
 $resourceDedupeFixes = 0
 $projectReferenceFixes = 0
@@ -53,6 +54,14 @@ foreach ($project in $allProjects) {
     $before = $text
     $text = [regex]::Replace($text, '<TargetFramework>\s*net(?:40|45|451|452|46|461|462|47|471|472)\s*</TargetFramework>', '<TargetFramework>net48</TargetFramework>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     if ($text -ne $before) { $frameworkFixes++; "FIX .NET Framework target -> net48: $path" | Tee-Object -Append $log }
+
+    # netstandard projects recovered from binary dependencies are consumed only by
+    # this net48 desktop application. Building them as netstandard inside the repaired
+    # source graph produced NU1702/ref-pack failures and missing predefined System types.
+    # Align netstandard 1.x/2.0 sources to the host application's net48 target.
+    $before = $text
+    $text = [regex]::Replace($text, '<TargetFramework>\s*netstandard(?:1\.[0-6]|2\.0)\s*</TargetFramework>', '<TargetFramework>net48</TargetFramework>', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    if ($text -ne $before) { $netstandardFixes++; "FIX recovered netstandard target -> net48: $path" | Tee-Object -Append $log }
 
     if ($text -match '<UseWindowsForms>\s*True\s*</UseWindowsForms>' -or $text -match '<UseWPF>\s*True\s*</UseWPF>' -or $text -match 'Sdk="Microsoft\.NET\.Sdk\.WindowsDesktop"') {
         foreach ($tfm in @('net5.0','net6.0','net7.0','net8.0','net9.0','net10.0')) {
@@ -111,6 +120,7 @@ foreach ($project in $allProjects) {
 "LangVersion fixes: $langFixes" | Tee-Object -Append $log
 "Nullable context fixes: $nullableFixes" | Tee-Object -Append $log
 ".NET Framework -> net48 fixes: $frameworkFixes" | Tee-Object -Append $log
+"netstandard -> net48 fixes: $netstandardFixes" | Tee-Object -Append $log
 "Windows TFM fixes: $windowsTfmFixes" | Tee-Object -Append $log
 "Duplicate EmbeddedResource fixes: $resourceDedupeFixes" | Tee-Object -Append $log
 "HintPath -> ProjectReference fixes: $projectReferenceFixes" | Tee-Object -Append $log
