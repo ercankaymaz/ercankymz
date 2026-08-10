@@ -1,13 +1,10 @@
 name: Repair branch Windows CAD CAM validation
 
 on:
-  pull_request:
-    branches:
-      - Test
   workflow_dispatch:
 
 concurrency:
-  group: cadcam-full-${{ github.event.pull_request.number || github.ref }}
+  group: cadcam-full-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
