@@ -37,6 +37,7 @@ jobs:
           New-Item -ItemType Directory -Force build-logs | Out-Null
           ./.repair/cadcam-repair.ps1
           ./.repair/project-normalize.ps1
+          ./.repair/source-compat-repair.ps1
 
       - name: Audit binary HintPath dependencies
         continue-on-error: true
