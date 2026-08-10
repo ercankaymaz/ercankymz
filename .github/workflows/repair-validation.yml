@@ -51,8 +51,8 @@ jobs:
           "Convert.ToDouble uses: $((Select-String -Path $files.FullName -SimpleMatch 'Convert.ToDouble(' -ErrorAction SilentlyContinue).Count)" | Tee-Object -Append build-logs/inventory.txt
           "Solutions/projects:" | Tee-Object -Append build-logs/inventory.txt
           Get-ChildItem -Recurse -File -Include *.sln,*.csproj | ForEach-Object FullName | Tee-Object -Append build-logs/inventory.txt
-          Select-String -Path $files.FullName -Pattern 'catch\s*(\([^)]*\))?\s*\{\s*\}' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } | Set-Content build-logs/empty-catches.txt
-          Select-String -Path $files.FullName -Pattern '/\s*(Count|num\w*)' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { "$($_.Path):$($_.LineNumber): $($_.Line.Trim())" } | Set-Content build-logs/division-candidates.txt
+          Select-String -Path $files.FullName -Pattern 'catch\s*(\([^)]*\))?\s*\{\s*\}' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { '{0}:{1}: {2}' -f $_.Path, $_.LineNumber, $_.Line.Trim() } | Set-Content build-logs/empty-catches.txt
+          Select-String -Path $files.FullName -Pattern '/\s*(Count|num\w*)' -ErrorAction SilentlyContinue | Select-Object -First 300 | ForEach-Object { '{0}:{1}: {2}' -f $_.Path, $_.LineNumber, $_.Line.Trim() } | Set-Content build-logs/division-candidates.txt
 
       - name: Audit project binary dependencies
         continue-on-error: true
