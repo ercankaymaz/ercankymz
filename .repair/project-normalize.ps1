@@ -41,10 +41,6 @@ Get-ChildItem -Recurse -Filter *.dll -File | Where-Object {
 }
 "Repository binary map entries: $($binaryMap.Count)" | Tee-Object -Append $log
 
-# Only these assemblies are intentionally rebuilt from repaired source. Auxiliary
-# obfuscated/vendor modules (including buPowerNest) are binary-first when a recovered
-# DLL is present, preventing decompiler-only duplicate-symbol errors from poisoning
-# the main CAD/CAM build graph.
 $sourceFirstAssemblies = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
 @('buClass','buCore','buControls','buEyeBase','buCadCamRes','buMW','CMDMarbleCNC','CmdLangAPI') | ForEach-Object { [void]$sourceFirstAssemblies.Add($_) }
 
@@ -101,7 +97,17 @@ foreach ($project in $allProjects) {
             if ($null -eq $hintNode) { continue }
             $hint = [string]$hintNode.InnerText
             if ([string]::IsNullOrWhiteSpace($hint)) { continue }
-            $resolvedDll = [IO.Path]::GetFullPath((Join-Path $project.DirectoryName $hint))
+
+            try {
+                $resolvedDll = if ([IO.Path]::IsPathRooted($hint)) {
+                    [IO.Path]::GetFullPath($hint)
+                } else {
+                    [IO.Path]::GetFullPath((Join-Path $project.DirectoryName $hint))
+                }
+            } catch {
+                "REFERENCE BADPATH ${path}: $hint :: $($_.Exception.Message)" | Tee-Object -Append $log
+                continue
+            }
             if (Test-Path -LiteralPath $resolvedDll -PathType Leaf) { continue }
 
             $include = [string]$ref.GetAttribute('Include')
