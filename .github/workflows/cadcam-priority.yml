@@ -66,13 +66,14 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Continue'
+          # Dependency order is intentional: buEyeBase is required by buMW.
           $targets = @(
             @{ Name='CmdLangAPI'; Path='Decompiled/CmdLangAPI/CmdLangAPI.csproj' },
             @{ Name='buClass'; Path='Decompiled/buClass/buClass.csproj' },
             @{ Name='buCore'; Path='Decompiled/buCore/buCore.csproj' },
             @{ Name='buControls'; Path='Decompiled/buControls/buControls.csproj' },
-            @{ Name='buMW'; Path='Decompiled/buMW/buMW.csproj' },
             @{ Name='buEyeBase'; Path='Decompiled/buEyeBase/buEyeBase.csproj' },
+            @{ Name='buMW'; Path='Decompiled/buMW/buMW.csproj' },
             @{ Name='buCadCamRes'; Path='Decompiled/buCadCamRes/buCadCamRes.csproj' }
           )
           $summary = 'build-logs/core-build-summary.txt'
@@ -100,7 +101,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force core-dll | Out-Null
-          $wanted = @('CmdLangAPI.dll','buClass.dll','buCore.dll','buControls.dll','buMW.dll','buEyeBase.dll','buCadCamRes.dll')
+          $wanted = @('CmdLangAPI.dll','buClass.dll','buCore.dll','buControls.dll','buEyeBase.dll','buMW.dll','buCadCamRes.dll')
           foreach ($name in $wanted) {
             Get-ChildItem -Recurse -File -Filter $name | Where-Object { $_.FullName -match '\\bin\\Release\\' } | Select-Object -First 1 | ForEach-Object { Copy-Item $_.FullName core-dll -Force }
           }
