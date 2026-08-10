@@ -27,7 +27,19 @@ foreach ($project in $projects) {
             $hintCount++
 
             $include = [string]$ref.GetAttribute('Include')
-            $full = [IO.Path]::GetFullPath((Join-Path $project.DirectoryName $hint))
+            try {
+                $full = if ([IO.Path]::IsPathRooted($hint)) {
+                    [IO.Path]::GetFullPath($hint)
+                } else {
+                    [IO.Path]::GetFullPath((Join-Path $project.DirectoryName $hint))
+                }
+            } catch {
+                $line = "BADPATH $include => $hint | $($_.Exception.Message)"
+                $line | Add-Content $out
+                $missing.Add("$($project.FullName) :: $include :: $hint :: BADPATH")
+                continue
+            }
+
             if (Test-Path -LiteralPath $full -PathType Leaf) {
                 $file = Get-Item -LiteralPath $full
                 $version = 'native-or-unreadable'
