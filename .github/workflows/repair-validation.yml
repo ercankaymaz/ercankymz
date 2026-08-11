@@ -2,8 +2,7 @@ name: Repair branch Windows CAD CAM validation
 
 on:
   pull_request:
-    branches:
-      - Test
+    branches: [Test]
   workflow_dispatch:
 
 permissions:
@@ -18,7 +17,7 @@ jobs:
   build:
     runs-on: windows-2022
     steps:
-      - name: Enable Git long paths before checkout
+      - name: Enable Git long paths
         shell: pwsh
         run: |
           git config --global core.longpaths true
@@ -35,25 +34,14 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v2
 
-      - name: Prepare logs
-        shell: pwsh
-        run: New-Item -ItemType Directory -Force build-logs | Out-Null
-
       - name: Restore original vendor DLL bootstrap
-        continue-on-error: true
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          New-Item -ItemType Directory -Force .repair/bootstrap-original | Out-Null
+          New-Item -ItemType Directory -Force build-logs,.repair/bootstrap-original | Out-Null
           gh run download 31200670159 --repo $env:GITHUB_REPOSITORY --name CMDMarbleCNC-Final-DLLs --dir .repair/bootstrap-original
-          if ($LASTEXITCODE -ne 0) {
-            Write-Warning 'Original vendor bootstrap artifact could not be downloaded.'
-            exit 0
-          }
-          $dlls = @(Get-ChildItem .repair/bootstrap-original -Recurse -File -Filter *.dll)
-          "Original bootstrap DLL count: $($dlls.Count)" | Tee-Object build-logs/bootstrap-original-dlls.txt
-          $dlls | Sort-Object Name | ForEach-Object { $_.FullName } | Add-Content build-logs/bootstrap-original-dlls.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Original vendor bootstrap artifact is required.' }
 
       - name: Restore supplemental DLL bootstrap
         continue-on-error: true
@@ -63,90 +51,54 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force .repair/bootstrap-supplemental | Out-Null
           gh run download 31433581668 --repo $env:GITHUB_REPOSITORY --name final-dll --dir .repair/bootstrap-supplemental
-          if ($LASTEXITCODE -ne 0) {
-            Write-Warning 'Supplemental bootstrap artifact could not be downloaded.'
-            exit 0
-          }
-          $dlls = @(Get-ChildItem .repair/bootstrap-supplemental -Recurse -File -Filter *.dll)
-          "Supplemental bootstrap DLL count: $($dlls.Count)" | Tee-Object build-logs/bootstrap-supplemental-dlls.txt
-          $dlls | Sort-Object Name | ForEach-Object { $_.FullName } | Add-Content build-logs/bootstrap-supplemental-dlls.txt
 
-      - name: Validate original vendor bootstrap
+      - name: Apply deterministic repair chain
         shell: pwsh
-        run: ./.repair/bootstrap-integrity.ps1
+        run: |
+          ./.repair/bootstrap-integrity.ps1
+          ./.repair/cadcam-repair.ps1
+          ./.repair/cam-math-guards.ps1
+          ./.repair/project-normalize.ps1
+          ./.repair/source-compat-repair.ps1
 
-      - name: Apply CAD CAM repairs
+      - name: Audit repaired graph
         shell: pwsh
-        run: ./.repair/cadcam-repair.ps1
+        run: |
+          ./.repair/inventory-audit.ps1
+          ./.repair/dependency-audit.ps1
+          ./.repair/core-dependency-manifest.ps1
+          ./.repair/cam-safety-audit.ps1
 
-      - name: Normalize decompiled projects
-        shell: pwsh
-        run: ./.repair/project-normalize.ps1
-
-      - name: Repair recovered source compatibility
-        shell: pwsh
-        run: ./.repair/source-compat-repair.ps1
-
-      - name: Inventory and audit
-        shell: pwsh
-        run: ./.repair/inventory-audit.ps1
-
-      - name: Audit project binary dependencies
-        continue-on-error: true
-        shell: pwsh
-        run: ./.repair/dependency-audit.ps1
-
-      - name: Audit core dependency manifest
-        continue-on-error: true
-        shell: pwsh
-        run: ./.repair/core-dependency-manifest.ps1
-
-      - name: Audit CAM geometry singularities
-        shell: pwsh
-        run: ./.repair/cam-safety-audit.ps1
-
-      - name: Restore and build CAD CAM application graph
+      - name: Build CAD CAM application graph
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Continue'
+          New-Item -ItemType Directory -Force build-logs | Out-Null
           $log = 'build-logs/build.txt'
-          $candidates = @(
-            'Decompiled/CMDMarbleCNC/CMDMarbleCNC.csproj',
-            'Decompiled/buCadCamRes/buCadCamRes.csproj'
-          )
+          $candidates = @('Decompiled/CMDMarbleCNC/CMDMarbleCNC.csproj','Decompiled/buCadCamRes/buCadCamRes.csproj')
           $target = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-          if (-not $target) {
-            'NO_CAD_CAM_ENTRY_PROJECT_FOUND' | Tee-Object -Append $log
-            exit 1
-          }
-          "===== CAD CAM ENTRY PROJECT $target =====" | Tee-Object -Append $log
+          if (-not $target) { 'NO_CAD_CAM_ENTRY_PROJECT_FOUND' | Tee-Object $log; exit 1 }
+          "BUILD_START $target" | Tee-Object $log
           msbuild $target /restore /m /t:Rebuild /p:Configuration=Release /p:BuildProjectReferences=true /v:minimal 2>&1 | Tee-Object -Append $log
-          if ($LASTEXITCODE -ne 0) {
-            "BUILD_FAILED $target" | Tee-Object -Append $log
-            exit 1
-          }
+          if ($LASTEXITCODE -ne 0) { "BUILD_FAILED $target" | Tee-Object -Append $log; exit $LASTEXITCODE }
           "BUILD_OK $target" | Tee-Object -Append $log
 
       - name: Extract build errors
         if: always()
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force build-logs | Out-Null
           $src = 'build-logs/build.txt'
           $dst = 'build-logs/build-errors.txt'
           if (Test-Path $src) {
-            $matches = @(Select-String -Path $src -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error|BUILD_FAILED|RESTORE_FAILED|NO_CAD_CAM_ENTRY_PROJECT_FOUND' -CaseSensitive:$false)
+            $matches = @(Select-String -Path $src -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error|BUILD_FAILED|NO_CAD_CAM_ENTRY_PROJECT_FOUND' -CaseSensitive:$false)
             "Build error lines: $($matches.Count)" | Tee-Object $dst
             $matches | ForEach-Object { $_.Line } | Select-Object -Unique | Add-Content $dst
-          } else {
-            'BUILD_LOG_NOT_FOUND' | Set-Content $dst
           }
 
       - name: Collect DLL outputs
         if: always()
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force build-logs | Out-Null
           New-Item -ItemType Directory -Force final-dll | Out-Null
           $seen = @{}
           Get-ChildItem -Recurse -Filter *.dll -File | Where-Object { $_.FullName -match '\\bin\\Release\\' } | ForEach-Object {
