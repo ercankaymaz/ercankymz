@@ -65,6 +65,7 @@ jobs:
           ./.repair/ui-safety-guards.ps1
           ./.repair/saw-cos-guard.ps1
           ./.repair/grinding-saw-ramp-guards.ps1
+          ./.repair/grinding-progress-guards.ps1
           ./.repair/project-normalize.ps1
           ./.repair/source-compat-repair.ps1
 
