@@ -59,6 +59,7 @@ jobs:
           ./.repair/cadcam-repair.ps1
           ./.repair/cam-math-guards.ps1
           ./.repair/ellipse-guards.ps1
+          ./.repair/miter-corner-geometry-guards.ps1
           ./.repair/marble-path-guards.ps1
           ./.repair/marble-runtime-guards.ps1
           ./.repair/vacuum-selection-guards.ps1
