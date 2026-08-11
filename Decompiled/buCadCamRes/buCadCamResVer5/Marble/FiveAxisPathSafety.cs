@@ -58,6 +58,15 @@ public static class FiveAxisPathSafety
   private static readonly Regex GCodeUnsupportedAxisMarkerPattern = new Regex(
     @"(?<![A-Z_])([UVW])(?=\s*(?:[+\-.0-9#\[]|$))",
     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+  private static readonly Regex CmdG51DisableScalingPattern = new Regex(
+    @"^\s*(?:N\s*[0-9]+\s+)?G\s*51(?:\.0+)?\s+D\s*[+-]?0+(?:\.0+)?\s*$",
+    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+  private static readonly Regex CmdG20JumpPattern = new Regex(
+    @"^\s*(?:N\s*[0-9]+\s+)?G\s*20(?:\.0+)?\s+L\s*(?:[0-9]+|\$JMP\$)\s+K\s*(?:[0-9]+|\$GOJMP\$)\s*$",
+    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+  private static readonly Regex GCodeDMarkerPattern = new Regex(
+    @"(?<![A-Z_])D(?=\s*(?:[+\-.0-9#\[]|$))",
+    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
   /// <summary>
   /// Active machine profile. Machine initialization should replace the recovery
@@ -274,6 +283,8 @@ public static class FiveAxisPathSafety
       bool sawIncrementalMode = false;
       bool sawMetricUnits = false;
       bool sawInchUnits = false;
+      bool cmdG51DisableScaling = CmdG51DisableScalingPattern.IsMatch(executableLine);
+      bool cmdG20Jump = CmdG20JumpPattern.IsMatch(executableLine);
       int parsedGWordCount = 0;
       for (int wordIndex = 0; wordIndex < wordMatches.Count; ++wordIndex)
       {
@@ -288,7 +299,7 @@ public static class FiveAxisPathSafety
           throw new InvalidOperationException(
             string.Format(CultureInfo.InvariantCulture, "Postprocessor generated an invalid G-word value at line {0}.", lineIndex + 1));
 
-        string unsupportedReason = GetUnsupportedGCodeReason(value);
+        string unsupportedReason = GetUnsupportedGCodeReason(value, cmdG51DisableScaling);
         if (unsupportedReason != null)
           throw new InvalidOperationException(
             string.Format(
@@ -313,7 +324,7 @@ public static class FiveAxisPathSafety
           blockUnitScale = 1.0;
           sawMetricUnits = true;
         }
-        else if (value == 20.0)
+        else if (value == 20.0 && !cmdG20Jump)
         {
           blockUnitScale = 25.4;
           sawInchUnits = true;
@@ -403,6 +414,12 @@ public static class FiveAxisPathSafety
           string.Format(
             CultureInfo.InvariantCulture,
             "Cannot validate a non-literal or malformed G word at line {0}.",
+            lineIndex + 1));
+      if (GCodeDMarkerPattern.IsMatch(executableLine) && !cmdG51DisableScaling)
+        throw new InvalidOperationException(
+          string.Format(
+            CultureInfo.InvariantCulture,
+            "Cannot validate a D word outside the exact CMD 'G51 D0' scaling-disable block at line {0}.",
             lineIndex + 1));
       Match unsupportedAxis = GCodeUnsupportedAxisMarkerPattern.Match(executableLine);
       if (unsupportedAxis.Success)
@@ -537,11 +554,13 @@ public static class FiveAxisPathSafety
     return result.ToString();
   }
 
-  private static string GetUnsupportedGCodeReason(double code)
+  private static string GetUnsupportedGCodeReason(double code, bool cmdG51DisableScaling)
   {
     if (code == 2.0 || code == 3.0)
       return "arc extrema are not proven by endpoint-only validation";
-    if (code == 10.0 || code == 51.0 || code == 52.0 || code == 68.0 || code == 92.0)
+    if (code == 51.0 && !cmdG51DisableScaling)
+      return "only the exact controller-approved 'G51 D0' scaling-disable block is supported";
+    if (code == 10.0 || code == 52.0 || code == 68.0 || code == 92.0)
       return "coordinate transformation or offset mutation requires controller-specific proof";
     if (code == 28.0 || code == 30.0)
       return "the controller reference-return endpoint is not present in the program";
@@ -727,6 +746,8 @@ public static class FiveAxisSafetyProfileStore
 {
   private const string ProfileFileName = "FiveAxisSafety.prm";
   private const string CurrentVersion = "2";
+  private const int MaxSettingsDirectories = 1024;
+  private const int MaxSettingsFiles = 8192;
   private static readonly string[] ProfileDataKeys = new string[]
   {
     "Version", "XMin", "XMax", "YMin", "YMax", "ZMin", "ZMax",
@@ -738,6 +759,70 @@ public static class FiveAxisSafetyProfileStore
     if (string.IsNullOrWhiteSpace(settingsDirectory))
       throw new ArgumentException("Settings directory is empty.", nameof(settingsDirectory));
     return Path.Combine(settingsDirectory, ProfileFileName);
+  }
+
+  /// <summary>
+  /// Loads the active envelope from the complete Settings trees. The signed
+  /// FiveAxisSafety profile, when present, must be contained by both the PLC
+  /// and application soft limits. Old, Backup and Temp trees are never active.
+  /// </summary>
+  public static bool TryLoadFromSettings(
+    string settingsDirectory,
+    string machineSettingsDirectory,
+    string baseDirectory,
+    out FiveAxisSafetyProfile profile,
+    out string sourceSummary)
+  {
+    profile = null;
+    sourceSummary = string.Empty;
+    List<string> roots = BuildSettingsRoots(settingsDirectory, machineSettingsDirectory);
+    if (roots.Count == 0)
+      return false;
+
+    string controllerSummary;
+    FiveAxisSafetyProfile controllerProfile = LoadControllerProfile(roots, baseDirectory, out controllerSummary);
+    List<string> savedProfiles = FindSettingsFiles(roots, ProfileFileName);
+    FiveAxisSafetyProfile selectedProfile = null;
+    for (int index = 0; index < savedProfiles.Count; ++index)
+    {
+      FiveAxisSafetyProfile candidate;
+      if (!TryLoad(savedProfiles[index], out candidate))
+        continue;
+      if (selectedProfile != null && !ProfilesEqual(selectedProfile, candidate))
+        throw new InvalidDataException("Conflicting active FiveAxisSafety.prm files were found in the Settings trees.");
+      selectedProfile = candidate;
+    }
+
+    if (selectedProfile == null)
+    {
+      selectedProfile = controllerProfile;
+      sourceSummary = "Controller settings: " + controllerSummary;
+    }
+    else
+    {
+      EnsureContainedByController(selectedProfile, controllerProfile);
+      sourceSummary = "FiveAxisSafety.prm + " + controllerSummary;
+    }
+
+    ValidateConfiguredProfileForStore(selectedProfile);
+    profile = CloneProfile(selectedProfile);
+    return true;
+  }
+
+  public static void ValidateAgainstControllerSettings(
+    string settingsDirectory,
+    string machineSettingsDirectory,
+    string baseDirectory,
+    FiveAxisSafetyProfile profile,
+    out string sourceSummary)
+  {
+    if (profile == null)
+      throw new ArgumentNullException(nameof(profile));
+    List<string> roots = BuildSettingsRoots(settingsDirectory, machineSettingsDirectory);
+    if (roots.Count == 0)
+      throw new InvalidDataException("No active Settings directory is available for machine-limit verification.");
+    FiveAxisSafetyProfile controllerProfile = LoadControllerProfile(roots, baseDirectory, out sourceSummary);
+    EnsureContainedByController(profile, controllerProfile);
   }
 
   public static void Save(string filePath, FiveAxisSafetyProfile profile)
@@ -857,6 +942,608 @@ public static class FiveAxisSafetyProfileStore
         double.IsNaN(parsedValue))
       throw new InvalidDataException("Machine profile contains an invalid or missing " + key + " value.");
     return parsedValue;
+  }
+
+  private sealed class AxisRange
+  {
+    public double Minimum;
+    public double Maximum;
+    public double DataMinimum;
+    public double DataMaximum;
+    public bool HasDataRange;
+    public bool Enabled;
+  }
+
+  private static List<string> BuildSettingsRoots(string settingsDirectory, string machineSettingsDirectory)
+  {
+    List<string> roots = new List<string>();
+    AddSettingsRoot(roots, settingsDirectory);
+    AddSettingsRoot(roots, machineSettingsDirectory);
+    return roots;
+  }
+
+  private static void AddSettingsRoot(List<string> roots, string path)
+  {
+    if (string.IsNullOrWhiteSpace(path))
+      return;
+    string fullPath = Path.GetFullPath(path);
+    if (!Directory.Exists(fullPath))
+      return;
+    for (int index = 0; index < roots.Count; ++index)
+    {
+      if (string.Equals(roots[index], fullPath, StringComparison.OrdinalIgnoreCase))
+        return;
+    }
+    roots.Add(fullPath);
+  }
+
+  private static FiveAxisSafetyProfile LoadControllerProfile(
+    List<string> roots,
+    string baseDirectory,
+    out string sourceSummary)
+  {
+    List<string> machineFiles = FindSettingsFiles(roots, "Machine.prm");
+    List<string> plcFiles = FindSettingsFiles(roots, "PLCSettings.par");
+    if (!string.IsNullOrWhiteSpace(baseDirectory))
+    {
+      string basePlcFile = Path.Combine(Path.GetFullPath(baseDirectory), "PLCSettings.par");
+      if (File.Exists(basePlcFile) && !ContainsPath(plcFiles, basePlcFile))
+        plcFiles.Add(basePlcFile);
+    }
+
+    FiveAxisSafetyProfile machineProfile = LoadConsistentProfiles(machineFiles, ReadMachineProfile, "Machine.prm");
+    FiveAxisSafetyProfile plcProfile = LoadConsistentProfiles(plcFiles, ReadPlcProfile, "PLCSettings.par");
+    if (machineProfile == null && plcProfile == null)
+      throw new InvalidDataException("Neither Machine.prm soft limits nor PLCSettings.par axis limits were found in the active Settings configuration.");
+
+    FiveAxisSafetyProfile controllerProfile = machineProfile == null
+      ? plcProfile
+      : (plcProfile == null ? machineProfile : IntersectProfiles(machineProfile, plcProfile));
+    bool programCamLimitsApplied = ApplyProgramCamLimits(controllerProfile, FindSettingsFiles(roots, "Program.prm"));
+    ValidateConfiguredProfileForStore(controllerProfile);
+
+    string axisConfiguration = ValidateKinematicAndPost(roots);
+    string marbleConfiguration = ValidateMarbleSafetySettings(roots);
+    List<string> sources = new List<string>();
+    if (machineProfile != null)
+      sources.Add("Machine.prm soft limits");
+    if (plcProfile != null)
+      sources.Add("PLCSettings.par limits");
+    if (programCamLimitsApplied)
+      sources.Add("Program.prm CAM limits");
+    sources.Add(axisConfiguration);
+    sources.Add(marbleConfiguration);
+    sourceSummary = string.Join(" + ", sources.ToArray());
+    return controllerProfile;
+  }
+
+  private static FiveAxisSafetyProfile LoadConsistentProfiles(
+    List<string> files,
+    Func<string, FiveAxisSafetyProfile> loader,
+    string description)
+  {
+    FiveAxisSafetyProfile selected = null;
+    for (int index = 0; index < files.Count; ++index)
+    {
+      FiveAxisSafetyProfile candidate = loader(files[index]);
+      if (selected != null && !ProfilesEqual(selected, candidate))
+        throw new InvalidDataException("Conflicting active " + description + " files were found in the Settings trees.");
+      selected = candidate;
+    }
+    return selected;
+  }
+
+  private static FiveAxisSafetyProfile ReadPlcProfile(string filePath)
+  {
+    string[] lines = ReadBoundedLines(filePath, 262144L, 4096);
+    Dictionary<char, AxisRange> ranges = new Dictionary<char, AxisRange>();
+    char activeAxis = '\0';
+    for (int index = 0; index < lines.Length; ++index)
+    {
+      string line = lines[index].Trim();
+      if (line.Length == 7 && line.StartsWith("<Axis", StringComparison.OrdinalIgnoreCase) && line[6] == '>')
+      {
+        activeAxis = char.ToUpperInvariant(line[5]);
+        continue;
+      }
+      if (line.StartsWith("</Axis", StringComparison.OrdinalIgnoreCase))
+      {
+        activeAxis = '\0';
+        continue;
+      }
+      if (activeAxis == '\0' || !line.StartsWith("Set;", StringComparison.OrdinalIgnoreCase))
+        continue;
+      string[] fields = line.Split(';');
+      if (fields.Length < 15)
+        throw new InvalidDataException("PLCSettings.par contains an incomplete Set record for axis " + activeAxis + ".");
+      AxisRange range = new AxisRange();
+      range.Minimum = ParseInvariantDouble(fields[13], "PLC " + activeAxis + " minimum");
+      range.Maximum = ParseInvariantDouble(fields[14], "PLC " + activeAxis + " maximum");
+      if (fields.Length >= 21)
+      {
+        range.DataMinimum = ParseInvariantDouble(fields[19], "PLC " + activeAxis + " data minimum");
+        range.DataMaximum = ParseInvariantDouble(fields[20], "PLC " + activeAxis + " data maximum");
+        range.HasDataRange = range.DataMinimum < range.DataMaximum;
+      }
+      range.Enabled = true;
+      ranges[activeAxis] = range;
+    }
+    return CreateProfileFromRanges(ranges, "PLCSettings.par");
+  }
+
+  private static FiveAxisSafetyProfile ReadMachineProfile(string filePath)
+  {
+    string[] lines = ReadBoundedLines(filePath, 2L * 1024L * 1024L, 50000);
+    string machineText = string.Join("\n", lines);
+    Dictionary<char, AxisRange> ranges = new Dictionary<char, AxisRange>();
+    char activeAxis = '\0';
+    for (int index = 0; index < lines.Length; ++index)
+    {
+      string line = lines[index].Trim();
+      if (line.StartsWith("<CodesysAxis_", StringComparison.OrdinalIgnoreCase) && line.EndsWith(">", StringComparison.Ordinal))
+      {
+        int axisIndex = "<CodesysAxis_".Length;
+        activeAxis = axisIndex < line.Length ? char.ToUpperInvariant(line[axisIndex]) : '\0';
+        if (!ranges.ContainsKey(activeAxis))
+          ranges[activeAxis] = new AxisRange();
+        continue;
+      }
+      if (line.StartsWith("</CodesysAxis_", StringComparison.OrdinalIgnoreCase))
+      {
+        activeAxis = '\0';
+        continue;
+      }
+      if (activeAxis == '\0')
+        continue;
+      int separator = line.IndexOf('=');
+      if (separator <= 0)
+        continue;
+      string key = line.Substring(0, separator).Trim();
+      string value = line.Substring(separator + 1).Trim();
+      AxisRange range = ranges[activeAxis];
+      if (key.EndsWith("setSoftLimitEnable", StringComparison.OrdinalIgnoreCase))
+      {
+        bool enabled;
+        if (!bool.TryParse(value, out enabled))
+          throw new InvalidDataException("Machine.prm contains an invalid soft-limit enable value for axis " + activeAxis + ".");
+        range.Enabled = enabled;
+      }
+      else if (key.EndsWith("setSoftLimitNegative", StringComparison.OrdinalIgnoreCase))
+        range.Minimum = ParseInvariantDouble(value, "Machine " + activeAxis + " minimum");
+      else if (key.EndsWith("setSoftLimitPositive", StringComparison.OrdinalIgnoreCase))
+        range.Maximum = ParseInvariantDouble(value, "Machine " + activeAxis + " maximum");
+      else if (key.EndsWith("setDataLimitNegative", StringComparison.OrdinalIgnoreCase))
+      {
+        range.DataMinimum = ParseInvariantDouble(value, "Machine " + activeAxis + " data minimum");
+        range.HasDataRange = true;
+      }
+      else if (key.EndsWith("setDataLimitPositive", StringComparison.OrdinalIgnoreCase))
+      {
+        range.DataMaximum = ParseInvariantDouble(value, "Machine " + activeAxis + " data maximum");
+        range.HasDataRange = true;
+      }
+    }
+    RequireExactAssignment(machineText, "clsAppMarbleOPVar.OptionRTCPEnable", "True", "Machine.prm RTCP");
+    RequireExactAssignment(machineText, "clsAppMarbleOPVar.OptionServoAxisA", "True", "Machine.prm A-axis servo");
+    RequireExactAssignment(machineText, "clsAppMarbleOPVar.OptionAllAbsoluteEncoder", "True", "Machine.prm absolute encoders");
+    RequireExactAssignment(machineText, "clsAppMarbleOPVar.InhibitXLimitCheckAlarm", "False", "Machine.prm X-limit alarm");
+    RequireExactAssignment(machineText, "clsAppMarbleOPVar.InhibitYLimitCheckAlarm", "False", "Machine.prm Y-limit alarm");
+    RequireExactAssignment(machineText, "clsAppMarbleOPVar.InhibitZLimitCheckAlarm", "False", "Machine.prm Z-limit alarm");
+    RequireExactAssignment(machineText, "AlarmActionSettings.XLimitAction", "HardAlarm", "Machine.prm X-limit action");
+    RequireExactAssignment(machineText, "AlarmActionSettings.YLimitAction", "HardAlarm", "Machine.prm Y-limit action");
+    RequireExactAssignment(machineText, "AlarmActionSettings.ZLimitAction", "HardAlarm", "Machine.prm Z-limit action");
+    return CreateProfileFromRanges(ranges, "Machine.prm");
+  }
+
+  private static FiveAxisSafetyProfile CreateProfileFromRanges(Dictionary<char, AxisRange> ranges, string source)
+  {
+    char[] requiredAxes = new char[] { 'X', 'Y', 'Z', 'A', 'C' };
+    for (int index = 0; index < requiredAxes.Length; ++index)
+    {
+      AxisRange range;
+      if (!ranges.TryGetValue(requiredAxes[index], out range))
+        throw new InvalidDataException(source + " is missing axis " + requiredAxes[index] + ".");
+      if (!range.Enabled)
+        throw new InvalidDataException(source + " has disabled soft-limit enforcement for axis " + requiredAxes[index] + ".");
+      if (range.HasDataRange)
+      {
+        if (range.DataMinimum >= range.DataMaximum)
+          throw new InvalidDataException(source + " has an invalid data range for axis " + requiredAxes[index] + ".");
+        range.Minimum = Math.Max(range.Minimum, range.DataMinimum);
+        range.Maximum = Math.Min(range.Maximum, range.DataMaximum);
+      }
+      if (range.Minimum >= range.Maximum)
+        throw new InvalidDataException(source + " has an invalid range for axis " + requiredAxes[index] + ".");
+    }
+
+    AxisRange x = ranges['X'];
+    AxisRange y = ranges['Y'];
+    AxisRange z = ranges['Z'];
+    AxisRange a = ranges['A'];
+    AxisRange c = ranges['C'];
+    return new FiveAxisSafetyProfile()
+    {
+      XMin = x.Minimum, XMax = x.Maximum,
+      YMin = y.Minimum, YMax = y.Maximum,
+      ZMin = z.Minimum, ZMax = z.Maximum,
+      AMin = a.Minimum, AMax = a.Maximum,
+      BMin = 0.0, BMax = 0.0,
+      CMin = c.Minimum, CMax = c.Maximum,
+      MaxCuttingTiltDelta = Math.Min(180.0, a.Maximum - a.Minimum)
+    };
+  }
+
+  private static FiveAxisSafetyProfile IntersectProfiles(FiveAxisSafetyProfile first, FiveAxisSafetyProfile second)
+  {
+    FiveAxisSafetyProfile intersection = new FiveAxisSafetyProfile()
+    {
+      XMin = Math.Max(first.XMin, second.XMin), XMax = Math.Min(first.XMax, second.XMax),
+      YMin = Math.Max(first.YMin, second.YMin), YMax = Math.Min(first.YMax, second.YMax),
+      ZMin = Math.Max(first.ZMin, second.ZMin), ZMax = Math.Min(first.ZMax, second.ZMax),
+      AMin = Math.Max(first.AMin, second.AMin), AMax = Math.Min(first.AMax, second.AMax),
+      BMin = Math.Max(first.BMin, second.BMin), BMax = Math.Min(first.BMax, second.BMax),
+      CMin = Math.Max(first.CMin, second.CMin), CMax = Math.Min(first.CMax, second.CMax),
+      MaxCuttingTiltDelta = Math.Min(first.MaxCuttingTiltDelta, second.MaxCuttingTiltDelta)
+    };
+    ValidateConfiguredProfileForStore(intersection);
+    return intersection;
+  }
+
+  private static void EnsureContainedByController(FiveAxisSafetyProfile profile, FiveAxisSafetyProfile controller)
+  {
+    string[] outsideAxes = new string[]
+    {
+      IsContained(profile.XMin, profile.XMax, controller.XMin, controller.XMax) ? null : "X",
+      IsContained(profile.YMin, profile.YMax, controller.YMin, controller.YMax) ? null : "Y",
+      IsContained(profile.ZMin, profile.ZMax, controller.ZMin, controller.ZMax) ? null : "Z",
+      IsContained(profile.AMin, profile.AMax, controller.AMin, controller.AMax) ? null : "A",
+      IsContained(profile.BMin, profile.BMax, controller.BMin, controller.BMax) ? null : "B",
+      IsContained(profile.CMin, profile.CMax, controller.CMin, controller.CMax) ? null : "C"
+    };
+    List<string> invalid = new List<string>();
+    for (int index = 0; index < outsideAxes.Length; ++index)
+    {
+      if (outsideAxes[index] != null)
+        invalid.Add(outsideAxes[index]);
+    }
+    if (invalid.Count > 0)
+      throw new InvalidDataException(
+        "FiveAxisSafety.prm exceeds the active controller soft limits on axis/axes: " +
+        string.Join(", ", invalid.ToArray()) + ".");
+    if (profile.MaxCuttingTiltDelta > controller.MaxCuttingTiltDelta + 0.000001)
+      throw new InvalidDataException(
+        "FiveAxisSafety.prm cutting tilt delta exceeds the active kinematic tilt travel.");
+  }
+
+  private static bool IsContained(double minimum, double maximum, double outerMinimum, double outerMaximum)
+  {
+    const double tolerance = 0.000001;
+    return minimum >= outerMinimum - tolerance && maximum <= outerMaximum + tolerance;
+  }
+
+  private static bool ApplyProgramCamLimits(FiveAxisSafetyProfile profile, List<string> files)
+  {
+    bool applied = false;
+    for (int fileIndex = 0; fileIndex < files.Count; ++fileIndex)
+    {
+      string[] lines = ReadBoundedLines(files[fileIndex], 2L * 1024L * 1024L, 100000);
+      Dictionary<char, double> minimums = new Dictionary<char, double>();
+      Dictionary<char, double> maximums = new Dictionary<char, double>();
+      for (int lineIndex = 0; lineIndex < lines.Length; ++lineIndex)
+      {
+        string line = lines[lineIndex].Trim();
+        if (!line.StartsWith("setCam.", StringComparison.OrdinalIgnoreCase))
+          continue;
+        int separator = line.IndexOf('=');
+        if (separator <= 0)
+          continue;
+        string key = line.Substring(0, separator).Trim();
+        if (key.Length < 19)
+          continue;
+        char axis = char.ToUpperInvariant(key["setCam.".Length]);
+        if (axis != 'X' && axis != 'Y' && axis != 'Z' && axis != 'A' && axis != 'B' && axis != 'C')
+          continue;
+        double value = ParseInvariantDouble(line.Substring(separator + 1), "Program CAM " + axis + " limit");
+        if (key.EndsWith("AxisMinLimit", StringComparison.OrdinalIgnoreCase))
+          minimums[axis] = value;
+        else if (key.EndsWith("AxisMaxLimit", StringComparison.OrdinalIgnoreCase))
+          maximums[axis] = value;
+      }
+
+      char[] axes = new char[] { 'X', 'Y', 'Z', 'A', 'B', 'C' };
+      for (int axisIndex = 0; axisIndex < axes.Length; ++axisIndex)
+      {
+        double minimum;
+        double maximum;
+        if (!minimums.TryGetValue(axes[axisIndex], out minimum) ||
+            !maximums.TryGetValue(axes[axisIndex], out maximum) ||
+            (minimum == 0.0 && maximum == 0.0))
+          continue;
+        if (minimum >= maximum)
+          throw new InvalidDataException("Program.prm has an invalid CAM range for axis " + axes[axisIndex] + ".");
+        IntersectAxis(profile, axes[axisIndex], minimum, maximum);
+        applied = true;
+      }
+    }
+    return applied;
+  }
+
+  private static void IntersectAxis(FiveAxisSafetyProfile profile, char axis, double minimum, double maximum)
+  {
+    switch (axis)
+    {
+      case 'X': profile.XMin = Math.Max(profile.XMin, minimum); profile.XMax = Math.Min(profile.XMax, maximum); break;
+      case 'Y': profile.YMin = Math.Max(profile.YMin, minimum); profile.YMax = Math.Min(profile.YMax, maximum); break;
+      case 'Z': profile.ZMin = Math.Max(profile.ZMin, minimum); profile.ZMax = Math.Min(profile.ZMax, maximum); break;
+      case 'A': profile.AMin = Math.Max(profile.AMin, minimum); profile.AMax = Math.Min(profile.AMax, maximum); break;
+      case 'B': profile.BMin = Math.Max(profile.BMin, minimum); profile.BMax = Math.Min(profile.BMax, maximum); break;
+      default: profile.CMin = Math.Max(profile.CMin, minimum); profile.CMax = Math.Min(profile.CMax, maximum); break;
+    }
+  }
+
+  private static string ValidateMarbleSafetySettings(List<string> roots)
+  {
+    List<string> files = FindSettingsFiles(roots, "Marble.prm");
+    if (files.Count == 0)
+      throw new InvalidDataException("Marble.prm is missing from the active Settings trees.");
+    for (int index = 0; index < files.Count; ++index)
+    {
+      string text = ReadBoundedText(files[index], 2L * 1024L * 1024L);
+      RequireBooleanAssignment(text, "MarbleProgramSettings.CheckMachineLimits", true, "machine-limit checking");
+      RequireBooleanAssignment(text, "MarbleProgramSettings.CheckPartLimits", true, "part-limit checking");
+      RequireBooleanAssignment(text, "MarbleMachineOptionsSettings.RTCPEnable", true, "RTCP");
+      RequireBooleanAssignment(text, "marbleCamPars.MoveZCAAxesToSafeDistance", true, "safe Z/C/A reorientation");
+      RequireTextAssignment(text, "MarbleMachineOptionsSettings.AxisXChar", "X");
+      RequireTextAssignment(text, "MarbleMachineOptionsSettings.AxisYChar", "Y");
+      RequireTextAssignment(text, "MarbleMachineOptionsSettings.AxisZChar", "Z");
+      RequireTextAssignment(text, "MarbleMachineOptionsSettings.AxisAChar", "A");
+      RequireTextAssignment(text, "MarbleMachineOptionsSettings.AxisCChar", "C");
+    }
+    return "Marble limits/RTCP";
+  }
+
+  private static void RequireBooleanAssignment(string text, string key, bool expected, string description)
+  {
+    string value = FindAssignment(text, key);
+    bool parsed;
+    if (value == null || !bool.TryParse(value, out parsed) || parsed != expected)
+      throw new InvalidDataException("Marble.prm does not enable required " + description + ".");
+  }
+
+  private static void RequireTextAssignment(string text, string key, string expected)
+  {
+    string value = FindAssignment(text, key);
+    if (!string.Equals(value, expected, StringComparison.OrdinalIgnoreCase))
+      throw new InvalidDataException("Marble.prm has an invalid " + key + " mapping.");
+  }
+
+  private static string FindAssignment(string text, string key)
+  {
+    string[] lines = text.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
+    for (int index = 0; index < lines.Length; ++index)
+    {
+      string line = lines[index].Trim();
+      if (!line.StartsWith(key, StringComparison.OrdinalIgnoreCase))
+        continue;
+      int separator = line.IndexOf('=');
+      if (separator > 0 && string.Equals(line.Substring(0, separator).Trim(), key, StringComparison.OrdinalIgnoreCase))
+        return line.Substring(separator + 1).Trim();
+    }
+    return null;
+  }
+
+  private static void RequireExactAssignment(string text, string key, string expected, string description)
+  {
+    string value = FindAssignment(text, key);
+    if (!string.Equals(value, expected, StringComparison.OrdinalIgnoreCase))
+      throw new InvalidDataException(description + " is missing or not set to " + expected + ".");
+  }
+
+  private static string ValidateKinematicAndPost(List<string> roots)
+  {
+    List<string> kinematicFiles = FindSettingsFiles(roots, "Kinematic5Axis.bukinematic");
+    List<string> postFiles = FindSettingsFiles(roots, "postMachine.bupost");
+    if (kinematicFiles.Count == 0)
+      throw new InvalidDataException("Kinematic5Axis.bukinematic is missing from the active Settings trees.");
+    if (postFiles.Count == 0)
+      throw new InvalidDataException("postMachine.bupost is missing from the active Settings trees.");
+
+    string expectedPair = null;
+    for (int index = 0; index < kinematicFiles.Count; ++index)
+    {
+      string text = ReadBoundedText(kinematicFiles[index], 262144L);
+      bool wristAc = text.IndexOf("WristAC_5Axis", StringComparison.OrdinalIgnoreCase) >= 0;
+      bool wristBc = text.IndexOf("WristBC_5Axis", StringComparison.OrdinalIgnoreCase) >= 0;
+      if (wristAc == wristBc)
+        throw new InvalidDataException("Kinematic5Axis.bukinematic does not define exactly one supported A/C or B/C five-axis wrist.");
+      string pair = wristAc ? "A/C" : "B/C";
+      if (expectedPair != null && expectedPair != pair)
+        throw new InvalidDataException("Conflicting active five-axis kinematic files were found in the Settings trees.");
+      ValidateKinematicGeometry(text, pair);
+      expectedPair = pair;
+    }
+
+    for (int index = 0; index < postFiles.Count; ++index)
+      ValidatePostAxes(postFiles[index], expectedPair);
+    return "Kinematic/post " + expectedPair;
+  }
+
+  private static void ValidatePostAxes(string filePath, string expectedPair)
+  {
+    string[] lines = ReadBoundedLines(filePath, 1024L * 1024L, 20000);
+    string postText = string.Join("\n", lines);
+    if (postText.IndexOf("G51 D0", StringComparison.OrdinalIgnoreCase) < 0 ||
+        postText.IndexOf("G20 L$JMP$ K$GOJMP$", StringComparison.OrdinalIgnoreCase) < 0)
+      throw new InvalidDataException("postMachine.bupost is not the audited CMD controller dialect.");
+    Dictionary<char, bool> axes = new Dictionary<char, bool>();
+    bool inAxesSection = false;
+    for (int index = 0; index < lines.Length; ++index)
+    {
+      string line = lines[index].Trim();
+      if (line.Equals("<AxesUsing>", StringComparison.OrdinalIgnoreCase))
+      {
+        inAxesSection = true;
+        continue;
+      }
+      if (line.Equals("</AxesUsing>", StringComparison.OrdinalIgnoreCase))
+        break;
+      if (!inAxesSection || line.Length < 3)
+        continue;
+      int separator = line.IndexOf('=');
+      if (separator <= 0)
+        continue;
+      char axis = char.ToUpperInvariant(line[0]);
+      bool enabled;
+      if ((axis == 'X' || axis == 'Y' || axis == 'Z' || axis == 'A' || axis == 'B' || axis == 'C') &&
+          bool.TryParse(line.Substring(separator + 1).Trim(), out enabled))
+        axes[axis] = enabled;
+    }
+
+    char[] required = expectedPair == "A/C"
+      ? new char[] { 'X', 'Y', 'Z', 'A', 'C' }
+      : new char[] { 'X', 'Y', 'Z', 'B', 'C' };
+    for (int index = 0; index < required.Length; ++index)
+    {
+      bool enabled;
+      if (!axes.TryGetValue(required[index], out enabled) || !enabled)
+        throw new InvalidDataException("postMachine.bupost does not enable required " + required[index] + " axis for the active " + expectedPair + " kinematic.");
+    }
+    char unusedTilt = expectedPair == "A/C" ? 'B' : 'A';
+    bool unusedEnabled;
+    if (axes.TryGetValue(unusedTilt, out unusedEnabled) && unusedEnabled)
+      throw new InvalidDataException("postMachine.bupost enables " + unusedTilt + " although the active kinematic is " + expectedPair + ".");
+  }
+
+  private static void ValidateKinematicGeometry(string text, string pair)
+  {
+    double[] offset = ReadVectorAssignment(text, "KinematicBase5.OffsetXYZ");
+    double[] firstPivot = ReadVectorAssignment(text, pair == "A/C"
+      ? "KinematicBase5.RotateCenterOffsetOfA"
+      : "KinematicBase5.RotateCenterOffsetOfB");
+    double[] cPivot = ReadVectorAssignment(text, "KinematicBase5.RotateCenterOffsetOfC");
+    bool hasMeasuredGeometry = false;
+    for (int index = 0; index < 3; ++index)
+    {
+      if (offset[index] != 0.0 || firstPivot[index] != 0.0 || cPivot[index] != 0.0)
+        hasMeasuredGeometry = true;
+    }
+    if (!hasMeasuredGeometry)
+      throw new InvalidDataException("Kinematic5Axis.bukinematic contains no measured pivot or base offsets.");
+  }
+
+  private static double[] ReadVectorAssignment(string text, string key)
+  {
+    string value = FindAssignment(text, key);
+    if (value == null)
+      throw new InvalidDataException("Kinematic5Axis.bukinematic is missing " + key + ".");
+    string[] fields = value.Split(';');
+    if (fields.Length != 3)
+      throw new InvalidDataException("Kinematic5Axis.bukinematic contains an invalid " + key + " vector.");
+    return new double[]
+    {
+      ParseInvariantDouble(fields[0], key + " X"),
+      ParseInvariantDouble(fields[1], key + " Y"),
+      ParseInvariantDouble(fields[2], key + " Z")
+    };
+  }
+
+  private static List<string> FindSettingsFiles(List<string> roots, string fileName)
+  {
+    List<string> results = new List<string>();
+    Queue<string> pending = new Queue<string>();
+    for (int index = 0; index < roots.Count; ++index)
+      pending.Enqueue(roots[index]);
+    int visitedDirectories = 0;
+    int visitedFiles = 0;
+    while (pending.Count > 0)
+    {
+      string directory = pending.Dequeue();
+      if (++visitedDirectories > MaxSettingsDirectories)
+        throw new InvalidDataException("Settings tree contains too many directories to audit safely.");
+      string[] files = Directory.GetFiles(directory);
+      visitedFiles += files.Length;
+      if (visitedFiles > MaxSettingsFiles)
+        throw new InvalidDataException("Settings tree contains too many files to audit safely.");
+      for (int index = 0; index < files.Length; ++index)
+      {
+        if (string.Equals(Path.GetFileName(files[index]), fileName, StringComparison.OrdinalIgnoreCase) &&
+            !ContainsPath(results, files[index]))
+          results.Add(files[index]);
+      }
+
+      string[] subdirectories = Directory.GetDirectories(directory);
+      for (int index = 0; index < subdirectories.Length; ++index)
+      {
+        DirectoryInfo info = new DirectoryInfo(subdirectories[index]);
+        if ((info.Attributes & FileAttributes.ReparsePoint) != 0 || IsInactiveSettingsDirectory(info.Name))
+          continue;
+        pending.Enqueue(info.FullName);
+      }
+    }
+    results.Sort(StringComparer.OrdinalIgnoreCase);
+    return results;
+  }
+
+  private static bool IsInactiveSettingsDirectory(string name)
+  {
+    return name.Equals("Old", StringComparison.OrdinalIgnoreCase) ||
+           name.Equals("Backup", StringComparison.OrdinalIgnoreCase) ||
+           name.Equals("Temp", StringComparison.OrdinalIgnoreCase);
+  }
+
+  private static bool ContainsPath(List<string> paths, string candidate)
+  {
+    string fullCandidate = Path.GetFullPath(candidate);
+    for (int index = 0; index < paths.Count; ++index)
+    {
+      if (string.Equals(Path.GetFullPath(paths[index]), fullCandidate, StringComparison.OrdinalIgnoreCase))
+        return true;
+    }
+    return false;
+  }
+
+  private static string[] ReadBoundedLines(string filePath, long maximumBytes, int maximumLines)
+  {
+    string text = ReadBoundedText(filePath, maximumBytes);
+    string[] lines = text.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
+    if (lines.Length > maximumLines)
+      throw new InvalidDataException(Path.GetFileName(filePath) + " contains too many lines.");
+    return lines;
+  }
+
+  private static string ReadBoundedText(string filePath, long maximumBytes)
+  {
+    FileInfo file = new FileInfo(filePath);
+    if (!file.Exists)
+      throw new FileNotFoundException("Settings file was not found.", filePath);
+    if (file.Length > maximumBytes)
+      throw new InvalidDataException(file.Name + " exceeds the settings audit size limit.");
+    return File.ReadAllText(file.FullName);
+  }
+
+  private static double ParseInvariantDouble(string value, string description)
+  {
+    double parsed;
+    if (!double.TryParse(value.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out parsed) ||
+        double.IsNaN(parsed) || double.IsInfinity(parsed))
+      throw new InvalidDataException("Invalid " + description + " value.");
+    return parsed;
+  }
+
+  private static void ValidateConfiguredProfileForStore(FiveAxisSafetyProfile profile)
+  {
+    FiveAxisPathSafety.ValidateConfiguredProfile(profile);
+  }
+
+  private static bool ProfilesEqual(FiveAxisSafetyProfile first, FiveAxisSafetyProfile second)
+  {
+    return first.XMin == second.XMin && first.XMax == second.XMax &&
+           first.YMin == second.YMin && first.YMax == second.YMax &&
+           first.ZMin == second.ZMin && first.ZMax == second.ZMax &&
+           first.AMin == second.AMin && first.AMax == second.AMax &&
+           first.BMin == second.BMin && first.BMax == second.BMax &&
+           first.CMin == second.CMin && first.CMax == second.CMax &&
+           first.MaxCuttingTiltDelta == second.MaxCuttingTiltDelta;
   }
 
   private static string BuildChecksumPayload(Dictionary<string, string> values)
