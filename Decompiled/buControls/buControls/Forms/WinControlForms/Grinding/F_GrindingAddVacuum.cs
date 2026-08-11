@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Forms;
 using buClass;
 using buClass.Apps;
@@ -139,9 +140,17 @@ public class F_GrindingAddVacuum : Form
 
 	internal void method_4(object sender, EventArgs e)
 	{
-		if (Properties.Inited)
+		if (!Properties.Inited)
 		{
-			numericUpDown_0.Value = Convert.ToDecimal(comboBox_0.Text);
+			return;
+		}
+
+		decimal value;
+		bool parsed = decimal.TryParse(comboBox_0.Text, NumberStyles.Number, CultureInfo.CurrentCulture, out value) ||
+			decimal.TryParse(comboBox_0.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out value);
+		if (parsed && value >= numericUpDown_0.Minimum && value <= numericUpDown_0.Maximum)
+		{
+			numericUpDown_0.Value = value;
 		}
 	}
 
