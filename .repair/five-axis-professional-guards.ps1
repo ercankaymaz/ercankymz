@@ -146,11 +146,23 @@ if ($text -notmatch 'FiveAxisPathSafety\.ValidateAndNormalize\(Job\.Cams\);') {
     }
     $replacement = $gcodeMatch.Groups['indent'].Value + 'strGCodes = "";' + [Environment]::NewLine +
         $gcodeMatch.Groups['callindent'].Value + 'FiveAxisPathSafety.ValidateAndNormalize(Job.Cams);' + [Environment]::NewLine +
-        $gcodeMatch.Groups['callindent'].Value + 'clsInit.cGcodeCreate.CreatGCode(Job.Cams, Post, ref strGCodes);'
+        $gcodeMatch.Groups['callindent'].Value + 'clsInit.cGcodeCreate.CreatGCode(Job.Cams, Post, ref strGCodes);' + [Environment]::NewLine +
+        $gcodeMatch.Groups['callindent'].Value + 'FiveAxisPathSafety.ValidateGCode(strGCodes);'
     $text = $text.Remove($gcodeMatch.Index, $gcodeMatch.Length).Insert($gcodeMatch.Index, $replacement)
     "FIX mandatory final 5AX path validation gate" | Tee-Object -Append $log
 } else {
     "OK final 5AX path validation gate already present" | Tee-Object -Append $log
+    if ($text -notmatch 'FiveAxisPathSafety\.ValidateGCode\(strGCodes\);') {
+        $postPattern = '(?m)^(?<indent>\s*)clsInit\.cGcodeCreate\.CreatGCode\(Job\.Cams,\s*Post,\s*ref\s+strGCodes\);'
+        $postMatch = [regex]::Match($text, $postPattern)
+        if (-not $postMatch.Success) {
+            throw 'G-code text validation insertion point was not found.'
+        }
+        $postReplacement = $postMatch.Value + [Environment]::NewLine +
+            $postMatch.Groups['indent'].Value + 'FiveAxisPathSafety.ValidateGCode(strGCodes);'
+        $text = $text.Remove($postMatch.Index, $postMatch.Length).Insert($postMatch.Index, $postReplacement)
+        "FIX final postprocessor text validation gate" | Tee-Object -Append $log
+    }
 }
 
 if ($text -ne $original) {
@@ -165,6 +177,7 @@ if ($finalMethod -match '5AXPars\.MachParam\..*UseAirMoveSafetyDistanceFlg\s*=\s
 if ($finalMethod -match 'CamTriMeshType\s*==\s*CamTriangularMeshType\.(ParallelCuts|ConstantZ|Geodesic)') { $regressions.Add('3-axis enum used in 5-axis method') }
 if ($finalMethod -match $emptyCEnvelopePattern) { $regressions.Add('empty C-axis envelope check') }
 if ($text -notmatch 'FiveAxisPathSafety\.ValidateAndNormalize\(Job\.Cams\);') { $regressions.Add('missing final path gate') }
+if ($text -notmatch 'FiveAxisPathSafety\.ValidateGCode\(strGCodes\);') { $regressions.Add('missing postprocessor text gate') }
 
 "5-axis regression count: $($regressions.Count)" | Tee-Object -Append $log
 $regressions | ForEach-Object { "FAIL $_" | Tee-Object -Append $log }
