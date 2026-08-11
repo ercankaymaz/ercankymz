@@ -129,6 +129,75 @@ if (Test-Path -LiteralPath $marblePath) {
         "FIX MarbleItemEntitiesCalculation perpendicular short-circuit list guard: $marblePath" | Tee-Object -Append $log
     }
 
+    # Single-cut plane height is MaterialThickness/sin(A+90). Reject the saw-angle
+    # singularity before creating an invalid plane, and require Plane3D to return
+    # the four vertices consumed immediately afterwards.
+    $oldSingleCutPlane = @'
+		List<Pnt3D> Vertices = new List<Pnt3D>();
+		double height = varOperation.MaterialThickness / Math.Sin(buConversion.DegreeToRadian(pnt6D.A + 90.0));
+		buAppCalc.cVector.Plane3D(new Pnt3D(pnt6D.X, pnt6D.Y, varOperation.MaterialThickness), new Vec3D(1.0, 0.0, 0.0), new OrientationAngle(pnt6D.A - 90.0, 0.0, pnt6D.C), varOperation.CutLength, height, ref Vertices);
+		List<Pnt3D> CalcPoints = new List<Pnt3D>();
+'@
+    $newSingleCutPlane = @'
+		List<Pnt3D> Vertices = new List<Pnt3D>();
+		double singleCutHeightDivisor = Math.Sin(buConversion.DegreeToRadian(pnt6D.A + 90.0));
+		if (double.IsNaN(singleCutHeightDivisor) || double.IsInfinity(singleCutHeightDivisor) || Math.Abs(singleCutHeightDivisor) <= 1E-9)
+		{
+			return;
+		}
+		double height = varOperation.MaterialThickness / singleCutHeightDivisor;
+		buAppCalc.cVector.Plane3D(new Pnt3D(pnt6D.X, pnt6D.Y, varOperation.MaterialThickness), new Vec3D(1.0, 0.0, 0.0), new OrientationAngle(pnt6D.A - 90.0, 0.0, pnt6D.C), varOperation.CutLength, height, ref Vertices);
+		if (Vertices == null || Vertices.Count < 4)
+		{
+			return;
+		}
+		List<Pnt3D> CalcPoints = new List<Pnt3D>();
+'@
+    if ($text.Contains($oldSingleCutPlane)) {
+        $text = $text.Replace($oldSingleCutPlane, $newSingleCutPlane)
+        "FIX doSingleCut saw-angle singularity and Plane3D vertex count: $marblePath" | Tee-Object -Append $log
+    }
+
+    $oldSingleCutPointLoop = @'
+		MarbleItemHeightByDirection(varOperation.CamParameters.CuttingDirection, HeightStepCalculationType.DontChangeBaseStepMakeExtraStep, varOperation.CamParameters.ForwardStepDownDistance, varOperation.CamParameters.BackwardStepDownDistance, varOperation.MaterialThickness, varOperation.TargetZ, Vertices[1], Vertices[2], ref CalcPoints2);
+		list = new List<eEntities>();
+		for (int i = 0; i <= CalcPoints.Count - 1; i++)
+'@
+    $newSingleCutPointLoop = @'
+		MarbleItemHeightByDirection(varOperation.CamParameters.CuttingDirection, HeightStepCalculationType.DontChangeBaseStepMakeExtraStep, varOperation.CamParameters.ForwardStepDownDistance, varOperation.CamParameters.BackwardStepDownDistance, varOperation.MaterialThickness, varOperation.TargetZ, Vertices[1], Vertices[2], ref CalcPoints2);
+		if (CalcPoints.Count != CalcPoints2.Count)
+		{
+			return;
+		}
+		list = new List<eEntities>();
+		for (int i = 0; i <= CalcPoints.Count - 1; i++)
+'@
+    if ($text.Contains($oldSingleCutPointLoop)) {
+        $text = $text.Replace($oldSingleCutPointLoop, $newSingleCutPointLoop)
+        "FIX doSingleCut mismatched edge step counts: $marblePath" | Tee-Object -Append $log
+    }
+
+    $oldLeadEndpoints = @'
+			buAppCalc.cCam.LeadInOutCalculation(eLine2, eLine2, leadIn, leadOut, new WorkPlane(), ClockDirectionType.CW, ref LeadInEntitiy, ref LeadOutEntitiy);
+			eLine2.StartPoint = new Pnt3D(LeadInEntitiy.Vertice[0]);
+			eLine2.EndPoint = new Pnt3D(LeadOutEntitiy.Vertice[LeadOutEntitiy.Vertice.Count - 1]);
+'@
+    $newLeadEndpoints = @'
+			buAppCalc.cCam.LeadInOutCalculation(eLine2, eLine2, leadIn, leadOut, new WorkPlane(), ClockDirectionType.CW, ref LeadInEntitiy, ref LeadOutEntitiy);
+			if (LeadInEntitiy != null && LeadInEntitiy.Vertice != null && LeadInEntitiy.Vertice.Count > 0)
+			{
+				eLine2.StartPoint = new Pnt3D(LeadInEntitiy.Vertice[0]);
+			}
+			if (LeadOutEntitiy != null && LeadOutEntitiy.Vertice != null && LeadOutEntitiy.Vertice.Count > 0)
+			{
+				eLine2.EndPoint = new Pnt3D(LeadOutEntitiy.Vertice[LeadOutEntitiy.Vertice.Count - 1]);
+			}
+'@
+    if ($text.Contains($oldLeadEndpoints)) {
+        $text = $text.Replace($oldLeadEndpoints, $newLeadEndpoints)
+        "FIX doSingleCut empty lead-in/out geometry guards: $marblePath" | Tee-Object -Append $log
+    }
+
     if ($text -ne $original) {
         [IO.File]::WriteAllText($marblePath, $text, [Text.UTF8Encoding]::new($false))
         $patched++
