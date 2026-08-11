@@ -4,6 +4,14 @@ $log = 'build-logs/marble-geometry-guards.txt'
 Remove-Item $log -ErrorAction Ignore
 $patched = 0
 
+function Replace-OneLiteral([string]$Source, [string]$Old, [string]$New, [string]$Label) {
+    $index = $Source.IndexOf($Old, [StringComparison]::Ordinal)
+    if ($index -lt 0) { return $Source }
+    $second = $Source.IndexOf($Old, $index + $Old.Length, [StringComparison]::Ordinal)
+    if ($second -ge 0) { throw "Ambiguous repair pattern ($Label): more than one exact match" }
+    return $Source.Substring(0, $index) + $New + $Source.Substring($index + $Old.Length)
+}
+
 $path = 'Decompiled/buCore/buCore/AppCalc/buMarbleCalc.cs'
 if (-not (Test-Path -LiteralPath $path)) {
     "MISS $path" | Tee-Object -Append $log
@@ -33,7 +41,7 @@ $new = @'
 		}
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'doSingleCut-plane'
     "FIX doSingleCut plane singularity and Vertices[0..3] guard" | Tee-Object -Append $log
 }
 
@@ -51,7 +59,7 @@ $new = @'
 			eLine eLine2 = new eLine(CalcPoints[i], CalcPoints2[i], 4f, Color.Lime);
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'doSingleCut-points'
     "FIX doSingleCut mismatched calculated-point list index guard" | Tee-Object -Append $log
 }
 
@@ -70,7 +78,7 @@ $new = @'
 			eLine2.EndPoint = new Pnt3D(LeadOutEntitiy.Vertice[LeadOutEntitiy.Vertice.Count - 1]);
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'doSingleCut-leadinout'
     "FIX doSingleCut empty LeadIn/LeadOut vertex guard" | Tee-Object -Append $log
 }
 
@@ -87,7 +95,7 @@ $new = @'
 			eLine eLine2 = new eLine(CalcPoints[i], CalcPoints2[i], (float)Tool.Geometry.Thickness, Color.Lime);
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'MarblecalcItemLines-points'
     "FIX MarblecalcItemLines mismatched point-list index guard" | Tee-Object -Append $log
 }
 
@@ -114,7 +122,7 @@ $new = @'
 		}
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'HorizontalItemsCalc-position'
     "FIX HorizontalItemsCalc C-axis cosine singularity/null item guard" | Tee-Object -Append $log
 }
 
@@ -135,7 +143,7 @@ $new = @'
 			double num8 = Math.Abs(Items[i].Length);
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'HorizontalItemsCalc-angles'
     "FIX HorizontalItemsCalc bevel cosine/tangent singularity guard" | Tee-Object -Append $log
 }
 
@@ -150,7 +158,7 @@ $new = @'
 			}
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'HorizontalItemsCalc-quads'
     "FIX HorizontalItemsCalc Quads[3]/Quads[5] result-count guard" | Tee-Object -Append $log
 }
 
@@ -176,7 +184,7 @@ $new = @'
 		}
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'VerticalItemsCalc-position'
     "FIX VerticalItemsCalc C-axis sine singularity/null item guard" | Tee-Object -Append $log
 }
 
@@ -197,7 +205,7 @@ $new = @'
 			double num9 = Math.Abs(Items[i].Length);
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'VerticalItemsCalc-angles'
     "FIX VerticalItemsCalc bevel cosine/tangent singularity guard" | Tee-Object -Append $log
 }
 
@@ -212,7 +220,7 @@ $new = @'
 			}
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
+    $text = Replace-OneLiteral $text $old $new 'VerticalItemsCalc-quads'
     "FIX VerticalItemsCalc Quads[3]/Quads[5] result-count guard" | Tee-Object -Append $log
 }
 
