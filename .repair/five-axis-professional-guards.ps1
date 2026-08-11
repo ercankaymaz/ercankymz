@@ -255,6 +255,8 @@ if ($text -notmatch 'strGCodes\s*=\s*"";\s*\r?\n\s*if\s*\(Job\s*!=\s*null\)') { 
 if ($validatorText -notmatch 'HasConfiguredMachineEnvelope') { $regressions.Add('machine envelope is not fail-closed') }
 if ($validatorText -notmatch 'ProfileSync') { $regressions.Add('active machine profile is not thread-safe') }
 if ($validatorText -notmatch 'Cannot validate incremental') { $regressions.Add('unknown incremental axis motion is not fail-closed') }
+if ($validatorText -notmatch 'GCodeAxisMarkerPattern') { $regressions.Add('malformed or symbolic axis words are not rejected') }
+if ($validatorText -notmatch 'Duplicate machine-profile key') { $regressions.Add('duplicate machine profile keys are not rejected') }
 if ($validatorText -notmatch 'CreateEffectiveProfile') { $regressions.Add('per-tool XYZ/ABC envelope is not enforced') }
 if ($validatorText -notmatch 'ValidateGCodeAxisRange') { $regressions.Add('G-code XYZ/ABC envelope is not enforced') }
 if ($validatorText -notmatch 'class\s+FiveAxisSafetyProfileStore') { $regressions.Add('machine envelope persistence is missing') }
