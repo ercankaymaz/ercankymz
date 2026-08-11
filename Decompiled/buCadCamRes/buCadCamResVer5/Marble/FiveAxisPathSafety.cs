@@ -125,9 +125,10 @@ public static class FiveAxisPathSafety
     double bestDelta = double.MaxValue;
     bool found = false;
 
-    for (int turn = -8; turn <= 8; ++turn)
+    double centerTurn = Math.Round((previousAngle - rawAngle) / 360.0);
+    for (int offset = -2; offset <= 2; ++offset)
     {
-      double candidate = rawAngle + turn * 360.0;
+      double candidate = rawAngle + (centerTurn + offset) * 360.0;
       if (candidate < profile.CMin || candidate > profile.CMax)
         continue;
 
