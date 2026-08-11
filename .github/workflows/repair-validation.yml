@@ -65,6 +65,7 @@ jobs:
           ./.repair/marble-runtime-guards.ps1
           ./.repair/vacuum-selection-guards.ps1
           ./.repair/marble-path-safety.ps1
+          ./.repair/five-axis-professional-guards.ps1
           ./.repair/grinding-ui-guards.ps1
           ./.repair/marble-geometry-guards.ps1
           ./.repair/ui-safety-guards.ps1
