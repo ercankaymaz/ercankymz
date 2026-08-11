@@ -194,7 +194,12 @@ public static class FiveAxisPathSafety
         {
           double current;
           if (!knownPositions.TryGetValue(axis, out current))
-            continue;
+            throw new InvalidOperationException(
+              string.Format(
+                CultureInfo.InvariantCulture,
+                "Cannot validate incremental {0}-axis motion before an absolute position is known at line {1}.",
+                axis,
+                lineIndex + 1));
           target = current + value;
         }
 
