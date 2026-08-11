@@ -81,6 +81,88 @@ Get-ChildItem -Recurse -Filter *.cs -File | ForEach-Object {
         "FIX zero-size geometry scale guard: $path" | Tee-Object -Append $log
     }
 
+    # Preserve existing buNumeric edge-case outputs while removing invalid arithmetic.
+    # Count<=1 currently appends LastValue in GetValueList...; keep that behavior but
+    # avoid calculating a denominator of zero/negative count first.
+    if ($path -like '*\buCore\buCore\buNumeric.cs') {
+        $beforeNumeric = $text
+
+        $equationOld = @'
+			double num = 1.0;
+			if (!(Math.Abs(X1 - X2) < 1E-10))
+			{
+				num = (Y2 - Y1) / (X2 - X1);
+				X3 = (Y3 - Y1) / num + X1;
+			}
+			else
+			{
+				X3 = X1;
+			}
+'@
+        $equationNew = @'
+			double deltaX = X2 - X1;
+			double deltaY = Y2 - Y1;
+			if (Math.Abs(deltaX) < 1E-10 || Math.Abs(deltaY) < 1E-10)
+			{
+				X3 = X1;
+			}
+			else
+			{
+				double slope = deltaY / deltaX;
+				X3 = (Y3 - Y1) / slope + X1;
+			}
+'@
+        if ($text.Contains($equationOld)) {
+            $text = $text.Replace($equationOld, $equationNew)
+            "FIX buNumeric EquationLineer zero-X/zero-Y slope division: $path" | Tee-Object -Append $log
+        }
+
+        $countOld = @'
+	{
+		double num = LastValue - FirstValue;
+		double num2 = num / ((double)Count - 1.0);
+'@
+        $countNew = @'
+	{
+		if (Count <= 1)
+		{
+			ValueList.Add(LastValue);
+			return;
+		}
+		double num = LastValue - FirstValue;
+		double num2 = num / ((double)Count - 1.0);
+'@
+        if ($text.Contains($countOld) -and $text.Contains('GetValueListFromMinMaxByCount')) {
+            $text = $text.Replace($countOld, $countNew)
+            "FIX buNumeric GetValueListFromMinMaxByCount Count<=1 division: $path" | Tee-Object -Append $log
+        }
+
+        $divideOld = @'
+	{
+		Values.Clear();
+		double num = (EndValue - StartValue) / (double)(DevideCount - 1);
+'@
+        $divideNew = @'
+	{
+		Values.Clear();
+		if (DevideCount <= 1)
+		{
+			Values.Add(StartValue);
+			Values.Add(EndValue);
+			return;
+		}
+		double num = (EndValue - StartValue) / (double)(DevideCount - 1);
+'@
+        if ($text.Contains($divideOld) -and $text.Contains('DevideMinMaxValueByNumber')) {
+            $text = $text.Replace($divideOld, $divideNew)
+            "FIX buNumeric DevideMinMaxValueByNumber divide-count 0/1: $path" | Tee-Object -Append $log
+        }
+
+        if ($text -ne $beforeNumeric) {
+            "FIX buNumeric edge-case arithmetic guards applied: $path" | Tee-Object -Append $log
+        }
+    }
+
     # C# 14 introduces 'field' as a contextual keyword inside property accessors.
     # The decompiled ImageProcessor Rational<T>.MaxValue getter uses a local named
     # field, which is then parsed as the backing-field keyword. Rename only that
