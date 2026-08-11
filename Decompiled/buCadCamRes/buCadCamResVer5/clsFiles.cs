@@ -1265,6 +1265,10 @@ public class clsFiles
 	public static void OpenMachineConfig()
 	{
 		OpenMachineConfig(AppPath.Settings + "\\MachineConfig.prm");
+		buCadCamResVer5.Marble.FiveAxisSafetyProfile loadedFiveAxisProfile;
+		buCadCamResVer5.Marble.FiveAxisSafetyProfileStore.TryLoad(
+			buCadCamResVer5.Marble.FiveAxisSafetyProfileStore.GetDefaultFilePath(AppPath.Settings),
+			out loadedFiveAxisProfile);
 	}
 
 	public static void OpenMachineConfig(string FileName)
