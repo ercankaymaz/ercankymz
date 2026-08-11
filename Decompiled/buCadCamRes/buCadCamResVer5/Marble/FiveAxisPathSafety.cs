@@ -148,6 +148,13 @@ public static class FiveAxisPathSafety
 
   private static void ValidateProfile(FiveAxisSafetyProfile profile)
   {
+    if (double.IsNaN(profile.XMin) || double.IsNaN(profile.XMax) ||
+        double.IsNaN(profile.YMin) || double.IsNaN(profile.YMax) ||
+        double.IsNaN(profile.ZMin) || double.IsNaN(profile.ZMax) ||
+        double.IsNaN(profile.AMin) || double.IsNaN(profile.AMax) ||
+        double.IsNaN(profile.BMin) || double.IsNaN(profile.BMax) ||
+        double.IsNaN(profile.CMin) || double.IsNaN(profile.CMax))
+      throw new InvalidOperationException("Five-axis machine profile contains a non-numeric axis limit.");
     if (profile.XMin > profile.XMax || profile.YMin > profile.YMax || profile.ZMin > profile.ZMax ||
         profile.AMin > profile.AMax || profile.BMin > profile.BMax || profile.CMin > profile.CMax)
       throw new InvalidOperationException("Five-axis machine profile contains an inverted axis range.");
