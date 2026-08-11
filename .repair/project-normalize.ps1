@@ -10,6 +10,7 @@ $windowsTfmFixes = 0
 $resourceDedupeFixes = 0
 $projectReferenceFixes = 0
 $binaryRelinkFixes = 0
+$plainBinaryRelinkFixes = 0
 $nullableFixes = 0
 $changedProjects = 0
 
@@ -43,6 +44,12 @@ Get-ChildItem -Recurse -Filter *.dll -File | Where-Object {
 
 $sourceFirstAssemblies = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
 @('buClass','buCore','buControls','buEyeBase','buCadCamRes','buMW','CMDMarbleCNC','CmdLangAPI') | ForEach-Object { [void]$sourceFirstAssemblies.Add($_) }
+
+# Some recovered projects lost HintPath completely for vendor assemblies. Do not
+# convert every plain Reference (System.*, framework/GAC references must stay intact).
+# Relink only the known CAD/CAM vendor references that are expected from bootstrap.
+$plainBinaryRelinkAssemblies = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+@('mwInterop') | ForEach-Object { [void]$plainBinaryRelinkAssemblies.Add($_) }
 
 foreach ($project in $allProjects) {
     $path = $project.FullName
@@ -90,8 +97,10 @@ foreach ($project in $allProjects) {
 
     try {
         [xml]$projXml = $text
-        $refNodes = @($projXml.SelectNodes('//*[local-name()="Reference" and *[local-name()="HintPath"]]'))
         $xmlChanged = $false
+
+        # Repair missing/broken HintPath references.
+        $refNodes = @($projXml.SelectNodes('//*[local-name()="Reference" and *[local-name()="HintPath"]]'))
         foreach ($ref in $refNodes) {
             $hintNode = $ref.SelectSingleNode('./*[local-name()="HintPath"]')
             if ($null -eq $hintNode) { continue }
@@ -137,6 +146,29 @@ foreach ($project in $allProjects) {
             $xmlChanged = $true
             "FIX missing HintPath -> ProjectReference: $path :: $include :: $relativeProject" | Tee-Object -Append $log
         }
+
+        # Repair decompiler-lost HintPath for selected vendor references (mwInterop).
+        $plainRefs = @($projXml.SelectNodes('//*[local-name()="Reference" and not(*[local-name()="HintPath"])]'))
+        foreach ($ref in $plainRefs) {
+            $include = [string]$ref.GetAttribute('Include')
+            if ([string]::IsNullOrWhiteSpace($include)) { continue }
+            $assemblyName = ($include.Split(',')[0]).Trim()
+            if (-not $plainBinaryRelinkAssemblies.Contains($assemblyName)) { continue }
+            $assemblyKey = $assemblyName.ToLowerInvariant()
+            if (-not $binaryMap.ContainsKey($assemblyKey)) {
+                "WARN plain vendor reference has no bootstrap binary: $path :: $assemblyName" | Tee-Object -Append $log
+                continue
+            }
+            $binaryPath = [string]$binaryMap[$assemblyKey]
+            $relativeDll = [IO.Path]::GetRelativePath($project.DirectoryName, $binaryPath).Replace('/', '\')
+            $hintNode = $projXml.CreateElement('HintPath', $ref.NamespaceURI)
+            $hintNode.InnerText = $relativeDll
+            [void]$ref.AppendChild($hintNode)
+            $plainBinaryRelinkFixes++
+            $xmlChanged = $true
+            "FIX plain vendor Reference -> HintPath: $path :: $assemblyName :: $relativeDll" | Tee-Object -Append $log
+        }
+
         if ($xmlChanged) { $text = $projXml.OuterXml }
     } catch {
         "REFERENCE XMLERR ${path}: $($_.Exception.Message)" | Tee-Object -Append $log
@@ -153,4 +185,5 @@ foreach ($project in $allProjects) {
 "Windows TFM fixes: $windowsTfmFixes" | Tee-Object -Append $log
 "Duplicate EmbeddedResource fixes: $resourceDedupeFixes" | Tee-Object -Append $log
 "Recovered binary relinks: $binaryRelinkFixes" | Tee-Object -Append $log
+"Plain vendor binary relinks: $plainBinaryRelinkFixes" | Tee-Object -Append $log
 "HintPath -> ProjectReference fixes: $projectReferenceFixes" | Tee-Object -Append $log
