@@ -63,6 +63,55 @@ if ($text.Contains($oldHoleStep)) {
     "NO_MATCH CalculateGrindingHole UpDownByStep loop" | Tee-Object -Append $log
 }
 
+# CalculateMarbleItem projects the safe Z delta along the current A-axis angle.
+# At A=90/270 degrees cos(A) is zero and the old code sends Infinity into the
+# kinematic path. Reject only that undefined projection.
+$oldMarbleCos = @'
+					safe2 = (safe - pnt3D3.Z) / Math.Cos(buConversion.DegreeToRadian(orientationAngle.A));
+					Pnt6D CalcPoint = new Pnt6D();
+'@
+$newMarbleCos = @'
+					double marbleItemCosA = Math.Cos(buConversion.DegreeToRadian(orientationAngle.A));
+					if (double.IsNaN(marbleItemCosA) || double.IsInfinity(marbleItemCosA) || Math.Abs(marbleItemCosA) <= 1E-9)
+					{
+						throw new InvalidOperationException("Marble item A-axis safe projection is undefined because cos(A) is zero.");
+					}
+					safe2 = (safe - pnt3D3.Z) / marbleItemCosA;
+					Pnt6D CalcPoint = new Pnt6D();
+'@
+if ($text.Contains($oldMarbleCos)) {
+    $text = $text.Replace($oldMarbleCos, $newMarbleCos)
+    "FIX CalculateMarbleItem safe projection cos(A) singularity" | Tee-Object -Append $log
+} elseif ($text.Contains('double marbleItemCosA = Math.Cos')) {
+    "ALREADY_FIXED CalculateMarbleItem safe projection cos(A)" | Tee-Object -Append $log
+} else {
+    "NO_MATCH CalculateMarbleItem safe projection" | Tee-Object -Append $log
+}
+
+# A single entity makes i/(Entities.Count-1) evaluate as 0/0. Keep the progress
+# contract finite and complete for the one-item case.
+$oldMarbleProgress = @'
+				if (buSystem.ProgressControlEnable && calculationEventHandler_0 != null)
+				{
+					calculationEventHandler_0(new CalculationEventArg(50.0, Convert.ToDouble((double)i / (double)(Entities.Count - 1)) * 100.0, 0, "Calculate Marble Code", ""));
+				}
+'@
+$newMarbleProgress = @'
+				if (buSystem.ProgressControlEnable && calculationEventHandler_0 != null)
+				{
+					double marbleItemProgress = Entities.Count <= 1 ? 100.0 : Convert.ToDouble((double)i / (double)(Entities.Count - 1)) * 100.0;
+					calculationEventHandler_0(new CalculationEventArg(50.0, marbleItemProgress, 0, "Calculate Marble Code", ""));
+				}
+'@
+if ($text.Contains($oldMarbleProgress)) {
+    $text = $text.Replace($oldMarbleProgress, $newMarbleProgress)
+    "FIX CalculateMarbleItem single-entity progress NaN" | Tee-Object -Append $log
+} elseif ($text.Contains('double marbleItemProgress = Entities.Count <= 1 ? 100.0')) {
+    "ALREADY_FIXED CalculateMarbleItem single-entity progress NaN" | Tee-Object -Append $log
+} else {
+    "NO_MATCH CalculateMarbleItem progress block" | Tee-Object -Append $log
+}
+
 if ($text -ne $original) {
     [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
 }
