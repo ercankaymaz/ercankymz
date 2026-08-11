@@ -192,6 +192,8 @@ if ($finalMethod -match $emptyCEnvelopePattern) { $regressions.Add('empty C-axis
 if ($text -notmatch 'FiveAxisPathSafety\.ValidateAndNormalize\(Job\.Cams\);') { $regressions.Add('missing final path gate') }
 if ($text -notmatch 'FiveAxisPathSafety\.ValidateGCode\(strGCodes\);') { $regressions.Add('missing postprocessor text gate') }
 if ($validatorText -notmatch 'HasConfiguredMachineEnvelope') { $regressions.Add('machine envelope is not fail-closed') }
+if ($validatorText -notmatch 'ProfileSync') { $regressions.Add('active machine profile is not thread-safe') }
+if ($validatorText -notmatch 'Cannot validate incremental') { $regressions.Add('unknown incremental axis motion is not fail-closed') }
 if ($validatorText -notmatch 'CreateEffectiveProfile') { $regressions.Add('per-tool XYZ/ABC envelope is not enforced') }
 if ($validatorText -notmatch 'ValidateGCodeAxisRange') { $regressions.Add('G-code XYZ/ABC envelope is not enforced') }
 if ($validatorText -notmatch 'class\s+FiveAxisSafetyProfileStore') { $regressions.Add('machine envelope persistence is missing') }
@@ -199,6 +201,7 @@ if ($toolFormText -notmatch 'TryValidateAxisLimits') { $regressions.Add('XYZ/ABC
 if ($toolFormText -notmatch 'SaveMachineLimitsClick') { $regressions.Add('XYZ/ABC machine-profile save UI is missing') }
 if ($toolFormText -notmatch 'LoadMachineLimitsClick') { $regressions.Add('XYZ/ABC machine-profile load UI is missing') }
 if ($toolFormText -notmatch 'SetAxisLimitValue') { $regressions.Add('safe legacy axis-limit loading is missing') }
+if ($toolFormText -notmatch 'AxisLimitControlValidated') { $regressions.Add('legacy axis-limit review flow is missing') }
 if ($filesText -notmatch 'FiveAxisSafetyProfileStore\.TryLoad') { $regressions.Add('machine profile is not loaded at startup') }
 
 "5-axis regression count: $($regressions.Count)" | Tee-Object -Append $log
