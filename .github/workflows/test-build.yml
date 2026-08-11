@@ -168,6 +168,10 @@ MarbleTempVars.listVerticalItems = new List<marbleCuttingItems>();
 
           "Patched C# files: $patchedCount" | Tee-Object -Append $log
 
+      - name: Enforce professional 5-axis safety guards
+        shell: pwsh
+        run: ./.repair/five-axis-professional-guards.ps1
+
       - name: Audit modules menus controls and CAM risks
         shell: pwsh
         run: |
