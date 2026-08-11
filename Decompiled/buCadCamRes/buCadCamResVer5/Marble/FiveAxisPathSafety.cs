@@ -32,9 +32,15 @@ public sealed class FiveAxisSafetyProfile
 /// </summary>
 public static class FiveAxisPathSafety
 {
+  /// <summary>
+  /// Active machine profile. Machine initialization should replace the recovery
+  /// defaults with measured travels and the controller-approved rotary limits.
+  /// </summary>
+  public static FiveAxisSafetyProfile ActiveProfile { get; set; } = new FiveAxisSafetyProfile();
+
   public static void ValidateAndNormalize(List<camTp> cams)
   {
-    ValidateAndNormalize(cams, new FiveAxisSafetyProfile());
+    ValidateAndNormalize(cams, ActiveProfile);
   }
 
   public static void ValidateAndNormalize(List<camTp> cams, FiveAxisSafetyProfile profile)
