@@ -38,6 +38,47 @@ if (Test-Path -LiteralPath $marblePath) {
         "FIX MarbleItemEntitiesCalculation tangent cos singularity: $marblePath" | Tee-Object -Append $log
     }
 
+    # Perpendicular projection uses 1/sin(TangentAngle). At 0/180 degrees the
+    # projection is undefined and would otherwise inject Infinity/NaN points.
+    $oldSin = @'
+				_ = (Items[i].Length + ToolThickness) / Math.Sin(buConversion.DegreeToRadian(TangentAngle));
+				num8 = Items[i].Length / Math.Sin(buConversion.DegreeToRadian(TangentAngle));
+				num6 = ToolThickness / Math.Sin(buConversion.DegreeToRadian(TangentAngle));
+				num7 = ToolThickness * 0.5 / Math.Sin(buConversion.DegreeToRadian(TangentAngle));
+'@
+    $newSin = @'
+				double tangentSin = Math.Sin(buConversion.DegreeToRadian(TangentAngle));
+				if (double.IsNaN(tangentSin) || double.IsInfinity(tangentSin) || Math.Abs(tangentSin) <= 1E-9)
+				{
+					return false;
+				}
+				_ = (Items[i].Length + ToolThickness) / tangentSin;
+				num8 = Items[i].Length / tangentSin;
+				num6 = ToolThickness / tangentSin;
+				num7 = ToolThickness * 0.5 / tangentSin;
+'@
+    if ($text.Contains($oldSin)) {
+        $text = $text.Replace($oldSin, $newSin)
+        "FIX MarbleItemEntitiesCalculation tangent sin singularity: $marblePath" | Tee-Object -Append $log
+    }
+
+    # The selected step-down is used as a divisor and then converted to Int32.
+    # Zero/non-finite values can produce Infinity and an OverflowException.
+    $oldStep = @'
+			num2 = Convert.ToInt32(Math.Ceiling(num4 / num5));
+'@
+    $newStep = @'
+			if (double.IsNaN(num4) || double.IsInfinity(num4) || double.IsNaN(num5) || double.IsInfinity(num5) || num5 <= 1E-9)
+			{
+				return false;
+			}
+			num2 = Convert.ToInt32(Math.Ceiling(num4 / num5));
+'@
+    if ($text.Contains($oldStep)) {
+        $text = $text.Replace($oldStep, $newStep)
+        "FIX MarbleItemEntitiesCalculation invalid/zero step-down divisor: $marblePath" | Tee-Object -Append $log
+    }
+
     if ($text -ne $original) {
         [IO.File]::WriteAllText($marblePath, $text, [Text.UTF8Encoding]::new($false))
         $patched++
