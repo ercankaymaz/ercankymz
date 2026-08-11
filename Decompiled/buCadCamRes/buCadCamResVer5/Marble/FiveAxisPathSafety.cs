@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -36,6 +37,8 @@ public sealed class FiveAxisSafetyProfile
 /// </summary>
 public static class FiveAxisPathSafety
 {
+  private const int MaxGCodeCharacters = 64 * 1024 * 1024;
+  private const int MaxGCodeLineCharacters = 8192;
   private static readonly object ProfileSync = new object();
   private static FiveAxisSafetyProfile activeProfile = new FiveAxisSafetyProfile();
   private static bool hasConfiguredMachineEnvelope;
@@ -154,14 +157,24 @@ public static class FiveAxisPathSafety
         continue;
       if (cam.CamPoints == null)
         throw CamError(camIndex, "CAM point collection is null");
+      bool hasMotionPoints = false;
+      for (int segmentIndex = 0; segmentIndex < cam.CamPoints.Count; ++segmentIndex)
+      {
+        if (cam.CamPoints[segmentIndex] == null)
+          throw SegmentError(camIndex, segmentIndex, "CAM segment is null");
+        if (cam.CamPoints[segmentIndex].Points == null)
+          throw SegmentError(camIndex, segmentIndex, "CAM segment point collection is null");
+        if (cam.CamPoints[segmentIndex].Points.Count > 0)
+          hasMotionPoints = true;
+      }
+      if (hasMotionPoints && cam.Tool == null)
+        throw CamError(camIndex, "CAM contains motion but has no verified tool");
+
       FiveAxisSafetyProfile effectiveProfile = CreateEffectiveProfile(profile, cam, camIndex);
       bool hasPreviousPointInCam = false;
 
       for (int segmentIndex = 0; segmentIndex < cam.CamPoints.Count; ++segmentIndex)
       {
-        if (cam.CamPoints[segmentIndex] == null || cam.CamPoints[segmentIndex].Points == null)
-          continue;
-
         for (int pointIndex = 0; pointIndex < cam.CamPoints[segmentIndex].Points.Count; ++pointIndex)
         {
           TpPnt9D point = cam.CamPoints[segmentIndex].Points[pointIndex];
@@ -222,6 +235,8 @@ public static class FiveAxisPathSafety
   {
     if (string.IsNullOrWhiteSpace(gCode))
       throw new InvalidOperationException("Postprocessor generated empty G-code.");
+    if (gCode.Length > MaxGCodeCharacters)
+      throw new InvalidOperationException("Postprocessor output exceeds the 64 MiB G-code safety limit.");
     if (profile == null)
       throw new InvalidOperationException("Five-axis machine safety profile is null.");
     ValidateProfile(profile);
@@ -234,6 +249,9 @@ public static class FiveAxisPathSafety
     for (int lineIndex = 0; lineIndex < lines.Length; ++lineIndex)
     {
       string line = lines[lineIndex];
+      if (line.Length > MaxGCodeLineCharacters)
+        throw new InvalidOperationException(
+          string.Format(CultureInfo.InvariantCulture, "Postprocessor generated an overlong G-code block at line {0}.", lineIndex + 1));
       string executableLine = StripGCodeComments(line, lineIndex);
       if (executableLine.IndexOf("NaN", StringComparison.OrdinalIgnoreCase) >= 0 ||
           executableLine.IndexOf("Infinity", StringComparison.OrdinalIgnoreCase) >= 0)
@@ -261,6 +279,16 @@ public static class FiveAxisPathSafety
             double.IsNaN(value) || double.IsInfinity(value))
           throw new InvalidOperationException(
             string.Format(CultureInfo.InvariantCulture, "Postprocessor generated an invalid G-word value at line {0}.", lineIndex + 1));
+
+        string unsupportedReason = GetUnsupportedGCodeReason(value);
+        if (unsupportedReason != null)
+          throw new InvalidOperationException(
+            string.Format(
+              CultureInfo.InvariantCulture,
+              "Cannot validate G{0} safely at line {1}: {2}.",
+              value.ToString("0.###", CultureInfo.InvariantCulture),
+              lineIndex + 1,
+              unsupportedReason));
 
         if (value == 90.0)
         {
@@ -429,8 +457,9 @@ public static class FiveAxisPathSafety
     string axis,
     int camIndex)
   {
-    if (double.IsNaN(toolMinimum) || double.IsNaN(toolMaximum))
-      throw CamError(camIndex, axis + " tool envelope contains a non-numeric value");
+    if (double.IsNaN(toolMinimum) || double.IsNaN(toolMaximum) ||
+        double.IsInfinity(toolMinimum) || double.IsInfinity(toolMaximum))
+      throw CamError(camIndex, axis + " tool envelope contains a non-finite value");
     if (toolMinimum > toolMaximum)
       throw CamError(camIndex, axis + " tool envelope is inverted");
 
@@ -477,6 +506,21 @@ public static class FiveAxisPathSafety
       throw new InvalidOperationException(
         string.Format(CultureInfo.InvariantCulture, "Unterminated G-code comment at line {0}.", lineIndex + 1));
     return result.ToString();
+  }
+
+  private static string GetUnsupportedGCodeReason(double code)
+  {
+    if (code == 2.0 || code == 3.0)
+      return "arc extrema are not proven by endpoint-only validation";
+    if (code == 10.0 || code == 51.0 || code == 52.0 || code == 68.0 || code == 92.0)
+      return "coordinate transformation or offset mutation requires controller-specific proof";
+    if (code == 28.0 || code == 30.0)
+      return "the controller reference-return endpoint is not present in the program";
+    if (code == 41.0 || code == 42.0)
+      return "cutter compensation can move the tool outside the programmed path";
+    if (code == 43.0 || code == 44.0)
+      return "tool-length compensation requires a verified controller tool table and kinematic model";
+    return null;
   }
 
   private static void ValidateGCodeAxisRange(
@@ -632,6 +676,17 @@ public static class FiveAxisPathSafety
         camIndex + 1,
         message));
   }
+
+  private static InvalidOperationException SegmentError(int camIndex, int segmentIndex, string message)
+  {
+    return new InvalidOperationException(
+      string.Format(
+        CultureInfo.InvariantCulture,
+        "5-axis safety validation failed at CAM {0}, segment {1}: {2}.",
+        camIndex + 1,
+        segmentIndex + 1,
+        message));
+  }
 }
 
 /// <summary>
@@ -642,7 +697,12 @@ public static class FiveAxisPathSafety
 public static class FiveAxisSafetyProfileStore
 {
   private const string ProfileFileName = "FiveAxisSafety.prm";
-  private const string CurrentVersion = "1";
+  private const string CurrentVersion = "2";
+  private static readonly string[] ProfileDataKeys = new string[]
+  {
+    "Version", "XMin", "XMax", "YMin", "YMax", "ZMin", "ZMax",
+    "AMin", "AMax", "BMin", "BMax", "CMin", "CMax", "MaxCuttingTiltDelta"
+  };
 
   public static string GetDefaultFilePath(string settingsDirectory)
   {
@@ -664,7 +724,7 @@ public static class FiveAxisSafetyProfileStore
       throw new InvalidOperationException("Machine-profile directory is invalid.");
     Directory.CreateDirectory(directory);
 
-    string[] lines = new string[]
+    string[] dataLines = new string[]
     {
       "Version=" + CurrentVersion,
       "XMin=" + profile.XMin.ToString("R", CultureInfo.InvariantCulture),
@@ -681,6 +741,9 @@ public static class FiveAxisSafetyProfileStore
       "CMax=" + profile.CMax.ToString("R", CultureInfo.InvariantCulture),
       "MaxCuttingTiltDelta=" + profile.MaxCuttingTiltDelta.ToString("R", CultureInfo.InvariantCulture)
     };
+    string[] lines = new string[dataLines.Length + 1];
+    Array.Copy(dataLines, lines, dataLines.Length);
+    lines[lines.Length - 1] = "Checksum=" + ComputeSha256(string.Join("\n", dataLines) + "\n");
 
     string temporaryFile = filePath + ".tmp";
     try
@@ -730,6 +793,11 @@ public static class FiveAxisSafetyProfileStore
     if (!values.TryGetValue("Version", out version) || version != CurrentVersion)
       throw new InvalidDataException("Unsupported or missing machine-profile version.");
 
+    string suppliedChecksum;
+    if (!values.TryGetValue("Checksum", out suppliedChecksum) ||
+        !string.Equals(suppliedChecksum, ComputeSha256(BuildChecksumPayload(values)), StringComparison.OrdinalIgnoreCase))
+      throw new InvalidDataException("Machine-profile checksum is missing or does not match its XYZ/ABC safety values.");
+
     FiveAxisSafetyProfile loaded = new FiveAxisSafetyProfile()
     {
       XMin = ReadRequiredDouble(values, "XMin"),
@@ -760,6 +828,28 @@ public static class FiveAxisSafetyProfileStore
         double.IsNaN(parsedValue))
       throw new InvalidDataException("Machine profile contains an invalid or missing " + key + " value.");
     return parsedValue;
+  }
+
+  private static string BuildChecksumPayload(Dictionary<string, string> values)
+  {
+    StringBuilder payload = new StringBuilder();
+    for (int index = 0; index < ProfileDataKeys.Length; ++index)
+    {
+      string value;
+      if (!values.TryGetValue(ProfileDataKeys[index], out value))
+        throw new InvalidDataException("Machine profile is missing the " + ProfileDataKeys[index] + " checksum field.");
+      payload.Append(ProfileDataKeys[index]).Append('=').Append(value).Append('\n');
+    }
+    return payload.ToString();
+  }
+
+  private static string ComputeSha256(string value)
+  {
+    using (SHA256 algorithm = SHA256.Create())
+    {
+      byte[] hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(value));
+      return BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
+    }
   }
 
   private static FiveAxisSafetyProfile CloneProfile(FiveAxisSafetyProfile active)
