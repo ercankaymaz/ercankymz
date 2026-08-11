@@ -948,7 +948,7 @@ public class F_Tool : Form
     this.loadMachineLimitsButton.BringToFront();
     this.machineLimitsStatusLabel.BringToFront();
 
-    string profileFile = FiveAxisSafetyProfileStore.GetDefaultFilePath(AppPath.Settings);
+    string profileFile = this.GetMachineProfileFilePath();
     this.machineLimitsStatusLabel.Text = File.Exists(profileFile)
       ? "Machine profile: saved"
       : "Machine profile: not configured";
@@ -982,9 +982,7 @@ public class F_Tool : Form
         CMax = (double) this.numericUpDown_17.Value,
         MaxCuttingTiltDelta = FiveAxisPathSafety.ActiveProfile.MaxCuttingTiltDelta
       };
-      FiveAxisSafetyProfileStore.Save(
-        FiveAxisSafetyProfileStore.GetDefaultFilePath(AppPath.Settings),
-        profile);
+      FiveAxisSafetyProfileStore.Save(this.GetMachineProfileFilePath(), profile);
       FiveAxisPathSafety.Configure(profile);
       this.machineLimitsStatusLabel.Text = "Machine profile: saved and active";
       this.machineLimitsStatusLabel.ForeColor = Color.DarkGreen;
@@ -1002,7 +1000,7 @@ public class F_Tool : Form
     try
     {
       FiveAxisSafetyProfile profile;
-      string profileFile = FiveAxisSafetyProfileStore.GetDefaultFilePath(AppPath.Settings);
+      string profileFile = this.GetMachineProfileFilePath();
       if (!FiveAxisSafetyProfileStore.TryLoad(profileFile, out profile))
       {
         buString5.MessageBoxWarning("A saved XYZ/ABC machine-limit profile was not found.");
@@ -1033,6 +1031,14 @@ public class F_Tool : Form
       this.machineLimitsStatusLabel.ForeColor = Color.DarkRed;
       buString5.MessageBoxWarning("Machine limits could not be loaded: " + ex.Message);
     }
+  }
+
+  private string GetMachineProfileFilePath()
+  {
+    string settingsDirectory = AppPath.Settings;
+    if (string.IsNullOrWhiteSpace(settingsDirectory))
+      settingsDirectory = Path.Combine(Application.StartupPath, "Settings");
+    return FiveAxisSafetyProfileStore.GetDefaultFilePath(settingsDirectory);
   }
 
   private NumericUpDown[] GetAxisLimitControls()
