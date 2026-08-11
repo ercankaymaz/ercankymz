@@ -196,88 +196,138 @@ public class F_CamGrindingPocket : Form
 		btn_next.Visible = ShowNextButton;
 		btn_pre.Visible = ShowPreButton;
 		btn_help.Visible = ShowHelps;
-		arrayList = new ArrayList();
-		numericUpDown_0.Value = (decimal)camPars.Operations.TargetZ;
-		numericUpDown_5.Value = (decimal)camPars.Offsets.Offset;
+
+		SetNumericValueSafe(numericUpDown_0, camPars.Operations.TargetZ);
+		SetNumericValueSafe(numericUpDown_5, camPars.Offsets.Offset);
 		checkBox_2.Checked = camPars.Offsets.AddToolDiameterAsOffset;
-		numericUpDown_10.Value = (decimal)camPars.Speeds.Feed;
-		numericUpDown_8.Value = (decimal)camPars.Speeds.Leave;
-		numericUpDown_9.Value = (decimal)camPars.Speeds.Plunge;
-		numericUpDown_11.Value = (decimal)camPars.Distances.Safe;
-		arrayList = new ArrayList();
+		SetNumericValueSafe(numericUpDown_10, camPars.Speeds.Feed);
+		SetNumericValueSafe(numericUpDown_8, camPars.Speeds.Leave);
+		SetNumericValueSafe(numericUpDown_9, camPars.Speeds.Plunge);
+		SetNumericValueSafe(numericUpDown_11, camPars.Distances.Safe);
+
 		buGeneral.GetEnumTypeValues(camPars.LeadIn.LeadType, ref arrayList);
 		buControlCommands.ComboboxAddItem(arrayList, Convert.ToInt32(camPars.LeadIn.LeadType), ref comboBox_1);
 		arrayList = new ArrayList();
 		buGeneral.GetEnumTypeValues(camPars.LeadOut.LeadType, ref arrayList);
 		buControlCommands.ComboboxAddItem(arrayList, Convert.ToInt32(camPars.LeadOut.LeadType), ref comboBox_0);
-		numericUpDown_3.Value = (decimal)camPars.LeadIn.ExtendLength;
-		numericUpDown_4.Value = (decimal)camPars.LeadIn.ArcRadius;
-		numericUpDown_7.Value = (decimal)camPars.LeadIn.ArcSweepAngle;
-		numericUpDown_13.Value = (decimal)camPars.LeadIn.TangentAngle;
-		numericUpDown_15.Value = (decimal)camPars.LeadIn.Length;
-		numericUpDown_1.Value = (decimal)camPars.LeadOut.ExtendLength;
-		numericUpDown_2.Value = (decimal)camPars.LeadOut.ArcRadius;
-		numericUpDown_6.Value = (decimal)camPars.LeadOut.ArcSweepAngle;
-		numericUpDown_12.Value = (decimal)camPars.LeadOut.TangentAngle;
-		numericUpDown_14.Value = (decimal)camPars.LeadOut.Length;
+
+		SetNumericValueSafe(numericUpDown_3, camPars.LeadIn.ExtendLength);
+		SetNumericValueSafe(numericUpDown_4, camPars.LeadIn.ArcRadius);
+		SetNumericValueSafe(numericUpDown_7, camPars.LeadIn.ArcSweepAngle);
+		SetNumericValueSafe(numericUpDown_13, camPars.LeadIn.TangentAngle);
+		SetNumericValueSafe(numericUpDown_15, camPars.LeadIn.Length);
+		SetNumericValueSafe(numericUpDown_1, camPars.LeadOut.ExtendLength);
+		SetNumericValueSafe(numericUpDown_2, camPars.LeadOut.ArcRadius);
+		SetNumericValueSafe(numericUpDown_6, camPars.LeadOut.ArcSweepAngle);
+		SetNumericValueSafe(numericUpDown_12, camPars.LeadOut.TangentAngle);
+		SetNumericValueSafe(numericUpDown_14, camPars.LeadOut.Length);
 		checkBox_1.Checked = camPars.LeadIn.Enable;
 		checkBox_0.Checked = camPars.LeadOut.Enable;
-		if (comboBox_1.SelectedIndex == 0)
-		{
-			label_14.Enabled = false;
-			label_4.Enabled = true;
-			label_7.Enabled = true;
-			numericUpDown_13.Enabled = false;
-			numericUpDown_7.Enabled = true;
-			numericUpDown_4.Enabled = true;
-		}
-		if (comboBox_1.SelectedIndex == 1)
-		{
-			label_14.Enabled = true;
-			label_4.Enabled = false;
-			label_7.Enabled = false;
-			numericUpDown_13.Enabled = true;
-			numericUpDown_7.Enabled = false;
-			numericUpDown_4.Enabled = false;
-		}
-		if (comboBox_0.SelectedIndex == 0)
-		{
-			label_13.Enabled = false;
-			label_2.Enabled = true;
-			label_6.Enabled = true;
-			numericUpDown_12.Enabled = false;
-			numericUpDown_6.Enabled = true;
-			numericUpDown_2.Enabled = true;
-		}
-		if (comboBox_0.SelectedIndex == 1)
-		{
-			label_13.Enabled = true;
-			label_2.Enabled = false;
-			label_6.Enabled = false;
-			numericUpDown_12.Enabled = true;
-			numericUpDown_6.Enabled = false;
-			numericUpDown_2.Enabled = false;
-		}
-		if ((SelectedTool >= 0) & (SelectedTool <= Tools.Count - 1))
-		{
-			textBox_0.Text = buGeneral.GetToolExplanation(Tools[SelectedTool]);
-			listBox_0.Items.Clear();
-			for (int i = 0; i <= Tools.Count - 1; i++)
-			{
-				listBox_0.Items.Add(Tools[i].Data.Name + " - No : " + Tools[i].Data.No);
-			}
-			listBox_0.SelectedIndex = SelectedTool;
-		}
+
+		UpdateLeadInState();
+		UpdateLeadOutState();
+		RefreshToolState();
+
 		Refresh();
 		Properties.Result = DialogResult.None;
 		Properties.Inited = true;
 		Class76.smethod_538(this);
 	}
 
+	private static void SetNumericValueSafe(NumericUpDown control, double value)
+	{
+		if (control == null || double.IsNaN(value) || double.IsInfinity(value))
+		{
+			return;
+		}
+		decimal converted;
+		try
+		{
+			converted = Convert.ToDecimal(value);
+		}
+		catch (OverflowException)
+		{
+			return;
+		}
+		if (converted < control.Minimum)
+		{
+			converted = control.Minimum;
+		}
+		else if (converted > control.Maximum)
+		{
+			converted = control.Maximum;
+		}
+		control.Value = converted;
+	}
+
+	private void RefreshToolState()
+	{
+		listBox_0.Items.Clear();
+		listBox_0.SelectedIndex = -1;
+		textBox_0.Clear();
+		if (Tools == null)
+		{
+			return;
+		}
+		for (int i = 0; i < Tools.Count; i++)
+		{
+			ToolBase tool = Tools[i];
+			if (tool != null && tool.Data != null)
+			{
+				listBox_0.Items.Add(tool.Data.Name + " - No : " + tool.Data.No);
+			}
+			else
+			{
+				listBox_0.Items.Add(string.Empty);
+			}
+		}
+		if (SelectedTool < 0 || SelectedTool >= Tools.Count)
+		{
+			return;
+		}
+		ToolBase selected = Tools[SelectedTool];
+		if (selected != null)
+		{
+			textBox_0.Text = buGeneral.GetToolExplanation(selected);
+		}
+		if (SelectedTool < listBox_0.Items.Count)
+		{
+			listBox_0.SelectedIndex = SelectedTool;
+		}
+	}
+
+	private void UpdateLeadInState()
+	{
+		bool tangent = comboBox_1.SelectedIndex == 1;
+		label_14.Enabled = tangent;
+		label_16.Enabled = tangent;
+		label_4.Enabled = !tangent;
+		label_7.Enabled = !tangent;
+		numericUpDown_13.Enabled = tangent;
+		numericUpDown_15.Enabled = tangent;
+		numericUpDown_7.Enabled = !tangent;
+		numericUpDown_4.Enabled = !tangent;
+	}
+
+	private void UpdateLeadOutState()
+	{
+		bool tangent = comboBox_0.SelectedIndex == 1;
+		label_13.Enabled = tangent;
+		label_15.Enabled = tangent;
+		label_2.Enabled = !tangent;
+		label_6.Enabled = !tangent;
+		numericUpDown_12.Enabled = tangent;
+		numericUpDown_14.Enabled = tangent;
+		numericUpDown_6.Enabled = !tangent;
+		numericUpDown_2.Enabled = !tangent;
+	}
+
 	internal void method_1(object sender, EventArgs e)
 	{
-		Control control = new Control();
-		control = (Control)sender;
+		if (!(sender is Control control))
+		{
+			return;
+		}
 		if (control.Name == btn_ok.Name)
 		{
 			if (!Properties.Inited)
@@ -324,80 +374,42 @@ public class F_CamGrindingPocket : Form
 
 	internal void method_3(object sender, EventArgs e)
 	{
-		if (Properties.TouchPad)
+		if (Properties.TouchPad && sender is NumericUpDown numericUpDown)
 		{
-			NumericUpDown numericUpDown = new NumericUpDown();
-			numericUpDown = (NumericUpDown)sender;
 			buControlCommands.ShowKeyPadWinControl(this, numericUpDown);
 		}
 	}
 
 	internal void method_4(object sender, EventArgs e)
 	{
-		if (Properties.Inited)
+		if (!Properties.Inited)
 		{
-			SelectedTool = listBox_0.SelectedIndex;
-			textBox_0.Text = buGeneral.GetToolExplanation(Tools[SelectedTool]);
+			return;
 		}
+		int index = listBox_0.SelectedIndex;
+		if (Tools == null || index < 0 || index >= Tools.Count || Tools[index] == null)
+		{
+			SelectedTool = -1;
+			textBox_0.Clear();
+			return;
+		}
+		SelectedTool = index;
+		textBox_0.Text = buGeneral.GetToolExplanation(Tools[index]);
 	}
 
 	internal void method_5(object sender, EventArgs e)
 	{
-		Control control = new Control();
-		control = (Control)sender;
-		if (!Properties.Inited)
+		if (!Properties.Inited || !(sender is Control control))
 		{
 			return;
 		}
 		if (control.Name == comboBox_1.Name)
 		{
-			if (comboBox_1.SelectedIndex == 0)
-			{
-				label_14.Enabled = false;
-				label_16.Enabled = false;
-				label_4.Enabled = true;
-				label_7.Enabled = true;
-				numericUpDown_13.Enabled = false;
-				numericUpDown_15.Enabled = false;
-				numericUpDown_7.Enabled = true;
-				numericUpDown_4.Enabled = true;
-			}
-			if (comboBox_1.SelectedIndex == 1)
-			{
-				label_14.Enabled = true;
-				label_16.Enabled = true;
-				label_4.Enabled = false;
-				label_7.Enabled = false;
-				numericUpDown_13.Enabled = true;
-				numericUpDown_15.Enabled = true;
-				numericUpDown_7.Enabled = false;
-				numericUpDown_4.Enabled = false;
-			}
+			UpdateLeadInState();
 		}
 		if (control.Name == comboBox_0.Name)
 		{
-			if (comboBox_0.SelectedIndex == 0)
-			{
-				label_13.Enabled = false;
-				label_15.Enabled = false;
-				label_2.Enabled = true;
-				label_6.Enabled = true;
-				numericUpDown_12.Enabled = false;
-				numericUpDown_14.Enabled = false;
-				numericUpDown_6.Enabled = true;
-				numericUpDown_2.Enabled = true;
-			}
-			if (comboBox_0.SelectedIndex == 1)
-			{
-				label_13.Enabled = true;
-				label_15.Enabled = true;
-				label_2.Enabled = false;
-				label_6.Enabled = false;
-				numericUpDown_12.Enabled = true;
-				numericUpDown_14.Enabled = true;
-				numericUpDown_6.Enabled = false;
-				numericUpDown_2.Enabled = false;
-			}
+			UpdateLeadOutState();
 		}
 	}
 
