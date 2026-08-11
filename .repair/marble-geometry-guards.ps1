@@ -114,7 +114,7 @@ $new = @'
 		}
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new, 1)
+    $text = $text.Replace($old, $new)
     "FIX HorizontalItemsCalc C-axis cosine singularity/null item guard" | Tee-Object -Append $log
 }
 
@@ -135,7 +135,7 @@ $new = @'
 			double num8 = Math.Abs(Items[i].Length);
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new, 1)
+    $text = $text.Replace($old, $new)
     "FIX HorizontalItemsCalc bevel cosine/tangent singularity guard" | Tee-Object -Append $log
 }
 
@@ -150,7 +150,7 @@ $new = @'
 			}
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new, 1)
+    $text = $text.Replace($old, $new)
     "FIX HorizontalItemsCalc Quads[3]/Quads[5] result-count guard" | Tee-Object -Append $log
 }
 
@@ -176,7 +176,7 @@ $new = @'
 		}
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new, 1)
+    $text = $text.Replace($old, $new)
     "FIX VerticalItemsCalc C-axis sine singularity/null item guard" | Tee-Object -Append $log
 }
 
@@ -197,7 +197,7 @@ $new = @'
 			double num9 = Math.Abs(Items[i].Length);
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new, 1)
+    $text = $text.Replace($old, $new)
     "FIX VerticalItemsCalc bevel cosine/tangent singularity guard" | Tee-Object -Append $log
 }
 
@@ -212,7 +212,7 @@ $new = @'
 			}
 '@
 if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new, 1)
+    $text = $text.Replace($old, $new)
     "FIX VerticalItemsCalc Quads[3]/Quads[5] result-count guard" | Tee-Object -Append $log
 }
 
