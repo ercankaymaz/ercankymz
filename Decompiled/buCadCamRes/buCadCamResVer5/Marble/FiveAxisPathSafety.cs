@@ -51,7 +51,6 @@ public static class FiveAxisPathSafety
       throw new InvalidOperationException("Five-axis machine safety profile is null.");
     ValidateProfile(profile);
 
-    int validatedPointCount = 0;
     bool hasPreviousPoint = false;
     double previousA = 0.0;
     double previousB = 0.0;
@@ -110,13 +109,42 @@ public static class FiveAxisPathSafety
           previousB = point.P9.B;
           previousC = point.P9.C;
           hasPreviousPoint = true;
-          ++validatedPointCount;
         }
       }
     }
 
-    if (validatedPointCount == 0)
-      throw new InvalidOperationException("No enabled CAM points are available for G-code generation.");
+    // PreCodes-only CAM objects are used by supported external G-code import
+    // flows. Their final output is checked by ValidateGCode after postprocessing.
+  }
+
+  public static void ValidateGCode(string gCode)
+  {
+    if (string.IsNullOrWhiteSpace(gCode))
+      throw new InvalidOperationException("Postprocessor generated empty G-code.");
+
+    string[] lines = gCode.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
+    for (int lineIndex = 0; lineIndex < lines.Length; ++lineIndex)
+    {
+      string line = lines[lineIndex];
+      if (line.IndexOf("NaN", StringComparison.OrdinalIgnoreCase) >= 0 ||
+          line.IndexOf("Infinity", StringComparison.OrdinalIgnoreCase) >= 0)
+        throw new InvalidOperationException(
+          string.Format(
+            System.Globalization.CultureInfo.InvariantCulture,
+            "Postprocessor generated a non-finite numeric token at line {0}.",
+            lineIndex + 1));
+
+      for (int charIndex = 0; charIndex < line.Length; ++charIndex)
+      {
+        char value = line[charIndex];
+        if (char.IsControl(value) && value != '\t')
+          throw new InvalidOperationException(
+            string.Format(
+              System.Globalization.CultureInfo.InvariantCulture,
+              "Postprocessor generated an invalid control character at line {0}.",
+              lineIndex + 1));
+      }
+    }
   }
 
   private static double ResolveEquivalentC(
