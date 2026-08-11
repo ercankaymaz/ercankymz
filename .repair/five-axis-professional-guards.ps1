@@ -7,6 +7,7 @@ $sourcePath = 'Decompiled/buCadCamRes/buCadCamResVer5/Marble/clsMarble.cs'
 $validatorPath = 'Decompiled/buCadCamRes/buCadCamResVer5/Marble/FiveAxisPathSafety.cs'
 $toolFormPath = 'Decompiled/buCadCamRes/buCadCamResVer5/Forms/F_Tool.cs'
 $filesPath = 'Decompiled/buCadCamRes/buCadCamResVer5/clsFiles.cs'
+$settingsVerifierPath = '.repair/verify-cmd-settings.py'
 
 if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) {
     "FAIL missing 5-axis marble source: $sourcePath" | Tee-Object $log
@@ -26,6 +27,16 @@ if (-not (Test-Path -LiteralPath $toolFormPath -PathType Leaf)) {
 }
 if (-not (Test-Path -LiteralPath $filesPath -PathType Leaf)) {
     "FAIL missing machine-profile startup loader: $filesPath" | Tee-Object $log
+    exit 2
+}
+if (-not (Test-Path -LiteralPath $settingsVerifierPath -PathType Leaf)) {
+    "FAIL missing deployed Settings verifier: $settingsVerifierPath" | Tee-Object $log
+    exit 2
+}
+
+python $settingsVerifierPath . 2>&1 | Tee-Object -Append $log
+if ($LASTEXITCODE -ne 0) {
+    "FAIL deployed CMD Settings audit" | Tee-Object -Append $log
     exit 2
 }
 
@@ -566,6 +577,19 @@ if ($validatorText -notmatch 'CurrentVersion\s*=\s*"2"') { $regressions.Add('mac
 if ($validatorText -notmatch 'ComputeSha256') { $regressions.Add('machine profile has no checksum verification') }
 if ($validatorText -notmatch 'ValidateGCodeAxisRange') { $regressions.Add('G-code XYZ/ABC envelope is not enforced') }
 if ($validatorText -notmatch 'class\s+FiveAxisSafetyProfileStore') { $regressions.Add('machine envelope persistence is missing') }
+if ($validatorText -notmatch 'TryLoadFromSettings') { $regressions.Add('active Settings trees are not audited recursively') }
+if ($validatorText -notmatch 'ReadMachineProfile') { $regressions.Add('Machine.prm soft limits are ignored') }
+if ($validatorText -notmatch 'ReadPlcProfile') { $regressions.Add('PLCSettings.par axis limits are ignored') }
+if ($validatorText -notmatch 'IntersectProfiles') { $regressions.Add('application and PLC limits are not intersected fail-closed') }
+if ($validatorText -notmatch 'setDataLimitNegative') { $regressions.Add('controller data limits are ignored') }
+if ($validatorText -notmatch 'ApplyProgramCamLimits') { $regressions.Add('Program.prm CAM limits are ignored') }
+if ($validatorText -notmatch 'IsInactiveSettingsDirectory') { $regressions.Add('Old/Backup/Temp settings can become active') }
+if ($validatorText -notmatch 'ValidateKinematicAndPost') { $regressions.Add('kinematic and post axis mappings are not cross-checked') }
+if ($validatorText -notmatch 'ValidateKinematicGeometry') { $regressions.Add('kinematic pivot/base vectors are not validated') }
+if ($validatorText -notmatch 'ValidateMarbleSafetySettings') { $regressions.Add('Marble machine-limit and RTCP settings are ignored') }
+if ($validatorText -notmatch 'CmdG51DisableScalingPattern') { $regressions.Add('exact CMD G51 D0 dialect block is not recognized') }
+if ($validatorText -notmatch 'CmdG20JumpPattern') { $regressions.Add('CMD G20 L/K jump is misread as inch mode') }
+if ($validatorText -notmatch 'GCodeDMarkerPattern') { $regressions.Add('unexpected D words can bypass controller dialect validation') }
 if ($toolFormText -notmatch 'TryValidateAxisLimits') { $regressions.Add('XYZ/ABC UI min-max validation is missing') }
 if ($toolFormText -notmatch 'SaveMachineLimitsClick') { $regressions.Add('XYZ/ABC machine-profile save UI is missing') }
 if ($toolFormText -notmatch 'LoadMachineLimitsClick') { $regressions.Add('XYZ/ABC machine-profile load UI is missing') }
@@ -576,8 +600,12 @@ if ($toolFormText -notmatch 'AppSecurity\.PasswordLevel\s*<\s*2') { $regressions
 if ($toolFormText -notmatch 'FiveAxisSafety", "SaveFailed"') { $regressions.Add('machine profile UI failures are not logged') }
 if ($toolFormText -notmatch 'maxCuttingTiltDeltaControl') { $regressions.Add('cutting tilt delta is not configurable in the Limits UI') }
 if ($toolFormText -notmatch 'Maximum cutting tilt delta must be greater than 0') { $regressions.Add('cutting tilt delta UI validation is missing') }
-if ($filesText -notmatch 'FiveAxisSafetyProfileStore\.TryLoad') { $regressions.Add('machine profile is not loaded at startup') }
+if ($filesText -notmatch 'FiveAxisSafetyProfileStore\.TryLoadFromSettings') { $regressions.Add('audited Settings tree is not loaded at startup') }
 if ($filesText -notmatch 'FiveAxisPathSafety\.ClearConfiguration') { $regressions.Add('invalid startup profile does not disable production G-code') }
+if ($filesText -notmatch 'ApplyMachineScopedCadCamSettings') { $regressions.Add('machine Settings post and kinematic are not made active') }
+if ($filesText -notmatch 'Kinematic5Axis\.bukinematic') { $regressions.Add('active machine kinematic file is not loaded') }
+if ($filesText -notmatch 'postMachine\.bupost') { $regressions.Add('active machine postprocessor file is not loaded') }
+if ($filesText -notmatch 'AppPath\.MachineSettingsCam.*MachineConfig\.prm') { $regressions.Add('machine-scoped MachineConfig.prm is ignored') }
 if ($text -notmatch 'private long gCodeSafetyRevision\s*=\s*-1L;') { $regressions.Add('G-code cache has no machine-profile revision') }
 if ($text -notmatch 'cacheMatchesSafetyProfile') { $regressions.Add('cached G-code is not invalidated after profile change') }
 if ($text -notmatch 'Cached G-code rejected') { $regressions.Add('rejected cached G-code has no diagnostic record') }
