@@ -546,6 +546,9 @@ if ($validatorText -notmatch 'profile\.XMin\s*>=\s*profile\.XMax') { $regression
 if ($validatorText -notmatch 'totalParsedAxisWordCount\s*==\s*0') { $regressions.Add('motionless G-code is accepted as a production program') }
 if ($validatorText -notmatch '65536L') { $regressions.Add('machine profile input has no size bound') }
 if ($validatorText -notmatch 'GCodeAxisMarkerPattern') { $regressions.Add('malformed or symbolic axis words are not rejected') }
+if ($validatorText -notmatch 'GCodeScalarMarkerPattern') { $regressions.Add('malformed or symbolic feed/spindle words are not rejected') }
+if ($validatorText -notmatch 'non-positive feed') { $regressions.Add('postprocessor feed is not validated') }
+if ($validatorText -notmatch 'negative spindle speed') { $regressions.Add('postprocessor spindle speed is not validated') }
 if ($validatorText -notmatch 'Duplicate machine-profile key') { $regressions.Add('duplicate machine profile keys are not rejected') }
 if ($validatorText -notmatch 'CreateEffectiveProfile') { $regressions.Add('per-tool XYZ/ABC envelope is not enforced') }
 if ($validatorText -notmatch 'CAM entry is null') { $regressions.Add('null CAM entries are silently skipped') }
