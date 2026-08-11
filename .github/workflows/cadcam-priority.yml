@@ -2,8 +2,7 @@ name: CAD CAM core fast validation
 
 on:
   pull_request:
-    branches:
-      - Test
+    branches: [Test]
   workflow_dispatch:
 
 permissions:
@@ -33,21 +32,13 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Restore original vendor DLL bootstrap
-        continue-on-error: true
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          New-Item -ItemType Directory -Force build-logs | Out-Null
-          New-Item -ItemType Directory -Force .repair/bootstrap-original | Out-Null
+          New-Item -ItemType Directory -Force build-logs,.repair/bootstrap-original | Out-Null
           gh run download 31200670159 --repo $env:GITHUB_REPOSITORY --name CMDMarbleCNC-Final-DLLs --dir .repair/bootstrap-original
-          if ($LASTEXITCODE -ne 0) {
-            Write-Warning 'Original vendor bootstrap artifact could not be downloaded.'
-            exit 0
-          }
-          $dlls = @(Get-ChildItem .repair/bootstrap-original -Recurse -File -Filter *.dll)
-          "Original bootstrap DLL count: $($dlls.Count)" | Tee-Object build-logs/bootstrap-original-dlls.txt
-          $dlls | Sort-Object Name | ForEach-Object { $_.FullName } | Add-Content build-logs/bootstrap-original-dlls.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Original vendor bootstrap artifact is required.' }
 
       - name: Restore supplemental DLL bootstrap
         continue-on-error: true
@@ -57,33 +48,22 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force .repair/bootstrap-supplemental | Out-Null
           gh run download 31433581668 --repo $env:GITHUB_REPOSITORY --name final-dll --dir .repair/bootstrap-supplemental
-          if ($LASTEXITCODE -ne 0) {
-            Write-Warning 'Supplemental bootstrap artifact could not be downloaded.'
-            exit 0
-          }
-          $dlls = @(Get-ChildItem .repair/bootstrap-supplemental -Recurse -File -Filter *.dll)
-          "Supplemental bootstrap DLL count: $($dlls.Count)" | Tee-Object build-logs/bootstrap-supplemental-dlls.txt
-          $dlls | Sort-Object Name | ForEach-Object { $_.FullName } | Add-Content build-logs/bootstrap-supplemental-dlls.txt
 
       - name: Repair recovered sources
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force build-logs | Out-Null
           ./.repair/bootstrap-integrity.ps1
           ./.repair/cadcam-repair.ps1
+          ./.repair/cam-math-guards.ps1
           ./.repair/project-normalize.ps1
           ./.repair/source-compat-repair.ps1
-
-      - name: Audit core dependency manifest
-        continue-on-error: true
-        shell: pwsh
-        run: ./.repair/core-dependency-manifest.ps1
+          ./.repair/core-dependency-manifest.ps1
 
       - name: Build CAD CAM core chain fail-fast
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Continue'
-          # Dependency order is intentional: buEyeBase is required by buMW.
+          New-Item -ItemType Directory -Force build-logs | Out-Null
           $targets = @(
             @{ Name='CmdLangAPI'; Path='Decompiled/CmdLangAPI/CmdLangAPI.csproj' },
             @{ Name='buClass'; Path='Decompiled/buClass/buClass.csproj' },
@@ -94,20 +74,14 @@ jobs:
             @{ Name='buCadCamRes'; Path='Decompiled/buCadCamRes/buCadCamRes.csproj' }
           )
           $summary = 'build-logs/core-build-summary.txt'
-          Remove-Item $summary -ErrorAction Ignore
           foreach ($target in $targets) {
-            if (-not (Test-Path -LiteralPath $target.Path)) {
-              "SKIP $($target.Name) missing project $($target.Path)" | Tee-Object -Append $summary
-              continue
-            }
+            if (-not (Test-Path -LiteralPath $target.Path)) { throw "Missing project $($target.Path)" }
             $log = "build-logs/$($target.Name)-build.txt"
-            "BUILD_START $($target.Name) $($target.Path)" | Tee-Object -Append $summary
+            "BUILD_START $($target.Name)" | Tee-Object -Append $summary
             msbuild $target.Path /restore /m /t:Rebuild /p:Configuration=Release /p:BuildProjectReferences=true /v:minimal 2>&1 | Tee-Object $log
             if ($LASTEXITCODE -ne 0) {
               "BUILD_FAILED $($target.Name) exit=$LASTEXITCODE" | Tee-Object -Append $summary
-              $errors = @(Select-String -Path $log -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error' -CaseSensitive:$false)
-              "ERROR_LINES $($errors.Count)" | Tee-Object -Append $summary
-              $errors | ForEach-Object { $_.Line } | Select-Object -Unique | Select-Object -First 250 | Add-Content $summary
+              Select-String -Path $log -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error' -CaseSensitive:$false | ForEach-Object { $_.Line } | Select-Object -Unique | Select-Object -First 250 | Add-Content $summary
               exit $LASTEXITCODE
             }
             "BUILD_OK $($target.Name)" | Tee-Object -Append $summary
@@ -118,13 +92,9 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force core-dll | Out-Null
-          $wanted = @('CmdLangAPI.dll','buClass.dll','buCore.dll','buControls.dll','buEyeBase.dll','buMW.dll','buCadCamRes.dll')
-          foreach ($name in $wanted) {
+          foreach ($name in @('CmdLangAPI.dll','buClass.dll','buCore.dll','buControls.dll','buEyeBase.dll','buMW.dll','buCadCamRes.dll')) {
             Get-ChildItem -Recurse -File -Filter $name | Where-Object { $_.FullName -match '\\bin\\Release\\' } | Select-Object -First 1 | ForEach-Object { Copy-Item $_.FullName core-dll -Force }
           }
-          $built = @(Get-ChildItem core-dll -File -Filter *.dll -ErrorAction SilentlyContinue)
-          "Core DLL count: $($built.Count)" | Tee-Object build-logs/core-dll-count.txt
-          $built | Sort-Object Name | ForEach-Object { "$($_.Name) $($_.Length) bytes" } | Add-Content build-logs/core-dll-count.txt
 
       - name: Upload logs
         if: always()
