@@ -58,6 +58,7 @@ jobs:
           ./.repair/bootstrap-integrity.ps1
           ./.repair/cadcam-repair.ps1
           ./.repair/cam-math-guards.ps1
+          ./.repair/ui-safety-guards.ps1
           ./.repair/saw-cos-guard.ps1
           ./.repair/project-normalize.ps1
           ./.repair/source-compat-repair.ps1
