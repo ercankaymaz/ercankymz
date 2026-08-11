@@ -552,6 +552,15 @@ if ($validatorText -notmatch 'negative spindle speed') { $regressions.Add('postp
 if ($validatorText -notmatch 'Duplicate machine-profile key') { $regressions.Add('duplicate machine profile keys are not rejected') }
 if ($validatorText -notmatch 'CreateEffectiveProfile') { $regressions.Add('per-tool XYZ/ABC envelope is not enforced') }
 if ($validatorText -notmatch 'CAM entry is null') { $regressions.Add('null CAM entries are silently skipped') }
+if ($validatorText -notmatch 'CAM segment is null') { $regressions.Add('null CAM segments are silently skipped') }
+if ($validatorText -notmatch 'CAM contains motion but has no verified tool') { $regressions.Add('CAM motion can bypass verified tool limits') }
+if ($validatorText -notmatch 'MaxGCodeCharacters') { $regressions.Add('G-code input has no total size bound') }
+if ($validatorText -notmatch 'MaxGCodeLineCharacters') { $regressions.Add('G-code block length is unbounded') }
+if ($validatorText -notmatch 'GetUnsupportedGCodeReason') { $regressions.Add('unsafe controller-dependent G-codes are not rejected') }
+if ($validatorText -notmatch 'arc extrema are not proven') { $regressions.Add('endpoint-only validation accepts unproven arcs') }
+if ($validatorText -notmatch 'tool envelope contains a non-finite value') { $regressions.Add('infinite per-tool envelopes are accepted') }
+if ($validatorText -notmatch 'CurrentVersion\s*=\s*"2"') { $regressions.Add('machine profile format is not integrity-versioned') }
+if ($validatorText -notmatch 'ComputeSha256') { $regressions.Add('machine profile has no checksum verification') }
 if ($validatorText -notmatch 'ValidateGCodeAxisRange') { $regressions.Add('G-code XYZ/ABC envelope is not enforced') }
 if ($validatorText -notmatch 'class\s+FiveAxisSafetyProfileStore') { $regressions.Add('machine envelope persistence is missing') }
 if ($toolFormText -notmatch 'TryValidateAxisLimits') { $regressions.Add('XYZ/ABC UI min-max validation is missing') }
@@ -562,6 +571,8 @@ if ($toolFormText -notmatch 'AxisLimitControlValidated') { $regressions.Add('leg
 if ($toolFormText -notmatch 'Saved machine limits cannot be activated') { $regressions.Add('UI can activate a profile it cannot represent') }
 if ($toolFormText -notmatch 'AppSecurity\.PasswordLevel\s*<\s*2') { $regressions.Add('machine limits can be changed without administrator authorization') }
 if ($toolFormText -notmatch 'FiveAxisSafety", "SaveFailed"') { $regressions.Add('machine profile UI failures are not logged') }
+if ($toolFormText -notmatch 'maxCuttingTiltDeltaControl') { $regressions.Add('cutting tilt delta is not configurable in the Limits UI') }
+if ($toolFormText -notmatch 'Maximum cutting tilt delta must be greater than 0') { $regressions.Add('cutting tilt delta UI validation is missing') }
 if ($filesText -notmatch 'FiveAxisSafetyProfileStore\.TryLoad') { $regressions.Add('machine profile is not loaded at startup') }
 if ($filesText -notmatch 'FiveAxisPathSafety\.ClearConfiguration') { $regressions.Add('invalid startup profile does not disable production G-code') }
 if ($text -notmatch 'private long gCodeSafetyRevision\s*=\s*-1L;') { $regressions.Add('G-code cache has no machine-profile revision') }
