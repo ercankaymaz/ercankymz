@@ -79,6 +79,56 @@ if (Test-Path -LiteralPath $marblePath) {
         "FIX MarbleItemEntitiesCalculation invalid/zero step-down divisor: $marblePath" | Tee-Object -Append $log
     }
 
+    # Forward/backward height interpolation decompiles to num2 * (BackwardStep / num2).
+    # That expression is exactly BackwardStep for every valid non-zero num2, but it
+    # creates Infinity/NaN when num2 is zero. Keep the intended result and remove the
+    # unnecessary division entirely.
+    $oldHeightInterpolation = @'
+				double num2 = num - CalculatedHeight[k];
+				double num3 = BackwardStep / num2;
+				if (!(num2 >= ForwardStep + BackwardStep))
+				{
+					list.Add(CalculatedHeight[k]);
+				}
+				else
+				{
+					list.Add(num2 * num3 + CalculatedHeight[k]);
+					list.Add(CalculatedHeight[k]);
+				}
+'@
+    $newHeightInterpolation = @'
+				double num2 = num - CalculatedHeight[k];
+				if (!(num2 >= ForwardStep + BackwardStep))
+				{
+					list.Add(CalculatedHeight[k]);
+				}
+				else
+				{
+					list.Add(BackwardStep + CalculatedHeight[k]);
+					list.Add(CalculatedHeight[k]);
+				}
+'@
+    if ($text.Contains($oldHeightInterpolation)) {
+        $text = $text.Replace($oldHeightInterpolation, $newHeightInterpolation)
+        "FIX MarbleItemHeightByDirection zero-delta interpolation division: $marblePath" | Tee-Object -Append $log
+    }
+
+    # Decompiled boolean operators evaluate both sides. The last-entity lookup is
+    # therefore evaluated even when i > 0 already makes the condition true. Use
+    # short-circuit operators so an empty previous result cannot be indexed at -1.
+    $oldForwardListCondition = 'if ((i > 0) | ((j > 0) & (list[list.Count - 1].Orientation.A != Items[i].StartAngle)))'
+    $newForwardListCondition = 'if ((i > 0) || ((j > 0) && (list[list.Count - 1].Orientation.A != Items[i].StartAngle)))'
+    if ($text.Contains($oldForwardListCondition)) {
+        $text = $text.Replace($oldForwardListCondition, $newForwardListCondition)
+        "FIX MarbleItemEntitiesCalculation forward short-circuit list guard: $marblePath" | Tee-Object -Append $log
+    }
+    $oldPerpendicularListCondition = 'if ((i > 0) | ((k > 0) & (list[list.Count - 1].Orientation.A != Items[i].StartAngle)))'
+    $newPerpendicularListCondition = 'if ((i > 0) || ((k > 0) && (list[list.Count - 1].Orientation.A != Items[i].StartAngle)))'
+    if ($text.Contains($oldPerpendicularListCondition)) {
+        $text = $text.Replace($oldPerpendicularListCondition, $newPerpendicularListCondition)
+        "FIX MarbleItemEntitiesCalculation perpendicular short-circuit list guard: $marblePath" | Tee-Object -Append $log
+    }
+
     if ($text -ne $original) {
         [IO.File]::WriteAllText($marblePath, $text, [Text.UTF8Encoding]::new($false))
         $patched++
