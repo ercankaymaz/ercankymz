@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Forms;
 using buClass;
 using buClass.Apps;
@@ -85,13 +86,41 @@ public class F_GrindingAddPin : Form
 		base.StartPosition = Properties.FormPosition;
 		base.AutoScaleMode = Properties.ScaleFromMode;
 		comboBox_0.SelectedIndex = 0;
-		numericUpDown_1.Value = (decimal)Operation.PinThickness;
-		numericUpDown_2.Value = (decimal)Operation.PinHeight;
-		numericUpDown_0.Value = (decimal)Operation.PinDiameter;
+		SetNumericValueSafe(numericUpDown_1, Operation.PinThickness);
+		SetNumericValueSafe(numericUpDown_2, Operation.PinHeight);
+		SetNumericValueSafe(numericUpDown_0, Operation.PinDiameter);
 		Refresh();
 		Properties.Result = DialogResult.None;
 		Properties.Inited = true;
 		Class76.smethod_699(this);
+	}
+
+	private static void SetNumericValueSafe(NumericUpDown control, double value)
+	{
+		if (control == null || double.IsNaN(value) || double.IsInfinity(value))
+		{
+			return;
+		}
+
+		decimal converted;
+		try
+		{
+			converted = Convert.ToDecimal(value);
+		}
+		catch (OverflowException)
+		{
+			return;
+		}
+
+		if (converted < control.Minimum)
+		{
+			converted = control.Minimum;
+		}
+		else if (converted > control.Maximum)
+		{
+			converted = control.Maximum;
+		}
+		control.Value = converted;
 	}
 
 	internal void method_2(object sender, EventArgs e)
@@ -129,19 +158,25 @@ public class F_GrindingAddPin : Form
 
 	internal void method_3(object sender, EventArgs e)
 	{
-		if (Properties.TouchPad)
+		if (Properties.TouchPad && sender is NumericUpDown numericUpDown)
 		{
-			NumericUpDown numericUpDown = new NumericUpDown();
-			numericUpDown = (NumericUpDown)sender;
 			buControlCommands.ShowKeyPadWinControl(this, numericUpDown);
 		}
 	}
 
 	internal void method_4(object sender, EventArgs e)
 	{
-		if (Properties.Inited)
+		if (!Properties.Inited)
 		{
-			numericUpDown_0.Value = Convert.ToDecimal(comboBox_0.Text);
+			return;
+		}
+
+		decimal value;
+		bool parsed = decimal.TryParse(comboBox_0.Text, NumberStyles.Number, CultureInfo.CurrentCulture, out value) ||
+			decimal.TryParse(comboBox_0.Text, NumberStyles.Number, CultureInfo.InvariantCulture, out value);
+		if (parsed && value >= numericUpDown_0.Minimum && value <= numericUpDown_0.Maximum)
+		{
+			numericUpDown_0.Value = value;
 		}
 	}
 
