@@ -36,6 +36,9 @@ public sealed class FiveAxisSafetyProfile
 /// </summary>
 public static class FiveAxisPathSafety
 {
+  private static readonly object ProfileSync = new object();
+  private static FiveAxisSafetyProfile activeProfile = new FiveAxisSafetyProfile();
+  private static bool hasConfiguredMachineEnvelope;
   private static readonly Regex GCodeWordPattern = new Regex(
     @"(?<![A-Z])([GXYZABC])\s*([+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:E[+-]?[0-9]+)?)",
     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -44,22 +47,40 @@ public static class FiveAxisPathSafety
   /// Active machine profile. Machine initialization should replace the recovery
   /// defaults with measured travels and the controller-approved rotary limits.
   /// </summary>
-  public static FiveAxisSafetyProfile ActiveProfile { get; private set; } = new FiveAxisSafetyProfile();
-  public static bool HasConfiguredMachineEnvelope { get; private set; }
+  public static FiveAxisSafetyProfile ActiveProfile
+  {
+    get
+    {
+      lock (ProfileSync)
+        return CloneProfile(activeProfile);
+    }
+  }
+
+  public static bool HasConfiguredMachineEnvelope
+  {
+    get
+    {
+      lock (ProfileSync)
+        return hasConfiguredMachineEnvelope;
+    }
+  }
 
   public static void Configure(FiveAxisSafetyProfile profile)
   {
     if (profile == null)
       throw new InvalidOperationException("Five-axis machine safety profile is null.");
     ValidateConfiguredProfile(profile);
-    ActiveProfile = CloneProfile(profile);
-    HasConfiguredMachineEnvelope = true;
+    FiveAxisSafetyProfile snapshot = CloneProfile(profile);
+    lock (ProfileSync)
+    {
+      activeProfile = snapshot;
+      hasConfiguredMachineEnvelope = true;
+    }
   }
 
   public static void ValidateAndNormalize(List<camTp> cams)
   {
-    EnsureActiveMachineEnvelope();
-    ValidateAndNormalize(cams, ActiveProfile);
+    ValidateAndNormalize(cams, GetConfiguredActiveProfile());
   }
 
   public static void ValidateAndNormalize(List<camTp> cams, FiveAxisSafetyProfile profile)
@@ -141,8 +162,7 @@ public static class FiveAxisPathSafety
 
   public static void ValidateGCode(string gCode)
   {
-    EnsureActiveMachineEnvelope();
-    ValidateGCode(gCode, ActiveProfile);
+    ValidateGCode(gCode, GetConfiguredActiveProfile());
   }
 
   public static void ValidateGCode(string gCode, FiveAxisSafetyProfile profile)
@@ -399,11 +419,15 @@ public static class FiveAxisPathSafety
       throw new InvalidOperationException("Configured XYZ/ABC machine limits must be finite.");
   }
 
-  private static void EnsureActiveMachineEnvelope()
+  private static FiveAxisSafetyProfile GetConfiguredActiveProfile()
   {
-    if (!HasConfiguredMachineEnvelope)
-      throw new InvalidOperationException(
-        "XYZ/ABC machine limits are not configured. Open the tool Limits tab and save the verified values as Machine Limits before generating production G-code.");
+    lock (ProfileSync)
+    {
+      if (!hasConfiguredMachineEnvelope)
+        throw new InvalidOperationException(
+          "XYZ/ABC machine limits are not configured. Open the tool Limits tab and save the verified values as Machine Limits before generating production G-code.");
+      return CloneProfile(activeProfile);
+    }
   }
 
   private static void ValidateRange(
