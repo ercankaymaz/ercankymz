@@ -71,6 +71,10 @@ jobs:
           "Supplemental bootstrap DLL count: $($dlls.Count)" | Tee-Object build-logs/bootstrap-supplemental-dlls.txt
           $dlls | Sort-Object Name | ForEach-Object { $_.FullName } | Add-Content build-logs/bootstrap-supplemental-dlls.txt
 
+      - name: Validate original vendor bootstrap
+        shell: pwsh
+        run: ./.repair/bootstrap-integrity.ps1
+
       - name: Apply CAD CAM repairs
         shell: pwsh
         run: ./.repair/cadcam-repair.ps1
