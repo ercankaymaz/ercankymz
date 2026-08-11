@@ -34,50 +34,24 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v2
 
-      - name: Restore DLL bootstrap artifacts
-        shell: pwsh
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          $ErrorActionPreference = 'Stop'
-          New-Item -ItemType Directory -Force build-logs,.repair/bootstrap-original,.repair/bootstrap-supplemental | Out-Null
+      - name: Restore original vendor DLL bootstrap
+        uses: actions/download-artifact@v4
+        with:
+          name: CMDMarbleCNC-Final-DLLs
+          path: .repair/bootstrap-original
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 31200670159
 
-          function Restore-Artifact {
-            param(
-              [Parameter(Mandatory=$true)][long]$ArtifactId,
-              [Parameter(Mandatory=$true)][string]$Destination,
-              [Parameter(Mandatory=$true)][bool]$Required
-            )
-
-            $zip = Join-Path $env:RUNNER_TEMP "artifact-$ArtifactId.zip"
-            $uri = "https://api.github.com/repos/$env:GITHUB_REPOSITORY/actions/artifacts/$ArtifactId/zip"
-            $headers = @{
-              Authorization = "Bearer $env:GH_TOKEN"
-              Accept = 'application/vnd.github+json'
-              'X-GitHub-Api-Version' = '2022-11-28'
-            }
-
-            for ($attempt = 1; $attempt -le 5; $attempt++) {
-              try {
-                Remove-Item -LiteralPath $zip -Force -ErrorAction Ignore
-                Invoke-WebRequest -Uri $uri -Headers $headers -MaximumRedirection 10 -OutFile $zip
-                if ((Get-Item -LiteralPath $zip).Length -le 0) { throw 'Downloaded artifact is empty.' }
-                Expand-Archive -LiteralPath $zip -DestinationPath $Destination -Force
-                "ARTIFACT_RESTORED id=$ArtifactId destination=$Destination attempt=$attempt" | Tee-Object -Append build-logs/bootstrap.txt
-                return
-              }
-              catch {
-                "ARTIFACT_RETRY id=$ArtifactId attempt=$attempt error=$($_.Exception.Message)" | Tee-Object -Append build-logs/bootstrap.txt
-                if ($attempt -lt 5) { Start-Sleep -Seconds ([Math]::Min(15, $attempt * 3)) }
-              }
-            }
-
-            if ($Required) { throw "Required bootstrap artifact $ArtifactId could not be restored." }
-            "OPTIONAL_ARTIFACT_SKIPPED id=$ArtifactId" | Tee-Object -Append build-logs/bootstrap.txt
-          }
-
-          Restore-Artifact -ArtifactId 9002709583 -Destination '.repair/bootstrap-original' -Required $true
-          Restore-Artifact -ArtifactId 9081319987 -Destination '.repair/bootstrap-supplemental' -Required $false
+      - name: Restore supplemental DLL bootstrap
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: final-dll
+          path: .repair/bootstrap-supplemental
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 31433581668
 
       - name: Apply deterministic repair chain
         shell: pwsh
