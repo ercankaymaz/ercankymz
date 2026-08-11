@@ -47,6 +47,10 @@ public class F_Tool : Form
 
 	private Label machineLimitsStatusLabel;
 
+	private Label maxCuttingTiltDeltaLabel;
+
+	private NumericUpDown maxCuttingTiltDeltaControl;
+
 	private Timer timer_0 = new Timer();
 
 	internal IContainer icontainer_0 = null;
@@ -947,12 +951,36 @@ public class F_Tool : Form
     this.machineLimitsStatusLabel.Size = new Size(258, 38);
     this.machineLimitsStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
 
+    this.maxCuttingTiltDeltaLabel = new Label();
+    this.maxCuttingTiltDeltaLabel.Name = "lbl_max_cutting_tilt_delta";
+    this.maxCuttingTiltDeltaLabel.Text = "Max cutting tilt delta (deg)";
+    this.maxCuttingTiltDeltaLabel.Font = new Font("Microsoft Sans Serif", 8.5f, FontStyle.Bold);
+    this.maxCuttingTiltDeltaLabel.Location = new Point(389, 7);
+    this.maxCuttingTiltDeltaLabel.Size = new Size(300, 22);
+
+    this.maxCuttingTiltDeltaControl = new NumericUpDown();
+    this.maxCuttingTiltDeltaControl.Name = "spn_max_cutting_tilt_delta";
+    this.maxCuttingTiltDeltaControl.Font = new Font("Microsoft Sans Serif", 9f, FontStyle.Bold);
+    this.maxCuttingTiltDeltaControl.DecimalPlaces = 1;
+    this.maxCuttingTiltDeltaControl.Increment = 1M;
+    this.maxCuttingTiltDeltaControl.Minimum = 1M;
+    this.maxCuttingTiltDeltaControl.Maximum = 180M;
+    this.maxCuttingTiltDeltaControl.Location = new Point(565, 42);
+    this.maxCuttingTiltDeltaControl.Size = new Size(120, 23);
+    this.SetAxisLimitValue(this.maxCuttingTiltDeltaControl, FiveAxisPathSafety.ActiveProfile.MaxCuttingTiltDelta);
+    this.maxCuttingTiltDeltaControl.ValueChanged += new EventHandler(this.AxisLimitValueChanged);
+    this.maxCuttingTiltDeltaControl.Validated += new EventHandler(this.AxisLimitControlValidated);
+
     this.tabPage_2.Controls.Add(this.saveMachineLimitsButton);
     this.tabPage_2.Controls.Add(this.loadMachineLimitsButton);
     this.tabPage_2.Controls.Add(this.machineLimitsStatusLabel);
+    this.panel_10.Controls.Add(this.maxCuttingTiltDeltaLabel);
+    this.panel_10.Controls.Add(this.maxCuttingTiltDeltaControl);
     this.saveMachineLimitsButton.BringToFront();
     this.loadMachineLimitsButton.BringToFront();
     this.machineLimitsStatusLabel.BringToFront();
+    this.maxCuttingTiltDeltaLabel.BringToFront();
+    this.maxCuttingTiltDeltaControl.BringToFront();
 
     string profileFile = this.GetMachineProfileFilePath();
     bool profileIsActive = FiveAxisPathSafety.HasConfiguredMachineEnvelope;
@@ -1001,7 +1029,7 @@ public class F_Tool : Form
         BMax = (double) this.numericUpDown_22.Value,
         CMin = (double) this.numericUpDown_18.Value,
         CMax = (double) this.numericUpDown_17.Value,
-        MaxCuttingTiltDelta = FiveAxisPathSafety.ActiveProfile.MaxCuttingTiltDelta
+        MaxCuttingTiltDelta = (double) this.maxCuttingTiltDeltaControl.Value
       };
       FiveAxisSafetyProfileStore.Save(this.GetMachineProfileFilePath(), profile);
       FiveAxisPathSafety.Configure(profile);
@@ -1043,6 +1071,7 @@ public class F_Tool : Form
       this.SetAxisLimitValue(this.numericUpDown_22, profile.BMax);
       this.SetAxisLimitValue(this.numericUpDown_18, profile.CMin);
       this.SetAxisLimitValue(this.numericUpDown_17, profile.CMax);
+      this.SetAxisLimitValue(this.maxCuttingTiltDeltaControl, profile.MaxCuttingTiltDelta);
       string validationMessage;
       if (!this.TryValidateAxisLimits(out validationMessage))
       {
@@ -1127,6 +1156,17 @@ public class F_Tool : Form
     this.ValidateAxisPair("A", this.numericUpDown_19, this.numericUpDown_20, this.checkBox_6.Checked, errors);
     this.ValidateAxisPair("B", this.numericUpDown_21, this.numericUpDown_22, this.checkBox_5.Checked, errors);
     this.ValidateAxisPair("C", this.numericUpDown_18, this.numericUpDown_17, this.checkBox_4.Checked, errors);
+
+    bool tiltDeltaValid = this.maxCuttingTiltDeltaControl != null &&
+                          this.maxCuttingTiltDeltaControl.Value > 0M &&
+                          this.maxCuttingTiltDeltaControl.Value <= 180M;
+    if (!tiltDeltaValid)
+      errors.Add("Maximum cutting tilt delta must be greater than 0 and at most 180 degrees.");
+    if (this.maxCuttingTiltDeltaControl != null)
+      this.maxCuttingTiltDeltaControl.BackColor = tiltDeltaValid &&
+        !this.invalidAxisLimitControls.Contains(this.maxCuttingTiltDeltaControl)
+          ? SystemColors.Window
+          : Color.MistyRose;
 
     if (this.invalidAxisLimitControls.Count > 0)
       errors.Add("Highlighted axis limits were invalid or outside the supported numeric range when loaded.");
