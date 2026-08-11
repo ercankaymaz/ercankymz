@@ -558,6 +558,9 @@ if ($validatorText -notmatch 'MaxGCodeCharacters') { $regressions.Add('G-code in
 if ($validatorText -notmatch 'MaxGCodeLineCharacters') { $regressions.Add('G-code block length is unbounded') }
 if ($validatorText -notmatch 'GetUnsupportedGCodeReason') { $regressions.Add('unsafe controller-dependent G-codes are not rejected') }
 if ($validatorText -notmatch 'arc extrema are not proven') { $regressions.Add('endpoint-only validation accepts unproven arcs') }
+if ($validatorText -notmatch 'GCodeGMarkerPattern') { $regressions.Add('symbolic or malformed G words can bypass validation') }
+if ($validatorText -notmatch 'GCodeUnsupportedAxisMarkerPattern') { $regressions.Add('unconfigured U/V/W axes can bypass the XYZ/ABC envelope') }
+if ($validatorText -notmatch 'duplicate \{0\}-axis words') { $regressions.Add('ambiguous duplicate axis words are accepted') }
 if ($validatorText -notmatch 'tool envelope contains a non-finite value') { $regressions.Add('infinite per-tool envelopes are accepted') }
 if ($validatorText -notmatch 'CurrentVersion\s*=\s*"2"') { $regressions.Add('machine profile format is not integrity-versioned') }
 if ($validatorText -notmatch 'ComputeSha256') { $regressions.Add('machine profile has no checksum verification') }
