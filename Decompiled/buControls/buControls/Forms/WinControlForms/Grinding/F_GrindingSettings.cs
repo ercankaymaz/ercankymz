@@ -75,21 +75,53 @@ public class F_GrindingSettings : Form
 		base.TopMost = Properties.TopMost;
 		base.StartPosition = Properties.FormPosition;
 		base.AutoScaleMode = Properties.ScaleFromMode;
-		arrayList = new ArrayList();
 		buGeneral.GetEnumTypeValues(Settings.OffsetCornerType, ref arrayList);
-		buControlCommands.ComboboxAddItem(arrayList, Convert.ToInt32(Settings.OffsetCornerType), ref comboBox_0);
-		numericUpDown_1.Value = (decimal)Settings.EntityCathResolutionPersentage;
-		numericUpDown_0.Value = (decimal)Settings.GlassThickness;
+		int offsetIndex = Enum.IsDefined(typeof(OffsetCornerType), Settings.OffsetCornerType)
+			? Convert.ToInt32(Settings.OffsetCornerType)
+			: Convert.ToInt32(OffsetCornerType.Line);
+		buControlCommands.ComboboxAddItem(arrayList, offsetIndex, ref comboBox_0);
+		SetNumericValueSafe(numericUpDown_1, Settings.EntityCathResolutionPersentage);
+		SetNumericValueSafe(numericUpDown_0, Settings.GlassThickness);
 		Refresh();
 		Properties.Result = DialogResult.None;
 		Properties.Inited = true;
 		Class76.smethod_328(this);
 	}
 
+	private static void SetNumericValueSafe(NumericUpDown control, double value)
+	{
+		if (control == null || double.IsNaN(value) || double.IsInfinity(value))
+		{
+			return;
+		}
+
+		decimal converted;
+		try
+		{
+			converted = Convert.ToDecimal(value);
+		}
+		catch (OverflowException)
+		{
+			return;
+		}
+
+		if (converted < control.Minimum)
+		{
+			converted = control.Minimum;
+		}
+		else if (converted > control.Maximum)
+		{
+			converted = control.Maximum;
+		}
+		control.Value = converted;
+	}
+
 	internal void method_1(object sender, EventArgs e)
 	{
-		Control control = new Control();
-		control = (Control)sender;
+		if (!(sender is Control control))
+		{
+			return;
+		}
 		if (control.Name == btn_ok.Name)
 		{
 			if (!Properties.Inited)
@@ -128,17 +160,14 @@ public class F_GrindingSettings : Form
 
 	internal void method_3(object sender, EventArgs e)
 	{
-		if (Properties.TouchPad)
+		if (Properties.TouchPad && sender is NumericUpDown numericUpDown)
 		{
-			NumericUpDown numericUpDown = new NumericUpDown();
-			numericUpDown = (NumericUpDown)sender;
 			buControlCommands.ShowKeyPadWinControl(this, numericUpDown);
 		}
 	}
 
 	internal void method_4(object sender, EventArgs e)
 	{
-		new Control();
 		if (Properties.Inited)
 		{
 		}
