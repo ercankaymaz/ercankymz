@@ -66,4 +66,112 @@ if (Test-Path -LiteralPath $vacuumPath) {
     "MISS $vacuumPath" | Tee-Object -Append $log
 }
 
+# Metric single-cut validates varOperations.TargetZ before the decompiled form
+# helper copies the current spinner values into varOperations. This can approve
+# a newly-entered invalid depth because the comparison sees the previous value.
+$singleCutPath = 'Decompiled/buControls/buControls/Forms/buControlForms/Marble/F_SingleCut.cs'
+if (Test-Path -LiteralPath $singleCutPath) {
+    $text = [IO.File]::ReadAllText($singleCutPath)
+    $original = $text
+    $old = @'
+		if (control.Name == buButton_3.Name)
+		{
+			if (varOperations.TargetZ >= varOperations.MaterialThickness)
+			{
+				buString.MessageBoxWarning(buMarbleCalc.LangMarbleMessage[3]);
+				return;
+			}
+			Class76.smethod_825(this);
+'@
+    $new = @'
+		if (control.Name == buButton_3.Name)
+		{
+			Class76.smethod_825(this);
+			if (varOperations.TargetZ >= varOperations.MaterialThickness)
+			{
+				buString.MessageBoxWarning(buMarbleCalc.LangMarbleMessage[3]);
+				return;
+			}
+'@
+    if ($text.Contains($old)) {
+        $text = $text.Replace($old, $new)
+        "FIX F_SingleCut synchronize input model before TargetZ validation: $singleCutPath" | Tee-Object -Append $log
+    }
+    if ($text -ne $original) {
+        [IO.File]::WriteAllText($singleCutPath, $text, [Text.UTF8Encoding]::new($false))
+        $patched++
+    }
+} else {
+    "MISS $singleCutPath" | Tee-Object -Append $log
+}
+
+# Inch form has the identical ordering bug; smethod_803 also performs the inch
+# conversion, so it must run before validating the converted operation value.
+$singleCutInchPath = 'Decompiled/buControls/buControls/Forms/buControlForms/Marble/F_SingleCutInch.cs'
+if (Test-Path -LiteralPath $singleCutInchPath) {
+    $text = [IO.File]::ReadAllText($singleCutInchPath)
+    $original = $text
+    $old = @'
+		if (control.Name == buButton_3.Name)
+		{
+			if (varOperations.TargetZ >= varOperations.MaterialThickness)
+			{
+				buString.MessageBoxWarning(buMarbleCalc.LangMarbleMessage[3]);
+				return;
+			}
+			Class76.smethod_803(this);
+'@
+    $new = @'
+		if (control.Name == buButton_3.Name)
+		{
+			Class76.smethod_803(this);
+			if (varOperations.TargetZ >= varOperations.MaterialThickness)
+			{
+				buString.MessageBoxWarning(buMarbleCalc.LangMarbleMessage[3]);
+				return;
+			}
+'@
+    if ($text.Contains($old)) {
+        $text = $text.Replace($old, $new)
+        "FIX F_SingleCutInch synchronize/convert input before TargetZ validation: $singleCutInchPath" | Tee-Object -Append $log
+    }
+    if ($text -ne $original) {
+        [IO.File]::WriteAllText($singleCutInchPath, $text, [Text.UTF8Encoding]::new($false))
+        $patched++
+    }
+} else {
+    "MISS $singleCutInchPath" | Tee-Object -Append $log
+}
+
+# Vertical end-position event checks handler_1 but invokes handler_3. If only the
+# intended vertical handler is attached the event is silently skipped; if handler_1
+# is attached while handler_3 is null the click can throw NullReferenceException.
+$perpendicularPath = 'Decompiled/buControls/buControls/Forms/buControlForms/Marble/F_PerpendicularCut.cs'
+if (Test-Path -LiteralPath $perpendicularPath) {
+    $text = [IO.File]::ReadAllText($perpendicularPath)
+    $original = $text
+    $old = @'
+			if (marbleSetStartPositionHandler_1 != null)
+			{
+				marbleSetStartPositionHandler_3(EndPosVer);
+			}
+'@
+    $new = @'
+			if (marbleSetStartPositionHandler_3 != null)
+			{
+				marbleSetStartPositionHandler_3(EndPosVer);
+			}
+'@
+    if ($text.Contains($old)) {
+        $text = $text.Replace($old, $new)
+        "FIX F_PerpendicularCut vertical end-position event null-check wiring: $perpendicularPath" | Tee-Object -Append $log
+    }
+    if ($text -ne $original) {
+        [IO.File]::WriteAllText($perpendicularPath, $text, [Text.UTF8Encoding]::new($false))
+        $patched++
+    }
+} else {
+    "MISS $perpendicularPath" | Tee-Object -Append $log
+}
+
 "Patched UI files: $patched" | Tee-Object -Append $log
