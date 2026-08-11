@@ -7,6 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using buClass;
+using buCadCamResVer5.Marble;
 using buControls;
 using buControls.DialogBox;
 using buCore;
@@ -37,6 +38,14 @@ public class F_Tool : Form
 	private int int_1 = -1;
 
 	private List<TabPage> list_0 = new List<TabPage>();
+
+	private readonly List<NumericUpDown> invalidAxisLimitControls = new List<NumericUpDown>();
+
+	private Button saveMachineLimitsButton;
+
+	private Button loadMachineLimitsButton;
+
+	private Label machineLimitsStatusLabel;
 
 	private Timer timer_0 = new Timer();
 
@@ -762,18 +771,18 @@ public class F_Tool : Form
 		label_86.BackColor = Tool.Display.UpperCamColor;
 		label_84.BackColor = Tool.Display.PlungeColor;
 		label_82.BackColor = Tool.Display.LeaveColor;
-		numericUpDown_19.Value = (decimal)Tool.Limits.AxesMinLimits.A;
-		numericUpDown_21.Value = (decimal)Tool.Limits.AxesMinLimits.B;
-		numericUpDown_18.Value = (decimal)Tool.Limits.AxesMinLimits.C;
-		numericUpDown_20.Value = (decimal)Tool.Limits.AxesMaxLimits.A;
-		numericUpDown_22.Value = (decimal)Tool.Limits.AxesMaxLimits.B;
-		numericUpDown_17.Value = (decimal)Tool.Limits.AxesMaxLimits.C;
-		numericUpDown_13.Value = (decimal)Tool.Limits.AxesMinLimits.X;
-		numericUpDown_15.Value = (decimal)Tool.Limits.AxesMinLimits.Y;
-		numericUpDown_12.Value = (decimal)Tool.Limits.AxesMinLimits.Z;
-		numericUpDown_14.Value = (decimal)Tool.Limits.AxesMaxLimits.X;
-		numericUpDown_16.Value = (decimal)Tool.Limits.AxesMaxLimits.Y;
-		numericUpDown_11.Value = (decimal)Tool.Limits.AxesMaxLimits.Z;
+		SetAxisLimitValue(numericUpDown_19, Tool.Limits.AxesMinLimits.A);
+		SetAxisLimitValue(numericUpDown_21, Tool.Limits.AxesMinLimits.B);
+		SetAxisLimitValue(numericUpDown_18, Tool.Limits.AxesMinLimits.C);
+		SetAxisLimitValue(numericUpDown_20, Tool.Limits.AxesMaxLimits.A);
+		SetAxisLimitValue(numericUpDown_22, Tool.Limits.AxesMaxLimits.B);
+		SetAxisLimitValue(numericUpDown_17, Tool.Limits.AxesMaxLimits.C);
+		SetAxisLimitValue(numericUpDown_13, Tool.Limits.AxesMinLimits.X);
+		SetAxisLimitValue(numericUpDown_15, Tool.Limits.AxesMinLimits.Y);
+		SetAxisLimitValue(numericUpDown_12, Tool.Limits.AxesMinLimits.Z);
+		SetAxisLimitValue(numericUpDown_14, Tool.Limits.AxesMaxLimits.X);
+		SetAxisLimitValue(numericUpDown_16, Tool.Limits.AxesMaxLimits.Y);
+		SetAxisLimitValue(numericUpDown_11, Tool.Limits.AxesMaxLimits.Z);
 		checkBox_14.Checked = Tool.Limits.PlaneTop;
 		checkBox_13.Checked = Tool.Limits.PlaneBottom;
 		checkBox_10.Checked = Tool.Limits.PlaneFront;
@@ -842,6 +851,7 @@ public class F_Tool : Form
 		pnl_model.Controls.Add(viewportLayout);
 		TabPAgeVisibility();
 		Properties.Result = DialogResult.None;
+		InitializeAxisLimitValidation();
 		Properties.Inited = true;
 		timer_0.Tick += Init_Tick;
 		timer_0.Interval = 10;
@@ -855,6 +865,245 @@ public class F_Tool : Form
 		Class5.smethod_57(this);
 		Class5.smethod_36(this);
 	}
+
+  private void SetAxisLimitValue(NumericUpDown control, double value)
+  {
+    bool invalid = double.IsNaN(value) || double.IsInfinity(value);
+    decimal convertedValue = 0M;
+    if (!invalid)
+    {
+      try
+      {
+        convertedValue = (decimal) value;
+      }
+      catch (OverflowException)
+      {
+        invalid = true;
+      }
+    }
+
+    if (convertedValue < control.Minimum)
+    {
+      convertedValue = control.Minimum;
+      invalid = true;
+    }
+    else if (convertedValue > control.Maximum)
+    {
+      convertedValue = control.Maximum;
+      invalid = true;
+    }
+
+    control.Value = convertedValue;
+    if (invalid && !this.invalidAxisLimitControls.Contains(control))
+      this.invalidAxisLimitControls.Add(control);
+  }
+
+  private void InitializeAxisLimitValidation()
+  {
+    NumericUpDown[] controls = this.GetAxisLimitControls();
+    for (int index = 0; index < controls.Length; ++index)
+      controls[index].ValueChanged += new EventHandler(this.AxisLimitValueChanged);
+
+    this.checkBox_6.CheckedChanged += new EventHandler(this.AxisLimitValueChanged);
+    this.checkBox_5.CheckedChanged += new EventHandler(this.AxisLimitValueChanged);
+    this.checkBox_4.CheckedChanged += new EventHandler(this.AxisLimitValueChanged);
+    this.InitializeMachineEnvelopeControls();
+    string ignoredMessage;
+    this.TryValidateAxisLimits(out ignoredMessage);
+  }
+
+  private void InitializeMachineEnvelopeControls()
+  {
+    if (this.saveMachineLimitsButton != null)
+      return;
+
+    this.saveMachineLimitsButton = new Button();
+    this.saveMachineLimitsButton.Name = "btn_save_machine_limits";
+    this.saveMachineLimitsButton.Text = "Save as Machine Limits";
+    this.saveMachineLimitsButton.Font = new Font("Microsoft Sans Serif", 8.5f, FontStyle.Bold);
+    this.saveMachineLimitsButton.Location = new Point(7, 482);
+    this.saveMachineLimitsButton.Size = new Size(220, 38);
+    this.saveMachineLimitsButton.Click += new EventHandler(this.SaveMachineLimitsClick);
+
+    this.loadMachineLimitsButton = new Button();
+    this.loadMachineLimitsButton.Name = "btn_load_machine_limits";
+    this.loadMachineLimitsButton.Text = "Load Machine Limits";
+    this.loadMachineLimitsButton.Font = new Font("Microsoft Sans Serif", 8.5f, FontStyle.Bold);
+    this.loadMachineLimitsButton.Location = new Point(233, 482);
+    this.loadMachineLimitsButton.Size = new Size(205, 38);
+    this.loadMachineLimitsButton.Click += new EventHandler(this.LoadMachineLimitsClick);
+
+    this.machineLimitsStatusLabel = new Label();
+    this.machineLimitsStatusLabel.Name = "lbl_machine_limits_status";
+    this.machineLimitsStatusLabel.Text = "Machine profile: not saved in this session";
+    this.machineLimitsStatusLabel.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Bold);
+    this.machineLimitsStatusLabel.Location = new Point(444, 482);
+    this.machineLimitsStatusLabel.Size = new Size(258, 38);
+    this.machineLimitsStatusLabel.TextAlign = ContentAlignment.MiddleLeft;
+
+    this.tabPage_2.Controls.Add(this.saveMachineLimitsButton);
+    this.tabPage_2.Controls.Add(this.loadMachineLimitsButton);
+    this.tabPage_2.Controls.Add(this.machineLimitsStatusLabel);
+    this.saveMachineLimitsButton.BringToFront();
+    this.loadMachineLimitsButton.BringToFront();
+    this.machineLimitsStatusLabel.BringToFront();
+
+    string profileFile = FiveAxisSafetyProfileStore.GetDefaultFilePath(AppPath.Settings);
+    this.machineLimitsStatusLabel.Text = File.Exists(profileFile)
+      ? "Machine profile: saved"
+      : "Machine profile: not configured";
+    this.machineLimitsStatusLabel.ForeColor = File.Exists(profileFile) ? Color.DarkGreen : Color.DarkOrange;
+  }
+
+  private void SaveMachineLimitsClick(object sender, EventArgs e)
+  {
+    string validationMessage;
+    if (!this.TryValidateAxisLimits(out validationMessage))
+    {
+      buString5.MessageBoxWarning(validationMessage);
+      return;
+    }
+
+    try
+    {
+      FiveAxisSafetyProfile profile = new FiveAxisSafetyProfile()
+      {
+        XMin = (double) this.numericUpDown_13.Value,
+        XMax = (double) this.numericUpDown_14.Value,
+        YMin = (double) this.numericUpDown_15.Value,
+        YMax = (double) this.numericUpDown_16.Value,
+        ZMin = (double) this.numericUpDown_12.Value,
+        ZMax = (double) this.numericUpDown_11.Value,
+        AMin = (double) this.numericUpDown_19.Value,
+        AMax = (double) this.numericUpDown_20.Value,
+        BMin = (double) this.numericUpDown_21.Value,
+        BMax = (double) this.numericUpDown_22.Value,
+        CMin = (double) this.numericUpDown_18.Value,
+        CMax = (double) this.numericUpDown_17.Value,
+        MaxCuttingTiltDelta = FiveAxisPathSafety.ActiveProfile.MaxCuttingTiltDelta
+      };
+      FiveAxisSafetyProfileStore.Save(
+        FiveAxisSafetyProfileStore.GetDefaultFilePath(AppPath.Settings),
+        profile);
+      FiveAxisPathSafety.Configure(profile);
+      this.machineLimitsStatusLabel.Text = "Machine profile: saved and active";
+      this.machineLimitsStatusLabel.ForeColor = Color.DarkGreen;
+    }
+    catch (Exception ex)
+    {
+      this.machineLimitsStatusLabel.Text = "Machine profile: save failed";
+      this.machineLimitsStatusLabel.ForeColor = Color.DarkRed;
+      buString5.MessageBoxWarning("Machine limits could not be saved: " + ex.Message);
+    }
+  }
+
+  private void LoadMachineLimitsClick(object sender, EventArgs e)
+  {
+    try
+    {
+      FiveAxisSafetyProfile profile;
+      string profileFile = FiveAxisSafetyProfileStore.GetDefaultFilePath(AppPath.Settings);
+      if (!FiveAxisSafetyProfileStore.TryLoad(profileFile, out profile))
+      {
+        buString5.MessageBoxWarning("A saved XYZ/ABC machine-limit profile was not found.");
+        return;
+      }
+
+      this.invalidAxisLimitControls.Clear();
+      this.SetAxisLimitValue(this.numericUpDown_13, profile.XMin);
+      this.SetAxisLimitValue(this.numericUpDown_14, profile.XMax);
+      this.SetAxisLimitValue(this.numericUpDown_15, profile.YMin);
+      this.SetAxisLimitValue(this.numericUpDown_16, profile.YMax);
+      this.SetAxisLimitValue(this.numericUpDown_12, profile.ZMin);
+      this.SetAxisLimitValue(this.numericUpDown_11, profile.ZMax);
+      this.SetAxisLimitValue(this.numericUpDown_19, profile.AMin);
+      this.SetAxisLimitValue(this.numericUpDown_20, profile.AMax);
+      this.SetAxisLimitValue(this.numericUpDown_21, profile.BMin);
+      this.SetAxisLimitValue(this.numericUpDown_22, profile.BMax);
+      this.SetAxisLimitValue(this.numericUpDown_18, profile.CMin);
+      this.SetAxisLimitValue(this.numericUpDown_17, profile.CMax);
+      string ignoredMessage;
+      this.TryValidateAxisLimits(out ignoredMessage);
+      this.machineLimitsStatusLabel.Text = "Machine profile: loaded and active";
+      this.machineLimitsStatusLabel.ForeColor = Color.DarkGreen;
+    }
+    catch (Exception ex)
+    {
+      this.machineLimitsStatusLabel.Text = "Machine profile: load failed";
+      this.machineLimitsStatusLabel.ForeColor = Color.DarkRed;
+      buString5.MessageBoxWarning("Machine limits could not be loaded: " + ex.Message);
+    }
+  }
+
+  private NumericUpDown[] GetAxisLimitControls()
+  {
+    return new NumericUpDown[]
+    {
+      this.numericUpDown_13, this.numericUpDown_14,
+      this.numericUpDown_15, this.numericUpDown_16,
+      this.numericUpDown_12, this.numericUpDown_11,
+      this.numericUpDown_19, this.numericUpDown_20,
+      this.numericUpDown_21, this.numericUpDown_22,
+      this.numericUpDown_18, this.numericUpDown_17
+    };
+  }
+
+  private bool IsAxisLimitControl(System.Windows.Forms.Control control)
+  {
+    NumericUpDown[] controls = this.GetAxisLimitControls();
+    for (int index = 0; index < controls.Length; ++index)
+    {
+      if (object.ReferenceEquals(controls[index], control))
+        return true;
+    }
+    return false;
+  }
+
+  private void AxisLimitValueChanged(object sender, EventArgs e)
+  {
+    NumericUpDown numericControl = sender as NumericUpDown;
+    if (numericControl != null)
+      this.invalidAxisLimitControls.Remove(numericControl);
+    string ignoredMessage;
+    this.TryValidateAxisLimits(out ignoredMessage);
+  }
+
+  private bool TryValidateAxisLimits(out string message)
+  {
+    List<string> errors = new List<string>();
+    this.ValidateAxisPair("X", this.numericUpDown_13, this.numericUpDown_14, true, errors);
+    this.ValidateAxisPair("Y", this.numericUpDown_15, this.numericUpDown_16, true, errors);
+    this.ValidateAxisPair("Z", this.numericUpDown_12, this.numericUpDown_11, true, errors);
+    this.ValidateAxisPair("A", this.numericUpDown_19, this.numericUpDown_20, this.checkBox_6.Checked, errors);
+    this.ValidateAxisPair("B", this.numericUpDown_21, this.numericUpDown_22, this.checkBox_5.Checked, errors);
+    this.ValidateAxisPair("C", this.numericUpDown_18, this.numericUpDown_17, this.checkBox_4.Checked, errors);
+
+    if (this.invalidAxisLimitControls.Count > 0)
+      errors.Add("Highlighted axis limits were invalid or outside the supported numeric range when loaded.");
+
+    message = string.Join(Environment.NewLine, errors.ToArray());
+    return errors.Count == 0;
+  }
+
+  private void ValidateAxisPair(
+    string axis,
+    NumericUpDown minimumControl,
+    NumericUpDown maximumControl,
+    bool axisEnabled,
+    List<string> errors)
+  {
+    bool valid = minimumControl.Value < maximumControl.Value ||
+                 (!axisEnabled && minimumControl.Value == maximumControl.Value);
+    if (!valid)
+      errors.Add(axis + " axis minimum limit must be smaller than its maximum limit.");
+
+    bool loadedValueInvalid = this.invalidAxisLimitControls.Contains(minimumControl) ||
+                              this.invalidAxisLimitControls.Contains(maximumControl);
+    Color color = valid && !loadedValueInvalid ? SystemColors.Window : Color.MistyRose;
+    minimumControl.BackColor = color;
+    maximumControl.BackColor = color;
+  }
+
 
 	public void DrawTool()
 	{
@@ -993,6 +1242,17 @@ public class F_Tool : Form
 			if (numericUpDown_28.Value > numericUpDown_27.Value)
 			{
 				buString5.MessageBoxWarning(AppLanguage.CadCamMessages[98]);
+				return;
+			}
+			string axisLimitError;
+			if (!TryValidateAxisLimits(out axisLimitError))
+			{
+				if (tabControl_0.TabPages.Contains(tabPage_2))
+				{
+					tabControl_0.SelectedTab = tabPage_2;
+				}
+				buString5.MessageBoxWarning(axisLimitError);
+				return;
 			}
 			Class5.smethod_218(this);
 			Properties.Result = DialogResult.OK;
@@ -1324,8 +1584,12 @@ public class F_Tool : Form
 		control = (Control)sender;
 		if ((e.KeyCode == Keys.Return) | (e.KeyCode == Keys.Tab))
 		{
-			Class5.smethod_218(this);
-			DrawTool();
+			string axisLimitError;
+			if (!IsAxisLimitControl(control) || TryValidateAxisLimits(out axisLimitError))
+			{
+				Class5.smethod_218(this);
+				DrawTool();
+			}
 			int result = 0;
 			int.TryParse(control.Tag.ToString(), out result);
 			buControlCommands.FindNextControlByKey(tabControl_0.SelectedTab.Controls, result, e.Shift);
