@@ -52,6 +52,12 @@ public static class FiveAxisPathSafety
   private static readonly Regex GCodeScalarMarkerPattern = new Regex(
     @"(?<![A-Z_])([FS])(?=\s*(?:[+\-.0-9#\[]|$))",
     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+  private static readonly Regex GCodeGMarkerPattern = new Regex(
+    @"(?<![A-Z_])(G)(?=\s*(?:[+\-.0-9#\[]|$))",
+    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+  private static readonly Regex GCodeUnsupportedAxisMarkerPattern = new Regex(
+    @"(?<![A-Z_])([UVW])(?=\s*(?:[+\-.0-9#\[]|$))",
+    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
   /// <summary>
   /// Active machine profile. Machine initialization should replace the recovery
@@ -268,11 +274,13 @@ public static class FiveAxisPathSafety
       bool sawIncrementalMode = false;
       bool sawMetricUnits = false;
       bool sawInchUnits = false;
+      int parsedGWordCount = 0;
       for (int wordIndex = 0; wordIndex < wordMatches.Count; ++wordIndex)
       {
         char word = char.ToUpperInvariant(wordMatches[wordIndex].Groups[1].Value[0]);
         if (word != 'G')
           continue;
+        ++parsedGWordCount;
 
         double value;
         if (!double.TryParse(wordMatches[wordIndex].Groups[2].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value) ||
@@ -323,6 +331,7 @@ public static class FiveAxisPathSafety
       unitScale = blockUnitScale;
       int parsedAxisWordCount = 0;
       int parsedScalarWordCount = 0;
+      HashSet<char> seenAxisAndScalarWords = new HashSet<char>();
       for (int wordIndex = 0; wordIndex < wordMatches.Count; ++wordIndex)
       {
         char word = char.ToUpperInvariant(wordMatches[wordIndex].Groups[1].Value[0]);
@@ -336,6 +345,9 @@ public static class FiveAxisPathSafety
           continue;
         if (word == 'F' || word == 'S')
         {
+          if (!seenAxisAndScalarWords.Add(word))
+            throw new InvalidOperationException(
+              string.Format(CultureInfo.InvariantCulture, "Postprocessor generated duplicate {0}-words at line {1}.", word, lineIndex + 1));
           ++parsedScalarWordCount;
           if (word == 'F' && value <= 0.0)
             throw new InvalidOperationException(
@@ -347,6 +359,9 @@ public static class FiveAxisPathSafety
         }
 
         char axis = word;
+        if (!seenAxisAndScalarWords.Add(axis))
+          throw new InvalidOperationException(
+            string.Format(CultureInfo.InvariantCulture, "Postprocessor generated duplicate {0}-axis words at line {1}.", axis, lineIndex + 1));
         ++parsedAxisWordCount;
         ++totalParsedAxisWordCount;
 
@@ -382,6 +397,20 @@ public static class FiveAxisPathSafety
           string.Format(
             CultureInfo.InvariantCulture,
             "Cannot validate a non-literal or malformed F/S word at line {0}.",
+            lineIndex + 1));
+      if (GCodeGMarkerPattern.Matches(executableLine).Count != parsedGWordCount)
+        throw new InvalidOperationException(
+          string.Format(
+            CultureInfo.InvariantCulture,
+            "Cannot validate a non-literal or malformed G word at line {0}.",
+            lineIndex + 1));
+      Match unsupportedAxis = GCodeUnsupportedAxisMarkerPattern.Match(executableLine);
+      if (unsupportedAxis.Success)
+        throw new InvalidOperationException(
+          string.Format(
+            CultureInfo.InvariantCulture,
+            "Cannot validate unsupported {0}-axis motion at line {1}; only XYZ/ABC are configured.",
+            unsupportedAxis.Groups[1].Value.ToUpperInvariant(),
             lineIndex + 1));
 
       for (int charIndex = 0; charIndex < line.Length; ++charIndex)
