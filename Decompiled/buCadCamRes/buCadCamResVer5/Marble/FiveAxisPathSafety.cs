@@ -39,6 +39,7 @@ public static class FiveAxisPathSafety
   private static readonly object ProfileSync = new object();
   private static FiveAxisSafetyProfile activeProfile = new FiveAxisSafetyProfile();
   private static bool hasConfiguredMachineEnvelope;
+  private static long configurationRevision;
   private static readonly Regex GCodeWordPattern = new Regex(
     @"(?<![A-Z_])([GXYZABC])\s*([+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:E[+-]?[0-9]+)?)(?=$|[A-Z/#*\s])",
     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -68,6 +69,19 @@ public static class FiveAxisPathSafety
     }
   }
 
+  /// <summary>
+  /// Process-local revision of the verified machine envelope. Cached CAM/G-code
+  /// must be regenerated whenever this value changes.
+  /// </summary>
+  public static long ConfigurationRevision
+  {
+    get
+    {
+      lock (ProfileSync)
+        return configurationRevision;
+    }
+  }
+
   public static void Configure(FiveAxisSafetyProfile profile)
   {
     if (profile == null)
@@ -76,8 +90,37 @@ public static class FiveAxisPathSafety
     FiveAxisSafetyProfile snapshot = CloneProfile(profile);
     lock (ProfileSync)
     {
+      bool profileChanged = !hasConfiguredMachineEnvelope || !ProfilesEqual(activeProfile, snapshot);
       activeProfile = snapshot;
       hasConfiguredMachineEnvelope = true;
+      if (profileChanged)
+      {
+        unchecked
+        {
+          ++configurationRevision;
+          if (configurationRevision <= 0)
+            configurationRevision = 1;
+        }
+      }
+    }
+  }
+
+  public static void ClearConfiguration()
+  {
+    lock (ProfileSync)
+    {
+      bool profileWasConfigured = hasConfiguredMachineEnvelope;
+      activeProfile = new FiveAxisSafetyProfile();
+      hasConfiguredMachineEnvelope = false;
+      if (profileWasConfigured)
+      {
+        unchecked
+        {
+          ++configurationRevision;
+          if (configurationRevision <= 0)
+            configurationRevision = 1;
+        }
+      }
     }
   }
 
@@ -102,8 +145,12 @@ public static class FiveAxisPathSafety
     for (int camIndex = 0; camIndex < cams.Count; ++camIndex)
     {
       camTp cam = cams[camIndex];
-      if (cam == null || !cam.Enable || cam.CamPoints == null)
+      if (cam == null)
+        throw CamError(camIndex, "CAM entry is null");
+      if (!cam.Enable)
         continue;
+      if (cam.CamPoints == null)
+        throw CamError(camIndex, "CAM point collection is null");
       FiveAxisSafetyProfile effectiveProfile = CreateEffectiveProfile(profile, cam, camIndex);
       bool hasPreviousPointInCam = false;
 
@@ -178,11 +225,13 @@ public static class FiveAxisPathSafety
 
     string[] lines = gCode.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
     bool absoluteMode = true;
+    double unitScale = 1.0;
+    int totalParsedAxisWordCount = 0;
     Dictionary<char, double> knownPositions = new Dictionary<char, double>();
     for (int lineIndex = 0; lineIndex < lines.Length; ++lineIndex)
     {
       string line = lines[lineIndex];
-      string executableLine = StripGCodeComments(line);
+      string executableLine = StripGCodeComments(line, lineIndex);
       if (executableLine.IndexOf("NaN", StringComparison.OrdinalIgnoreCase) >= 0 ||
           executableLine.IndexOf("Infinity", StringComparison.OrdinalIgnoreCase) >= 0)
         throw new InvalidOperationException(
@@ -192,6 +241,55 @@ public static class FiveAxisPathSafety
             lineIndex + 1));
 
       MatchCollection wordMatches = GCodeWordPattern.Matches(executableLine);
+      bool blockAbsoluteMode = absoluteMode;
+      double blockUnitScale = unitScale;
+      bool sawAbsoluteMode = false;
+      bool sawIncrementalMode = false;
+      bool sawMetricUnits = false;
+      bool sawInchUnits = false;
+      for (int wordIndex = 0; wordIndex < wordMatches.Count; ++wordIndex)
+      {
+        char word = char.ToUpperInvariant(wordMatches[wordIndex].Groups[1].Value[0]);
+        if (word != 'G')
+          continue;
+
+        double value;
+        if (!double.TryParse(wordMatches[wordIndex].Groups[2].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value) ||
+            double.IsNaN(value) || double.IsInfinity(value))
+          throw new InvalidOperationException(
+            string.Format(CultureInfo.InvariantCulture, "Postprocessor generated an invalid G-word value at line {0}.", lineIndex + 1));
+
+        if (value == 90.0)
+        {
+          blockAbsoluteMode = true;
+          sawAbsoluteMode = true;
+        }
+        else if (value == 91.0)
+        {
+          blockAbsoluteMode = false;
+          sawIncrementalMode = true;
+        }
+        else if (value == 21.0)
+        {
+          blockUnitScale = 1.0;
+          sawMetricUnits = true;
+        }
+        else if (value == 20.0)
+        {
+          blockUnitScale = 25.4;
+          sawInchUnits = true;
+        }
+      }
+
+      if (sawAbsoluteMode && sawIncrementalMode)
+        throw new InvalidOperationException(
+          string.Format(CultureInfo.InvariantCulture, "G90 and G91 conflict in the same block at line {0}.", lineIndex + 1));
+      if (sawMetricUnits && sawInchUnits)
+        throw new InvalidOperationException(
+          string.Format(CultureInfo.InvariantCulture, "G20 and G21 conflict in the same block at line {0}.", lineIndex + 1));
+
+      absoluteMode = blockAbsoluteMode;
+      unitScale = blockUnitScale;
       int parsedAxisWordCount = 0;
       for (int wordIndex = 0; wordIndex < wordMatches.Count; ++wordIndex)
       {
@@ -203,18 +301,16 @@ public static class FiveAxisPathSafety
             string.Format(CultureInfo.InvariantCulture, "Postprocessor generated an invalid {0}-word value at line {1}.", word, lineIndex + 1));
 
         if (word == 'G')
-        {
-          if (value == 90.0)
-            absoluteMode = true;
-          else if (value == 91.0)
-            absoluteMode = false;
           continue;
-        }
 
         char axis = word;
         ++parsedAxisWordCount;
+        ++totalParsedAxisWordCount;
 
-        double target = value;
+        double commandValue = axis == 'X' || axis == 'Y' || axis == 'Z'
+          ? value * unitScale
+          : value;
+        double target = commandValue;
         if (!absoluteMode)
         {
           double current;
@@ -225,7 +321,7 @@ public static class FiveAxisPathSafety
                 "Cannot validate incremental {0}-axis motion before an absolute position is known at line {1}.",
                 axis,
                 lineIndex + 1));
-          target = current + value;
+          target = current + commandValue;
         }
 
         ValidateGCodeAxisRange(axis, target, profile, lineIndex);
@@ -250,6 +346,8 @@ public static class FiveAxisPathSafety
               lineIndex + 1));
       }
     }
+    if (totalParsedAxisWordCount == 0)
+      throw new InvalidOperationException("Postprocessor output contains no literal XYZ/ABC motion words.");
   }
 
   private static FiveAxisSafetyProfile CreateEffectiveProfile(
@@ -291,6 +389,17 @@ public static class FiveAxisPathSafety
     };
   }
 
+  private static bool ProfilesEqual(FiveAxisSafetyProfile first, FiveAxisSafetyProfile second)
+  {
+    return first.XMin == second.XMin && first.XMax == second.XMax &&
+           first.YMin == second.YMin && first.YMax == second.YMax &&
+           first.ZMin == second.ZMin && first.ZMax == second.ZMax &&
+           first.AMin == second.AMin && first.AMax == second.AMax &&
+           first.BMin == second.BMin && first.BMax == second.BMax &&
+           first.CMin == second.CMin && first.CMax == second.CMax &&
+           first.MaxCuttingTiltDelta == second.MaxCuttingTiltDelta;
+  }
+
   private static void ApplyToolRange(
     ref double effectiveMinimum,
     ref double effectiveMaximum,
@@ -315,7 +424,7 @@ public static class FiveAxisPathSafety
       throw CamError(camIndex, axis + " tool envelope does not intersect the machine envelope");
   }
 
-  private static string StripGCodeComments(string line)
+  private static string StripGCodeComments(string line, int lineIndex)
   {
     StringBuilder result = new StringBuilder(line.Length);
     int parenthesisDepth = 0;
@@ -326,17 +435,26 @@ public static class FiveAxisPathSafety
         break;
       if (value == '(')
       {
+        if (parenthesisDepth != 0)
+          throw new InvalidOperationException(
+            string.Format(CultureInfo.InvariantCulture, "Nested G-code comment at line {0} cannot be validated safely.", lineIndex + 1));
         ++parenthesisDepth;
         continue;
       }
-      if (value == ')' && parenthesisDepth > 0)
+      if (value == ')')
       {
+        if (parenthesisDepth == 0)
+          throw new InvalidOperationException(
+            string.Format(CultureInfo.InvariantCulture, "Unmatched G-code comment terminator at line {0}.", lineIndex + 1));
         --parenthesisDepth;
         continue;
       }
       if (parenthesisDepth == 0)
         result.Append(value);
     }
+    if (parenthesisDepth != 0)
+      throw new InvalidOperationException(
+        string.Format(CultureInfo.InvariantCulture, "Unterminated G-code comment at line {0}.", lineIndex + 1));
     return result.ToString();
   }
 
@@ -429,6 +547,8 @@ public static class FiveAxisPathSafety
         double.IsInfinity(profile.BMin) || double.IsInfinity(profile.BMax) ||
         double.IsInfinity(profile.CMin) || double.IsInfinity(profile.CMax))
       throw new InvalidOperationException("Configured XYZ/ABC machine limits must be finite.");
+    if (profile.XMin >= profile.XMax || profile.YMin >= profile.YMax || profile.ZMin >= profile.ZMax)
+      throw new InvalidOperationException("Configured XYZ machine limits must define a positive travel range.");
   }
 
   private static FiveAxisSafetyProfile GetConfiguredActiveProfile()
@@ -563,8 +683,14 @@ public static class FiveAxisSafetyProfileStore
     if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
       return false;
 
+    FileInfo profileFile = new FileInfo(filePath);
+    if (profileFile.Length > 65536L)
+      throw new InvalidDataException("Machine-profile file exceeds the 64 KiB safety limit.");
+
     Dictionary<string, string> values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
     string[] lines = File.ReadAllLines(filePath);
+    if (lines.Length > 128)
+      throw new InvalidDataException("Machine-profile file contains too many entries.");
     for (int index = 0; index < lines.Length; ++index)
     {
       string line = lines[index].Trim();
@@ -599,8 +725,8 @@ public static class FiveAxisSafetyProfileStore
       CMax = ReadRequiredDouble(values, "CMax"),
       MaxCuttingTiltDelta = ReadRequiredDouble(values, "MaxCuttingTiltDelta")
     };
-    FiveAxisPathSafety.Configure(loaded);
-    profile = CloneActiveProfile();
+    FiveAxisPathSafety.ValidateConfiguredProfile(loaded);
+    profile = CloneProfile(loaded);
     return true;
   }
 
@@ -615,9 +741,8 @@ public static class FiveAxisSafetyProfileStore
     return parsedValue;
   }
 
-  private static FiveAxisSafetyProfile CloneActiveProfile()
+  private static FiveAxisSafetyProfile CloneProfile(FiveAxisSafetyProfile active)
   {
-    FiveAxisSafetyProfile active = FiveAxisPathSafety.ActiveProfile;
     return new FiveAxisSafetyProfile()
     {
       XMin = active.XMin,
