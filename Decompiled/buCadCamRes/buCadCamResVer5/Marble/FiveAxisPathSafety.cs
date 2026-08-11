@@ -40,7 +40,10 @@ public static class FiveAxisPathSafety
   private static FiveAxisSafetyProfile activeProfile = new FiveAxisSafetyProfile();
   private static bool hasConfiguredMachineEnvelope;
   private static readonly Regex GCodeWordPattern = new Regex(
-    @"(?<![A-Z])([GXYZABC])\s*([+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:E[+-]?[0-9]+)?)",
+    @"(?<![A-Z_])([GXYZABC])\s*([+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:E[+-]?[0-9]+)?)(?=$|[A-Z/#*\s])",
+    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+  private static readonly Regex GCodeAxisMarkerPattern = new Regex(
+    @"(?<![A-Z_])([XYZABC])(?=\s*(?:[+\-.0-9#\[]|$))",
     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
   /// <summary>
@@ -189,6 +192,7 @@ public static class FiveAxisPathSafety
             lineIndex + 1));
 
       MatchCollection wordMatches = GCodeWordPattern.Matches(executableLine);
+      int parsedAxisWordCount = 0;
       for (int wordIndex = 0; wordIndex < wordMatches.Count; ++wordIndex)
       {
         char word = char.ToUpperInvariant(wordMatches[wordIndex].Groups[1].Value[0]);
@@ -208,6 +212,7 @@ public static class FiveAxisPathSafety
         }
 
         char axis = word;
+        ++parsedAxisWordCount;
 
         double target = value;
         if (!absoluteMode)
@@ -226,6 +231,13 @@ public static class FiveAxisPathSafety
         ValidateGCodeAxisRange(axis, target, profile, lineIndex);
         knownPositions[axis] = target;
       }
+
+      if (GCodeAxisMarkerPattern.Matches(executableLine).Count != parsedAxisWordCount)
+        throw new InvalidOperationException(
+          string.Format(
+            CultureInfo.InvariantCulture,
+            "Cannot validate a non-literal or malformed XYZ/ABC word at line {0}.",
+            lineIndex + 1));
 
       for (int charIndex = 0; charIndex < line.Length; ++charIndex)
       {
@@ -561,7 +573,10 @@ public static class FiveAxisSafetyProfileStore
       int separator = line.IndexOf('=');
       if (separator <= 0 || separator == line.Length - 1)
         throw new InvalidDataException("Invalid machine-profile entry at line " + (index + 1) + ".");
-      values[line.Substring(0, separator).Trim()] = line.Substring(separator + 1).Trim();
+      string key = line.Substring(0, separator).Trim();
+      if (values.ContainsKey(key))
+        throw new InvalidDataException("Duplicate machine-profile key " + key + " at line " + (index + 1) + ".");
+      values.Add(key, line.Substring(separator + 1).Trim());
     }
 
     string version;
