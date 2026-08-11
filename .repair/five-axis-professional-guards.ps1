@@ -233,6 +233,287 @@ if ($text -notmatch 'string\.IsNullOrWhiteSpace\(this\.activeJob\.GCode\)') {
     "FIX G-code viewer cache flow" | Tee-Object -Append $log
 }
 
+# Bind every cached program to the exact verified XYZ/ABC profile revision.
+# This also forces programs loaded from older job files to be regenerated.
+if ($text -notmatch 'private long gCodeSafetyRevision\s*=\s*-1L;') {
+    $cacheFieldAnchor = '  public MarbleJob tempJob = (MarbleJob) null;'
+    if (-not $text.Contains($cacheFieldAnchor)) {
+        throw 'Marble G-code safety cache field insertion point was not found.'
+    }
+    $cacheFields = $cacheFieldAnchor + [Environment]::NewLine +
+        '  private MarbleJob gCodeSafetyJob = (MarbleJob) null;' + [Environment]::NewLine +
+        '  private long gCodeSafetyRevision = -1L;'
+    $text = $text.Replace($cacheFieldAnchor, $cacheFields)
+    "FIX profile-revision-bound G-code cache fields" | Tee-Object -Append $log
+}
+if ($text -notmatch 'private long simulationSafetyRevision\s*=\s*-1L;') {
+    $simulationFieldAnchor = '  private long gCodeSafetyRevision = -1L;'
+    if (-not $text.Contains($simulationFieldAnchor)) {
+        throw 'Simulation safety cache field insertion point was not found.'
+    }
+    $simulationFields = $simulationFieldAnchor + [Environment]::NewLine +
+        '  private MarbleJob simulationSafetyJob = (MarbleJob) null;' + [Environment]::NewLine +
+        '  private long simulationSafetyRevision = -1L;'
+    $text = $text.Replace($simulationFieldAnchor, $simulationFields)
+    "FIX profile-revision-bound simulation cache fields" | Tee-Object -Append $log
+}
+
+$showMethodPattern = '(?s)  public void cmdShowGcode\s*\(\)\s*\{.*?(?=\r?\n  public void cmdCreateGCode\s*\(\))'
+$showMethodMatch = [regex]::Match($text, $showMethodPattern)
+if (-not $showMethodMatch.Success) {
+    throw 'cmdShowGcode method was not found for profile-revision cache binding.'
+}
+$canonicalShowMethod = @'
+  public void cmdShowGcode()
+  {
+    if (this.activeJob == null)
+      return;
+    string strGCodes = "";
+    if (!this.activeJob.CamCalculated)
+      this.doCamCalculateMarbleJob(ref this.activeJob);
+    if (!this.activeJob.CamCalculated)
+      return;
+
+    long currentSafetyRevision = FiveAxisPathSafety.ConfigurationRevision;
+    bool cacheMatchesSafetyProfile = object.ReferenceEquals(this.gCodeSafetyJob, this.activeJob) &&
+                                     this.gCodeSafetyRevision == currentSafetyRevision;
+    if (!cacheMatchesSafetyProfile)
+    {
+      this.activeJob.GCode = "";
+      this.activeJob.isGCodeCreated = false;
+    }
+
+    if (!this.activeJob.isGCodeCreated || string.IsNullOrWhiteSpace(this.activeJob.GCode))
+      this.doCreateGCode(this.activeJob, ref strGCodes);
+    else
+    {
+      try
+      {
+        FiveAxisPathSafety.ValidateGCode(this.activeJob.GCode);
+        if (currentSafetyRevision != FiveAxisPathSafety.ConfigurationRevision)
+          throw new InvalidOperationException("XYZ/ABC machine limits changed while cached G-code was being checked.");
+        strGCodes = this.activeJob.GCode;
+      }
+      catch (Exception ex)
+      {
+        buLogVer5.addToLog(this.string_0, nameof (cmdShowGcode), "Cached G-code rejected", ex.Message, 0.0, 0.0, true);
+        this.activeJob.GCode = "";
+        this.activeJob.isGCodeCreated = false;
+        this.gCodeSafetyJob = (MarbleJob) null;
+        this.gCodeSafetyRevision = -1L;
+        this.doCreateGCode(this.activeJob, ref strGCodes);
+      }
+    }
+    if (string.IsNullOrWhiteSpace(strGCodes))
+      return;
+    F_Notepad fNotepad = new F_Notepad();
+    fNotepad.Init(strGCodes);
+    fNotepad.Show();
+    if (clsItem.FrmProgress == null)
+      return;
+    clsItem.FrmProgress.Visible = false;
+  }
+'@
+if ($showMethodMatch.Value -notmatch 'cacheMatchesSafetyProfile' -or
+    $showMethodMatch.Value -notmatch 'Cached G-code rejected') {
+    $text = $text.Remove($showMethodMatch.Index, $showMethodMatch.Length).Insert($showMethodMatch.Index, $canonicalShowMethod)
+    "FIX cached G-code profile revision and revalidation flow" | Tee-Object -Append $log
+}
+
+$startSimulationPattern = '(?s)  public void cmdStartSimulation\s*\(\)\s*\{.*?(?=\r?\n  public void cmdStopSimulation\s*\(\))'
+$startSimulationMatch = [regex]::Match($text, $startSimulationPattern)
+if (-not $startSimulationMatch.Success) {
+    throw 'cmdStartSimulation method was not found for profile-revision binding.'
+}
+$canonicalStartSimulation = @'
+  public void cmdStartSimulation()
+  {
+    if (this.activeJob == null)
+      return;
+    try
+    {
+      if (!this.activeJob.CamCalculated)
+        this.doCamCalculateMarbleJob(ref this.activeJob);
+      if (!this.activeJob.CamCalculated)
+        throw new InvalidOperationException("CAM calculation did not complete; simulation cannot start.");
+
+      long currentSafetyRevision = FiveAxisPathSafety.ConfigurationRevision;
+      bool simulationMatchesSafetyProfile = object.ReferenceEquals(this.simulationSafetyJob, this.activeJob) &&
+                                            this.simulationSafetyRevision == currentSafetyRevision;
+      if (!simulationMatchesSafetyProfile)
+      {
+        this.activeJob.isSimulationDone = false;
+        this.SimIndex = -1;
+        this.SimItemIndex = -1;
+        this.SimToolIndex = -1;
+      }
+      if (!this.activeJob.isSimulationDone)
+        this.doSimulationCalculate(ref this.activeJob);
+      if (!object.ReferenceEquals(this.simulationSafetyJob, this.activeJob) ||
+          this.simulationSafetyRevision != FiveAxisPathSafety.ConfigurationRevision)
+        throw new InvalidOperationException("Simulation does not match the active XYZ/ABC machine limits.");
+    }
+    catch (Exception ex)
+    {
+      this.timSim.Enabled = false;
+      if (clsItem.FrmProgress != null)
+        clsItem.FrmProgress.Visible = false;
+      buLogVer5.addToLog(this.string_0, nameof (cmdStartSimulation), "Simulation rejected", ex.Message, 0.0, 0.0, true);
+      buString5.MessageBoxWarning("Simulation cannot start: " + ex.Message);
+      return;
+    }
+
+    if (this.SimIndex == -1)
+    {
+      clsMarble.lastSimToolPurpose = ToolPurpose.None;
+      ccVars.Pages[ccVars.PageIndex].Form.viewportcad.StopAnimation();
+      this.DeleteSimulationEntities();
+      this.DrawSimulationEntities(false, true, true, MarbleToolType.Saw);
+      if (!ccVars.Pages[ccVars.PageIndex].Form.viewportcad.IsAnimationRunning)
+        ccVars.Pages[ccVars.PageIndex].Form.viewportcad.StartAnimation();
+      this.SimToolIndex = 0;
+      this.SimIndex = 0;
+      this.SimItemIndex = 0;
+      this.timSim.Enabled = true;
+    }
+    else
+      this.timSim.Enabled = true;
+  }
+'@
+if ($startSimulationMatch.Value -notmatch 'simulationMatchesSafetyProfile' -or
+    $startSimulationMatch.Value -notmatch 'Simulation rejected') {
+    $text = $text.Remove($startSimulationMatch.Index, $startSimulationMatch.Length).Insert($startSimulationMatch.Index, $canonicalStartSimulation)
+    "FIX simulation profile revision and fail-closed start flow" | Tee-Object -Append $log
+}
+
+$simulationCalculatePattern = '(?s)  public void doSimulationCalculate\s*\(ref MarbleJob Job\)\s*\{.*?(?=\r?\n  public void doCreateGCode\s*\()'
+$simulationCalculateMatch = [regex]::Match($text, $simulationCalculatePattern)
+if (-not $simulationCalculateMatch.Success) {
+    throw 'doSimulationCalculate method was not found for profile validation.'
+}
+$simulationCalculateMethod = $simulationCalculateMatch.Value
+if ($simulationCalculateMethod -notmatch 'Cannot calculate simulation for a null marble job') {
+    $simulationStartAnchor = @'
+  public void doSimulationCalculate(ref MarbleJob Job)
+  {
+'@
+    if (-not $simulationCalculateMethod.Contains($simulationStartAnchor)) {
+        throw 'doSimulationCalculate validation insertion point was not found.'
+    }
+    $simulationStartReplacement = $simulationStartAnchor + [Environment]::NewLine +
+        '    if (Job == null)' + [Environment]::NewLine +
+        '      throw new InvalidOperationException("Cannot calculate simulation for a null marble job.");' + [Environment]::NewLine +
+        '    if (Job.Cams == null || Job.Cams.Count == 0)' + [Environment]::NewLine +
+        '      throw new InvalidOperationException("Cannot calculate simulation without CAM paths.");' + [Environment]::NewLine +
+        '    long safetyRevision = FiveAxisPathSafety.ConfigurationRevision;' + [Environment]::NewLine +
+        '    FiveAxisPathSafety.ValidateAndNormalize(Job.Cams);' + [Environment]::NewLine +
+        '    if (safetyRevision != FiveAxisPathSafety.ConfigurationRevision)' + [Environment]::NewLine +
+        '      throw new InvalidOperationException("XYZ/ABC machine limits changed during simulation validation.");' + [Environment]::NewLine +
+        '    if (!object.ReferenceEquals(this.simulationSafetyJob, Job) || this.simulationSafetyRevision != safetyRevision)' + [Environment]::NewLine +
+        '      Job.isSimulationDone = false;' + [Environment]::NewLine
+    $simulationCalculateMethod = $simulationCalculateMethod.Replace($simulationStartAnchor, $simulationStartReplacement)
+}
+if ($simulationCalculateMethod -notmatch 'ReferenceEquals\(this\.simulationSafetyJob, Job\)') {
+    $simulationRevisionAnchor = '      throw new InvalidOperationException("XYZ/ABC machine limits changed during simulation validation.");'
+    if (-not $simulationCalculateMethod.Contains($simulationRevisionAnchor)) {
+        throw 'doSimulationCalculate cache invalidation insertion point was not found.'
+    }
+    $simulationRevisionReplacement = $simulationRevisionAnchor + [Environment]::NewLine +
+        '    if (!object.ReferenceEquals(this.simulationSafetyJob, Job) || this.simulationSafetyRevision != safetyRevision)' + [Environment]::NewLine +
+        '      Job.isSimulationDone = false;'
+    $simulationCalculateMethod = $simulationCalculateMethod.Replace($simulationRevisionAnchor, $simulationRevisionReplacement)
+}
+if ($simulationCalculateMethod -notmatch 'Simulation produced no verified motion points') {
+    $simulationCompleteAnchor = '    Job.isSimulationDone = true;'
+    if (-not $simulationCalculateMethod.Contains($simulationCompleteAnchor)) {
+        throw 'doSimulationCalculate completion validation insertion point was not found.'
+    }
+    $simulationCompleteReplacement = @'
+    bool hasSimulationMove = false;
+    for (int camIndex = 0; camIndex < Job.Cams.Count; ++camIndex)
+    {
+      camTp simulationCam = Job.Cams[camIndex];
+      if (simulationCam != null && simulationCam.Enable && simulationCam.SimilationPoint != null &&
+          simulationCam.SimilationPoint.SimMove != null && simulationCam.SimilationPoint.SimMove.Count > 0)
+      {
+        hasSimulationMove = true;
+        break;
+      }
+    }
+    if (!hasSimulationMove)
+      throw new InvalidOperationException("Simulation produced no verified motion points.");
+    if (safetyRevision != FiveAxisPathSafety.ConfigurationRevision)
+      throw new InvalidOperationException("XYZ/ABC machine limits changed during simulation calculation.");
+    Job.isSimulationDone = true;
+    this.simulationSafetyJob = Job;
+    this.simulationSafetyRevision = safetyRevision;
+'@
+    $simulationCalculateMethod = $simulationCalculateMethod.Replace($simulationCompleteAnchor, $simulationCompleteReplacement)
+}
+if ($simulationCalculateMethod -ne $simulationCalculateMatch.Value) {
+    $text = $text.Remove($simulationCalculateMatch.Index, $simulationCalculateMatch.Length).Insert($simulationCalculateMatch.Index, $simulationCalculateMethod)
+    "FIX simulation path validation and verified-motion completion gate" | Tee-Object -Append $log
+}
+
+$revisionCreateMethodPattern = '(?s)  public void doCreateGCode\s*\(MarbleJob Job,\s*ref string strGCodes\)\s*\{.*?(?=\r?\n  public void SetMillingCamParameter\s*\()'
+$revisionCreateMethodMatch = [regex]::Match($text, $revisionCreateMethodPattern)
+if (-not $revisionCreateMethodMatch.Success) {
+    throw 'doCreateGCode method was not found for profile-revision cache binding.'
+}
+$canonicalCreateMethod = @'
+  public void doCreateGCode(MarbleJob Job, ref string strGCodes)
+  {
+    string str = nameof (doCreateGCode);
+    try
+    {
+      if (Job == null)
+        throw new InvalidOperationException("Cannot generate G-code for a null marble job.");
+      long safetyRevision = FiveAxisPathSafety.ConfigurationRevision;
+      PostProcessor Post = new PostProcessor(ccVars.PostActive);
+      if (buMarbleCalc.varOperation.settingMarbleCam.MoveZCAAxesToSafeDistance)
+      {
+        Post.EndLines.Insert(0, (object) "M50");
+        Post.EndLines.Insert(1, (object) "G0 A0");
+        Post.EndLines.Insert(2, (object) ("G0 Z" + buMarbleCalc.varOperation.settingMarbleCam.JobFinishZPostion.ToString()));
+        Post.EndLines.Insert(3, (object) "G0 C0");
+      }
+      strGCodes = "";
+      FiveAxisPathSafety.ValidateAndNormalize(Job.Cams);
+      if (safetyRevision != FiveAxisPathSafety.ConfigurationRevision)
+        throw new InvalidOperationException("XYZ/ABC machine limits changed during CAM validation. Recalculate the job.");
+      clsInit.cGcodeCreate.CreatGCode(Job.Cams, Post, ref strGCodes);
+      FiveAxisPathSafety.ValidateGCode(strGCodes);
+      if (safetyRevision != FiveAxisPathSafety.ConfigurationRevision)
+        throw new InvalidOperationException("XYZ/ABC machine limits changed during G-code validation. Regenerate the program.");
+      Job.GCode = strGCodes;
+      Job.isGCodeCreated = true;
+      this.gCodeSafetyJob = Job;
+      this.gCodeSafetyRevision = safetyRevision;
+    }
+    catch (Exception ex)
+    {
+      strGCodes = "";
+      if (Job != null)
+      {
+        Job.GCode = "";
+        Job.isGCodeCreated = false;
+      }
+      if (object.ReferenceEquals(this.gCodeSafetyJob, Job))
+      {
+        this.gCodeSafetyJob = (MarbleJob) null;
+        this.gCodeSafetyRevision = -1L;
+      }
+      buLogVer5.addToLog(this.string_0, str, "Error", ex.Message, 0.0, 0.0, true);
+      buException.throwException(ex, str, true, "");
+    }
+  }
+'@
+if ($revisionCreateMethodMatch.Value -notmatch 'safetyRevision\s*=\s*FiveAxisPathSafety\.ConfigurationRevision' -or
+    $revisionCreateMethodMatch.Value -notmatch '"Error", ex\.Message') {
+    $text = $text.Remove($revisionCreateMethodMatch.Index, $revisionCreateMethodMatch.Length).Insert($revisionCreateMethodMatch.Index, $canonicalCreateMethod)
+    "FIX profile-stable CAM and G-code validation transaction" | Tee-Object -Append $log
+}
+
 if ($text -ne $original) {
     [IO.File]::WriteAllText($sourcePath, $text, [Text.UTF8Encoding]::new($false))
 }
@@ -255,9 +536,19 @@ if ($text -notmatch 'strGCodes\s*=\s*"";\s*\r?\n\s*if\s*\(Job\s*!=\s*null\)') { 
 if ($validatorText -notmatch 'HasConfiguredMachineEnvelope') { $regressions.Add('machine envelope is not fail-closed') }
 if ($validatorText -notmatch 'ProfileSync') { $regressions.Add('active machine profile is not thread-safe') }
 if ($validatorText -notmatch 'Cannot validate incremental') { $regressions.Add('unknown incremental axis motion is not fail-closed') }
+if ($validatorText -notmatch 'ConfigurationRevision') { $regressions.Add('machine profile changes do not invalidate cached G-code') }
+if ($validatorText -notmatch 'blockUnitScale\s*=\s*25\.4') { $regressions.Add('G20 inch coordinates are not normalized to machine units') }
+if ($validatorText -notmatch "axis == 'X' \|\| axis == 'Y' \|\| axis == 'Z'") { $regressions.Add('G20 incorrectly scales rotary axes') }
+if ($validatorText -notmatch 'G90 and G91 conflict') { $regressions.Add('conflicting distance modes are not rejected') }
+if ($validatorText -notmatch 'Unterminated G-code comment') { $regressions.Add('malformed G-code comments are not rejected') }
+if ($validatorText -notmatch 'ClearConfiguration') { $regressions.Add('invalid machine profile cannot fail closed') }
+if ($validatorText -notmatch 'profile\.XMin\s*>=\s*profile\.XMax') { $regressions.Add('zero-travel XYZ machine profile is accepted') }
+if ($validatorText -notmatch 'totalParsedAxisWordCount\s*==\s*0') { $regressions.Add('motionless G-code is accepted as a production program') }
+if ($validatorText -notmatch '65536L') { $regressions.Add('machine profile input has no size bound') }
 if ($validatorText -notmatch 'GCodeAxisMarkerPattern') { $regressions.Add('malformed or symbolic axis words are not rejected') }
 if ($validatorText -notmatch 'Duplicate machine-profile key') { $regressions.Add('duplicate machine profile keys are not rejected') }
 if ($validatorText -notmatch 'CreateEffectiveProfile') { $regressions.Add('per-tool XYZ/ABC envelope is not enforced') }
+if ($validatorText -notmatch 'CAM entry is null') { $regressions.Add('null CAM entries are silently skipped') }
 if ($validatorText -notmatch 'ValidateGCodeAxisRange') { $regressions.Add('G-code XYZ/ABC envelope is not enforced') }
 if ($validatorText -notmatch 'class\s+FiveAxisSafetyProfileStore') { $regressions.Add('machine envelope persistence is missing') }
 if ($toolFormText -notmatch 'TryValidateAxisLimits') { $regressions.Add('XYZ/ABC UI min-max validation is missing') }
@@ -265,7 +556,19 @@ if ($toolFormText -notmatch 'SaveMachineLimitsClick') { $regressions.Add('XYZ/AB
 if ($toolFormText -notmatch 'LoadMachineLimitsClick') { $regressions.Add('XYZ/ABC machine-profile load UI is missing') }
 if ($toolFormText -notmatch 'SetAxisLimitValue') { $regressions.Add('safe legacy axis-limit loading is missing') }
 if ($toolFormText -notmatch 'AxisLimitControlValidated') { $regressions.Add('legacy axis-limit review flow is missing') }
+if ($toolFormText -notmatch 'Saved machine limits cannot be activated') { $regressions.Add('UI can activate a profile it cannot represent') }
+if ($toolFormText -notmatch 'AppSecurity\.PasswordLevel\s*<\s*2') { $regressions.Add('machine limits can be changed without administrator authorization') }
+if ($toolFormText -notmatch 'FiveAxisSafety", "SaveFailed"') { $regressions.Add('machine profile UI failures are not logged') }
 if ($filesText -notmatch 'FiveAxisSafetyProfileStore\.TryLoad') { $regressions.Add('machine profile is not loaded at startup') }
+if ($filesText -notmatch 'FiveAxisPathSafety\.ClearConfiguration') { $regressions.Add('invalid startup profile does not disable production G-code') }
+if ($text -notmatch 'private long gCodeSafetyRevision\s*=\s*-1L;') { $regressions.Add('G-code cache has no machine-profile revision') }
+if ($text -notmatch 'cacheMatchesSafetyProfile') { $regressions.Add('cached G-code is not invalidated after profile change') }
+if ($text -notmatch 'Cached G-code rejected') { $regressions.Add('rejected cached G-code has no diagnostic record') }
+if ($text -notmatch 'machine limits changed during G-code validation') { $regressions.Add('profile changes during G-code creation are not fail-closed') }
+if ($text -notmatch 'private long simulationSafetyRevision\s*=\s*-1L;') { $regressions.Add('simulation cache has no machine-profile revision') }
+if ($text -notmatch 'simulationMatchesSafetyProfile') { $regressions.Add('cached simulation is not invalidated after profile change') }
+if ($text -notmatch 'Simulation produced no verified motion points') { $regressions.Add('empty simulation is marked complete') }
+if ($text -notmatch 'Simulation rejected') { $regressions.Add('simulation safety rejection is not logged') }
 
 "5-axis regression count: $($regressions.Count)" | Tee-Object -Append $log
 $regressions | ForEach-Object { "FAIL $_" | Tee-Object -Append $log }
