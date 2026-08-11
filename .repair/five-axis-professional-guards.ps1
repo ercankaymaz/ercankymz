@@ -5,6 +5,8 @@ Remove-Item $log -ErrorAction Ignore
 
 $sourcePath = 'Decompiled/buCadCamRes/buCadCamResVer5/Marble/clsMarble.cs'
 $validatorPath = 'Decompiled/buCadCamRes/buCadCamResVer5/Marble/FiveAxisPathSafety.cs'
+$toolFormPath = 'Decompiled/buCadCamRes/buCadCamResVer5/Forms/F_Tool.cs'
+$filesPath = 'Decompiled/buCadCamRes/buCadCamResVer5/clsFiles.cs'
 
 if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) {
     "FAIL missing 5-axis marble source: $sourcePath" | Tee-Object $log
@@ -16,6 +18,14 @@ if ((Get-Item -LiteralPath $sourcePath).Length -eq 0) {
 }
 if (-not (Test-Path -LiteralPath $validatorPath -PathType Leaf)) {
     "FAIL missing final path validator: $validatorPath" | Tee-Object $log
+    exit 2
+}
+if (-not (Test-Path -LiteralPath $toolFormPath -PathType Leaf)) {
+    "FAIL missing XYZ/ABC limits UI: $toolFormPath" | Tee-Object $log
+    exit 2
+}
+if (-not (Test-Path -LiteralPath $filesPath -PathType Leaf)) {
+    "FAIL missing machine-profile startup loader: $filesPath" | Tee-Object $log
     exit 2
 }
 
@@ -172,12 +182,24 @@ if ($text -ne $original) {
 # Fail the build if any repaired critical signature regresses.
 $finalMethod = [regex]::Match($text, $methodPattern).Value
 $regressions = New-Object System.Collections.Generic.List[string]
+$validatorText = [IO.File]::ReadAllText($validatorPath)
+$toolFormText = [IO.File]::ReadAllText($toolFormPath)
+$filesText = [IO.File]::ReadAllText($filesPath)
 if ($finalMethod -match '5AXPars\.MachParam\.LinkParams\.AirMoveSafetyDistance\s*=\s*0\.0') { $regressions.Add('zero 5AX clearance') }
 if ($finalMethod -match '5AXPars\.MachParam\..*UseAirMoveSafetyDistanceFlg\s*=\s*false') { $regressions.Add('disabled 5AX clearance') }
 if ($finalMethod -match 'CamTriMeshType\s*==\s*CamTriangularMeshType\.(ParallelCuts|ConstantZ|Geodesic)') { $regressions.Add('3-axis enum used in 5-axis method') }
 if ($finalMethod -match $emptyCEnvelopePattern) { $regressions.Add('empty C-axis envelope check') }
 if ($text -notmatch 'FiveAxisPathSafety\.ValidateAndNormalize\(Job\.Cams\);') { $regressions.Add('missing final path gate') }
 if ($text -notmatch 'FiveAxisPathSafety\.ValidateGCode\(strGCodes\);') { $regressions.Add('missing postprocessor text gate') }
+if ($validatorText -notmatch 'HasConfiguredMachineEnvelope') { $regressions.Add('machine envelope is not fail-closed') }
+if ($validatorText -notmatch 'CreateEffectiveProfile') { $regressions.Add('per-tool XYZ/ABC envelope is not enforced') }
+if ($validatorText -notmatch 'ValidateGCodeAxisRange') { $regressions.Add('G-code XYZ/ABC envelope is not enforced') }
+if ($validatorText -notmatch 'class\s+FiveAxisSafetyProfileStore') { $regressions.Add('machine envelope persistence is missing') }
+if ($toolFormText -notmatch 'TryValidateAxisLimits') { $regressions.Add('XYZ/ABC UI min-max validation is missing') }
+if ($toolFormText -notmatch 'SaveMachineLimitsClick') { $regressions.Add('XYZ/ABC machine-profile save UI is missing') }
+if ($toolFormText -notmatch 'LoadMachineLimitsClick') { $regressions.Add('XYZ/ABC machine-profile load UI is missing') }
+if ($toolFormText -notmatch 'SetAxisLimitValue') { $regressions.Add('safe legacy axis-limit loading is missing') }
+if ($filesText -notmatch 'FiveAxisSafetyProfileStore\.TryLoad') { $regressions.Add('machine profile is not loaded at startup') }
 
 "5-axis regression count: $($regressions.Count)" | Tee-Object -Append $log
 $regressions | ForEach-Object { "FAIL $_" | Tee-Object -Append $log }
