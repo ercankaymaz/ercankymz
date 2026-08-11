@@ -100,4 +100,29 @@ if (Test-Path -LiteralPath $routerPath) {
     "MISS $routerPath" | Tee-Object -Append $log
 }
 
+$vectorPath = 'Decompiled/buCore/buCore/buVector.cs'
+if (Test-Path -LiteralPath $vectorPath) {
+    $text = [IO.File]::ReadAllText($vectorPath)
+    $original = $text
+
+    # Verified against the previously repaired buCore IL. The first
+    # EllipseWithCenter overload is void and receives Center, MajorRadius,
+    # MinorRadius, Angle, Plane, EntResolution and Vertices. Invalid center,
+    # non-finite radius/angle values and degenerate radii must return before
+    # geometry generation.
+    $ellipsePattern = '(?s)(public\s+void\s+EllipseWithCenter\s*\(\s*(?:buClass\.)?Pnt3D\s+Center\s*,\s*double\s+MajorRadius\s*,\s*double\s+MinorRadius\s*,\s*double\s+Angle\s*,.*?\)\s*\{\s*)(?!if\s*\(Center\s*==\s*null)'
+    $ellipseGuard = "if (Center == null || double.IsNaN(MajorRadius) || double.IsInfinity(MajorRadius) ||`r`n`t`t`tdouble.IsNaN(MinorRadius) || double.IsInfinity(MinorRadius) ||`r`n`t`t`tdouble.IsNaN(Angle) || double.IsInfinity(Angle) ||`r`n`t`t`tMajorRadius <= 1E-09 || MinorRadius <= 1E-09)`r`n`t`t`treturn;`r`n`t`t"
+    $ellipseRegex = [regex]::new($ellipsePattern, [Text.RegularExpressions.RegexOptions]::Singleline)
+    $text = $ellipseRegex.Replace($text, ('$1' + $ellipseGuard), 1)
+    if ($text -ne $original) {
+        "FIX buVector EllipseWithCenter null/non-finite/degenerate geometry guard: $vectorPath" | Tee-Object -Append $log
+        [IO.File]::WriteAllText($vectorPath, $text, [Text.UTF8Encoding]::new($false))
+        $patched++
+    } else {
+        "NO_MATCH_OR_ALREADY_FIXED buVector EllipseWithCenter: $vectorPath" | Tee-Object -Append $log
+    }
+} else {
+    "MISS $vectorPath" | Tee-Object -Append $log
+}
+
 "Patched math files: $patched" | Tee-Object -Append $log
