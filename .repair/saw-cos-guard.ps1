@@ -46,6 +46,50 @@ if ($text.Contains($oldLeave)) {
     "FIX CalculateGrindingContourSaw leave/step-up projection cos(A) guard" | Tee-Object -Append $log
 }
 
+# Verified PR #1 source/IL repair: these call sites calculated angle-compensated
+# lengths (num21/num22/Length1) but then passed raw vertical deltas to the move.
+# At 45 degrees that shortens approach/leave travel by cos(A) and can clip stock.
+$moveRepairs = @(
+    @(
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D5, new OrientationAngle(orientationAngle4.A * -1.0, 0.0, orientationAngle4.C), safe1 - pnt3D5.Z, ref calcPoint1);',
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D5, new OrientationAngle(orientationAngle4.A * -1.0, 0.0, orientationAngle4.C), num21, ref calcPoint1);',
+        'first projected approach'
+    ),
+    @(
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D5, new OrientationAngle(orientationAngle4.A * -1.0, 0.0, orientationAngle4.C), safe1 - pnt3D5.Z, ref calcPoint2);',
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D5, new OrientationAngle(orientationAngle4.A * -1.0, 0.0, orientationAngle4.C), num21, ref calcPoint2);',
+        'second projected approach'
+    ),
+    @(
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D6, new OrientationAngle(orientationAngle4.A * -1.0, 0.0, orientationAngle4.C), safe2 - pnt3D6.Z, ref calcPoint3);',
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D6, new OrientationAngle(orientationAngle4.A * -1.0, 0.0, orientationAngle4.C), num22, ref calcPoint3);',
+        'projected step-up leave'
+    ),
+    @(
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D6, new OrientationAngle(orientationAngle4.A * -1.0, 0.0, orientationAngle4.C), safe2 - pnt3D6.Z, ref calcPoint4);',
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D6, new OrientationAngle(orientationAngle4.A * -1.0, 0.0, orientationAngle4.C), num21, ref calcPoint4);',
+        'projected safe leave'
+    ),
+    @(
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D3, new OrientationAngle(Orientation.A * -1.0, 0.0, Orientation.C), Distance.Safe, ref calcPoint);',
+        'buAppCalc.cVector.LineWithOrientationAngle(pnt3D3, new OrientationAngle(Orientation.A * -1.0, 0.0, Orientation.C), Length1, ref calcPoint);',
+        'wireframe projected plunge'
+    )
+)
+foreach ($repair in $moveRepairs) {
+    $old = $repair[0]
+    $new = $repair[1]
+    $name = $repair[2]
+    if ($text.Contains($old)) {
+        $text = $text.Replace($old, $new)
+        "FIX Grinding saw $name" | Tee-Object -Append $log
+    } elseif ($text.Contains($new)) {
+        "OK Grinding saw $name already fixed" | Tee-Object -Append $log
+    } else {
+        "NO_MATCH Grinding saw $name" | Tee-Object -Append $log
+    }
+}
+
 if ($text -ne $original) {
     [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
     "PATCHED $path" | Tee-Object -Append $log
