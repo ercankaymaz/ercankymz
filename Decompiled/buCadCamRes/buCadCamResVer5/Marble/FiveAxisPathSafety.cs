@@ -41,10 +41,13 @@ public static class FiveAxisPathSafety
   private static bool hasConfiguredMachineEnvelope;
   private static long configurationRevision;
   private static readonly Regex GCodeWordPattern = new Regex(
-    @"(?<![A-Z_])([GXYZABC])\s*([+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:E[+-]?[0-9]+)?)(?=$|[A-Z/#*\s])",
+    @"(?<![A-Z_])([GFSXYZABC])\s*([+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:E[+-]?[0-9]+)?)(?=$|[A-Z/#*\s])",
     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
   private static readonly Regex GCodeAxisMarkerPattern = new Regex(
     @"(?<![A-Z_])([XYZABC])(?=\s*(?:[+\-.0-9#\[]|$))",
+    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+  private static readonly Regex GCodeScalarMarkerPattern = new Regex(
+    @"(?<![A-Z_])([FS])(?=\s*(?:[+\-.0-9#\[]|$))",
     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
   /// <summary>
@@ -173,8 +176,8 @@ public static class FiveAxisPathSafety
           ValidateFinite(point.P9.C, "C", camIndex, segmentIndex, pointIndex);
           ValidateFinite(point.Feed, "Feed", camIndex, segmentIndex, pointIndex);
 
-          if (point.Feed < 0.0)
-            throw PathError(camIndex, segmentIndex, pointIndex, "Feed cannot be negative");
+          if (point.Feed < 0.0 || (point.Type != 0 && point.Feed <= 0.0))
+            throw PathError(camIndex, segmentIndex, pointIndex, "Cutting feed must be positive");
           ValidateRange(point.P9.X, effectiveProfile.XMin, effectiveProfile.XMax, "X", camIndex, segmentIndex, pointIndex);
           ValidateRange(point.P9.Y, effectiveProfile.YMin, effectiveProfile.YMax, "Y", camIndex, segmentIndex, pointIndex);
           ValidateRange(point.P9.Z, effectiveProfile.ZMin, effectiveProfile.ZMax, "Z", camIndex, segmentIndex, pointIndex);
@@ -291,6 +294,7 @@ public static class FiveAxisPathSafety
       absoluteMode = blockAbsoluteMode;
       unitScale = blockUnitScale;
       int parsedAxisWordCount = 0;
+      int parsedScalarWordCount = 0;
       for (int wordIndex = 0; wordIndex < wordMatches.Count; ++wordIndex)
       {
         char word = char.ToUpperInvariant(wordMatches[wordIndex].Groups[1].Value[0]);
@@ -302,6 +306,17 @@ public static class FiveAxisPathSafety
 
         if (word == 'G')
           continue;
+        if (word == 'F' || word == 'S')
+        {
+          ++parsedScalarWordCount;
+          if (word == 'F' && value <= 0.0)
+            throw new InvalidOperationException(
+              string.Format(CultureInfo.InvariantCulture, "Postprocessor generated a non-positive feed at line {0}.", lineIndex + 1));
+          if (word == 'S' && value < 0.0)
+            throw new InvalidOperationException(
+              string.Format(CultureInfo.InvariantCulture, "Postprocessor generated a negative spindle speed at line {0}.", lineIndex + 1));
+          continue;
+        }
 
         char axis = word;
         ++parsedAxisWordCount;
@@ -333,6 +348,12 @@ public static class FiveAxisPathSafety
           string.Format(
             CultureInfo.InvariantCulture,
             "Cannot validate a non-literal or malformed XYZ/ABC word at line {0}.",
+            lineIndex + 1));
+      if (GCodeScalarMarkerPattern.Matches(executableLine).Count != parsedScalarWordCount)
+        throw new InvalidOperationException(
+          string.Format(
+            CultureInfo.InvariantCulture,
+            "Cannot validate a non-literal or malformed F/S word at line {0}.",
             lineIndex + 1));
 
       for (int charIndex = 0; charIndex < line.Length; ++charIndex)
