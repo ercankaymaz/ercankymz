@@ -152,46 +152,94 @@ public class F_CamGrindingHole : Form
 		btn_next.Visible = ShowNextButton;
 		btn_pre.Visible = ShowPreButton;
 		btn_help.Visible = ShowHelps;
-		arrayList = new ArrayList();
 		buGeneral.GetEnumTypeValues(camPars.Hole.HoleType, ref arrayList);
 		buControlCommands.ComboboxAddItem(arrayList, Convert.ToInt32(camPars.Hole.HoleType), ref comboBox_0);
-		numericUpDown_5.Value = (decimal)camPars.Hole.DownStep;
-		numericUpDown_6.Value = (decimal)camPars.Hole.UpStep;
-		numericUpDown_1.Value = (decimal)camPars.Hole.EndHeight;
-		numericUpDown_2.Value = (decimal)camPars.Hole.StartHeight;
-		numericUpDown_3.Value = (decimal)camPars.Speeds.Leave;
-		numericUpDown_4.Value = (decimal)camPars.Speeds.Plunge;
-		numericUpDown_0.Value = (decimal)camPars.Distances.Safe;
-		numericUpDown_7.Value = (decimal)camPars.Distances.FirstApproach;
-		if ((SelectedTool >= 0) & (SelectedTool <= Tools.Count - 1))
+		SetNumericValueSafe(numericUpDown_5, camPars.Hole.DownStep);
+		SetNumericValueSafe(numericUpDown_6, camPars.Hole.UpStep);
+		SetNumericValueSafe(numericUpDown_1, camPars.Hole.EndHeight);
+		SetNumericValueSafe(numericUpDown_2, camPars.Hole.StartHeight);
+		SetNumericValueSafe(numericUpDown_3, camPars.Speeds.Leave);
+		SetNumericValueSafe(numericUpDown_4, camPars.Speeds.Plunge);
+		SetNumericValueSafe(numericUpDown_0, camPars.Distances.Safe);
+		SetNumericValueSafe(numericUpDown_7, camPars.Distances.FirstApproach);
+
+		listBox_0.Items.Clear();
+		listBox_0.SelectedIndex = -1;
+		textBox_0.Clear();
+		if (Tools != null)
 		{
-			textBox_0.Text = buGeneral.GetToolExplanation(Tools[SelectedTool]);
-			listBox_0.Items.Clear();
-			for (int i = 0; i <= Tools.Count - 1; i++)
+			for (int i = 0; i < Tools.Count; i++)
 			{
-				listBox_0.Items.Add(Tools[i].Data.Name + " - No : " + Tools[i].Data.No);
+				ToolBase tool = Tools[i];
+				if (tool != null && tool.Data != null)
+				{
+					listBox_0.Items.Add(tool.Data.Name + " - No : " + tool.Data.No);
+				}
+				else
+				{
+					listBox_0.Items.Add(string.Empty);
+				}
+			}
+			if (SelectedTool >= 0 && SelectedTool < Tools.Count)
+			{
+				ToolBase selected = Tools[SelectedTool];
+				if (selected != null)
+				{
+					textBox_0.Text = buGeneral.GetToolExplanation(selected);
+				}
+				if (SelectedTool < listBox_0.Items.Count)
+				{
+					listBox_0.SelectedIndex = SelectedTool;
+				}
 			}
 		}
-		if (comboBox_0.SelectedIndex == 0)
-		{
-			panel_6.Enabled = false;
-			panel_7.Enabled = false;
-		}
-		if (comboBox_0.SelectedIndex == 1)
-		{
-			panel_6.Enabled = true;
-			panel_7.Enabled = true;
-		}
+
+		UpdateHoleTypePanels();
 		Refresh();
 		Properties.Result = DialogResult.None;
 		Properties.Inited = true;
 		Class76.smethod_334(this);
 	}
 
+	private static void SetNumericValueSafe(NumericUpDown control, double value)
+	{
+		if (control == null || double.IsNaN(value) || double.IsInfinity(value))
+		{
+			return;
+		}
+		decimal converted;
+		try
+		{
+			converted = Convert.ToDecimal(value);
+		}
+		catch (OverflowException)
+		{
+			return;
+		}
+		if (converted < control.Minimum)
+		{
+			converted = control.Minimum;
+		}
+		else if (converted > control.Maximum)
+		{
+			converted = control.Maximum;
+		}
+		control.Value = converted;
+	}
+
+	private void UpdateHoleTypePanels()
+	{
+		bool steppedHole = comboBox_0.SelectedIndex == 1;
+		panel_6.Enabled = steppedHole;
+		panel_7.Enabled = steppedHole;
+	}
+
 	internal void method_1(object sender, EventArgs e)
 	{
-		Control control = new Control();
-		control = (Control)sender;
+		if (!(sender is Control control))
+		{
+			return;
+		}
 		if (control.Name == btn_ok.Name)
 		{
 			if (!Properties.Inited)
@@ -231,26 +279,15 @@ public class F_CamGrindingHole : Form
 
 	internal void method_2(object sender, EventArgs e)
 	{
-		if (Properties.TouchPad)
+		if (Properties.TouchPad && sender is NumericUpDown numericUpDown)
 		{
-			NumericUpDown numericUpDown = new NumericUpDown();
-			numericUpDown = (NumericUpDown)sender;
 			buControlCommands.ShowKeyPadWinControl(this, numericUpDown);
 		}
 	}
 
 	internal void method_3(object sender, EventArgs e)
 	{
-		if (comboBox_0.SelectedIndex == 0)
-		{
-			panel_6.Enabled = false;
-			panel_7.Enabled = false;
-		}
-		if (comboBox_0.SelectedIndex == 1)
-		{
-			panel_6.Enabled = true;
-			panel_7.Enabled = true;
-		}
+		UpdateHoleTypePanels();
 	}
 
 	protected override void Dispose(bool disposing)
