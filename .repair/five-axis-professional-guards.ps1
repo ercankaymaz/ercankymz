@@ -175,6 +175,64 @@ if ($text -notmatch 'FiveAxisPathSafety\.ValidateAndNormalize\(Job\.Cams\);') {
     }
 }
 
+# Commit only validated G-code to the job cache. Any exception must clear both
+# the caller-visible ref string and the cached job state.
+if ($text -notmatch 'Job\.GCode\s*=\s*strGCodes;') {
+    $validatedOutputPattern = '(?m)^(?<indent>\s*)FiveAxisPathSafety\.ValidateGCode\(strGCodes\);'
+    $validatedOutputMatch = [regex]::Match($text, $validatedOutputPattern)
+    if (-not $validatedOutputMatch.Success) {
+        throw 'Validated G-code cache insertion point was not found.'
+    }
+    $validatedOutputReplacement = $validatedOutputMatch.Value + [Environment]::NewLine +
+        $validatedOutputMatch.Groups['indent'].Value + 'Job.GCode = strGCodes;' + [Environment]::NewLine +
+        $validatedOutputMatch.Groups['indent'].Value + 'Job.isGCodeCreated = true;'
+    $text = $text.Remove($validatedOutputMatch.Index, $validatedOutputMatch.Length).Insert($validatedOutputMatch.Index, $validatedOutputReplacement)
+    "FIX validated G-code cache commit" | Tee-Object -Append $log
+}
+
+$createGCodeMethodPattern = '(?s)public void doCreateGCode\s*\(.*?(?=\r?\n\s*public void SetMillingCamParameter\s*\()'
+$createGCodeMethodMatch = [regex]::Match($text, $createGCodeMethodPattern)
+if (-not $createGCodeMethodMatch.Success) {
+    throw 'doCreateGCode method was not found for fail-closed output handling.'
+}
+$createGCodeMethod = $createGCodeMethodMatch.Value
+if ($createGCodeMethod -notmatch 'strGCodes\s*=\s*"";\s*\r?\n\s*if\s*\(Job\s*!=\s*null\)') {
+    $createCatchPattern = '(?m)^(?<indent>\s*)catch\s*\(Exception ex\)\s*\r?\n\s*\{\s*\r?\n'
+    $createCatchMatch = [regex]::Match($createGCodeMethod, $createCatchPattern)
+    if (-not $createCatchMatch.Success) {
+        throw 'doCreateGCode catch block was not found.'
+    }
+    $catchIndent = $createCatchMatch.Groups['indent'].Value
+    $bodyIndent = $catchIndent + '  '
+    $createCatchReplacement = $createCatchMatch.Value +
+        $bodyIndent + 'strGCodes = "";' + [Environment]::NewLine +
+        $bodyIndent + 'if (Job != null)' + [Environment]::NewLine +
+        $bodyIndent + '{' + [Environment]::NewLine +
+        $bodyIndent + '  Job.GCode = "";' + [Environment]::NewLine +
+        $bodyIndent + '  Job.isGCodeCreated = false;' + [Environment]::NewLine +
+        $bodyIndent + '}' + [Environment]::NewLine
+    $createGCodeMethod = $createGCodeMethod.Remove($createCatchMatch.Index, $createCatchMatch.Length).Insert($createCatchMatch.Index, $createCatchReplacement)
+    $text = $text.Remove($createGCodeMethodMatch.Index, $createGCodeMethodMatch.Length).Insert($createGCodeMethodMatch.Index, $createGCodeMethod)
+    "FIX failed G-code output invalidation" | Tee-Object -Append $log
+}
+
+if ($text -notmatch 'string\.IsNullOrWhiteSpace\(this\.activeJob\.GCode\)') {
+    $showCachePattern = '(?m)^(?<indent>\s*)if\s*\(!this\.activeJob\.isGCodeCreated\)\s*\r?\n\s*this\.doCreateGCode\(this\.activeJob,\s*ref\s+strGCodes\);'
+    $showCacheMatch = [regex]::Match($text, $showCachePattern)
+    if (-not $showCacheMatch.Success) {
+        throw 'cmdShowGcode cache flow insertion point was not found.'
+    }
+    $showIndent = $showCacheMatch.Groups['indent'].Value
+    $showCacheReplacement = $showIndent + 'if (!this.activeJob.isGCodeCreated || string.IsNullOrWhiteSpace(this.activeJob.GCode))' + [Environment]::NewLine +
+        $showIndent + '  this.doCreateGCode(this.activeJob, ref strGCodes);' + [Environment]::NewLine +
+        $showIndent + 'else' + [Environment]::NewLine +
+        $showIndent + '  strGCodes = this.activeJob.GCode;' + [Environment]::NewLine +
+        $showIndent + 'if (string.IsNullOrWhiteSpace(strGCodes))' + [Environment]::NewLine +
+        $showIndent + '  return;'
+    $text = $text.Remove($showCacheMatch.Index, $showCacheMatch.Length).Insert($showCacheMatch.Index, $showCacheReplacement)
+    "FIX G-code viewer cache flow" | Tee-Object -Append $log
+}
+
 if ($text -ne $original) {
     [IO.File]::WriteAllText($sourcePath, $text, [Text.UTF8Encoding]::new($false))
 }
@@ -191,6 +249,9 @@ if ($finalMethod -match 'CamTriMeshType\s*==\s*CamTriangularMeshType\.(ParallelC
 if ($finalMethod -match $emptyCEnvelopePattern) { $regressions.Add('empty C-axis envelope check') }
 if ($text -notmatch 'FiveAxisPathSafety\.ValidateAndNormalize\(Job\.Cams\);') { $regressions.Add('missing final path gate') }
 if ($text -notmatch 'FiveAxisPathSafety\.ValidateGCode\(strGCodes\);') { $regressions.Add('missing postprocessor text gate') }
+if ($text -notmatch 'Job\.GCode\s*=\s*strGCodes;') { $regressions.Add('validated G-code is not committed to the job') }
+if ($text -notmatch 'Job\.isGCodeCreated\s*=\s*true;') { $regressions.Add('validated G-code state is not committed') }
+if ($text -notmatch 'strGCodes\s*=\s*"";\s*\r?\n\s*if\s*\(Job\s*!=\s*null\)') { $regressions.Add('failed G-code output is not cleared') }
 if ($validatorText -notmatch 'HasConfiguredMachineEnvelope') { $regressions.Add('machine envelope is not fail-closed') }
 if ($validatorText -notmatch 'ProfileSync') { $regressions.Add('active machine profile is not thread-safe') }
 if ($validatorText -notmatch 'Cannot validate incremental') { $regressions.Add('unknown incremental axis motion is not fail-closed') }
