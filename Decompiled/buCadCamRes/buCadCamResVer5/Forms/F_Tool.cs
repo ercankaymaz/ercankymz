@@ -902,7 +902,12 @@ public class F_Tool : Form
   {
     NumericUpDown[] controls = this.GetAxisLimitControls();
     for (int index = 0; index < controls.Length; ++index)
+    {
       controls[index].ValueChanged += new EventHandler(this.AxisLimitValueChanged);
+      controls[index].Validated += new EventHandler(this.AxisLimitControlValidated);
+      controls[index].Click += new EventHandler(this.method_3);
+      controls[index].KeyDown += new KeyEventHandler(this.method_2);
+    }
 
     this.checkBox_6.CheckedChanged += new EventHandler(this.AxisLimitValueChanged);
     this.checkBox_5.CheckedChanged += new EventHandler(this.AxisLimitValueChanged);
@@ -1066,6 +1071,15 @@ public class F_Tool : Form
   }
 
   private void AxisLimitValueChanged(object sender, EventArgs e)
+  {
+    NumericUpDown numericControl = sender as NumericUpDown;
+    if (numericControl != null)
+      this.invalidAxisLimitControls.Remove(numericControl);
+    string ignoredMessage;
+    this.TryValidateAxisLimits(out ignoredMessage);
+  }
+
+  private void AxisLimitControlValidated(object sender, EventArgs e)
   {
     NumericUpDown numericControl = sender as NumericUpDown;
     if (numericControl != null)
