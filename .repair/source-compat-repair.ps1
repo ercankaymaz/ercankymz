@@ -13,7 +13,8 @@ $coreAssemblies = New-Object 'System.Collections.Generic.HashSet[string]' ([Syst
 
 # Repair known decompiler source-compatibility artifacts.
 $targets = @(
-    'Decompiled/Newtonsoft.Json/Newtonsoft/Json/Linq/JContainer.cs'
+    'Decompiled/Newtonsoft.Json/Newtonsoft/Json/Linq/JContainer.cs',
+    'Decompiled/buCadCamRes/buCadCamResVer5/clsCommand.cs'
 )
 
 foreach ($relativePath in $targets) {
@@ -34,6 +35,18 @@ foreach ($relativePath in $targets) {
         if ($text.Contains($old) -and -not $text.Contains($new)) {
             $text = $text.Replace($old, $new)
             "FIX Newtonsoft JContainer Values<T> nullable override constraint" | Tee-Object -Append $log
+        }
+    }
+
+    if ($relativePath -like '*clsCommand.cs') {
+        # A decompiled interpolated string was emitted as a standalone expression
+        # statement. C# only permits invocation/assignment-like expression statements;
+        # preserve the intended layer description by assigning the value to `str`.
+        $old = '$"{str} , {Layers[index].Tufting.StitchMode.ToString()} , P: {Layers[index].Tufting.PileHeight.ToString("f1")} , S: {Layers[index].Tufting.StitchLength.ToString("f1")}";'
+        $new = 'str = $"{str} , {Layers[index].Tufting.StitchMode.ToString()} , P: {Layers[index].Tufting.PileHeight.ToString("f1")} , S: {Layers[index].Tufting.StitchLength.ToString("f1")}";'
+        if ($text.Contains($old) -and -not $text.Contains($new)) {
+            $text = $text.Replace($old, $new)
+            "FIX clsCommand invalid standalone interpolated string" | Tee-Object -Append $log
         }
     }
 
