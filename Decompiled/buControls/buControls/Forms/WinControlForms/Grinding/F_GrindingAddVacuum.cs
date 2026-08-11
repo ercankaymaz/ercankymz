@@ -86,13 +86,41 @@ public class F_GrindingAddVacuum : Form
 		base.StartPosition = Properties.FormPosition;
 		base.AutoScaleMode = Properties.ScaleFromMode;
 		comboBox_0.SelectedIndex = 0;
-		numericUpDown_1.Value = (decimal)Operation.VacuumThickness;
-		numericUpDown_2.Value = (decimal)Operation.VacuumHeight;
-		numericUpDown_0.Value = (decimal)Operation.VacuumDiameter;
+		SetNumericValueSafe(numericUpDown_1, Operation.VacuumThickness);
+		SetNumericValueSafe(numericUpDown_2, Operation.VacuumHeight);
+		SetNumericValueSafe(numericUpDown_0, Operation.VacuumDiameter);
 		Refresh();
 		Properties.Result = DialogResult.None;
 		Properties.Inited = true;
 		Class76.smethod_42(this);
+	}
+
+	private static void SetNumericValueSafe(NumericUpDown control, double value)
+	{
+		if (control == null || double.IsNaN(value) || double.IsInfinity(value))
+		{
+			return;
+		}
+
+		decimal converted;
+		try
+		{
+			converted = Convert.ToDecimal(value);
+		}
+		catch (OverflowException)
+		{
+			return;
+		}
+
+		if (converted < control.Minimum)
+		{
+			converted = control.Minimum;
+		}
+		else if (converted > control.Maximum)
+		{
+			converted = control.Maximum;
+		}
+		control.Value = converted;
 	}
 
 	internal void method_2(object sender, EventArgs e)
@@ -130,10 +158,8 @@ public class F_GrindingAddVacuum : Form
 
 	internal void method_3(object sender, EventArgs e)
 	{
-		if (Properties.TouchPad)
+		if (Properties.TouchPad && sender is NumericUpDown numericUpDown)
 		{
-			NumericUpDown numericUpDown = new NumericUpDown();
-			numericUpDown = (NumericUpDown)sender;
 			buControlCommands.ShowKeyPadWinControl(this, numericUpDown);
 		}
 	}
