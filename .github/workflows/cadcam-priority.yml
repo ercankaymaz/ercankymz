@@ -32,22 +32,38 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Restore validated DLL bootstrap cache
+      - name: Restore original vendor DLL bootstrap
         continue-on-error: true
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           New-Item -ItemType Directory -Force build-logs | Out-Null
-          New-Item -ItemType Directory -Force .repair/bootstrap-bin | Out-Null
-          gh run download 31433581668 --repo $env:GITHUB_REPOSITORY --name final-dll --dir .repair/bootstrap-bin
+          New-Item -ItemType Directory -Force .repair/bootstrap-original | Out-Null
+          gh run download 31200670159 --repo $env:GITHUB_REPOSITORY --name CMDMarbleCNC-Final-DLLs --dir .repair/bootstrap-original
           if ($LASTEXITCODE -ne 0) {
-            Write-Warning 'Bootstrap artifact could not be downloaded; continuing with source-only dependency resolution.'
+            Write-Warning 'Original vendor bootstrap artifact could not be downloaded.'
             exit 0
           }
-          $dlls = @(Get-ChildItem .repair/bootstrap-bin -Recurse -File -Filter *.dll)
-          "Bootstrap DLL count: $($dlls.Count)" | Tee-Object build-logs/bootstrap-dlls.txt
-          $dlls | Sort-Object Name | ForEach-Object { $_.FullName } | Add-Content build-logs/bootstrap-dlls.txt
+          $dlls = @(Get-ChildItem .repair/bootstrap-original -Recurse -File -Filter *.dll)
+          "Original bootstrap DLL count: $($dlls.Count)" | Tee-Object build-logs/bootstrap-original-dlls.txt
+          $dlls | Sort-Object Name | ForEach-Object { $_.FullName } | Add-Content build-logs/bootstrap-original-dlls.txt
+
+      - name: Restore supplemental DLL bootstrap
+        continue-on-error: true
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          New-Item -ItemType Directory -Force .repair/bootstrap-supplemental | Out-Null
+          gh run download 31433581668 --repo $env:GITHUB_REPOSITORY --name final-dll --dir .repair/bootstrap-supplemental
+          if ($LASTEXITCODE -ne 0) {
+            Write-Warning 'Supplemental bootstrap artifact could not be downloaded.'
+            exit 0
+          }
+          $dlls = @(Get-ChildItem .repair/bootstrap-supplemental -Recurse -File -Filter *.dll)
+          "Supplemental bootstrap DLL count: $($dlls.Count)" | Tee-Object build-logs/bootstrap-supplemental-dlls.txt
+          $dlls | Sort-Object Name | ForEach-Object { $_.FullName } | Add-Content build-logs/bootstrap-supplemental-dlls.txt
 
       - name: Repair recovered sources
         shell: pwsh
