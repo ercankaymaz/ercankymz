@@ -12,9 +12,11 @@ if (-not (Test-Path -LiteralPath $path)) {
 $text = [IO.File]::ReadAllText($path)
 $original = $text
 
-# Init can be called more than once on the same form instance. Re-appending the
-# same TabPage references grows list_0 indefinitely and makes visibility routing
-# depend on stale initialization history.
+# tabControl_1 is later reduced to the page matching the selected ToolType.
+# Init can be called again on the same form instance after that reduction. If we
+# clear list_0 and recache the current TabPages, the master 14-page list is lost
+# and TabPAgeVisibility() can later index beyond the shortened list. Capture the
+# master page set only once; subsequent Init calls must preserve it.
 $oldTabs = @'
     this.TopMost = this.Properties.TopMost;
     for (int index = 0; index <= this.tabControl_1.TabPages.Count - 1; ++index)
@@ -22,13 +24,15 @@ $oldTabs = @'
 '@
 $newTabs = @'
     this.TopMost = this.Properties.TopMost;
-    this.list_0.Clear();
-    for (int index = 0; index <= this.tabControl_1.TabPages.Count - 1; ++index)
-      this.list_0.Add(this.tabControl_1.TabPages[index]);
+    if (this.list_0.Count == 0)
+    {
+      for (int index = 0; index <= this.tabControl_1.TabPages.Count - 1; ++index)
+        this.list_0.Add(this.tabControl_1.TabPages[index]);
+    }
 '@
 if ($text.Contains($oldTabs)) {
     $text = $text.Replace($oldTabs, $newTabs)
-    "FIX F_Tool repeated Init tab cache reset" | Tee-Object -Append $log
+    "FIX F_Tool preserve master tab cache across repeated Init calls" | Tee-Object -Append $log
 }
 
 # Recovered/persisted tool files can contain non-finite or out-of-range numeric
@@ -77,7 +81,8 @@ if ($text -ne $original) {
 }
 
 $verified = [IO.File]::ReadAllText($path)
-if ($verified -notmatch 'this\.list_0\.Clear\(\);') { throw 'F_Tool tab cache reset regression.' }
+if ($verified -notmatch 'if \(this\.list_0\.Count == 0\)') { throw 'F_Tool master tab cache guard regression.' }
+if ($verified -match 'this\.list_0\.Clear\(\);') { throw 'F_Tool tab cache must not be cleared after visibility filtering.' }
 if ($verified -notmatch 'private void SetSafeToolNumericValue\(') { throw 'F_Tool safe numeric helper regression.' }
 if ([regex]::IsMatch($verified, $pattern)) { throw 'Unsafe Tool-backed NumericUpDown assignment remains.' }
 
