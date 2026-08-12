@@ -136,3 +136,11 @@ if (-not (Test-Path -LiteralPath $camPath)) {
 }
 
 "Patched marble runtime files: $patched" | Tee-Object -Append $log
+
+# Public CAM entry contracts and the surface-read teaching-grid state are audited
+# as part of this runtime stage so both existing validation workflows pick them up.
+$entryGuard = Join-Path $PSScriptRoot 'cam-entry-guards.ps1'
+if (-not (Test-Path -LiteralPath $entryGuard)) {
+    throw "Missing CAM entry guard script: $entryGuard"
+}
+& $entryGuard
