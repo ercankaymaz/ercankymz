@@ -69,6 +69,7 @@ jobs:
           ./.repair/grinding-ui-guards.ps1
           ./.repair/marble-geometry-guards.ps1
           ./.repair/ui-safety-guards.ps1
+          ./.repair/editor-simulation-guards.ps1
           ./.repair/marble-form-validation.ps1
           ./.repair/saw-cos-guard.ps1
           ./.repair/grinding-saw-ramp-guards.ps1
