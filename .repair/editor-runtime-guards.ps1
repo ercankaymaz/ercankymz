@@ -103,6 +103,115 @@ if (Test-Path -LiteralPath $draftPath) {
         "FIX editor array actual clone-count and zero-step guards: $draftPath" | Tee-Object -Append $log
     }
 
+    # Offset-by-mouse at exactly the source curve generates a zero-offset clone.
+    # Manual zero offset does the same. Do not create coincident duplicate CAD
+    # entities, and use the committed click rather than mutable mouse-preview state
+    # when choosing the manual offset side.
+    $oldMouseOffset = @'
+        double amount = curve.PointAt(t).DistanceTo(Drafting2D.points[0].Pnt3D);
+        ICurve[] positiveOffsets = curve.Offset(amount, Vector3D.AxisZ, true);
+'@
+    $newMouseOffset = @'
+        double amount = curve.PointAt(t).DistanceTo(Drafting2D.points[0].Pnt3D);
+        if (double.IsNaN(amount) || double.IsInfinity(amount) || amount <= 1E-09)
+          continue;
+        ICurve[] positiveOffsets = curve.Offset(amount, Vector3D.AxisZ, true);
+'@
+    if ($draft.Contains($oldMouseOffset)) {
+        $draft = $draft.Replace($oldMouseOffset, $newMouseOffset)
+        "FIX editor mouse-offset zero/non-finite duplicate guard: $draftPath" | Tee-Object -Append $log
+    }
+
+    $oldManualOffset = @'
+        double offsetValue = clsVar.varEditorRuntimeSet.OffsetValue;
+        ICurve[] positiveOffsets = curve.Offset(offsetValue, Vector3D.AxisZ, true);
+'@
+    $newManualOffset = @'
+        double offsetValue = clsVar.varEditorRuntimeSet.OffsetValue;
+        if (double.IsNaN(offsetValue) || double.IsInfinity(offsetValue) || Math.Abs(offsetValue) <= 1E-09)
+          continue;
+        ICurve[] positiveOffsets = curve.Offset(offsetValue, Vector3D.AxisZ, true);
+'@
+    if ($draft.Contains($oldManualOffset)) {
+        $draft = $draft.Replace($oldManualOffset, $newManualOffset)
+        $draft = $draft.Replace('positive.Project(this.current, out t)', 'positive.Project(Drafting2D.points[0].Pnt3D, out t)')
+        $draft = $draft.Replace('positive.PointAt(t).DistanceTo(this.current)', 'positive.PointAt(t).DistanceTo(Drafting2D.points[0].Pnt3D)')
+        $draft = $draft.Replace('negative.Project(this.current, out t)', 'negative.Project(Drafting2D.points[0].Pnt3D, out t)')
+        $draft = $draft.Replace('negative.PointAt(t).DistanceTo(this.current)', 'negative.PointAt(t).DistanceTo(Drafting2D.points[0].Pnt3D)')
+        "FIX editor manual-offset zero/non-finite and committed-click side selection: $draftPath" | Tee-Object -Append $log
+    }
+
+    # EventTrim dereferences Entities[index] after checking only index == -1.
+    # int_0 is cursor-derived mutable state and can become stale after an edit.
+    $oldTrimIndex = @'
+      int index = this.int_0[0];
+      if (index == -1)
+        return;
+      Entity entity = this.Entities[index];
+'@
+    $newTrimIndex = @'
+      int index = this.int_0[0];
+      if (index < 0 || index >= this.Entities.Count)
+        return;
+      Entity entity = this.Entities[index];
+'@
+    if ($draft.Contains($oldTrimIndex)) {
+        $draft = $draft.Replace($oldTrimIndex, $newTrimIndex)
+        "FIX editor trim stale entity-index bounds guard: $draftPath" | Tee-Object -Append $log
+    }
+
+    # Break accepts any Entity, casts it to ICurve and immediately calls Project.
+    # Non-curve selections must be rejected before that dereference.
+    $oldBreakCurve = @'
+    ICurve curve = selEntity as ICurve;
+    ICurve lower = (ICurve) null;
+    ICurve upper = (ICurve) null;
+    double t;
+    if (curve.Project(refPoint, out t))
+'@
+    $newBreakCurve = @'
+    ICurve curve = selEntity as ICurve;
+    if (curve == null || refPoint == null)
+      return;
+    ICurve lower = (ICurve) null;
+    ICurve upper = (ICurve) null;
+    double t;
+    if (curve.Project(refPoint, out t))
+'@
+    if ($draft.Contains($oldBreakCurve)) {
+        $draft = $draft.Replace($oldBreakCurve, $newBreakCurve)
+        "FIX editor break non-curve/null point guard: $draftPath" | Tee-Object -Append $log
+    }
+
+    # Validate the cursor-derived entity index before handing it to Extend. The
+    # original code checked it only after the external command returned.
+    $oldExtendIndex = @'
+        Entity entityExtended = (Entity) null;
+        clsVar.varEditorRuntimeSet.ExtendLength = clsItem.frmEditorV2.spn_extndlen.Value;
+        clsInit.appCommand.Extend(clsItem.frmEditorV2.viewport.Entities, this.int_0[0], this.current, clsVar.varEditorRuntimeSet.ExtendLength, ref entityExtended);
+'@
+    $newExtendIndex = @'
+        int extendIndex = this.int_0[0];
+        if (extendIndex < 0 || extendIndex >= this.Entities.Count || this.current == null)
+        {
+          this.ClearAllPreviousCommandData();
+          return;
+        }
+        Entity entityExtended = (Entity) null;
+        clsVar.varEditorRuntimeSet.ExtendLength = clsItem.frmEditorV2.spn_extndlen.Value;
+        if (double.IsNaN(clsVar.varEditorRuntimeSet.ExtendLength) || double.IsInfinity(clsVar.varEditorRuntimeSet.ExtendLength) || Math.Abs(clsVar.varEditorRuntimeSet.ExtendLength) <= 1E-09)
+        {
+          this.ClearAllPreviousCommandData();
+          return;
+        }
+        clsInit.appCommand.Extend(clsItem.frmEditorV2.viewport.Entities, extendIndex, this.current, clsVar.varEditorRuntimeSet.ExtendLength, ref entityExtended);
+'@
+    if ($draft.Contains($oldExtendIndex)) {
+        $draft = $draft.Replace($oldExtendIndex, $newExtendIndex)
+        $draft = $draft.Replace('if (this.int_0[0] >= 0 & this.int_0[0] <= this.Entities.Count - 1)`n            this.Entities.RemoveAt(this.int_0[0]);', 'if (extendIndex >= 0 && extendIndex < this.Entities.Count)`n            this.Entities.RemoveAt(extendIndex);')
+        "FIX editor extend bounds/current/non-finite length guards: $draftPath" | Tee-Object -Append $log
+    }
+
     if ($draft -ne $draftOriginal) {
         [IO.File]::WriteAllText($draftPath, $draft, [Text.UTF8Encoding]::new($false))
         $patched++
