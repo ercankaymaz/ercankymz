@@ -1,0 +1,98 @@
+name: buCadCamRes single DLL build
+
+on:
+  push:
+    branches: [repair-all-errors]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bucadcamres-single-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-bucadcamres:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repaired source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install Mono .NET Framework toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends mono-devel
+          if command -v msbuild >/dev/null 2>&1; then
+            echo "BUILDER=msbuild" >> "$GITHUB_ENV"
+          elif command -v xbuild >/dev/null 2>&1; then
+            echo "BUILDER=xbuild" >> "$GITHUB_ENV"
+          else
+            echo "Mono installation did not provide msbuild or xbuild" >&2
+            exit 1
+          fi
+
+      - name: Verify isolated project inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          project='Decompiled/buCadCamRes/buCadCamRes.csproj'
+          test -f "$project"
+          test -d 'Decompiled/buCadCamRes/lib'
+          missing=0
+          while IFS= read -r hint; do
+            path="Decompiled/buCadCamRes/${hint//\\//}"
+            if [ ! -f "$path" ]; then
+              echo "Missing HintPath dependency: $path" >&2
+              missing=1
+            fi
+          done < <(sed -n 's:.*<HintPath>\(.*\)</HintPath>.*:\1:p' "$project")
+          test "$missing" -eq 0
+
+      - name: Build only buCadCamRes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build-logs
+          project='Decompiled/buCadCamRes/buCadCamRes.csproj'
+          "$BUILDER" "$project" \
+            /target:Rebuild \
+            /property:Configuration=Release \
+            /property:Platform=AnyCPU \
+            /property:BuildProjectReferences=false \
+            /verbosity:minimal 2>&1 | tee build-logs/buCadCamRes-build.log
+
+      - name: Validate DLL
+        shell: bash
+        run: |
+          set -euo pipefail
+          dll='Decompiled/buCadCamRes/bin/Release/buCadCamRes.dll'
+          test -s "$dll"
+          mkdir -p final-bucadcamres
+          cp "$dll" final-bucadcamres/
+          if [ -f 'Decompiled/buCadCamRes/bin/Release/buCadCamRes.pdb' ]; then
+            cp 'Decompiled/buCadCamRes/bin/Release/buCadCamRes.pdb' final-bucadcamres/
+          fi
+          sha256sum "$dll" | tee final-bucadcamres/SHA256.txt
+          file "$dll" | tee final-bucadcamres/FILE_INFO.txt
+          printf 'commit=%s\n' "$GITHUB_SHA" > final-bucadcamres/BUILD_COMMIT.txt
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: buCadCamRes-single-build-log
+          path: build-logs
+          if-no-files-found: warn
+
+      - name: Upload buCadCamRes DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: buCadCamRes-final
+          path: final-bucadcamres
+          if-no-files-found: error
