@@ -55,6 +55,63 @@ if ($match.Value -notmatch 'machine/work coordinate selection' -or $match.Value 
     "OK hardened controller-dependent G-code rejection already present" | Tee-Object -Append $log
 }
 
+# A standalone CNC program must not inherit distance/unit modes from an unknown
+# previous controller state. The recovered validator assumed G90 + millimetres
+# before seeing the first block, which can validate the wrong physical target.
+$oldModalState = @'
+    bool absoluteMode = true;
+    double unitScale = 1.0;
+    int totalParsedAxisWordCount = 0;
+'@
+$newModalState = @'
+    bool absoluteMode = true;
+    double unitScale = 1.0;
+    bool hasExplicitDistanceMode = false;
+    bool hasExplicitUnitMode = false;
+    int totalParsedAxisWordCount = 0;
+'@
+if ($text.Contains($oldModalState)) {
+    $text = $text.Replace($oldModalState, $newModalState)
+    "FIX require explicit G90/G91 and G20/G21 modal initialization: $path" | Tee-Object -Append $log
+}
+
+$oldModalCommit = @'
+      absoluteMode = blockAbsoluteMode;
+      unitScale = blockUnitScale;
+      int parsedAxisWordCount = 0;
+'@
+$newModalCommit = @'
+      if (sawAbsoluteMode || sawIncrementalMode)
+        hasExplicitDistanceMode = true;
+      if (sawMetricUnits || sawInchUnits)
+        hasExplicitUnitMode = true;
+      absoluteMode = blockAbsoluteMode;
+      unitScale = blockUnitScale;
+      int parsedAxisWordCount = 0;
+'@
+if ($text.Contains($oldModalCommit)) {
+    $text = $text.Replace($oldModalCommit, $newModalCommit)
+}
+
+$oldAxisStart = @'
+        char axis = word;
+        if (!seenAxisAndScalarWords.Add(axis))
+'@
+$newAxisStart = @'
+        char axis = word;
+        if (!hasExplicitDistanceMode)
+          throw new InvalidOperationException(
+            string.Format(CultureInfo.InvariantCulture, "Axis motion appears before an explicit G90/G91 distance mode at line {0}.", lineIndex + 1));
+        if ((axis == 'X' || axis == 'Y' || axis == 'Z') && !hasExplicitUnitMode)
+          throw new InvalidOperationException(
+            string.Format(CultureInfo.InvariantCulture, "Linear axis motion appears before an explicit G20/G21 unit mode at line {0}.", lineIndex + 1));
+        if (!seenAxisAndScalarWords.Add(axis))
+'@
+if ($text.Contains($oldAxisStart)) {
+    $text = $text.Replace($oldAxisStart, $newAxisStart)
+    "FIX reject axis motion before explicit modal state: $path" | Tee-Object -Append $log
+}
+
 if ($text -ne $original) {
     [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
 }
@@ -65,7 +122,11 @@ foreach ($required in @(
     'canned-cycle or implicit retract motion is not expanded',
     'spline/NURBS extrema are not proven',
     'code >= 52.0 && code < 60.0',
-    'code >= 81.0 && code < 90.0')) {
+    'code >= 81.0 && code < 90.0',
+    'hasExplicitDistanceMode',
+    'hasExplicitUnitMode',
+    'Axis motion appears before an explicit G90/G91 distance mode',
+    'Linear axis motion appears before an explicit G20/G21 unit mode')) {
     if (-not $verified.Contains($required)) {
         throw "5-axis G-code safety regression: missing '$required'"
     }
