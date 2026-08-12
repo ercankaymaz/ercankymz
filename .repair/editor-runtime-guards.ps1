@@ -61,4 +61,29 @@ if (Test-Path -LiteralPath $editorPath) {
     "MISS $editorPath" | Tee-Object -Append $log
 }
 
+$draftPath = 'Decompiled/buCadCamRes/buCadCamResVer5/Editor/Drafting2D.cs'
+if (Test-Path -LiteralPath $draftPath) {
+    $draft = [IO.File]::ReadAllText($draftPath)
+    $draftOriginal = $draft
+
+    # The sketch line continuation command stores the previous generated entity
+    # in click-state. A corrupted/stale state can contain a different Entity type;
+    # the decompiled explicit cast throws before ExtendLine's null guard can help.
+    $oldLineCast = 'clsInit.appEditor2.ExtendLine((Line) Drafting2D.points[Drafting2D.points.Count - 2].Entity, Drafting2D.points[Drafting2D.points.Count - 1])'
+    $newLineCast = 'clsInit.appEditor2.ExtendLine(Drafting2D.points[Drafting2D.points.Count - 2].Entity as Line, Drafting2D.points[Drafting2D.points.Count - 1])'
+    if ($draft.Contains($oldLineCast)) {
+        $draft = $draft.Replace($oldLineCast, $newLineCast)
+        "FIX editor sketch line continuation stale-entity cast: $draftPath" | Tee-Object -Append $log
+    }
+
+    if ($draft -ne $draftOriginal) {
+        [IO.File]::WriteAllText($draftPath, $draft, [Text.UTF8Encoding]::new($false))
+        $patched++
+    } else {
+        "NO_MATCH_OR_ALREADY_FIXED drafting runtime: $draftPath" | Tee-Object -Append $log
+    }
+} else {
+    "MISS $draftPath" | Tee-Object -Append $log
+}
+
 "Patched editor runtime files: $patched" | Tee-Object -Append $log
