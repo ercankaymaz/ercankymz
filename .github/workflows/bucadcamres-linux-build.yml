@@ -3,6 +3,8 @@ name: buCadCamRes single DLL build
 on:
   push:
     branches: [repair-all-errors]
+  pull_request:
+    branches: [Test]
   workflow_dispatch:
 
 permissions:
