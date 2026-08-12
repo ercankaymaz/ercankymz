@@ -63,6 +63,7 @@ jobs:
           ./.repair/miter-corner-geometry-guards.ps1
           ./.repair/marble-path-guards.ps1
           ./.repair/marble-runtime-guards.ps1
+          ./.repair/marble-input-guards.ps1
           ./.repair/vacuum-selection-guards.ps1
           ./.repair/marble-path-safety.ps1
           ./.repair/five-axis-professional-guards.ps1
