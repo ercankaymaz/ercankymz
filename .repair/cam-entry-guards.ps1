@@ -90,6 +90,46 @@ if ($text.Contains($oldHole)) {
     "FIX CalculateGrindingHole public input contract: $path" | Tee-Object -Append $log
 }
 
+# Hatch calculation was callable with a null output list and its <=0 checks do not
+# reject NaN. A near-zero CutStep can also explode into an impractical path count.
+$oldHatch = @'
+	public void HatchCamCalculationGrinding(KinematicBase Kinematic, ToolBase Tool, camParameters camPars, SimulationBase simPars, ref camBase calcCam, ref List<eEntities> Entities)
+	{
+		if (camPars.Hatch.CutStep <= 0.0 || camPars.Hatch.TotalWidth <= 0.0 || camPars.Hatch.CutLength <= 0.0 || camPars.Hatch.CutStep > camPars.Hatch.TotalWidth)
+		{
+			return;
+		}
+		List<List<eEntities>> list = new List<List<eEntities>>();
+		Entities.Clear();
+		int num = (int)buNumeric.RoundToLower(camPars.Hatch.TotalWidth / camPars.Hatch.CutStep);
+'@
+$newHatch = @'
+	public void HatchCamCalculationGrinding(KinematicBase Kinematic, ToolBase Tool, camParameters camPars, SimulationBase simPars, ref camBase calcCam, ref List<eEntities> Entities)
+	{
+		if (camPars == null)
+			throw new InvalidOperationException("Grinding hatch requires CAM parameters.");
+		double hatchStep = camPars.Hatch.CutStep;
+		double hatchWidth = camPars.Hatch.TotalWidth;
+		double hatchLength = camPars.Hatch.CutLength;
+		if (double.IsNaN(hatchStep) || double.IsInfinity(hatchStep) ||
+			double.IsNaN(hatchWidth) || double.IsInfinity(hatchWidth) ||
+			double.IsNaN(hatchLength) || double.IsInfinity(hatchLength) ||
+			hatchStep <= 0.0 || hatchWidth <= 0.0 || hatchLength <= 0.0 || hatchStep > hatchWidth)
+			return;
+		double rawHatchCount = hatchWidth / hatchStep;
+		if (double.IsNaN(rawHatchCount) || double.IsInfinity(rawHatchCount) || rawHatchCount > 100000.0)
+			throw new InvalidOperationException("Grinding hatch path count exceeds the safe limit.");
+		if (Entities == null)
+			Entities = new List<eEntities>();
+		List<List<eEntities>> list = new List<List<eEntities>>();
+		Entities.Clear();
+		int num = (int)buNumeric.RoundToLower(rawHatchCount);
+'@
+if ($text.Contains($oldHatch)) {
+    $text = $text.Replace($oldHatch, $newHatch)
+    "FIX HatchCamCalculationGrinding finite/count/output guards: $path" | Tee-Object -Append $log
+}
+
 # Any malformed inner entity group must be skipped before Count/index access. This
 # exact shape appears in more than one recovered CAM loop and is safe to harden globally.
 $oldEntityGroup = 'if (Entities[i].Count > 0)'
