@@ -1,0 +1,201 @@
+CMDStoneCAM PR #2 - PROFESSIONAL 5-AXIS / XYZ-ABC MACHINE LIMITS UPDATE
+Date: 2026-08-12
+PR: https://github.com/ercankaymaz/ercankymz/pull/2
+Branch: repair-all-errors
+Baseline before this editor update: f99958272db1a9d41a9f39fc5a9bfa16ca2048d2
+
+IMPLEMENTED - DEPLOYED TEST/SETTINGS INTEGRATION
+1. The real Settings tree and active machine 2 configuration were audited rather
+   than relying on the earlier standalone demonstration profile.
+2. Runtime machine identity, Machine.prm, PLCSettings.par, Program.prm,
+   Marble.prm, Kinematic5Axis.bukinematic and postMachine.bupost are now checked
+   as one configuration transaction. Old, Backup and Temp trees are excluded.
+3. PLC and application soft/data limits are intersected fail-closed. The active
+   verified XYZAC envelope from the supplied files is:
+   X 0..3804, Y 0..2386.3, Z -1000..0, A 0..90, C -380..380; B is disabled.
+4. The active topology is verified as CartezianXYZ_WristAC_5Axis. Measured
+   configuration vectors are OffsetXYZ=(0,-224,-508), A pivot=(0,325,-7) and
+   C pivot=(0,224,508). All vector values must be finite and non-zero geometry
+   must be present before production validation is activated.
+5. Machine and Marble RTCP flags, machine/part limit checks, absolute encoders,
+   A servo, hard XYZ limit alarms and safe Z/C/A reorientation are mandatory.
+6. Stale developer-computer paths serialized in Program.prm no longer select
+   the active post or kinematic in machine mode. The backend loads the exact
+   machine-scoped files from Machines/<MachineID>/Settings.
+7. MachineConfig.prm now opens and saves in the machine-scoped Cam Settings
+   directory in machine mode instead of silently using the global copy.
+8. Conflicting duplicate profiles, disabled limits, unsafe axis/post mappings,
+   missing controller files or a signed profile wider than controller limits
+   clear the active safety envelope and block G-code generation.
+
+IMPLEMENTED - EXISTING XYZ/ABC LIMITS UI
+1. The existing F_Tool Limits tab now validates all X/Y/Z/A/B/C min-max pairs.
+   Invalid pairs are highlighted and cannot be committed with OK.
+2. Legacy NaN, Infinity, decimal-overflow and out-of-control-range values can no
+   longer crash NumericUpDown initialization. Affected fields are highlighted and
+   must be reviewed before the tool can be saved.
+3. Limit fields now have live validation, touch-keypad and keyboard navigation.
+4. The pre-existing CutLength > Length warning now blocks the save instead of
+   warning and then committing invalid geometry.
+5. Two controls were added to the existing Limits tab:
+   - Save as Machine Limits
+   - Load Machine Limits
+   They show the persisted/active profile state in the same tab.
+6. Writing the machine-wide envelope now requires administrator authorization
+   and an explicit warning confirmation. Save/load failures and revisions are
+   written to the existing diagnostic log.
+7. A profile read from disk is no longer activated before all UI fields can
+   represent and validate it. A clamped/out-of-range UI value disables the
+   production envelope instead of displaying a false "active" state.
+8. Max cutting tilt delta is now an explicit 1-180 degree control in the Limits
+   tab. It participates in profile save/load, highlighting and validation rather
+   than silently inheriting an internal default.
+
+IMPLEMENTED - MACHINE PROFILE BACKEND
+1. A versioned machine envelope is stored under the active user Settings folder
+   as FiveAxisSafety.prm. Saves use a temporary file and replacement backup.
+2. The profile is automatically loaded with the audited Settings configuration.
+   Missing, duplicate, malformed, non-finite or inverted values are rejected.
+3. Production G-code generation is fail-closed until finite controller limits,
+   kinematic, post and Marble safety settings are active. If FiveAxisSafety.prm
+   exists it must be contained by the controller envelope; otherwise the audited
+   controller intersection is used in memory.
+4. The active profile is immutable to callers and is read through a thread-safe
+   snapshot, preventing UI/background-CAM races and validation bypass by mutation.
+5. Valid per-tool XYZ/ABC ranges are intersected with the global machine range.
+   Equal legacy per-tool min/max pairs are treated as not configured; inverted
+   pairs are rejected. A non-intersecting tool/machine envelope is rejected.
+6. Machine profiles have a process-local monotonic revision. G-code and
+   simulation caches are bound to that revision and become invalid immediately
+   when verified XYZ/ABC values change.
+7. Missing or corrupt startup profiles explicitly clear the active production
+   envelope and are logged. XYZ must define a positive travel range; profile
+   input is bounded to 64 KiB / 128 lines before parsing.
+8. The machine-profile format is now version 2 and includes a SHA-256 integrity
+   checksum over all required XYZ/ABC and tilt fields. A modified, truncated or
+   legacy v1 profile is not activated until it is reviewed and saved again.
+
+IMPLEMENTED - FIVE-AXIS PATH AND G-CODE GATES
+1. Parallel, Constant-Z and Geodesic 5-axis link paths use max(Safe, Rapid)
+   clearance and enable ModuleWorks air-move safety enforcement.
+2. The recovered 5-axis method uses CamTriMesh5AXType consistently; its duplicate
+   ModuleWorks error block and empty C-axis range check were repaired.
+3. FiveAxisPathSafety rejects non-finite XYZABC/feed values, negative feed,
+   machine/tool envelope violations, unrecoverable C turns and unsafe A/B cutting
+   flips. C is normalized to the closest equivalent angle inside its envelope.
+4. Final G-code is checked for empty output, invalid control bytes, non-finite
+   tokens, out-of-envelope absolute moves and accumulated incremental moves.
+   Incremental moves with no known absolute origin, malformed numeric words and
+   symbolic/macro XYZABC words are rejected because their travel cannot be proven.
+5. Only validated G-code is committed to Job.GCode/isGCodeCreated. On any error,
+   caller output and job cache are cleared. The G-code viewer no longer opens an
+   empty result when the cached-state flag is stale.
+6. Distance and unit modal codes are evaluated for the complete block, so word
+   order cannot bypass G90/G91 checking. Conflicting G90/G91 or G20/G21 blocks
+   are rejected. G20 scales X/Y/Z to millimetres while A/B/C remain degrees.
+7. Unterminated, nested and unmatched parenthesis comments are rejected.
+   Output containing no literal XYZ/ABC motion is not accepted as a production
+   program.
+8. Simulation now requires calculated, envelope-validated CAM paths and at least
+   one verified simulation motion. It is regenerated after a profile revision;
+   stale/empty simulation data can no longer be marked complete.
+9. Final postprocessor output also validates literal F/S words. Non-positive
+   feed, negative spindle speed and symbolic/macro feed or spindle values are
+   rejected before the program can enter the job cache.
+10. Enabled CAM motion now requires a verified tool. Null CAM segments/point
+    collections and infinite per-tool axis limits are rejected instead of being
+    skipped or treated as an unrestricted envelope.
+11. G-code input is bounded to 64 MiB and 8192 characters per block. G2/G3 arc
+    extrema, G10/G52/G68/G92 transforms, G28/G30 reference returns and
+    G41-G44 compensation are fail-closed until a controller/kinematic validator
+    can prove the real machine path.
+12. Symbolic/malformed G words, unconfigured U/V/W axes and duplicate XYZABC/F/S
+    words are rejected to eliminate parser and controller interpretation gaps.
+13. The exact audited CMD blocks G51 D0 and G20 L... K... are recognized using
+    strict block grammars. G20 with L/K is no longer misread as inch mode; all
+    other G51/D variants remain rejected.
+
+IMPLEMENTED - EDITOR BUTTONS, DRAWING, GROUPING AND LIBRARY
+1. F_EditorV2 now creates and initializes clsEditorV2 reliably. Machine-scoped
+   Editor.prm is loaded first, with the global Settings copy as fallback; grid,
+   snap, osnap and ortho changes persist to the active machine Settings tree.
+2. Array and Explode buttons now dispatch their real commands. Move, copy,
+   mirror, rotate, scale, break, offset, fillet, chamfer, extend, trim and delete
+   report failures to the status area/log instead of silently swallowing them.
+3. All active editor buttons are wired. The previously disconnected X-/X+/Y-/Y+
+   and clockwise/counter-clockwise quick transforms are undoable and preserve
+   entity/group metadata. The disconnected Items and X/Y Go controls now work.
+4. The unfinished editor-local Marble prototype page contained five controls
+   with no backend command. Its menu entry is hidden so non-functional controls
+   are not presented as production CAM; the existing main Marble CAM workspace
+   and its five-axis safety gates are unchanged.
+5. Drawing commands clear stale command state. Zero-length lines, zero-area
+   rectangles/ellipses, invalid polygons and degenerate slots are rejected before
+   reaching Eyeshot. Entity addition now updates regen, bounds and the job tree.
+6. Line, polyline, spline, circle, 3-point circle, ellipse, rectangle, polygon,
+   slot, arc and 3-point arc routing was repaired. Sketch spline creation and
+   endpoint constraints now work, and continuous non-sketch line drawing no
+   longer resets after every segment.
+7. Undo/redo now use independent bounded snapshot stacks. Undo restores exactly
+   the previous editor state; new edits clear redo; restores refresh bounds and
+   the job tree.
+8. Group and ungroup keep Eyeshot GroupIndex and CustomData.GroupIdIndex in sync.
+   Regrouping expands existing selected groups, and ungrouping clears every member
+   of the selected group so partial/ghost groups cannot remain.
+9. Explode supports circles, arcs, ellipses, curves, polylines, composites and
+   block references according to the UI options. New parts preserve layer/color/
+   line weight and copied CAD/CAM CustomData while intentionally clearing group IDs.
+10. New/Open/Save, constraint, offset/mirror and undo/redo library buttons are
+    routed. On Point and Joint are distinct: Joint joins the nearest curve ends.
+    Pair constraints reset transient selection while remaining ready for repeats.
+11. Library save no longer starts an orphan asynchronous write. Geometry and
+    custom data are written to a temporary folder, archived synchronously,
+    validated as non-empty, copied to the target and sketch edit mode restored.
+    Library open clears stale extraction data and rejects ambiguous archives.
+12. Editor file dialogs expose only supported BUCADV5/DXF/DWG save formats.
+    BUCADV5 output is produced in a temporary archive and replaces the target
+    only after a non-empty file exists. The broken decompiler async open state
+    machine was removed and supported formats now open through explicit paths.
+13. Editor path simulation rejects empty paths, safely removes preview helpers,
+    clamps backward stepping and resets cleanly on Stop.
+
+LOCAL VALIDATION
+- C# project files scanned: 207
+- Tree-sitter C# syntax error files: 0
+- PR copies of F_Tool.cs, FiveAxisPathSafety.cs and clsFiles.cs: 0 syntax errors
+- UI/backend integration assertions: passed
+- Existing G-code cases: 8 accepted, 17 correctly rejected
+- New ambiguity/unsupported-motion cases: 3 accepted, 11 correctly rejected
+- Machine-profile checksum tamper case: correctly rejected
+- C-axis continuity/equivalent-angle cases: 3 passed
+- Workflow YAML parse: passed
+- Deployed Settings audit: passed
+- Active mapping: XYZAC; B disabled
+- Effective controller/data envelope: X 0..3804, Y 0..2386.3,
+  Z -1000..0, A 0..90, C -380..380
+- Full C# syntax scan after Settings integration: 0 error files
+- Full C# syntax scan after editor/group/library repairs: 207 files, 0 errors
+- Editor static guard assertions: passed
+- Editor button inventory: 84 fields; 79 controls wired; the remaining
+  five are the hidden editor-local Marble prototype controls described above
+- V2 references to the legacy appEditor instance: 0
+- Broken clsEditorV2 async state-machine references: 0
+
+BUILD STATUS
+- This Linux environment does not contain .NET Framework 4.8 MSBuild/Visual
+  Studio Build Tools, so it cannot create a truthful new Windows DLL locally.
+- GitHub Actions runs 31546726345 and 31546726342 failed before their first step;
+  both jobs returned steps=null and no logs. This is a repository/account Actions
+  execution restriction, not a reported C# compiler failure.
+- No DLL in this source package is claimed to contain these latest changes.
+
+MANDATORY BEFORE A REAL MACHINE RUN
+- Verify the imported machine/data envelope against the commissioned controller.
+  Any optional FiveAxisSafety.prm override must be equal to or narrower than it.
+- Confirm topology (head-head, head-table or table-table), rotary signs, pivot
+  lengths, TCP/RTCP mode, work offsets and the exact controller postprocessor.
+- Run full stock/tool/holder/machine collision simulation and controller backplot.
+- Perform dry run/air cut, single-block and reduced-feed validation.
+
+LICENSING
+Licensing and hardware validation logic were not removed or bypassed.
