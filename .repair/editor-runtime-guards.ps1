@@ -76,6 +76,33 @@ if (Test-Path -LiteralPath $draftPath) {
         "FIX editor sketch line continuation stale-entity cast: $draftPath" | Tee-Object -Append $log
     }
 
+    # The recovered array safety limit counted only cells. A large source
+    # selection multiplies every non-origin cell and can create orders of
+    # magnitude more entities than the intended 10k editor cap. Count actual
+    # clones, and reject a zero mouse step that would stack all copies exactly.
+    $oldArraySafety = @'
+      if ((long) columns * rows * levels > 10000L)
+        throw new InvalidOperationException("Array entity count is greater than the safe editor limit.");
+      Vector3D mouseStep = new Vector3D(Drafting2D.points[0].Pnt3D, Drafting2D.points[1].Pnt3D);
+      clsInit.appEditor2.UndoBuffer();
+      List<Entity> sources = new List<Entity>(this.selEntities);
+'@
+    $newArraySafety = @'
+      long cellCount = (long)columns * rows * levels;
+      List<Entity> sources = new List<Entity>(this.selEntities);
+      long generatedEntityCount = Math.Max(0L, cellCount - 1L) * sources.Count;
+      if (generatedEntityCount > 10000L)
+        throw new InvalidOperationException("Generated array entity count is greater than the safe editor limit.");
+      Vector3D mouseStep = new Vector3D(Drafting2D.points[0].Pnt3D, Drafting2D.points[1].Pnt3D);
+      if (clsVar.varInterface.ArrayLineerVar.MoveByMouse && cellCount > 1L && Drafting2D.points[0].Pnt3D.DistanceTo(Drafting2D.points[1].Pnt3D) <= 1E-09)
+        throw new InvalidOperationException("Array reference step must be greater than zero.");
+      clsInit.appEditor2.UndoBuffer();
+'@
+    if ($draft.Contains($oldArraySafety)) {
+        $draft = $draft.Replace($oldArraySafety, $newArraySafety)
+        "FIX editor array actual clone-count and zero-step guards: $draftPath" | Tee-Object -Append $log
+    }
+
     if ($draft -ne $draftOriginal) {
         [IO.File]::WriteAllText($draftPath, $draft, [Text.UTF8Encoding]::new($false))
         $patched++
