@@ -88,8 +88,9 @@ if ($text.Contains($oldMarbleCos)) {
     "NO_MATCH CalculateMarbleItem safe projection" | Tee-Object -Append $log
 }
 
-# A single entity makes i/(Entities.Count-1) evaluate as 0/0. Keep the progress
-# contract finite and complete for the one-item case.
+# Several CAM methods report i/(Entities.Count-1). For a one-group job this is
+# 0/0. Replace every remaining identical progress block globally; the local
+# variable is scoped to the block and therefore safe across methods.
 $oldMarbleProgress = @'
 				if (buSystem.ProgressControlEnable && calculationEventHandler_0 != null)
 				{
@@ -105,11 +106,24 @@ $newMarbleProgress = @'
 '@
 if ($text.Contains($oldMarbleProgress)) {
     $text = $text.Replace($oldMarbleProgress, $newMarbleProgress)
-    "FIX CalculateMarbleItem single-entity progress NaN" | Tee-Object -Append $log
+    "FIX all matching single-entity CAM progress NaN blocks" | Tee-Object -Append $log
 } elseif ($text.Contains('double marbleItemProgress = Entities.Count <= 1 ? 100.0')) {
-    "ALREADY_FIXED CalculateMarbleItem single-entity progress NaN" | Tee-Object -Append $log
-} else {
-    "NO_MATCH CalculateMarbleItem progress block" | Tee-Object -Append $log
+    "ALREADY_FIXED single-entity CAM progress NaN" | Tee-Object -Append $log
+}
+
+# Other methods use different collection/index variables but have the same
+# denominator defect. Inline finite fallbacks avoid introducing scope conflicts.
+$progressExpressions = [ordered]@{
+    'Convert.ToDouble((double)k / (double)(CopiedEnt.Count - 1)) * 100.0' = '(CopiedEnt.Count <= 1 ? 100.0 : Convert.ToDouble((double)k / (double)(CopiedEnt.Count - 1)) * 100.0)'
+    'Convert.ToDouble((double)num33 / (double)(list2.Count - 1)) * 100.0' = '(list2.Count <= 1 ? 100.0 : Convert.ToDouble((double)num33 / (double)(list2.Count - 1)) * 100.0)'
+    'Convert.ToDouble((double)k / (double)(ContinousPoints.Count - 1)) * 100.0' = '(ContinousPoints.Count <= 1 ? 100.0 : Convert.ToDouble((double)k / (double)(ContinousPoints.Count - 1)) * 100.0)'
+    'Convert.ToDouble((double)num25 / (double)(ContinousPoints.Count - 1)) * 100.0' = '(ContinousPoints.Count <= 1 ? 100.0 : Convert.ToDouble((double)num25 / (double)(ContinousPoints.Count - 1)) * 100.0)'
+}
+foreach ($entry in $progressExpressions.GetEnumerator()) {
+    if ($text.Contains($entry.Key)) {
+        $text = $text.Replace($entry.Key, $entry.Value)
+        "FIX CAM progress denominator: $($entry.Key)" | Tee-Object -Append $log
+    }
 }
 
 if ($text -ne $original) {
