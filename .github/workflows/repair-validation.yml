@@ -77,6 +77,7 @@ jobs:
           ./.repair/editor-runtime-guards.ps1
           ./.repair/editor-geometry-guards.ps1
           ./.repair/editor-fillet-chamfer-guards.ps1
+          ./.repair/tool-form-runtime-guards.ps1
           ./.repair/marble-form-validation.ps1
           ./.repair/saw-cos-guard.ps1
           ./.repair/grinding-saw-ramp-guards.ps1
