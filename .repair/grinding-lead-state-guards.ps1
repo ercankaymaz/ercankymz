@@ -181,4 +181,27 @@ $pocketLeadOutNew = @'
 '@
 if (Patch-LeadStateForm $pocketPath 'comboBox_1' 'checkBox_1' 'comboBox_0' 'checkBox_0' $pocketLeadInOld $pocketLeadInNew $pocketLeadOutOld $pocketLeadOutNew) { $patched++ }
 
-"Patched grinding lead-state files: $patched" | Tee-Object -Append $log
+# Add-pin/vacuum button handlers inherited a decompiler direct cast. A future or
+# accidental event rewire with a non-Control sender must not crash the form.
+foreach ($eventPath in @(
+    'Decompiled/buControls/buControls/Forms/WinControlForms/Grinding/F_GrindingAddPin.cs',
+    'Decompiled/buControls/buControls/Forms/WinControlForms/Grinding/F_GrindingAddVacuum.cs')) {
+    if (-not (Test-Path -LiteralPath $eventPath)) {
+        "MISS $eventPath" | Tee-Object -Append $log
+        continue
+    }
+    $eventText = [IO.File]::ReadAllText($eventPath)
+    $eventOriginal = $eventText
+    $oldCast = "`t`tControl control = new Control();`n`t`tcontrol = (Control)sender;"
+    $newCast = "`t`tif (!(sender is Control control))`n`t`t{`n`t`t`treturn;`n`t`t}"
+    if ($eventText.Contains($oldCast)) {
+        $eventText = $eventText.Replace($oldCast, $newCast)
+        "FIX safe button sender cast: $eventPath" | Tee-Object -Append $log
+    }
+    if ($eventText -ne $eventOriginal) {
+        [IO.File]::WriteAllText($eventPath, $eventText, [Text.UTF8Encoding]::new($false))
+        $patched++
+    }
+}
+
+"Patched grinding lead/runtime files: $patched" | Tee-Object -Append $log
