@@ -6,13 +6,13 @@ Remove-Item $log -ErrorAction Ignore
 $path = 'Decompiled/buControls/buControls/Forms/buControlForms/Marble/F_ItemCutCamParameters.cs'
 if (-not (Test-Path -LiteralPath $path)) {
     "MISS $path" | Tee-Object $log
-    exit 0
-}
+} else {
+    $text = [IO.File]::ReadAllText($path)
+    $original = $text
 
-$text = [IO.File]::ReadAllText($path)
-$original = $text
-
-$old = @'
+    # The original OK handler dereferenced the model before validating any form
+    # input. Keep the form open on invalid state and commit only validated values.
+    $old = @'
 	internal void method_1(object sender, EventArgs e)
 	{
 		Value.CamParameters.BackwardCuttingVelocity = spn_bwdvel.Value;
@@ -28,7 +28,7 @@ $old = @'
 		Value.CamParameters.StepUpDistance = spn_stepupdistance.Value;
 		Value.CamParameters.CuttingDirection = (CamCuttingDirectionType)buGeneral.EnumValueFromInt(Value.CamParameters.CuttingDirection, cmb_cutdir.SelectedIndex);
 '@
-$new = @'
+    $new = @'
 	internal void method_1(object sender, EventArgs e)
 	{
 		if (Value == null || Value.CamParameters == null)
@@ -71,15 +71,100 @@ $new = @'
 		Value.CamParameters.StepUpDistance = spn_stepupdistance.Value;
 		Value.CamParameters.CuttingDirection = selectedDirection;
 '@
+    if ($text.Contains($old)) {
+        $text = $text.Replace($old, $new)
+        "FIX F_ItemCutCamParameters direction/material/step-down validation before OK: $path" | Tee-Object -Append $log
+    }
 
-if ($text.Contains($old)) {
-    $text = $text.Replace($old, $new)
-    "FIX F_ItemCutCamParameters direction/material/step-down validation before OK: $path" | Tee-Object -Append $log
+    # Init previously dereferenced Value.CamParameters before the repaired OK
+    # validation could run. Reject an invalid caller model without opening a
+    # half-initialized parameter form.
+    $oldInit = @'
+	public void Init()
+	{
+		spn_bwdvel.Value = Value.CamParameters.BackwardCuttingVelocity;
+'@
+    $newInit = @'
+	public void Init()
+	{
+		if (Value == null || Value.CamParameters == null)
+		{
+			Result = DialogResult.Cancel;
+			return;
+		}
+		spn_bwdvel.Value = Value.CamParameters.BackwardCuttingVelocity;
+'@
+    if ($text.Contains($oldInit)) {
+        $text = $text.Replace($oldInit, $newInit)
+        "FIX F_ItemCutCamParameters null model before Init: $path" | Tee-Object -Append $log
+    }
+
+    # Keyboard navigation is UI plumbing; a missing/miswired sender or null Tag
+    # must not terminate the CAM parameter form.
+    $oldKey = @'
+	internal void method_0(object sender, KeyEventArgs e)
+	{
+		Control control = new Control();
+		control = (Control)sender;
+		if ((e.KeyCode == Keys.Return) | (e.KeyCode == Keys.Tab))
+		{
+			int result = 0;
+			int.TryParse(control.Tag.ToString(), out result);
+			buControlCommands.FindNextControlByKey(buGround_0.Controls, result, e.Shift);
+		}
+	}
+'@
+    $newKey = @'
+	internal void method_0(object sender, KeyEventArgs e)
+	{
+		if (!(sender is Control control) || e == null)
+			return;
+		if ((e.KeyCode == Keys.Return) | (e.KeyCode == Keys.Tab))
+		{
+			int result = 0;
+			int.TryParse(Convert.ToString(control.Tag), out result);
+			buControlCommands.FindNextControlByKey(buGround_0.Controls, result, e.Shift);
+		}
+	}
+'@
+    if ($text.Contains($oldKey)) {
+        $text = $text.Replace($oldKey, $newKey)
+        "FIX F_ItemCutCamParameters key sender/Tag guard: $path" | Tee-Object -Append $log
+    }
+
+    if ($text -ne $original) {
+        [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
+        'PATCHED marble CAM parameter form validation/runtime' | Tee-Object -Append $log
+    } else {
+        'NO_MATCH_OR_ALREADY_FIXED item cut form' | Tee-Object -Append $log
+    }
 }
 
-if ($text -ne $original) {
-    [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
-    'PATCHED marble CAM parameter form validation' | Tee-Object -Append $log
-} else {
-    'NO_MATCH_OR_ALREADY_FIXED' | Tee-Object -Append $log
+# Metric/inch SingleCut forms share decompiler-produced direct Control casts in
+# button handlers. Protect both forms consistently; the inch form still keeps
+# all existing unit conversion in its generated smethod_803 synchronization.
+foreach ($singlePath in @(
+    'Decompiled/buControls/buControls/Forms/buControlForms/Marble/F_SingleCut.cs',
+    'Decompiled/buControls/buControls/Forms/buControlForms/Marble/F_SingleCutInch.cs')) {
+    if (-not (Test-Path -LiteralPath $singlePath)) {
+        "MISS $singlePath" | Tee-Object -Append $log
+        continue
+    }
+    $singleText = [IO.File]::ReadAllText($singlePath)
+    $singleOriginal = $singleText
+    $directCast = "`t`tControl control = new Control();`n`t`tcontrol = (Control)sender;"
+    $safeCast = "`t`tif (!(sender is Control control))`n`t`t`treturn;"
+    if ($singleText.Contains($directCast)) {
+        $singleText = $singleText.Replace($directCast, $safeCast)
+        "FIX SingleCut safe button/key sender cast: $singlePath" | Tee-Object -Append $log
+    }
+    $tagOld = 'int.TryParse(control.Tag.ToString(), out result);'
+    $tagNew = 'int.TryParse(Convert.ToString(control.Tag), out result);'
+    if ($singleText.Contains($tagOld)) {
+        $singleText = $singleText.Replace($tagOld, $tagNew)
+        "FIX SingleCut null Tag navigation: $singlePath" | Tee-Object -Append $log
+    }
+    if ($singleText -ne $singleOriginal) {
+        [IO.File]::WriteAllText($singlePath, $singleText, [Text.UTF8Encoding]::new($false))
+    }
 }
