@@ -63,11 +63,13 @@ jobs:
           ./.repair/vacuum-selection-guards.ps1
           ./.repair/marble-path-safety.ps1
           ./.repair/five-axis-professional-guards.ps1
+          ./.repair/five-axis-gcode-guards.ps1
           ./.repair/grinding-ui-guards.ps1
           ./.repair/marble-geometry-guards.ps1
           ./.repair/ui-safety-guards.ps1
           ./.repair/editor-simulation-guards.ps1
           ./.repair/editor-runtime-guards.ps1
+          ./.repair/editor-geometry-guards.ps1
           ./.repair/marble-form-validation.ps1
           ./.repair/saw-cos-guard.ps1
           ./.repair/grinding-saw-ramp-guards.ps1
