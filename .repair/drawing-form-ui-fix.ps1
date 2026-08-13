@@ -10,4 +10,9 @@ foreach ($control in @('btn_ok','btn_cancel','btn_undo')) {
     $text = $text.Replace($add, $remove + [Environment]::NewLine + $add)
   }
 }
+$oldClose = 'if (((ccVars.Pages.Count > 0) & (ccVars.PageIndex <= ccVars.Pages.Count - 1) & !clsVar.varFile.DontAskSaveToFileMesssafeWhileClosing) && ccVars.Pages[ccVars.PageIndex].Changed)'
+$newClose = 'if (ccVars.Pages.Count > 0 && ccVars.PageIndex >= 0 && ccVars.PageIndex < ccVars.Pages.Count && !clsVar.varFile.DontAskSaveToFileMesssafeWhileClosing && ccVars.Pages[ccVars.PageIndex].Changed)'
+if ($text.Contains($oldClose)) {
+  $text = $text.Replace($oldClose, $newClose)
+}
 [IO.File]::WriteAllText($path, $text, [Text.UTF8Encoding]::new($false))
