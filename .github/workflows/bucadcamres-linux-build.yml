@@ -39,6 +39,39 @@ jobs:
             exit 1
           fi
 
+      - name: Apply deterministic buCadCamRes repair chain
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          ./.repair/cadcam-repair.ps1
+          ./.repair/cam-math-guards.ps1
+          ./.repair/ellipse-guards.ps1
+          ./.repair/miter-corner-geometry-guards.ps1
+          ./.repair/marble-path-guards.ps1
+          ./.repair/marble-runtime-guards.ps1
+          ./.repair/marble-input-guards.ps1
+          ./.repair/vacuum-selection-guards.ps1
+          ./.repair/marble-path-safety.ps1
+          ./.repair/five-axis-professional-guards.ps1
+          ./.repair/five-axis-gcode-guards.ps1
+          ./.repair/grinding-ui-guards.ps1
+          ./.repair/grinding-lead-state-guards.ps1
+          ./.repair/grinding-closed-guards.ps1
+          ./.repair/marble-geometry-guards.ps1
+          ./.repair/ui-safety-guards.ps1
+          ./.repair/editor-simulation-guards.ps1
+          ./.repair/editor-runtime-guards.ps1
+          ./.repair/editor-geometry-guards.ps1
+          ./.repair/editor-fillet-chamfer-guards.ps1
+          ./.repair/tool-form-runtime-guards.ps1
+          ./.repair/tool-machine-ui-sync-guards.ps1
+          ./.repair/marble-form-validation.ps1
+          ./.repair/saw-cos-guard.ps1
+          ./.repair/grinding-saw-ramp-guards.ps1
+          ./.repair/grinding-progress-guards.ps1
+          ./.repair/project-normalize.ps1
+          ./.repair/source-compat-repair.ps1
+
       - name: Verify isolated project inputs
         shell: bash
         run: |
