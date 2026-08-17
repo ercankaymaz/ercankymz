@@ -1,0 +1,118 @@
+name: ArtText Final Clean Build
+
+on:
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download validated runtime DLL set
+        uses: actions/download-artifact@v4
+        with:
+          name: CMDMarbleCNC-Final-DLLs
+          path: work/old
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 31200670159
+
+      - name: Compile merge and validate
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force work\deps, work\packages, FINAL_OUTPUT | Out-Null
+          Start-Transcript -Path FINAL_OUTPUT\BUILD_DIAGNOSTIC.txt -Force
+          try {
+            $ErrorActionPreference='Stop'
+            Get-ChildItem work\old -Recurse -Filter *.dll | ForEach-Object { Copy-Item $_.FullName work\deps -Force }
+            $base = Get-ChildItem work\old -Recurse -Filter buCadCamRes.dll | Select-Object -First 1
+            if (-not $base) { throw 'base buCadCamRes.dll missing' }
+            Copy-Item $base.FullName work\base.dll -Force
+            $bh=(Get-FileHash work\base.dll -Algorithm SHA256).Hash.ToLowerInvariant()
+            Write-Host "BASE=$bh"
+            if ($bh -ne 'acfe2ee820af5f1a1b4db8303c8adf471e4d5becddc70b64cd5747df38817d3b') { throw 'base hash mismatch' }
+
+            $vswhere="${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+            $vs=& $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+            $csc=Join-Path $vs 'MSBuild\Current\Bin\Roslyn\csc.exe'
+            if (-not (Test-Path $csc)) { throw 'csc not found' }
+            $fx="${env:ProgramFiles(x86)}\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8"
+
+            Write-Host 'COMPILE ARTTEXT'
+            & $csc /nologo /target:library /langversion:latest /optimize+ /out:work\ArtTextHelper.dll `
+              /r:"$fx\System.dll" /r:"$fx\System.Core.dll" /r:"$fx\System.Drawing.dll" /r:"$fx\System.Windows.Forms.dll" `
+              /r:work\deps\buClass.dll /r:work\deps\buControls.dll arttext-final\ArtTextHelper.cs
+            if ($LASTEXITCODE -ne 0) { throw "ArtText compile failed $LASTEXITCODE" }
+
+            Write-Host 'INSTALL TOOLS'
+            nuget install ILRepack -Version 2.0.44 -OutputDirectory work\packages -NonInteractive
+            if ($LASTEXITCODE -ne 0) { throw 'ILRepack install failed' }
+            nuget install Mono.Cecil -Version 0.11.5 -OutputDirectory work\packages -NonInteractive
+            if ($LASTEXITCODE -ne 0) { throw 'Mono.Cecil install failed' }
+
+            $repack=(Get-ChildItem work\packages -Recurse -Filter ILRepack.exe | Select-Object -First 1).FullName
+            Write-Host "ILREPACK=$repack"
+            & $repack /target:library /lib:work\deps /out:work\merged.dll work\base.dll work\ArtTextHelper.dll
+            if ($LASTEXITCODE -ne 0 -or -not (Test-Path work\merged.dll)) { throw "merge failed $LASTEXITCODE" }
+
+            $cecil=(Get-ChildItem work\packages -Recurse -Filter Mono.Cecil.dll | Where-Object {$_.FullName -match 'net40'} | Select-Object -First 1).FullName
+            if (-not $cecil) { $cecil=(Get-ChildItem work\packages -Recurse -Filter Mono.Cecil.dll | Select-Object -First 1).FullName }
+            if (-not $cecil) { throw 'Mono.Cecil.dll missing' }
+            & $csc /nologo /target:exe /langversion:latest /out:work\Patcher.exe /r:"$cecil" arttext-final\Patcher.cs
+            if ($LASTEXITCODE -ne 0) { throw "Patcher compile failed $LASTEXITCODE" }
+            Copy-Item $cecil work\Mono.Cecil.dll -Force
+
+            Write-Host 'ROUTE ARTTEXT'
+            & work\Patcher.exe work\merged.dll FINAL_OUTPUT\buCadCamRes.dll
+            if ($LASTEXITCODE -ne 0 -or -not (Test-Path FINAL_OUTPUT\buCadCamRes.dll)) { throw "route failed $LASTEXITCODE" }
+
+            $dll=Resolve-Path FINAL_OUTPUT\buCadCamRes.dll
+            $an=[Reflection.AssemblyName]::GetAssemblyName($dll)
+            $sha=(Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant()
+            $size=(Get-Item $dll).Length
+            @(
+              'buCadCamRes.dll ARTTEXT FINAL',
+              "Assembly=$($an.FullName)",
+              "Size=$size",
+              "SHA256=$sha",
+              'F_ArtTextStudio=PRESENT',
+              'cmdTextMenu->F_ArtTextStudio=PASS',
+              'old F_VectorText newobj=0',
+              'CMDMarbleCNC.exe=UNCHANGED'
+            ) | Set-Content FINAL_OUTPUT\FINAL_AUDIT.txt -Encoding UTF8
+            Get-Content FINAL_OUTPUT\FINAL_AUDIT.txt
+          }
+          catch {
+            Write-Host "BUILD_ERROR=$($_.Exception.Message)"
+            Write-Host $_.ScriptStackTrace
+            $global:failed=$true
+          }
+          finally { Stop-Transcript }
+          if ($global:failed) { exit 1 }
+
+      - name: Upload final
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: buCadCamRes-ArtText-FINAL
+          path: |
+            FINAL_OUTPUT/buCadCamRes.dll
+            FINAL_OUTPUT/FINAL_AUDIT.txt
+            FINAL_OUTPUT/BUILD_DIAGNOSTIC.txt
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ArtText-Clean-Diagnostics
+          path: FINAL_OUTPUT/BUILD_DIAGNOSTIC.txt
+          if-no-files-found: warn
+          retention-days: 7
