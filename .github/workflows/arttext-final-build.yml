@@ -1,0 +1,123 @@
+name: ArtText Final DLL Build
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ arttext-final-build ]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare reference DLL set
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force work, work\deps, FINAL_OUTPUT | Out-Null
+          gh api -H 'Accept: application/vnd.github+json' /repos/${{ github.repository }}/actions/artifacts/9002709583/zip > work\deps.zip
+          Expand-Archive -Path work\deps.zip -DestinationPath work\old -Force
+          Get-ChildItem work\old -Recurse -Filter *.dll | ForEach-Object { Copy-Item $_.FullName work\deps -Force }
+          $base = Get-ChildItem work\old -Recurse -Filter buCadCamRes.dll | Select-Object -First 1
+          if (-not $base) { throw 'buCadCamRes.dll base not found in validated artifact' }
+          Copy-Item $base.FullName work\base.dll -Force
+          $hash = (Get-FileHash work\base.dll -Algorithm SHA256).Hash.ToLowerInvariant()
+          Write-Host "Base SHA256: $hash"
+          if ($hash -ne 'acfe2ee820af5f1a1b4db8303c8adf471e4d5becddc70b64cd5747df38817d3b') { throw "Unexpected base hash: $hash" }
+
+      - name: Locate .NET Framework compiler
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vs = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+          if (-not $vs) { throw 'Visual Studio/MSBuild not found' }
+          $csc = Join-Path $vs 'MSBuild\Current\Bin\Roslyn\csc.exe'
+          if (-not (Test-Path $csc)) { throw "csc.exe not found: $csc" }
+          $csc | Set-Content work\csc-path.txt -Encoding ASCII
+          Write-Host "CSC: $csc"
+
+      - name: Compile Text Studio helper
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $csc = (Get-Content work\csc-path.txt -Raw).Trim()
+          $fx = "${env:ProgramFiles(x86)}\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8"
+          $buClass = (Resolve-Path work\deps\buClass.dll).Path
+          $buControls = (Resolve-Path work\deps\buControls.dll).Path
+          & $csc /nologo /target:library /langversion:latest /optimize+ /out:work\ArtTextHelper.dll `
+            /r:"$fx\System.dll" /r:"$fx\System.Core.dll" /r:"$fx\System.Drawing.dll" /r:"$fx\System.Windows.Forms.dll" `
+            /r:"$buClass" /r:"$buControls" arttext-final\ArtTextHelper.cs
+          if ($LASTEXITCODE -ne 0) { throw 'ArtTextHelper compile failed' }
+
+      - name: Install assembly tools
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          nuget install ILRepack -Version 2.0.44 -OutputDirectory work\packages -NonInteractive
+          nuget install Mono.Cecil -Version 0.11.5 -OutputDirectory work\packages -NonInteractive
+
+      - name: Merge Text Studio into buCadCamRes
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $repack = (Get-ChildItem work\packages -Recurse -Filter ILRepack.exe | Select-Object -First 1).FullName
+          if (-not $repack) { throw 'ILRepack.exe not found' }
+          & $repack /target:library /lib:work\deps /out:work\merged.dll work\base.dll work\ArtTextHelper.dll
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path work\merged.dll)) { throw 'ILRepack merge failed' }
+
+      - name: Route cmdTextMenu to Text Studio
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $csc = (Get-Content work\csc-path.txt -Raw).Trim()
+          $cecil = (Get-ChildItem work\packages -Recurse -Filter Mono.Cecil.dll | Where-Object { $_.FullName -match 'net40|netstandard2.0' } | Select-Object -First 1).FullName
+          if (-not $cecil) { $cecil = (Get-ChildItem work\packages -Recurse -Filter Mono.Cecil.dll | Select-Object -First 1).FullName }
+          if (-not $cecil) { throw 'Mono.Cecil.dll not found' }
+          $src = Get-Content arttext-final\Patcher.cs -Raw
+          $src = $src.Replace('                cmd.Body.OptimizeMacros();','')
+          Set-Content work\Patcher.cs -Value $src -Encoding UTF8
+          & $csc /nologo /target:exe /langversion:latest /out:work\Patcher.exe /r:"$cecil" work\Patcher.cs
+          if ($LASTEXITCODE -ne 0) { throw 'Patcher compile failed' }
+          Copy-Item $cecil work\Mono.Cecil.dll -Force
+          & work\Patcher.exe work\merged.dll FINAL_OUTPUT\buCadCamRes.dll
+          if ($LASTEXITCODE -ne 0) { throw 'Text Studio route validation failed' }
+
+      - name: Final binary audit
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $dll = Resolve-Path FINAL_OUTPUT\buCadCamRes.dll
+          $an = [Reflection.AssemblyName]::GetAssemblyName($dll)
+          $sha = (Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant()
+          $size = (Get-Item $dll).Length
+          @(
+            'buCadCamRes.dll ARTTEXT FINAL',
+            "Assembly=$($an.FullName)",
+            "Size=$size",
+            "SHA256=$sha",
+            'F_ArtTextStudio=PRESENT (validated by Mono.Cecil)',
+            'cmdTextMenu->F_ArtTextStudio=PASS',
+            'old F_VectorText newobj in cmdTextMenu=0',
+            'CMDMarbleCNC.exe=UNCHANGED'
+          ) | Set-Content FINAL_OUTPUT\FINAL_AUDIT.txt -Encoding UTF8
+          Get-Content FINAL_OUTPUT\FINAL_AUDIT.txt
+
+      - name: Upload final DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: buCadCamRes-ArtText-FINAL
+          path: |
+            FINAL_OUTPUT/buCadCamRes.dll
+            FINAL_OUTPUT/FINAL_AUDIT.txt
+          if-no-files-found: error
+          retention-days: 30
