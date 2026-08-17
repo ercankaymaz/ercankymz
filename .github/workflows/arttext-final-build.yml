@@ -1,10 +1,10 @@
-name: ArtText Final DLL Build
+name: ArtText Helper And Portable Patcher
 
 on:
-  pull_request:
-    branches: [ master ]
   push:
     branches: [ arttext-final-build ]
+  pull_request:
+    branches: [ master ]
 
 permissions:
   contents: read
@@ -13,124 +13,74 @@ permissions:
 jobs:
   build:
     runs-on: windows-latest
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Download validated DLL references
-        uses: actions/download-artifact@v4
-        with:
-          name: CMDMarbleCNC-Final-DLLs
-          path: work/old
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          run-id: 31200670159
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          New-Item -ItemType Directory -Force work\old | Out-Null
+          gh run download 31200670159 --repo $env:GITHUB_REPOSITORY --name CMDMarbleCNC-Final-DLLs --dir work\old
+          if ($LASTEXITCODE -ne 0) { throw "gh run download failed: $LASTEXITCODE" }
+          Get-ChildItem work\old -Recurse -Filter *.dll | Select-Object -First 10 FullName,Length
 
-      - name: Build final ArtText DLL
+      - name: Build ArtTextHelper for .NET Framework 4.8
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force work\deps, work\packages, FINAL_OUTPUT | Out-Null
-          Start-Transcript -Path FINAL_OUTPUT\BUILD_DIAGNOSTIC.txt -Force
-          try {
-            $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force work\deps, FINAL_OUTPUT | Out-Null
+          Get-ChildItem work\old -Recurse -Filter *.dll | ForEach-Object { Copy-Item $_.FullName work\deps -Force }
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vs = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+          if (-not $vs) { throw 'Visual Studio not found' }
+          $csc = Join-Path $vs 'MSBuild\Current\Bin\Roslyn\csc.exe'
+          $fx = "${env:ProgramFiles(x86)}\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8"
+          & $csc /nologo /target:library /langversion:latest /optimize+ /out:FINAL_OUTPUT\ArtTextHelper.dll `
+            /r:"$fx\System.dll" /r:"$fx\System.Core.dll" /r:"$fx\System.Drawing.dll" /r:"$fx\System.Windows.Forms.dll" `
+            /r:work\deps\buClass.dll /r:work\deps\buControls.dll arttext-final\ArtTextHelper.cs
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path FINAL_OUTPUT\ArtTextHelper.dll)) { throw "ArtTextHelper compile failed: $LASTEXITCODE" }
+          $an=[Reflection.AssemblyName]::GetAssemblyName((Resolve-Path FINAL_OUTPUT\ArtTextHelper.dll))
+          $sha=(Get-FileHash FINAL_OUTPUT\ArtTextHelper.dll -Algorithm SHA256).Hash.ToLowerInvariant()
+          "Assembly=$($an.FullName)`nSHA256=$sha" | Set-Content FINAL_OUTPUT\ARTTEXT_HELPER_AUDIT.txt
 
-            Write-Host '=== PREPARE REFERENCES ==='
-            Get-ChildItem work\old -Recurse -Filter *.dll | ForEach-Object { Copy-Item $_.FullName work\deps -Force }
-            $base = Get-ChildItem work\old -Recurse -Filter buCadCamRes.dll | Select-Object -First 1
-            if (-not $base) { throw 'buCadCamRes.dll base not found' }
-            Copy-Item $base.FullName work\base.dll -Force
-            $baseHash = (Get-FileHash work\base.dll -Algorithm SHA256).Hash.ToLowerInvariant()
-            Write-Host "Base SHA256: $baseHash"
-            if ($baseHash -ne 'acfe2ee820af5f1a1b4db8303c8adf471e4d5becddc70b64cd5747df38817d3b') { throw "Unexpected base hash: $baseHash" }
+      - name: Build Linux x64 portable patcher
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force work\patcher | Out-Null
+          @'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <ImplicitUsings>disable</ImplicitUsings>
+              <Nullable>enable</Nullable>
+              <PublishSingleFile>true</PublishSingleFile>
+              <SelfContained>true</SelfContained>
+              <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+              <InvariantGlobalization>true</InvariantGlobalization>
+            </PropertyGroup>
+            <ItemGroup>
+              <PackageReference Include="Mono.Cecil" Version="0.11.5" />
+            </ItemGroup>
+          </Project>
+          '@ | Set-Content work\patcher\PatchExternal.csproj -Encoding UTF8
+          Copy-Item arttext-final\PatchExternal.cs work\patcher\Program.cs -Force
+          dotnet publish work\patcher\PatchExternal.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o FINAL_OUTPUT\patcher-linux
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path FINAL_OUTPUT\patcher-linux\PatchExternal)) { throw "patcher publish failed: $LASTEXITCODE" }
+          $sha=(Get-FileHash FINAL_OUTPUT\patcher-linux\PatchExternal -Algorithm SHA256).Hash.ToLowerInvariant()
+          "SHA256=$sha" | Set-Content FINAL_OUTPUT\PATCHER_AUDIT.txt
 
-            Write-Host '=== LOCATE CSC ==='
-            $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-            $vs = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
-            if (-not $vs) { throw 'Visual Studio not found' }
-            $csc = Join-Path $vs 'MSBuild\Current\Bin\Roslyn\csc.exe'
-            if (-not (Test-Path $csc)) { throw "csc not found: $csc" }
-            $fx = "${env:ProgramFiles(x86)}\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8"
-            Write-Host "CSC: $csc"
-
-            Write-Host '=== COMPILE ARTTEXT STUDIO ==='
-            $buClass = (Resolve-Path work\deps\buClass.dll).Path
-            $buControls = (Resolve-Path work\deps\buControls.dll).Path
-            & $csc /nologo /target:library /langversion:latest /optimize+ /out:work\ArtTextHelper.dll `
-              /r:"$fx\System.dll" /r:"$fx\System.Core.dll" /r:"$fx\System.Drawing.dll" /r:"$fx\System.Windows.Forms.dll" `
-              /r:"$buClass" /r:"$buControls" arttext-final\ArtTextHelper.cs
-            if ($LASTEXITCODE -ne 0) { throw "ArtTextHelper compile failed: $LASTEXITCODE" }
-
-            Write-Host '=== INSTALL IL TOOLS ==='
-            nuget install ILRepack -Version 2.0.44 -OutputDirectory work\packages -NonInteractive
-            if ($LASTEXITCODE -ne 0) { throw 'ILRepack NuGet install failed' }
-            nuget install Mono.Cecil -Version 0.11.5 -OutputDirectory work\packages -NonInteractive
-            if ($LASTEXITCODE -ne 0) { throw 'Mono.Cecil NuGet install failed' }
-
-            Write-Host '=== MERGE STUDIO INTO ASSEMBLY ==='
-            $repack = (Get-ChildItem work\packages -Recurse -Filter ILRepack.exe | Select-Object -First 1).FullName
-            if (-not $repack) { throw 'ILRepack.exe not found' }
-            & $repack /target:library /lib:work\deps /out:work\merged.dll work\base.dll work\ArtTextHelper.dll
-            if ($LASTEXITCODE -ne 0 -or -not (Test-Path work\merged.dll)) { throw "ILRepack merge failed: $LASTEXITCODE" }
-
-            Write-Host '=== COMPILE ROUTE VALIDATOR ==='
-            $cecil = (Get-ChildItem work\packages -Recurse -Filter Mono.Cecil.dll | Where-Object { $_.FullName -match 'net40' } | Select-Object -First 1).FullName
-            if (-not $cecil) { $cecil = (Get-ChildItem work\packages -Recurse -Filter Mono.Cecil.dll | Select-Object -First 1).FullName }
-            if (-not $cecil) { throw 'Mono.Cecil.dll not found' }
-            $patchSource = Get-Content arttext-final\Patcher.cs -Raw
-            $patchSource = $patchSource.Replace('                cmd.Body.OptimizeMacros();','')
-            Set-Content work\Patcher.cs -Value $patchSource -Encoding UTF8
-            & $csc /nologo /target:exe /langversion:latest /out:work\Patcher.exe /r:"$cecil" work\Patcher.cs
-            if ($LASTEXITCODE -ne 0) { throw "Patcher compile failed: $LASTEXITCODE" }
-            Copy-Item $cecil work\Mono.Cecil.dll -Force
-
-            Write-Host '=== APPLY AND VALIDATE TEXT ROUTE ==='
-            & work\Patcher.exe work\merged.dll FINAL_OUTPUT\buCadCamRes.dll
-            if ($LASTEXITCODE -ne 0 -or -not (Test-Path FINAL_OUTPUT\buCadCamRes.dll)) { throw "Route validation failed: $LASTEXITCODE" }
-
-            Write-Host '=== FINAL AUDIT ==='
-            $dll = Resolve-Path FINAL_OUTPUT\buCadCamRes.dll
-            $an = [Reflection.AssemblyName]::GetAssemblyName($dll)
-            $sha = (Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant()
-            $size = (Get-Item $dll).Length
-            @(
-              'buCadCamRes.dll ARTTEXT FINAL',
-              "Assembly=$($an.FullName)",
-              "Size=$size",
-              "SHA256=$sha",
-              'F_ArtTextStudio=PRESENT',
-              'cmdTextMenu->F_ArtTextStudio=PASS',
-              'old F_VectorText newobj in cmdTextMenu=0',
-              'CMDMarbleCNC.exe=UNCHANGED'
-            ) | Set-Content FINAL_OUTPUT\FINAL_AUDIT.txt -Encoding UTF8
-            Get-Content FINAL_OUTPUT\FINAL_AUDIT.txt
-          }
-          catch {
-            Write-Host "BUILD ERROR: $($_.Exception.Message)"
-            Write-Host $_.ScriptStackTrace
-            $global:BuildFailed = $true
-          }
-          finally {
-            Stop-Transcript
-          }
-          if ($global:BuildFailed) { exit 1 }
-
-      - name: Upload final DLL
-        if: success()
+      - name: Upload helper and patcher
         uses: actions/upload-artifact@v4
         with:
-          name: buCadCamRes-ArtText-FINAL
+          name: ArtText-Helper-And-Patcher
           path: |
-            FINAL_OUTPUT/buCadCamRes.dll
-            FINAL_OUTPUT/FINAL_AUDIT.txt
-            FINAL_OUTPUT/BUILD_DIAGNOSTIC.txt
+            FINAL_OUTPUT/ArtTextHelper.dll
+            FINAL_OUTPUT/ARTTEXT_HELPER_AUDIT.txt
+            FINAL_OUTPUT/PATCHER_AUDIT.txt
+            FINAL_OUTPUT/patcher-linux/PatchExternal
           if-no-files-found: error
           retention-days: 30
-
-      - name: Upload build diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ArtText-Build-Diagnostics
-          path: FINAL_OUTPUT/BUILD_DIAGNOSTIC.txt
-          if-no-files-found: warn
-          retention-days: 7
