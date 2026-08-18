@@ -1,0 +1,159 @@
+name: Final Three Conditions DLL
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'final-three-conditions'
+    runs-on: windows-2022
+    timeout-minutes: 90
+    steps:
+      - name: Checkout exact build branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Prepare cumulative base and validated dependencies
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference='Stop'
+          New-Item -ItemType Directory -Force work, work\deps, work\packages, FINAL_OUTPUT | Out-Null
+          Expand-Archive -Path build-input\buCadCamRes_BASE.zip -DestinationPath work\base -Force
+          $base=(Resolve-Path work\base\buCadCamRes_BASE.dll).Path
+          $hash=(Get-FileHash $base -Algorithm SHA256).Hash.ToLowerInvariant()
+          if($hash -ne 'ed83a32820c3ecee772fb322d2ba2929b51d95c3fac01fa43be25f0ed2b9b4de'){ throw "Unexpected cumulative base hash: $hash" }
+          Copy-Item $base work\base.dll -Force
+          gh run download 31200670159 --repo $env:GITHUB_REPOSITORY --name CMDMarbleCNC-Final-DLLs --dir work\old
+          if($LASTEXITCODE -ne 0){ throw "dependency artifact download failed: $LASTEXITCODE" }
+          Get-ChildItem work\old -Recurse -Filter *.dll -File | ForEach-Object { Copy-Item $_.FullName work\deps -Force }
+          if(-not (Test-Path work\deps\buClass.dll)){ throw 'buClass dependency missing' }
+          if(-not (Test-Path work\deps\buControls.dll)){ throw 'buControls dependency missing' }
+          "BASE_SHA256=$hash" | Set-Content FINAL_OUTPUT\BUILD_INPUT.txt
+
+      - name: Compile ArtText Studio for .NET Framework 4.8
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $vswhere="${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vs=& $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+          if(-not $vs){ throw 'Visual Studio/MSBuild not found' }
+          $csc=Join-Path $vs 'MSBuild\Current\Bin\Roslyn\csc.exe'
+          $fx="${env:ProgramFiles(x86)}\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8"
+          & $csc /nologo /target:library /langversion:latest /optimize+ /out:work\ArtTextHelper.dll `
+            /r:"$fx\System.dll" /r:"$fx\System.Core.dll" /r:"$fx\System.Drawing.dll" /r:"$fx\System.Windows.Forms.dll" `
+            /r:work\deps\buClass.dll /r:work\deps\buControls.dll arttext-final\ArtTextHelper.cs
+          if($LASTEXITCODE -ne 0 -or -not (Test-Path work\ArtTextHelper.dll)){ throw "ArtTextHelper compile failed: $LASTEXITCODE" }
+          $h=(Get-FileHash work\ArtTextHelper.dll -Algorithm SHA256).Hash.ToLowerInvariant()
+          "ARTTEXT_HELPER_SHA256=$h" | Add-Content FINAL_OUTPUT\BUILD_INPUT.txt
+
+      - name: Install deterministic IL tools
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          nuget install ILRepack -Version 2.0.44 -OutputDirectory work\packages -NonInteractive
+          if($LASTEXITCODE -ne 0){ throw 'ILRepack install failed' }
+          nuget install Mono.Cecil -Version 0.11.5 -OutputDirectory work\packages -NonInteractive
+          if($LASTEXITCODE -ne 0){ throw 'Mono.Cecil install failed' }
+          $repack=(Get-ChildItem work\packages -Recurse -Filter ILRepack.exe -File | Select-Object -First 1).FullName
+          $cecil=(Get-ChildItem work\packages -Recurse -Filter Mono.Cecil.dll -File | Where-Object {$_.FullName -match 'net40'} | Select-Object -First 1).FullName
+          if(-not $cecil){ $cecil=(Get-ChildItem work\packages -Recurse -Filter Mono.Cecil.dll -File | Select-Object -First 1).FullName }
+          if(-not $repack){ throw 'ILRepack.exe not found after install' }
+          if(-not $cecil){ throw 'Mono.Cecil.dll not found after install' }
+          $repack | Set-Content work\repack-path.txt
+          $cecil | Set-Content work\cecil-path.txt
+
+      - name: Merge ArtText TypeDef into cumulative buCadCamRes
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $repack=(Get-Content work\repack-path.txt -Raw).Trim()
+          & $repack /target:library /lib:work\deps /out:work\merged.dll work\base.dll work\ArtTextHelper.dll
+          if($LASTEXITCODE -ne 0 -or -not (Test-Path work\merged.dll)){ throw "ILRepack merge failed: $LASTEXITCODE" }
+
+      - name: Compile and apply same-DLL Text Studio route patch
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $vswhere="${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vs=& $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+          $csc=Join-Path $vs 'MSBuild\Current\Bin\Roslyn\csc.exe'
+          $cecil=(Get-Content work\cecil-path.txt -Raw).Trim()
+          $src=Get-Content arttext-final\Patcher.cs -Raw
+          $src=$src.Replace('                cmd.Body.OptimizeMacros();','')
+          Set-Content work\Patcher.cs $src -Encoding UTF8
+          & $csc /nologo /target:exe /langversion:latest /out:work\Patcher.exe /r:"$cecil" work\Patcher.cs
+          if($LASTEXITCODE -ne 0){ throw "Patcher compile failed: $LASTEXITCODE" }
+          Copy-Item $cecil work\Mono.Cecil.dll -Force
+          & work\Patcher.exe work\merged.dll FINAL_OUTPUT\buCadCamRes.dll 2>&1 | Tee-Object FINAL_OUTPUT\ROUTE_AUDIT.txt
+          if($LASTEXITCODE -ne 0 -or -not (Test-Path FINAL_OUTPUT\buCadCamRes.dll)){ throw "Patcher/route validation failed: $LASTEXITCODE" }
+
+      - name: Compile strict three-condition binary auditor
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $vswhere="${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $vs=& $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+          $csc=Join-Path $vs 'MSBuild\Current\Bin\Roslyn\csc.exe'
+          $cecil=(Get-Content work\cecil-path.txt -Raw).Trim()
+          @'
+          using System;
+          using System.Collections.Generic;
+          using System.IO;
+          using System.Linq;
+          using Mono.Cecil;
+          using Mono.Cecil.Cil;
+          class Audit {
+            const string Studio="CMDStoneCAM.ArtText.F_ArtTextStudio";
+            const string Marble="buCadCamResVer5.Marble.clsMarble";
+            const string Vector="buControls.Forms.WinControlForms.Drawings.F_VectorText";
+            static IEnumerable<TypeDefinition> All(TypeDefinition t){ yield return t; foreach(var n in t.NestedTypes) foreach(var x in All(n)) yield return x; }
+            static bool IsRegCall(Instruction i){ var m=i.Operand as MethodReference; return m!=null && (i.OpCode.Code==Code.Call || i.OpCode.Code==Code.Callvirt) && m.DeclaringType.FullName=="buCadCamResVer5.clsSystem" && m.Name=="smethod_0"; }
+            static int Main(string[] a){ try{
+              var dll=Path.GetFullPath(a[0]); using(var asm=AssemblyDefinition.ReadAssembly(dll,new ReaderParameters{ReadSymbols=false,InMemory=true})){
+                var m=asm.MainModule; var types=m.Types.SelectMany(All).ToList();
+                var studio=types.SingleOrDefault(t=>t.FullName==Studio); if(studio==null) throw new Exception("CONDITION2 FAIL: F_ArtTextStudio TypeDef missing");
+                if(!studio.Methods.Any(x=>x.IsConstructor && !x.IsStatic && x.Parameters.Count==0)) throw new Exception("CONDITION2 FAIL: studio ctor missing");
+                if(!studio.Methods.Any(x=>x.Name=="Init" && !x.IsStatic && x.Parameters.Count==0)) throw new Exception("CONDITION2 FAIL: studio Init missing");
+                var cmd=types.Single(t=>t.FullName==Marble).Methods.Single(x=>x.Name=="cmdTextMenu" && x.HasBody);
+                int sn=cmd.Body.Instructions.Count(i=>i.OpCode.Code==Code.Newobj && i.Operand is MethodReference && ((MethodReference)i.Operand).DeclaringType.FullName==Studio);
+                int vn=cmd.Body.Instructions.Count(i=>i.OpCode.Code==Code.Newobj && i.Operand is MethodReference && ((MethodReference)i.Operand).DeclaringType.FullName==Vector);
+                int si=cmd.Body.Instructions.Count(i=>(i.OpCode.Code==Code.Call||i.OpCode.Code==Code.Callvirt) && i.Operand is MethodReference && ((MethodReference)i.Operand).DeclaringType.FullName==Studio && ((MethodReference)i.Operand).Name=="Init");
+                if(sn!=1 || vn!=0 || si!=1) throw new Exception("CONDITION2 FAIL: route studioNew="+sn+" vectorNew="+vn+" studioInit="+si);
+                string[] locked={"buCadCamResVer5.clsFiles","buCadCamResVer5.clsCommand","buCadCamResVer5.clsSystem","buCadCamResVer5.Nesting.clsNesting","buCadCamResVer5.Quilting.clsQuilting"};
+                foreach(var n in locked){ var t=types.Single(x=>x.FullName==n); foreach(var c in t.Methods.Where(x=>x.IsConstructor && !x.IsStatic && x.HasBody)){ int rc=c.Body.Instructions.Count(IsRegCall); int re=c.Body.Instructions.Count(i=>i.OpCode.Code==Code.Newobj && i.Operand is MethodReference && ((MethodReference)i.Operand).DeclaringType.Name=="RegisterException"); if(rc!=0 || re!=0) throw new Exception("CONDITION1 FAIL: "+n+" smethod_0="+rc+" RegisterException="+re); } }
+                var names=new HashSet<string>(types.SelectMany(t=>t.Methods).Select(x=>x.Name));
+                string[] required={"TryGetMachine2MaterialFirstSawHit","AutoSeparateMachine2VacuumPartBeforeSaw","ValidateMachine2VacuumPlacement","TryChooseMachine2VacuumMove","EditorFix_TryGetNormalizedRectangle","SliceNestTryPlan","TryNestGeneratedSliceItems","SetStoredAngleOnEntity","ApplyStoredEdgeAnglesToItem"};
+                foreach(var n in required) if(!names.Contains(n)) throw new Exception("CONDITION3 FAIL: method missing "+n);
+                Console.WriteLine("CONDITION1_COMMENT_LOCK_IL=PASS"); Console.WriteLine("CONDITION2_ARTTEXT_TYPEDEF_AND_ROUTE=PASS"); Console.WriteLine("CONDITION3_MACHINE2_EDITOR_NESTING_ANGLE=PASS"); Console.WriteLine("ARTTEXT_TYPE="+studio.FullName); Console.WriteLine("ROUTE studioNew="+sn+" vectorNew="+vn+" studioInit="+si); foreach(var n in required) Console.WriteLine("METHOD_PASS="+n);
+              } return 0; } catch(Exception e){ Console.Error.WriteLine(e); return 1; } }
+          }
+          '@ | Set-Content work\Audit.cs -Encoding UTF8
+          & $csc /nologo /target:exe /langversion:latest /out:work\Audit.exe /r:"$cecil" work\Audit.cs
+          if($LASTEXITCODE -ne 0){ throw "Audit compile failed: $LASTEXITCODE" }
+          Copy-Item $cecil work\Mono.Cecil.dll -Force
+          & work\Audit.exe FINAL_OUTPUT\buCadCamRes.dll 2>&1 | Tee-Object FINAL_OUTPUT\FINAL_AUDIT.txt
+          if($LASTEXITCODE -ne 0){ throw 'Strict three-condition audit failed' }
+          $dll=Resolve-Path FINAL_OUTPUT\buCadCamRes.dll
+          "SIZE=$((Get-Item $dll).Length)" | Add-Content FINAL_OUTPUT\FINAL_AUDIT.txt
+          "SHA256=$((Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant())" | Add-Content FINAL_OUTPUT\FINAL_AUDIT.txt
+          $raw=[Text.Encoding]::UTF8.GetString([IO.File]::ReadAllBytes($dll))
+          foreach($s in @('TEXT STUDIO','Yazıyı Oluştur','Vektör yazı oluşturma')){ if(-not $raw.Contains($s)){ Write-Host "UI string may be UTF16/metadata encoded: $s" } }
+          Get-Content FINAL_OUTPUT\FINAL_AUDIT.txt
+
+      - name: Upload only if all three conditions pass
+        uses: actions/upload-artifact@v4
+        with:
+          name: CMDStoneCAM-FINAL-THREE-CONDITIONS
+          path: FINAL_OUTPUT
+          if-no-files-found: error
+          retention-days: 30
