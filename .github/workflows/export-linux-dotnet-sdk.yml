@@ -3,6 +3,8 @@ name: Export Linux dotnet SDK
 on:
   push:
     branches: [ sourcefinal-exact-build ]
+  pull_request:
+    branches: [ master ]
   workflow_dispatch:
 
 permissions:
