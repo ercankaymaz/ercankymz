@@ -1,0 +1,33 @@
+name: Export ILRepack Linux Clean
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ opened, synchronize, reopened ]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  export:
+    if: github.head_ref == 'export-ilrepack-clean'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Install exact .NET 8 ILRepack tool
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p TOOL
+          dotnet tool install --tool-path TOOL dotnet-ilrepack --version 2.0.44
+          TOOL/ilrepack /help > TOOL/SELFTEST.txt 2>&1 || true
+          grep -qi 'ILRepack' TOOL/SELFTEST.txt
+          find TOOL -type f -printf '%P %s\n' | sort > TOOL/FILES.txt
+      - name: Upload ILRepack tool
+        uses: actions/upload-artifact@v4
+        with:
+          name: ILREPACK-LINUX-NET8-2.0.44
+          path: TOOL
+          if-no-files-found: error
+          retention-days: 30
