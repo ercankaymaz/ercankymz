@@ -15,13 +15,26 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 120
     steps:
-      - name: Sparse checkout buCadCamRes only
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          sparse-checkout: |
-            Decompiled/buCadCamRes
-          sparse-checkout-cone-mode: true
+      - name: Manual sparse checkout before worktree creation
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          $ErrorActionPreference='Stop'
+          $sha=$env:PR_HEAD_SHA
+          if([string]::IsNullOrWhiteSpace($sha)){ $sha='${{ github.sha }}' }
+          git init .
+          git remote add origin "https://x-access-token:$env:GH_TOKEN@github.com/${{ github.repository }}.git"
+          git config core.sparseCheckout true
+          git sparse-checkout init --cone
+          git sparse-checkout set Decompiled/buCadCamRes
+          git fetch --depth=1 origin $sha
+          if($LASTEXITCODE -ne 0){ throw 'sparse fetch failed' }
+          git checkout --detach FETCH_HEAD
+          if($LASTEXITCODE -ne 0){ throw 'sparse checkout failed' }
+          if(-not (Test-Path 'Decompiled/buCadCamRes/buCadCamRes.csproj')){ throw 'buCadCamRes project missing after sparse checkout' }
+          Write-Host "SPARSE_CHECKOUT_PASS sha=$sha"
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -45,7 +58,6 @@ jobs:
           $projDir = Resolve-Path 'Decompiled/buCadCamRes'
           $refs = Join-Path $projDir 'refs'
           New-Item -ItemType Directory -Force $refs | Out-Null
-
           $allDll = Get-ChildItem runtime-original -Recurse -Filter *.dll -File
           if (-not $allDll) { throw 'Runtime dependency artifact is empty' }
           foreach($d in $allDll){ Copy-Item $d.FullName (Join-Path $refs $d.Name) -Force }
@@ -54,18 +66,13 @@ jobs:
           Copy-Item $base.FullName 'build-logs/base-buCadCamRes.dll' -Force
           "BASE_SIZE=$($base.Length)" | Set-Content build-logs/base.txt
           "BASE_SHA256=$((Get-FileHash $base.FullName -Algorithm SHA256).Hash.ToLowerInvariant())" | Add-Content build-logs/base.txt
-
           dotnet tool install ilspycmd --tool-path tools
           if($LASTEXITCODE -ne 0){ throw 'ilspycmd install failed' }
           $types = @(
-            @{T='ns8.Class5'; P='ns8/Class5.cs'},
-            @{T='ns0.Class9'; P='ns0/Class9.cs'},
-            @{T='ns1.Class14'; P='ns1/Class14.cs'},
-            @{T='ns2.Enum2'; P='ns2/Enum2.cs'},
-            @{T='ns3.Struct0'; P='ns3/Struct0.cs'},
-            @{T='ns4.Struct1'; P='ns4/Struct1.cs'},
-            @{T='ns9.Class3'; P='ns9/Class3.cs'},
-            @{T='ns11.Class16'; P='ns11/Class16.cs'},
+            @{T='ns8.Class5'; P='ns8/Class5.cs'}, @{T='ns0.Class9'; P='ns0/Class9.cs'},
+            @{T='ns1.Class14'; P='ns1/Class14.cs'}, @{T='ns2.Enum2'; P='ns2/Enum2.cs'},
+            @{T='ns3.Struct0'; P='ns3/Struct0.cs'}, @{T='ns4.Struct1'; P='ns4/Struct1.cs'},
+            @{T='ns9.Class3'; P='ns9/Class3.cs'}, @{T='ns11.Class16'; P='ns11/Class16.cs'},
             @{T='ns13.Class13'; P='ns13/Class13.cs'}
           )
           foreach($x in $types){
@@ -88,15 +95,10 @@ jobs:
           if($first -ge 0){ $second=$s.IndexOf($needle,$first+$needle.Length); if($second -ge 0){ $s=$s.Remove($second,$needle.Length); Set-Content $sim $s -Encoding UTF8 } }
           $count=([regex]::Matches((Get-Content $sim -Raw),'private\s+readonly\s+double\s+NozzleDiameter\s*;')).Count
           if($count -ne 1){ throw "NozzleDiameter field count=$count" }
-
           $five=Join-Path $projDir 'buCadCamResVer5/Marble/FiveAxisPathSafety.cs'
           $f=Get-Content $five -Raw
           if($f -notmatch '(?m)^using\s+buCadCamResVer5\s*;'){ Set-Content $five ("using buCadCamResVer5;`r`n"+$f) -Encoding UTF8 }
-
-          $sensitive=@(
-            'buCadCamResVer5/clsFiles.cs','buCadCamResVer5/clsSystem.cs','buCadCamResVer5/clsCommand.cs',
-            'buCadCamResVer5/Nesting/clsNesting.cs','buCadCamResVer5/Quilting/clsQuilting.cs'
-          )
+          $sensitive=@('buCadCamResVer5/clsFiles.cs','buCadCamResVer5/clsSystem.cs','buCadCamResVer5/clsCommand.cs','buCadCamResVer5/Nesting/clsNesting.cs','buCadCamResVer5/Quilting/clsQuilting.cs')
           foreach($rel in $sensitive){
             $p=Join-Path $projDir $rel
             if(-not (Test-Path $p)){ throw "Sensitive file missing: $rel" }
@@ -122,9 +124,7 @@ jobs:
           $proj='Decompiled/buCadCamRes/buCadCamRes.csproj'
           $refs=Resolve-Path 'Decompiled/buCadCamRes/refs'
           $managed=@()
-          foreach($d in Get-ChildItem $refs -Filter *.dll -File){
-            try { $an=[Reflection.AssemblyName]::GetAssemblyName($d.FullName); if($an.Name -ne 'buCadCamRes'){ $managed += [pscustomobject]@{Name=$an.Name;Path=$d.FullName} } } catch {}
-          }
+          foreach($d in Get-ChildItem $refs -Filter *.dll -File){ try { $an=[Reflection.AssemblyName]::GetAssemblyName($d.FullName); if($an.Name -ne 'buCadCamRes'){ $managed += [pscustomobject]@{Name=$an.Name;Path=$d.FullName} } } catch {} }
           $managed=$managed | Sort-Object Name -Unique
           $items=($managed | ForEach-Object { "    <Reference Include=`"$($_.Name)`"><HintPath>$($_.Path)</HintPath><Private>false</Private></Reference>" }) -join "`r`n"
           $xml=@"
@@ -149,10 +149,7 @@ jobs:
         run: |
           $ErrorActionPreference='Continue'
           msbuild 'Decompiled/buCadCamRes/buCadCamRes.csproj' /restore /m /t:Rebuild /p:Configuration=Release /p:Platform=AnyCPU /v:minimal 2>&1 | Tee-Object build-logs/build.txt
-          if($LASTEXITCODE -ne 0){
-            Select-String -Path build-logs/build.txt -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error' -CaseSensitive:$false | ForEach-Object {$_.Line} | Select-Object -Unique | Set-Content build-logs/build-errors.txt
-            exit $LASTEXITCODE
-          }
+          if($LASTEXITCODE -ne 0){ Select-String -Path build-logs/build.txt -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error' -CaseSensitive:$false | ForEach-Object {$_.Line} | Select-Object -Unique | Set-Content build-logs/build-errors.txt; exit $LASTEXITCODE }
 
       - name: Patch cmdTextMenu to compiled ArtText Studio
         shell: pwsh
@@ -181,7 +178,6 @@ jobs:
           $rc=$LASTEXITCODE
           Pop-Location
           if($rc -ne 0){ throw "Final ArtText repatch failed rc=$rc" }
-
           $dll=Resolve-Path 'final-dlls/buCadCamRes.dll'
           $an=[Reflection.AssemblyName]::GetAssemblyName($dll)
           $ascii=[Text.Encoding]::ASCII.GetString([IO.File]::ReadAllBytes($dll))
