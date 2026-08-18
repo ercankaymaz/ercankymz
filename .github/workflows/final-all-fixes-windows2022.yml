@@ -1,0 +1,75 @@
+name: Final All Fixes Windows 2022
+
+on:
+  push:
+    branches: [ final-all-fixes-build ]
+  pull_request:
+    branches: [ repair-all-errors ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
+      - uses: actions/download-artifact@v4
+        with:
+          name: CMDMarbleCNC-Final-DLLs
+          path: .repair/bootstrap-original
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 31200670159
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: final-dll
+          path: .repair/bootstrap-supplemental
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 31433581668
+      - name: Apply cumulative repairs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          New-Item -ItemType Directory -Force build-logs | Out-Null
+          $scripts=@('bootstrap-integrity.ps1','cadcam-repair.ps1','cam-math-guards.ps1','ellipse-guards.ps1','miter-corner-geometry-guards.ps1','marble-path-guards.ps1','marble-runtime-guards.ps1','marble-input-guards.ps1','vacuum-selection-guards.ps1','marble-path-safety.ps1','five-axis-professional-guards.ps1','five-axis-gcode-guards.ps1','grinding-ui-guards.ps1','grinding-lead-state-guards.ps1','grinding-closed-guards.ps1','marble-geometry-guards.ps1','ui-safety-guards.ps1','editor-simulation-guards.ps1','editor-runtime-guards.ps1','editor-geometry-guards.ps1','editor-fillet-chamfer-guards.ps1','tool-form-runtime-guards.ps1','tool-machine-ui-sync-guards.ps1','drawing-form-ui-fix.ps1','marble-form-validation.ps1','saw-cos-guard.ps1','grinding-saw-ramp-guards.ps1','grinding-progress-guards.ps1','project-normalize.ps1','source-compat-repair.ps1')
+          foreach($s in $scripts){$p=Join-Path '.repair' $s;if(Test-Path $p){"RUN $s"|Tee-Object -Append build-logs/repair-chain.txt;& $p 2>&1|Tee-Object -Append build-logs/repair-chain.txt;if($LASTEXITCODE -ne 0){throw "$s exit=$LASTEXITCODE"}}else{"SKIP $s"|Tee-Object -Append build-logs/repair-chain.txt}}
+      - name: Build complete CMDMarbleCNC graph
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Continue'
+          msbuild 'Decompiled/CMDMarbleCNC/CMDMarbleCNC.csproj' /restore /m /t:Rebuild /p:Configuration=Release /p:Platform=AnyCPU /p:BuildProjectReferences=true /v:minimal 2>&1 | Tee-Object build-logs/build.txt
+          if($LASTEXITCODE -ne 0){Select-String -Path build-logs/build.txt -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error' -CaseSensitive:$false|%{$_.Line}|Select-Object -Unique|Set-Content build-logs/build-errors.txt;exit $LASTEXITCODE}
+      - name: Collect runtime
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force final-runtime|Out-Null
+          Get-ChildItem '.repair/bootstrap-original' -Recurse -File -ErrorAction SilentlyContinue|?{$_.Extension -in @('.dll','.exe','.config')}|%{Copy-Item $_.FullName (Join-Path final-runtime $_.Name) -Force}
+          Get-ChildItem '.repair/bootstrap-supplemental' -Recurse -File -ErrorAction SilentlyContinue|?{$_.Extension -in @('.dll','.exe','.config')}|%{Copy-Item $_.FullName (Join-Path final-runtime $_.Name) -Force}
+          Get-ChildItem 'Decompiled' -Recurse -File|?{$_.FullName -match '\\bin\\Release\\' -and $_.Extension -in @('.dll','.exe','.config')}|%{Copy-Item $_.FullName (Join-Path final-runtime $_.Name) -Force}
+          "EXE=$([bool](Get-ChildItem final-runtime -Filter CMDMarbleCNC.exe -File|Select-Object -First 1))"|Set-Content build-logs/runtime.txt
+          "BUCAD=$([bool](Get-ChildItem final-runtime -Filter buCadCamRes.dll -File|Select-Object -First 1))"|Add-Content build-logs/runtime.txt
+          Get-ChildItem final-runtime -File|Sort-Object Name|%{"$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)"}|Set-Content final-runtime/SHA256.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: CMDStoneCAM-FINAL-ALL-FIXES-RUNTIME-WIN2022
+          path: final-runtime
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: CMDStoneCAM-FINAL-ALL-FIXES-LOGS-WIN2022
+          path: build-logs
+          retention-days: 14
