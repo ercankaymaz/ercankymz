@@ -54,11 +54,11 @@ foreach ($repair in $repairs) {
     $name = $repair[2]
     if ($text.Contains($old)) {
         $text = $text.Replace($old, $new)
-        "FIX $name: $path" | Tee-Object -Append $log
+        "FIX ${name}: $path" | Tee-Object -Append $log
     } elseif ($text.Contains($new)) {
-        "OK already fixed $name: $path" | Tee-Object -Append $log
+        "OK already fixed ${name}: $path" | Tee-Object -Append $log
     } else {
-        "NO_MATCH $name: $path" | Tee-Object -Append $log
+        "NO_MATCH ${name}: $path" | Tee-Object -Append $log
     }
 }
 
