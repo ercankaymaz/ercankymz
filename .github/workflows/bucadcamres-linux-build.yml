@@ -4,7 +4,7 @@ on:
   push:
     branches: [repair-all-errors]
   pull_request:
-    branches: [Test, repair-all-errors]
+    branches: [Test]
   workflow_dispatch:
 
 permissions:
@@ -96,7 +96,12 @@ jobs:
           set -euo pipefail
           mkdir -p build-logs
           project='Decompiled/buCadCamRes/buCadCamRes.csproj'
-          "$BUILDER" "$project" /target:Rebuild /property:Configuration=Release /property:Platform=AnyCPU /property:BuildProjectReferences=false /verbosity:minimal 2>&1 | tee build-logs/buCadCamRes-build.log
+          "$BUILDER" "$project" \
+            /target:Rebuild \
+            /property:Configuration=Release \
+            /property:Platform=AnyCPU \
+            /property:BuildProjectReferences=false \
+            /verbosity:minimal 2>&1 | tee build-logs/buCadCamRes-build.log
 
       - name: Validate DLL
         shell: bash
@@ -106,7 +111,9 @@ jobs:
           test -s "$dll"
           mkdir -p final-bucadcamres
           cp "$dll" final-bucadcamres/
-          if [ -f 'Decompiled/buCadCamRes/bin/Release/buCadCamRes.pdb' ]; then cp 'Decompiled/buCadCamRes/bin/Release/buCadCamRes.pdb' final-bucadcamres/; fi
+          if [ -f 'Decompiled/buCadCamRes/bin/Release/buCadCamRes.pdb' ]; then
+            cp 'Decompiled/buCadCamRes/bin/Release/buCadCamRes.pdb' final-bucadcamres/
+          fi
           sha256sum "$dll" | tee final-bucadcamres/SHA256.txt
           file "$dll" | tee final-bucadcamres/FILE_INFO.txt
           printf 'commit=%s\n' "$GITHUB_SHA" > final-bucadcamres/BUILD_COMMIT.txt
@@ -125,29 +132,3 @@ jobs:
           name: buCadCamRes-final
           path: final-bucadcamres
           if-no-files-found: error
-
-  export-sourcefinal-toolchain:
-    if: github.event_name == 'pull_request' && github.base_ref == 'repair-all-errors'
-    runs-on: windows-latest
-    timeout-minutes: 30
-    steps:
-      - name: Download Linux SDK and net48 packages
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = 'Stop'
-          New-Item -ItemType Directory -Force EXPORT | Out-Null
-          Invoke-WebRequest 'https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.423/dotnet-sdk-8.0.423-linux-x64.tar.gz' -OutFile 'EXPORT/dotnet-sdk-8.0.423-linux-x64.tar.gz'
-          Invoke-WebRequest 'https://www.nuget.org/api/v2/package/Microsoft.NETFramework.ReferenceAssemblies.net48/1.0.3' -OutFile 'EXPORT/Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.3.nupkg'
-          Invoke-WebRequest 'https://www.nuget.org/api/v2/package/Microsoft.NETFramework.ReferenceAssemblies/1.0.3' -OutFile 'EXPORT/Microsoft.NETFramework.ReferenceAssemblies.1.0.3.nupkg'
-          Invoke-WebRequest 'https://www.nuget.org/api/v2/package/PDFsharp/1.50.5147' -OutFile 'EXPORT/PDFsharp.1.50.5147.nupkg'
-          Get-ChildItem EXPORT | ForEach-Object { "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant(), $_.Name } | Set-Content EXPORT/SHA256.txt
-          Get-ChildItem EXPORT | Select-Object Name,Length
-
-      - name: Upload SOURCE_FINAL toolchain
-        uses: actions/upload-artifact@v4
-        with:
-          name: sourcefinal-linux-dotnet-sdk
-          path: EXPORT
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 7
