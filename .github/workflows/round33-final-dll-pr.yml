@@ -1,4 +1,4 @@
-name: ROUND33 Final DLL PR Trigger
+name: ROUND33 Final DLL PR Build
 
 on:
   pull_request:
@@ -12,4 +12,159 @@ permissions:
 jobs:
   build-round33-final-dll:
     if: github.head_ref == 'round33-final-dll-build'
-    uses: ercankaymaz/ercankymz/.github/workflows/round33-isolated-final-dll.yml@round33-final-dll-build
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - name: Manual sparse checkout before worktree creation
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          $ErrorActionPreference='Stop'
+          git init .
+          git remote add origin "https://x-access-token:$env:GH_TOKEN@github.com/${{ github.repository }}.git"
+          git config core.sparseCheckout true
+          git sparse-checkout init --cone
+          git sparse-checkout set Decompiled/buCadCamRes
+          git fetch --depth=1 origin $env:PR_HEAD_SHA
+          if($LASTEXITCODE -ne 0){ throw 'sparse fetch failed' }
+          git checkout --detach FETCH_HEAD
+          if($LASTEXITCODE -ne 0){ throw 'sparse checkout failed' }
+          if(-not (Test-Path 'Decompiled/buCadCamRes/buCadCamRes.csproj')){ throw 'buCadCamRes project missing after sparse checkout' }
+          Write-Host "SPARSE_CHECKOUT_PASS sha=$env:PR_HEAD_SHA"
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
+
+      - name: Download validated user runtime DLL set
+        uses: actions/download-artifact@v4
+        with:
+          name: CMDMarbleCNC-Final-DLLs
+          path: runtime-original
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 31200670159
+
+      - name: Prepare support graph and dependencies
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          New-Item -ItemType Directory -Force build-logs, final-dlls | Out-Null
+          $projDir = Resolve-Path 'Decompiled/buCadCamRes'
+          $refs = Join-Path $projDir 'refs'
+          New-Item -ItemType Directory -Force $refs | Out-Null
+          $allDll = Get-ChildItem runtime-original -Recurse -Filter *.dll -File
+          if (-not $allDll) { throw 'Runtime dependency artifact is empty' }
+          foreach($d in $allDll){ Copy-Item $d.FullName (Join-Path $refs $d.Name) -Force }
+          $base = $allDll | Where-Object Name -eq 'buCadCamRes.dll' | Select-Object -First 1
+          if (-not $base) { throw 'Base buCadCamRes.dll missing' }
+          "BASE_SIZE=$($base.Length)" | Set-Content build-logs/base.txt
+          "BASE_SHA256=$((Get-FileHash $base.FullName -Algorithm SHA256).Hash.ToLowerInvariant())" | Add-Content build-logs/base.txt
+          dotnet tool install ilspycmd --tool-path tools
+          if($LASTEXITCODE -ne 0){ throw 'ilspycmd install failed' }
+          $types=@(
+            @{T='ns8.Class5';P='ns8/Class5.cs'},@{T='ns0.Class9';P='ns0/Class9.cs'},@{T='ns1.Class14';P='ns1/Class14.cs'},
+            @{T='ns2.Enum2';P='ns2/Enum2.cs'},@{T='ns3.Struct0';P='ns3/Struct0.cs'},@{T='ns4.Struct1';P='ns4/Struct1.cs'},
+            @{T='ns9.Class3';P='ns9/Class3.cs'},@{T='ns11.Class16';P='ns11/Class16.cs'},@{T='ns13.Class13';P='ns13/Class13.cs'}
+          )
+          foreach($x in $types){
+            $dest=Join-Path $projDir $x.P; New-Item -ItemType Directory -Force (Split-Path $dest)|Out-Null
+            & .\tools\ilspycmd.exe -t $x.T $base.FullName | Set-Content -LiteralPath $dest -Encoding UTF8
+            if($LASTEXITCODE -ne 0 -or (Get-Item $dest).Length -lt 20){ throw "Support decompile failed: $($x.T)" }
+            "RECOVERED $($x.T) bytes=$((Get-Item $dest).Length)" | Add-Content build-logs/support.txt
+          }
+
+      - name: Apply ROUND33 compile fixes and comment lock audit
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $p=Resolve-Path 'Decompiled/buCadCamRes'
+          $sim=Join-Path $p 'buCadCamResVer5/Printer3D/Simulation.cs'
+          $s=Get-Content $sim -Raw; $needle='private readonly double NozzleDiameter;'; $a=$s.IndexOf($needle)
+          if($a -ge 0){$b=$s.IndexOf($needle,$a+$needle.Length);if($b -ge 0){$s=$s.Remove($b,$needle.Length);Set-Content $sim $s -Encoding UTF8}}
+          if(([regex]::Matches((Get-Content $sim -Raw),'private\s+readonly\s+double\s+NozzleDiameter\s*;')).Count -ne 1){throw 'NozzleDiameter fix failed'}
+          $five=Join-Path $p 'buCadCamResVer5/Marble/FiveAxisPathSafety.cs';$f=Get-Content $five -Raw
+          if($f -notmatch '(?m)^using\s+buCadCamResVer5\s*;'){Set-Content $five ("using buCadCamResVer5;`r`n"+$f) -Encoding UTF8}
+          $sensitive=@('buCadCamResVer5/clsFiles.cs','buCadCamResVer5/clsSystem.cs','buCadCamResVer5/clsCommand.cs','buCadCamResVer5/Nesting/clsNesting.cs','buCadCamResVer5/Quilting/clsQuilting.cs')
+          foreach($rel in $sensitive){$q=Join-Path $p $rel;$active=Get-Content $q|?{$_ -match 'throw\s+new\s+RegisterException' -and $_ -notmatch '^\s*//'};if($active){throw "COMMENT LOCK FAIL $rel"};"PASS $rel SHA=$((Get-FileHash $q -Algorithm SHA256).Hash.ToLowerInvariant())"|Add-Content build-logs/comment-lock.txt}
+
+      - name: Add reviewed ArtText Studio source
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          git fetch origin arttext-final-clean --depth=1
+          git show FETCH_HEAD:arttext-final/ArtTextHelper.cs | Set-Content Decompiled/buCadCamRes/ArtTextHelper.cs -Encoding UTF8
+          git show FETCH_HEAD:arttext-final/Patcher.cs | Set-Content build-logs/Patcher.cs -Encoding UTF8
+          if(-not (Select-String Decompiled/buCadCamRes/ArtTextHelper.cs -Pattern 'class F_ArtTextStudio' -Quiet)){throw 'ArtText source missing'}
+
+      - name: Generate complete managed reference project
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $proj='Decompiled/buCadCamRes/buCadCamRes.csproj';$refs=Resolve-Path 'Decompiled/buCadCamRes/refs';$managed=@()
+          foreach($d in Get-ChildItem $refs -Filter *.dll -File){try{$an=[Reflection.AssemblyName]::GetAssemblyName($d.FullName);if($an.Name -ne 'buCadCamRes'){$managed+=[pscustomobject]@{Name=$an.Name;Path=$d.FullName}}}catch{}}
+          $managed=$managed|Sort-Object Name -Unique
+          $items=($managed|%{"    <Reference Include=`"$($_.Name)`"><HintPath>$($_.Path)</HintPath><Private>false</Private></Reference>"}) -join "`r`n"
+          $xml=@"
+          <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+            <PropertyGroup><TargetFramework>net48</TargetFramework><AssemblyName>buCadCamRes</AssemblyName><RootNamespace></RootNamespace><UseWindowsForms>true</UseWindowsForms><GenerateAssemblyInfo>false</GenerateAssemblyInfo><LangVersion>latest</LangVersion><AllowUnsafeBlocks>true</AllowUnsafeBlocks><CheckForOverflowUnderflow>false</CheckForOverflowUnderflow><PlatformTarget>AnyCPU</PlatformTarget><Prefer32Bit>false</Prefer32Bit></PropertyGroup>
+            <ItemGroup>
+          $items
+            </ItemGroup>
+          </Project>
+          "@
+          Set-Content $proj $xml -Encoding UTF8
+          "MANAGED_REFS=$($managed.Count)"|Set-Content build-logs/references.txt
+
+      - name: Build cumulative buCadCamRes
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Continue'
+          msbuild 'Decompiled/buCadCamRes/buCadCamRes.csproj' /restore /m /t:Rebuild /p:Configuration=Release /p:Platform=AnyCPU /v:minimal 2>&1 | Tee-Object build-logs/build.txt
+          if($LASTEXITCODE -ne 0){Select-String build-logs/build.txt -Pattern 'error\s+(CS|MSB|NETSDK)\d+|fatal error' -CaseSensitive:$false|%{$_.Line}|Select-Object -Unique|Set-Content build-logs/build-errors.txt;exit $LASTEXITCODE}
+
+      - name: Patch Text route and assemble complete DLL set
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $built=Get-ChildItem 'Decompiled/buCadCamRes/bin/Release' -Recurse -Filter buCadCamRes.dll -File|Select-Object -First 1
+          if(-not $built){throw 'Built buCadCamRes.dll missing'}
+          dotnet new console -n CecilPatcher -o patcher --force|Out-Null
+          Copy-Item build-logs/Patcher.cs patcher/Program.cs -Force
+          Push-Location patcher;dotnet add package Mono.Cecil --version 0.11.5;if($LASTEXITCODE -ne 0){throw 'Mono.Cecil install failed'};Pop-Location
+          Get-ChildItem runtime-original -Recurse -Filter *.dll -File|%{Copy-Item $_.FullName (Join-Path final-dlls $_.Name) -Force}
+          Push-Location patcher;dotnet run -c Release -- $built.FullName (Join-Path (Resolve-Path '..') 'final-dlls/buCadCamRes.dll') 2>&1|Tee-Object ../build-logs/arttext-patch.txt;$rc=$LASTEXITCODE;Pop-Location
+          if($rc -ne 0){throw "ArtText patch failed rc=$rc"}
+
+      - name: Final binary audit
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $dll=Resolve-Path 'final-dlls/buCadCamRes.dll';$an=[Reflection.AssemblyName]::GetAssemblyName($dll);$ascii=[Text.Encoding]::ASCII.GetString([IO.File]::ReadAllBytes($dll))
+          $markers=@('F_ArtTextStudio','EditorFix_TryGetNormalizedRectangle','TryGetMachine2MaterialFirstSawHit','AutoSeparateMachine2VacuumPartBeforeSaw','ValidateMachine2VacuumPlacement','TryChooseMachine2VacuumMove','SliceNestTryPlan','TryNestGeneratedSliceItems','SetStoredAngleOnEntity','ApplyStoredEdgeAnglesToItem')
+          $audit=@("Assembly=$($an.FullName)","Size=$((Get-Item $dll).Length)","SHA256=$((Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant())")
+          foreach($m in $markers){$ok=$ascii.Contains($m);$audit+="$m=$ok";if(-not $ok){throw "FINAL MARKER MISSING: $m"}}
+          $audit+='COMMENT_LOCK=PASS';$audit+='BUILD=PASS';$audit|Set-Content final-dlls/FINAL_AUDIT.txt -Encoding UTF8
+          Get-ChildItem final-dlls -Filter *.dll -File|Sort-Object Name|%{"$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)"}|Set-Content final-dlls/SHA256.txt
+          Get-Content final-dlls/FINAL_AUDIT.txt
+
+      - name: Upload final DLLs
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CMDStoneCAM-ROUND33-ALL-KNOWN-FIXES-DLLS
+          path: final-dlls
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CMDStoneCAM-ROUND33-BUILD-LOGS
+          path: build-logs
+          if-no-files-found: warn
+          retention-days: 30
