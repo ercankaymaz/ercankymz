@@ -4,6 +4,7 @@ on:
   push:
     branches: [ round33-final-dll-build ]
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -47,9 +48,7 @@ jobs:
 
           $allDll = Get-ChildItem runtime-original -Recurse -Filter *.dll -File
           if (-not $allDll) { throw 'Runtime dependency artifact is empty' }
-          foreach($d in $allDll){
-            Copy-Item $d.FullName (Join-Path $refs $d.Name) -Force
-          }
+          foreach($d in $allDll){ Copy-Item $d.FullName (Join-Path $refs $d.Name) -Force }
           $base = $allDll | Where-Object Name -eq 'buCadCamRes.dll' | Select-Object -First 1
           if (-not $base) { throw 'Base buCadCamRes.dll not found in validated runtime artifact' }
           Copy-Item $base.FullName 'build-logs/base-buCadCamRes.dll' -Force
@@ -58,7 +57,6 @@ jobs:
 
           dotnet tool install ilspycmd --tool-path tools
           if($LASTEXITCODE -ne 0){ throw 'ilspycmd install failed' }
-
           $types = @(
             @{T='ns8.Class5'; P='ns8/Class5.cs'},
             @{T='ns0.Class9'; P='ns0/Class9.cs'},
@@ -83,32 +81,21 @@ jobs:
         run: |
           $ErrorActionPreference='Stop'
           $projDir = Resolve-Path 'Decompiled/buCadCamRes'
-
           $sim=Join-Path $projDir 'buCadCamResVer5/Printer3D/Simulation.cs'
           $s=Get-Content $sim -Raw
           $needle='private readonly double NozzleDiameter;'
           $first=$s.IndexOf($needle)
-          if($first -ge 0){
-            $second=$s.IndexOf($needle,$first+$needle.Length)
-            if($second -ge 0){ $s=$s.Remove($second,$needle.Length); Set-Content $sim $s -Encoding UTF8 }
-          }
+          if($first -ge 0){ $second=$s.IndexOf($needle,$first+$needle.Length); if($second -ge 0){ $s=$s.Remove($second,$needle.Length); Set-Content $sim $s -Encoding UTF8 } }
           $count=([regex]::Matches((Get-Content $sim -Raw),'private\s+readonly\s+double\s+NozzleDiameter\s*;')).Count
           if($count -ne 1){ throw "NozzleDiameter field count=$count" }
 
           $five=Join-Path $projDir 'buCadCamResVer5/Marble/FiveAxisPathSafety.cs'
           $f=Get-Content $five -Raw
-          if($f -notmatch '(?m)^using\s+buCadCamResVer5\s*;'){
-            $f="using buCadCamResVer5;`r`n"+$f
-            Set-Content $five $f -Encoding UTF8
-          }
+          if($f -notmatch '(?m)^using\s+buCadCamResVer5\s*;'){ Set-Content $five ("using buCadCamResVer5;`r`n"+$f) -Encoding UTF8 }
 
-          # Sensitive files are audit-only: never rewrite them here.
           $sensitive=@(
-            'buCadCamResVer5/clsFiles.cs',
-            'buCadCamResVer5/clsSystem.cs',
-            'buCadCamResVer5/clsCommand.cs',
-            'buCadCamResVer5/Nesting/clsNesting.cs',
-            'buCadCamResVer5/Quilting/clsQuilting.cs'
+            'buCadCamResVer5/clsFiles.cs','buCadCamResVer5/clsSystem.cs','buCadCamResVer5/clsCommand.cs',
+            'buCadCamResVer5/Nesting/clsNesting.cs','buCadCamResVer5/Quilting/clsQuilting.cs'
           )
           foreach($rel in $sensitive){
             $p=Join-Path $projDir $rel
@@ -143,16 +130,10 @@ jobs:
           $xml=@"
           <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
             <PropertyGroup>
-              <TargetFramework>net48</TargetFramework>
-              <AssemblyName>buCadCamRes</AssemblyName>
-              <RootNamespace></RootNamespace>
-              <UseWindowsForms>true</UseWindowsForms>
-              <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-              <LangVersion>latest</LangVersion>
-              <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-              <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-              <PlatformTarget>AnyCPU</PlatformTarget>
-              <Prefer32Bit>false</Prefer32Bit>
+              <TargetFramework>net48</TargetFramework><AssemblyName>buCadCamRes</AssemblyName><RootNamespace></RootNamespace>
+              <UseWindowsForms>true</UseWindowsForms><GenerateAssemblyInfo>false</GenerateAssemblyInfo><LangVersion>latest</LangVersion>
+              <AllowUnsafeBlocks>true</AllowUnsafeBlocks><CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+              <PlatformTarget>AnyCPU</PlatformTarget><Prefer32Bit>false</Prefer32Bit>
             </PropertyGroup>
             <ItemGroup>
           $items
@@ -194,11 +175,6 @@ jobs:
         run: |
           $ErrorActionPreference='Stop'
           Get-ChildItem runtime-original -Recurse -Filter *.dll -File | ForEach-Object { Copy-Item $_.FullName (Join-Path final-dlls $_.Name) -Force }
-          # restore newly built DLL after copying original runtime
-          $patched=Resolve-Path 'final-dlls/buCadCamRes.dll'
-          if(-not $patched){ throw 'Final patched DLL missing' }
-          $new=Get-ChildItem patcher -Recurse -ErrorAction SilentlyContinue | Out-Null
-          # Patcher already wrote final-dlls/buCadCamRes.dll; verify assembly after runtime copy and re-run patch if overwritten.
           $built=Get-ChildItem 'Decompiled/buCadCamRes/bin/Release' -Recurse -Filter buCadCamRes.dll -File | Select-Object -First 1
           Push-Location patcher
           dotnet run -c Release -- $built.FullName (Join-Path (Resolve-Path '..') 'final-dlls/buCadCamRes.dll') 2>&1 | Tee-Object -Append ../build-logs/arttext-patch.txt
@@ -208,29 +184,10 @@ jobs:
 
           $dll=Resolve-Path 'final-dlls/buCadCamRes.dll'
           $an=[Reflection.AssemblyName]::GetAssemblyName($dll)
-          $bytes=[IO.File]::ReadAllBytes($dll)
-          $ascii=[Text.Encoding]::ASCII.GetString($bytes)
-          $markers=@(
-            'F_ArtTextStudio',
-            'EditorFix_TryGetNormalizedRectangle',
-            'TryGetMachine2MaterialFirstSawHit',
-            'AutoSeparateMachine2VacuumPartBeforeSaw',
-            'ValidateMachine2VacuumPlacement',
-            'TryChooseMachine2VacuumMove',
-            'SliceNestTryPlan',
-            'TryNestGeneratedSliceItems',
-            'SetStoredAngleOnEntity',
-            'ApplyStoredEdgeAnglesToItem'
-          )
-          $audit=@()
-          $audit += "Assembly=$($an.FullName)"
-          $audit += "Size=$((Get-Item $dll).Length)"
-          $audit += "SHA256=$((Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant())"
-          foreach($m in $markers){
-            $ok=$ascii.Contains($m)
-            $audit += "$m=$ok"
-            if(-not $ok){ throw "FINAL MARKER MISSING: $m" }
-          }
+          $ascii=[Text.Encoding]::ASCII.GetString([IO.File]::ReadAllBytes($dll))
+          $markers=@('F_ArtTextStudio','EditorFix_TryGetNormalizedRectangle','TryGetMachine2MaterialFirstSawHit','AutoSeparateMachine2VacuumPartBeforeSaw','ValidateMachine2VacuumPlacement','TryChooseMachine2VacuumMove','SliceNestTryPlan','TryNestGeneratedSliceItems','SetStoredAngleOnEntity','ApplyStoredEdgeAnglesToItem')
+          $audit=@("Assembly=$($an.FullName)","Size=$((Get-Item $dll).Length)","SHA256=$((Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant())")
+          foreach($m in $markers){ $ok=$ascii.Contains($m); $audit += "$m=$ok"; if(-not $ok){ throw "FINAL MARKER MISSING: $m" } }
           $audit += 'COMMENT_LOCK=PASS (5 sensitive source files checked; no active RegisterException)'
           $audit += 'BUILD=PASS'
           $audit | Set-Content final-dlls/FINAL_AUDIT.txt -Encoding UTF8
