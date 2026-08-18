@@ -1,0 +1,15 @@
+name: ROUND33 Final DLL PR Trigger
+
+on:
+  pull_request:
+    branches: [ repair-all-errors ]
+    types: [ opened, synchronize, reopened ]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build-round33-final-dll:
+    if: github.head_ref == 'round33-final-dll-build'
+    uses: ercankaymaz/ercankymz/.github/workflows/round33-isolated-final-dll.yml@round33-final-dll-build
