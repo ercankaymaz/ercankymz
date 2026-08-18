@@ -4,7 +4,7 @@ on:
   push:
     branches: [repair-all-errors]
   pull_request:
-    branches: [Test]
+    branches: [Test, repair-all-errors]
   workflow_dispatch:
 
 permissions:
@@ -132,3 +132,54 @@ jobs:
           name: buCadCamRes-final
           path: final-bucadcamres
           if-no-files-found: error
+
+  export-sourcefinal-toolchain:
+    if: github.event_name == 'pull_request' && github.base_ref == 'repair-all-errors'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.423'
+
+      - name: Restore net48 build packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/net48seed
+          cat > /tmp/net48seed/net48seed.csproj <<'EOF'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup><TargetFramework>net48</TargetFramework></PropertyGroup>
+            <ItemGroup>
+              <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all" />
+              <PackageReference Include="PDFsharp" Version="1.50.5147" />
+            </ItemGroup>
+          </Project>
+          EOF
+          dotnet restore /tmp/net48seed/net48seed.csproj
+
+      - name: Pack SDK and package cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p EXPORT/nuget
+          DOTNET_BIN="$(readlink -f "$(command -v dotnet)")"
+          DOTNET_ROOT_DIR="$(dirname "$DOTNET_BIN")"
+          tar -I 'xz -T0 -6' -cf EXPORT/dotnet-sdk-linux-x64.tar.xz -C "$DOTNET_ROOT_DIR" .
+          for p in microsoft.netframework.referenceassemblies microsoft.netframework.referenceassemblies.net48 pdfsharp; do
+            if [ -d "$HOME/.nuget/packages/$p" ]; then
+              tar -I 'xz -T0 -6' -cf "EXPORT/nuget/$p.tar.xz" -C "$HOME/.nuget/packages" "$p"
+            fi
+          done
+          sha256sum EXPORT/dotnet-sdk-linux-x64.tar.xz EXPORT/nuget/*.tar.xz > EXPORT/SHA256.txt
+          du -h EXPORT/dotnet-sdk-linux-x64.tar.xz EXPORT/nuget/*.tar.xz
+
+      - name: Upload SOURCE_FINAL toolchain
+        uses: actions/upload-artifact@v4
+        with:
+          name: sourcefinal-linux-dotnet-sdk
+          path: EXPORT
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
