@@ -4,7 +4,7 @@ on:
   push:
     branches: [ final-all-fixes-build ]
   pull_request:
-    branches: [ Test ]
+    branches: [ Test, repair-all-errors ]
   workflow_dispatch:
 
 permissions:
