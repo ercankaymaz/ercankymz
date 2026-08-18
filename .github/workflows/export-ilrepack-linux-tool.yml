@@ -1,0 +1,34 @@
+name: Export Linux ILRepack Tool
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  export-tool:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'final-three-conditions'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Install exact ILRepack .NET 8 tool
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p TOOL
+          dotnet tool install --tool-path TOOL dotnet-ilrepack --version 2.0.44
+          find TOOL -maxdepth 5 -type f -printf '%p %s\n' | sort > TOOL/FILES.txt
+          TOOL/ilrepack /help > TOOL/SELFTEST.txt 2>&1 || true
+          grep -qi 'ILRepack' TOOL/SELFTEST.txt
+      - name: Upload tool package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ILREPACK-LINUX-NET8-2.0.44
+          path: TOOL
+          if-no-files-found: error
+          retention-days: 30
