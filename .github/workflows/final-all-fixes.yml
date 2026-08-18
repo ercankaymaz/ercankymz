@@ -3,6 +3,8 @@ name: Final All Fixes Windows Build
 on:
   push:
     branches: [ final-all-fixes-build ]
+  pull_request:
+    branches: [ Test ]
   workflow_dispatch:
 
 permissions:
